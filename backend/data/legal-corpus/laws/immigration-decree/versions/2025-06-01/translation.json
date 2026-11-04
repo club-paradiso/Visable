@@ -1,0 +1,1311 @@
+{
+  "status": "ALIGNED",
+  "englishVersion": {
+    "mst": "271319",
+    "promulgationNo": "35540",
+    "effectiveFrom": "2025-06-01",
+    "sourceUrl": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=271319&urlMode=engLsInfoR&viewCls=engLsInfoR"
+  },
+  "pairs": [
+    {
+      "articleId": "1",
+      "status": "ALIGNED",
+      "titleKo": "출입국심사",
+      "titleEn": "Departure and entry inspections",
+      "englishTextSha256": "010009809280e7ffaae12df0658aa57dd81d947491977fbaa31dad752f7b980e"
+    },
+    {
+      "articleId": "1-2",
+      "status": "ALIGNED",
+      "titleKo": "정보화기기를 이용한 출입국심사",
+      "titleEn": "Departure or entry inspections using informatization devices",
+      "englishTextSha256": "e2a44e48f1023c1bd83e2d1297fa93b763aee373199af512cbeeaf5260ef6a0a"
+    },
+    {
+      "articleId": "1-3",
+      "status": "ALIGNED",
+      "titleKo": "벌금 등의 미납에 따른 출국금지 기준",
+      "titleEn": "Criteria for prohibition of departure due to nonpayment of fines",
+      "englishTextSha256": "f30f35e3f1b139dbc9a2bbb79bec2b7d9e67bd648290ced62f49713271c3b489"
+    },
+    {
+      "articleId": "1-4",
+      "status": "ALIGNED",
+      "titleKo": "출국금지기간",
+      "titleEn": "Period for prohibition of departure",
+      "englishTextSha256": "964f0699193a1d4a4ab11acd2e630d27380dc86923720259ef45bb1b0d883cc3"
+    },
+    {
+      "articleId": "2",
+      "status": "ALIGNED",
+      "titleKo": "출국금지 절차",
+      "titleEn": "Procedures for prohibition of departure",
+      "englishTextSha256": "78443389c3f50b1c9c1f2eaa7913c0b91596784576c1d4d0042d56311573eef5"
+    },
+    {
+      "articleId": "2-2",
+      "status": "ALIGNED",
+      "titleKo": "출국금지기간 연장 절차",
+      "titleEn": "Procedures for extending period for prohibition of departure",
+      "englishTextSha256": "32ddb9b722d21e7c16370e3cbcea7006cd166a437d72afe7a0aaca171b45d653"
+    },
+    {
+      "articleId": "2-3",
+      "status": "ALIGNED",
+      "titleKo": "출국금지 등의 요청에 대한 심사ㆍ결정",
+      "titleEn": "Examinations of, and decisions on, requests for prohibition of departure",
+      "englishTextSha256": "0b22e382a9e8d26383dd97cc76cb71047a14e40ca132969142e91175603330db"
+    },
+    {
+      "articleId": "3",
+      "status": "ALIGNED",
+      "titleKo": "출국금지의 해제 절차",
+      "titleEn": "Procedures for revoking prohibition of departure",
+      "englishTextSha256": "d4af503a4d1218575cf66e20e8b74f5a574ea549fb3d26c2dc3403895869f76e"
+    },
+    {
+      "articleId": "3-2",
+      "status": "ALIGNED",
+      "titleKo": "출국금지 요청대장의 작성 및 관리",
+      "titleEn": "Preparation and management of book of requests for prohibition of departure",
+      "englishTextSha256": "b1095d79d853548c0cc1afb0fc5d9c3feaf685d41a3db9613349318bcd20578e"
+    },
+    {
+      "articleId": "3-3",
+      "status": "ALIGNED",
+      "titleKo": "출국금지결정 등 통지의 제외",
+      "titleEn": "Exclusion from written notice of decisions on prohibition of departure",
+      "englishTextSha256": "e899258d074862dfe76ab6c3e98ebd0a61da2516cb2d653b34cc71a587a6484b"
+    },
+    {
+      "articleId": "3-4",
+      "status": "ALIGNED",
+      "titleKo": "이의신청에 대한 심사ㆍ결정",
+      "titleEn": "Examinations of and decisions on objections",
+      "englishTextSha256": "c689f97e4772cf8cfbc1ad6723e835dea022bc67675f02a06ce4dabb3dcf8dc4"
+    },
+    {
+      "articleId": "4",
+      "status": "ALIGNED",
+      "titleKo": null,
+      "titleEn": null,
+      "englishTextSha256": "f059df5cf3963ab1c6569c8978ba14c90f76b7d3ad521b6b8c36fabf7a773c29"
+    },
+    {
+      "articleId": "5",
+      "status": "ALIGNED",
+      "titleKo": "출국금지자의 자료관리",
+      "titleEn": "Management of data on persons prohibited from departing from the Republic of Korea",
+      "englishTextSha256": "1dc80a05697eaa5d3c657fa97864d1401a38f9064192c0f83ed14647f0748f53"
+    },
+    {
+      "articleId": "5-2",
+      "status": "ALIGNED",
+      "titleKo": "긴급출국금지 절차",
+      "titleEn": "Procedures for emergency prohibition of departure",
+      "englishTextSha256": "c15431cb0ba62417eeff2cb980c817d82ff0b98057c0b80c37eb32afa282a4de"
+    },
+    {
+      "articleId": "5-3",
+      "status": "ALIGNED",
+      "titleKo": "긴급출국금지 승인 절차",
+      "titleEn": "Procedures for approval for emergency prohibition of departure",
+      "englishTextSha256": "76eb455c4d2bf1eb08ca430de4254148392dd8872b5a10496686af0c989c13ff"
+    },
+    {
+      "articleId": "5-4",
+      "status": "ALIGNED",
+      "titleKo": "긴급출국금지 요청대장의 작성 및 관리",
+      "titleEn": "Preparation and management of book of requests for emergency prohibition of departure",
+      "englishTextSha256": "923bc1ece14dbb321d935ee6f573f7d31dc38db757c1785f2a39af87b28d9d4f"
+    },
+    {
+      "articleId": "6",
+      "status": "ALIGNED",
+      "titleKo": "여권 등의 보관ㆍ통지",
+      "titleEn": "Custody and notification of passports",
+      "englishTextSha256": "28b09b84e76fea5e73811115b753747ca245ed67091221492dc059a5fa5d54f8"
+    },
+    {
+      "articleId": "7",
+      "status": "ALIGNED",
+      "titleKo": "사증발급",
+      "titleEn": "Issuance of visas",
+      "englishTextSha256": "6668ca3e65bd92925bef3c701320842e9b724b9b96001fd6ba70ed0f4d646568"
+    },
+    {
+      "articleId": "7-2",
+      "status": "ALIGNED",
+      "titleKo": "온라인에 의한 사증발급 신청 등",
+      "titleEn": "Online applications for issuance of visas",
+      "englishTextSha256": "36957136629fa11b5d6f6a836427565ce05cf997bdbfa9c26b4581d997563f0e"
+    },
+    {
+      "articleId": "7-3",
+      "status": "ALIGNED",
+      "titleKo": "단체전자사증",
+      "titleEn": "Group electronic visa",
+      "englishTextSha256": "2832a42bee1786717c068ed4e8b2c72eb84187ff8d0de16138958bf815e77f5f"
+    },
+    {
+      "articleId": "8",
+      "status": "ALIGNED",
+      "titleKo": "국제친선 등을 위한 입국허가",
+      "titleEn": "Entry permission for international friendship",
+      "englishTextSha256": "bcf6490f55e55333d7fd0477bfa45f4885483aedf82ad2172416b7d96cd3ffd8"
+    },
+    {
+      "articleId": "9",
+      "status": "ALIGNED",
+      "titleKo": "사증면제협정 적용의 일시 정지",
+      "titleEn": "Temporary suspension of application of visa exemption agreements",
+      "englishTextSha256": "96e35f926c3e36e0368abb91c184f68aa9c3b2afe417b873daba2be3e7eaf01c"
+    },
+    {
+      "articleId": "10",
+      "status": "ALIGNED",
+      "titleKo": "외국인입국허가서의 발급 등",
+      "titleEn": "Issuance of alien entry permits",
+      "englishTextSha256": "ea18caebcdb495f6f22dbf828574d54ee3b1ecafba57e6c65ace8fa3790e6217"
+    },
+    {
+      "articleId": "11",
+      "status": "ALIGNED",
+      "titleKo": "사증발급 권한의 위임",
+      "titleEn": "Delegation of authority to issue visas",
+      "englishTextSha256": "617859b77d6033d1e7c124981c90019577aa620194b9b08ab3aa121f4569984f"
+    },
+    {
+      "articleId": "11-2",
+      "status": "ALIGNED",
+      "titleKo": "사증발급 신청서류의 보존기간",
+      "titleEn": "Period of retention of visa applications",
+      "englishTextSha256": "47f043dad86f62c981dbbdb473eeca2db257a4bc72471dd7585912a82c2c3f49"
+    },
+    {
+      "articleId": "12",
+      "status": "ALIGNED",
+      "titleKo": "일반체류자격",
+      "titleEn": "Status of general stay",
+      "englishTextSha256": "47ab1720d82d075ffa29a6f024f01154120e3e35ed405078d68c29dcb7f713ef"
+    },
+    {
+      "articleId": "12-2",
+      "status": "ALIGNED",
+      "titleKo": "영주자격 요건 등",
+      "titleEn": "Requirements for status of permanent residency",
+      "englishTextSha256": "4b75acd593341748b4ab7091f8326a9a8d5ab01b2c3be098c405a02f20dc3dc6"
+    },
+    {
+      "articleId": "13",
+      "status": "ALIGNED",
+      "titleKo": "입국금지자의 자료관리",
+      "titleEn": "Management of data on persons prohibited from entering the Republic of Korea",
+      "englishTextSha256": "822d365d6b01cd63dba1ca4bbadf0508a9430d5bb3d0b574513eacefffd02809"
+    },
+    {
+      "articleId": "14",
+      "status": "ALIGNED",
+      "titleKo": "입국금지 요청 및 해제",
+      "titleEn": "Requests for and revocation of prohibition of entry",
+      "englishTextSha256": "1f3a6c58ec94c7e72df0bbbecc363b48ec1a51363697d089a36772b92a7a8f3d"
+    },
+    {
+      "articleId": "15",
+      "status": "ALIGNED",
+      "titleKo": "입국심사",
+      "titleEn": "Entry inspections",
+      "englishTextSha256": "89388cd41bdd0e2cb02ced11806219ad814c8404cbff0ed5f80306d99bbeb455"
+    },
+    {
+      "articleId": "15-2",
+      "status": "ALIGNED",
+      "titleKo": "지문 및 얼굴에 관한 정보 제공 의무의 면제",
+      "titleEn": "Exemption from obligations to be fingerprinted and photographed",
+      "englishTextSha256": "97c907c8a1ae1021dedca7eedd7235702272bfae4a91888f71bf3bf0a0e19d1a"
+    },
+    {
+      "articleId": "15-3",
+      "status": "ALIGNED",
+      "titleKo": "정보통신망의 설치ㆍ운영",
+      "titleEn": "Establishment and operation of information and communications networks",
+      "englishTextSha256": "e2a8bc680cf6178e07d79b31f213735f28caaf22e96f951277d49ca58cc5ff8d"
+    },
+    {
+      "articleId": "16",
+      "status": "ALIGNED",
+      "titleKo": "조건부 입국허가",
+      "titleEn": "Conditional entry permission",
+      "englishTextSha256": "273ff8b8a2cb9aa53f9f4d2281fe85ea9dbcc6c6109a283a192dab994c7fccf7"
+    },
+    {
+      "articleId": "17",
+      "status": "ALIGNED",
+      "titleKo": "보증금의 예치 및 반환과 국고귀속 절차",
+      "titleEn": "Deposit and return of bonds, and procedures for transfer of such bonds National Treasury",
+      "englishTextSha256": "8a21c7fee8b07ec8f36a546b381e49071916cc7d6c2cd444de232c8ab77d9353"
+    },
+    {
+      "articleId": "18",
+      "status": "ALIGNED",
+      "titleKo": "승무원의 상륙허가",
+      "titleEn": "Landing permission for crew members",
+      "englishTextSha256": "ced3e53f39f9c53b018cda55eed92fa84a2bf86127937d721f63a6cbc23695db"
+    },
+    {
+      "articleId": "18-2",
+      "status": "ALIGNED",
+      "titleKo": "승무원의 복수상륙허가",
+      "titleEn": "Multiple landing permission for crew members",
+      "englishTextSha256": "207fc0152b5a4779b8f66716cbeb9ca30eae39ad6510f5ee52cf22a9428a5eac"
+    },
+    {
+      "articleId": "18-3",
+      "status": "ALIGNED",
+      "titleKo": "관광상륙허가의 기준",
+      "titleEn": "Criteria for landing permission for tourism",
+      "englishTextSha256": "3df0b5cfe318779a6d94bc631feecda8467ccda29a05b4f4d40e9b57bff5c72a"
+    },
+    {
+      "articleId": "18-4",
+      "status": "ALIGNED",
+      "titleKo": "관광상륙허가의 절차",
+      "titleEn": "Procedures for landing permission for tourism",
+      "englishTextSha256": "183b4fd9e64f7dd7e49866de6efcf51089138f300c82bde5f9ba11f8fed5e320"
+    },
+    {
+      "articleId": "19",
+      "status": "ALIGNED",
+      "titleKo": "긴급상륙허가",
+      "titleEn": "Emergency landing permission",
+      "englishTextSha256": "0b3bb47c7a3d7a24ec779f00007fd05d477f3582b393218894cc0481ff7ef2a7"
+    },
+    {
+      "articleId": "20",
+      "status": "ALIGNED",
+      "titleKo": "재난상륙허가",
+      "titleEn": "Landing permission in distress",
+      "englishTextSha256": "50f82c4c0b2c5e25fb1669aafad8bf2350984e79aad8ea235c4f0821a946d143"
+    },
+    {
+      "articleId": "20-2",
+      "status": "ALIGNED",
+      "titleKo": "난민 임시상륙허가",
+      "titleEn": "Temporary landing permission for refugees",
+      "englishTextSha256": "19e9e98951fe49ce0486ba3d1c28a8b5c477a525cd5d569ef05bae033c388d5c"
+    },
+    {
+      "articleId": "21",
+      "status": "ALIGNED",
+      "titleKo": "상륙허가기간의 연장",
+      "titleEn": "Extension of period of landing permission",
+      "englishTextSha256": "60af93040546bef077d90a314b5d48c835f24e086934d9efeb4fc13c355228df"
+    },
+    {
+      "articleId": "22",
+      "status": "ALIGNED",
+      "titleKo": "중지명령",
+      "titleEn": "Suspension orders",
+      "englishTextSha256": "dd5dd5d325fbc8b7d2e16cd88f3756d6d032d68c3e680c7740b36f0b3fbeb5a8"
+    },
+    {
+      "articleId": "23",
+      "status": "ALIGNED",
+      "titleKo": "외국인의 취업과 체류자격",
+      "titleEn": "Employment and status of stay of aliens",
+      "englishTextSha256": "39e26ee226f787f8e6b6d8e79d4cf6a39d3bffd698a983d3f336c9142fc5db0d"
+    },
+    {
+      "articleId": "24",
+      "status": "ALIGNED",
+      "titleKo": "외국인을 고용한 자 등의 신고",
+      "titleEn": "Reporting by employers of aliens",
+      "englishTextSha256": "b30bc21e9157140054434bfee20d00264785432e824358c53a72de06a8a959a3"
+    },
+    {
+      "articleId": "24-2",
+      "status": "ALIGNED",
+      "titleKo": "기술연수업체 등",
+      "titleEn": "Technical training establishments",
+      "englishTextSha256": "527553af5f66633a582500c2635df621b0cd2a3d2742c702abf3870d90f5977f"
+    },
+    {
+      "articleId": "24-3",
+      "status": "ALIGNED",
+      "titleKo": null,
+      "titleEn": null,
+      "englishTextSha256": "470bc956a7fbec88feb83f2ae5c746beefc7afa5631775ef27b08c423e4ca9d6"
+    },
+    {
+      "articleId": "24-4",
+      "status": "ALIGNED",
+      "titleKo": "기술연수생의 모집 및 관리",
+      "titleEn": "Recruitment and management of technical trainees",
+      "englishTextSha256": "6c0ae804f7f40cbf9bee2c2981c993b9505a9a14e91dc81fdd8498752111ce2f"
+    },
+    {
+      "articleId": "24-5",
+      "status": "ALIGNED",
+      "titleKo": null,
+      "titleEn": null,
+      "englishTextSha256": "470bc956a7fbec88feb83f2ae5c746beefc7afa5631775ef27b08c423e4ca9d6"
+    },
+    {
+      "articleId": "24-6",
+      "status": "ALIGNED",
+      "titleKo": null,
+      "titleEn": null,
+      "englishTextSha256": "470bc956a7fbec88feb83f2ae5c746beefc7afa5631775ef27b08c423e4ca9d6"
+    },
+    {
+      "articleId": "24-7",
+      "status": "ALIGNED",
+      "titleKo": null,
+      "titleEn": null,
+      "englishTextSha256": "470bc956a7fbec88feb83f2ae5c746beefc7afa5631775ef27b08c423e4ca9d6"
+    },
+    {
+      "articleId": "24-8",
+      "status": "ALIGNED",
+      "titleKo": "외국인유학생의 관리 등",
+      "titleEn": "Management of alien students",
+      "englishTextSha256": "d3f896309072425fd9dc6a9e024199e339d7998607987af29ff51ac9912bcb37"
+    },
+    {
+      "articleId": "25",
+      "status": "ALIGNED",
+      "titleKo": "체류자격 외 활동허가",
+      "titleEn": "Permission to engage in activities not covered by original status of stay",
+      "englishTextSha256": "1cf7a55b7c1ebbfd5752e4df3f739003c794881888554459a378ea51986ee2f3"
+    },
+    {
+      "articleId": "26",
+      "status": "ALIGNED",
+      "titleKo": "근무처의 변경ㆍ추가 허가",
+      "titleEn": "Permission to change or add workplace",
+      "englishTextSha256": "bd868e4e4e2745d93a7cecccc2bf96174a8bcc8777d2a94bd4160348e5d4e935"
+    },
+    {
+      "articleId": "26-2",
+      "status": "ALIGNED",
+      "titleKo": "근무처의 변경ㆍ추가 신고",
+      "titleEn": "Reporting on change or addition of workplace",
+      "englishTextSha256": "1036deb6e90a3e78666ee5ca376f9b23e6ce6c95586b813511e34d260be6b759"
+    },
+    {
+      "articleId": "27",
+      "status": "ALIGNED",
+      "titleKo": "활동범위의 제한",
+      "titleEn": "Restrictions on scope of activities",
+      "englishTextSha256": "85af6fcbcad157caa3b086be891624c768084de6c292e3867eb60fcff50010d0"
+    },
+    {
+      "articleId": "28",
+      "status": "ALIGNED",
+      "titleKo": "통지방법의 예외",
+      "titleEn": "Exception to methods of giving notice",
+      "englishTextSha256": "76c8e8aafdc80a1f7a46a0847d0b2dfc9e8719fdf91fc4bbc797de28de2ee552"
+    },
+    {
+      "articleId": "29",
+      "status": "ALIGNED",
+      "titleKo": "체류자격 부여",
+      "titleEn": "Granting status of stay",
+      "englishTextSha256": "d1e65d30f4f7aeec4804e4fc6b1f30b5e25ce1f098a86bc5197f6940437c99de"
+    },
+    {
+      "articleId": "30",
+      "status": "ALIGNED",
+      "titleKo": "체류자격 변경허가",
+      "titleEn": "Permission to change status of stay",
+      "englishTextSha256": "e2ff9c941e8425f1403b35be641133233cb19e9dda69251804a013517b331477"
+    },
+    {
+      "articleId": "31",
+      "status": "ALIGNED",
+      "titleKo": "체류기간 연장허가",
+      "titleEn": "Permission to extend period of stay",
+      "englishTextSha256": "83d6accca3f33c18a2c4ada52aa9ef8348b8e9130e4e80f224d10e2c7d257050"
+    },
+    {
+      "articleId": "32",
+      "status": "ALIGNED",
+      "titleKo": null,
+      "titleEn": null,
+      "englishTextSha256": "52f3db5caa733765f1ae42ef8d9f0878ff55b028d44be4f29d491ad4819a67e4"
+    },
+    {
+      "articleId": "33",
+      "status": "ALIGNED",
+      "titleKo": "체류자격 부여 등을 하지 않을 때의 출국통지",
+      "titleEn": "Notice of Departure When Not Granting Status of Stay, etc.",
+      "englishTextSha256": "3fda090fea2531950c7b0b594e9f6a82f45c48beeb5ccd8d34beaf2e511fb384"
+    },
+    {
+      "articleId": "34",
+      "status": "ALIGNED",
+      "titleKo": "체류자격 부여 등에 따른 출국예고",
+      "titleEn": "Advance notice of departure following grant of status of stay",
+      "englishTextSha256": "5d4211bcf6433e3f52a63244a74b6e5c11e26e603358bc309c80cf6763d9a08e"
+    },
+    {
+      "articleId": "34-2",
+      "status": "ALIGNED",
+      "titleKo": "체류자격 외 활동허가 신청 등에 관한 온라인 방문 예약",
+      "titleEn": "Online visit reservation regarding application for permission to engage in activities not covered by original status of stay",
+      "englishTextSha256": "938a9bbb5a0df1cdb5f6db792581cb14b1b17985addb87ca4e6e38f6736a3648"
+    },
+    {
+      "articleId": "35",
+      "status": "ALIGNED",
+      "titleKo": "출국심사",
+      "titleEn": "Departure inspections",
+      "englishTextSha256": "960805473a6da050b9abf3b621854151faeacdb23b29ffc669c402447b6baecb"
+    },
+    {
+      "articleId": "36",
+      "status": "ALIGNED",
+      "titleKo": "외국인의 출국정지기간",
+      "titleEn": "Period during which aliens’ departure from Republic of Korea is suspended",
+      "englishTextSha256": "1f772096adc57572b81e394cabd97ee6d7c728d3039e142a56d60aba560dc1ee"
+    },
+    {
+      "articleId": "36-2",
+      "status": "ALIGNED",
+      "titleKo": "외국인의 출국정지 절차 등",
+      "titleEn": "Procedures for suspending aliens from departing from the Republic of Korea",
+      "englishTextSha256": "5832373ba70c6a1ea84cdf4f3b9506b25b15af8102d5dc88b861e69dcc6415c3"
+    },
+    {
+      "articleId": "37",
+      "status": "ALIGNED",
+      "titleKo": "출국정지가 해제된 외국인의 출국",
+      "titleEn": "Alien’s departure from the Republic of Korea upon revocation of suspension of departure",
+      "englishTextSha256": "6f673f415c1b556a68f16e8349bce6cbc9c7023bed16c28a6665a9956112274f"
+    },
+    {
+      "articleId": "38",
+      "status": "ALIGNED",
+      "titleKo": "재입국허가기간 연장허가 권한의 위임",
+      "titleEn": "Delegation of authority to grant extensions of permitted period of reentry",
+      "englishTextSha256": "deadb395a1aba0281bf04800e5ea18b8b1de8bd72b79397d5b7db30bdea7ff2e"
+    },
+    {
+      "articleId": "39",
+      "status": "ALIGNED",
+      "titleKo": null,
+      "titleEn": null,
+      "englishTextSha256": "fd3c480ab16f3fb9a52c8c490955fe340a1e3e79f124ffcec4f365ae19020e25"
+    },
+    {
+      "articleId": "40",
+      "status": "ALIGNED",
+      "titleKo": "외국인등록 등",
+      "titleEn": "Registration of aliens",
+      "englishTextSha256": "ad4e95cb83600fe83ec12780cf4ac4848f52a0f269ab6bdb0df0819d2ae73ddf"
+    },
+    {
+      "articleId": "40-2",
+      "status": "ALIGNED",
+      "titleKo": null,
+      "titleEn": null,
+      "englishTextSha256": "9633bba50cc2e1fd3c5ff3e33511bf3c5f358385525c3bb07867b00167a9e0c2"
+    },
+    {
+      "articleId": "40-3",
+      "status": "ALIGNED",
+      "titleKo": "외국인등록번호의 체계 등",
+      "titleEn": "Numbering system of alien registration",
+      "englishTextSha256": "4ff834b870f87fff294c830a3b6310ff146e2678c8b26fbc30d578b3e08b19d3"
+    },
+    {
+      "articleId": "41",
+      "status": "ALIGNED",
+      "titleKo": "외국인등록증의 발급",
+      "titleEn": "Issuance of alien registration certificates",
+      "englishTextSha256": "d4bd05fb98f64426f84512ef282ea7c9eda4c9864b60d2c26d5fe17dbd832476"
+    },
+    {
+      "articleId": "42",
+      "status": "ALIGNED",
+      "titleKo": "외국인등록증의 재발급",
+      "titleEn": "Reissuance of alien registration certificates",
+      "englishTextSha256": "8cdfd80685cc9001c3c480b06c142abc3f9eb7d1a13c19df64ddb0cf44cd6924"
+    },
+    {
+      "articleId": "42-2",
+      "status": "ALIGNED",
+      "titleKo": "영주증의 재발급",
+      "titleEn": "Reissuance of permanent residency certificate",
+      "englishTextSha256": "7734c21c8b2cbcbe17599f5437a07cd770e3979ab453bfe87448a47f3886cf98"
+    },
+    {
+      "articleId": "43",
+      "status": "ALIGNED",
+      "titleKo": "등록외국인기록표 등의 작성 및 관리",
+      "titleEn": "Preparation and management of registered alien records",
+      "englishTextSha256": "3495806f208e0e7d8a7cd8da13d586a83e98afcc9a7584b5ca60522f4aa4b210"
+    },
+    {
+      "articleId": "44",
+      "status": "ALIGNED",
+      "titleKo": "외국인등록사항 변경의 신고",
+      "titleEn": "Reporting on changes in matters registered by aliens",
+      "englishTextSha256": "beb06154cbcc8c1f65174ed05ce511fc32247dc742a545e62384c28be257f907"
+    },
+    {
+      "articleId": "45",
+      "status": "ALIGNED",
+      "titleKo": "체류지 변경의 신고",
+      "titleEn": "Reporting on change in place of stay",
+      "englishTextSha256": "9275ad7a304f6f9f08707f641a8fa230a30144aa1334ae84f313ac398bd18aa8"
+    },
+    {
+      "articleId": "46",
+      "status": "ALIGNED",
+      "titleKo": "외국인등록증의 반납 등",
+      "titleEn": "Surrender of alien registration certificates",
+      "englishTextSha256": "de2ea92cfc78c9fefda87151f911f045bee56cda04399c76fe7f7746afa3733c"
+    },
+    {
+      "articleId": "47",
+      "status": "ALIGNED",
+      "titleKo": "외국인등록사항의 말소 절차 등",
+      "titleEn": "Procedure for cancellation of alien registration",
+      "englishTextSha256": "0865ff0d3ea434264174628462f4d0c45a9dcc810e8dcc7b6c5cf95e4eed1b29"
+    },
+    {
+      "articleId": "48",
+      "status": "ALIGNED",
+      "titleKo": "사회통합 프로그램의 내용 및 개발",
+      "titleEn": "Details and development of social integration programs",
+      "englishTextSha256": "db055f174311201bc05b12a55f1893d69ea099feb02796f3deacb1168afab681"
+    },
+    {
+      "articleId": "49",
+      "status": "ALIGNED",
+      "titleKo": "운영기관의 지정",
+      "titleEn": "Designation of operating institutions",
+      "englishTextSha256": "7b7416892d5331bd01ef7eae7569dfafeeb54b1abd4ee7665f5e593af9882c62"
+    },
+    {
+      "articleId": "50",
+      "status": "ALIGNED",
+      "titleKo": "운영기관의 관리 및 지정 취소",
+      "titleEn": "Management and revocation of designation of operating institutions",
+      "englishTextSha256": "ac87ebebeb9a6468863e0d9ece3bcb643250ae632dcc32ab0b77bcc294ba2582"
+    },
+    {
+      "articleId": "51",
+      "status": "ALIGNED",
+      "titleKo": "전문인력의 양성 등",
+      "titleEn": "Training of experts",
+      "englishTextSha256": "c9b073fa14fff6bc325732579591929e5ff9bd6e335b92629af18b4659ddacc2"
+    },
+    {
+      "articleId": "52",
+      "status": "ALIGNED",
+      "titleKo": null,
+      "titleEn": null,
+      "englishTextSha256": "2a6059c6db5f9b9015a387a55afaacc836e45fe7f976e22bea44f12791fd92d0"
+    },
+    {
+      "articleId": "53",
+      "status": "ALIGNED",
+      "titleKo": null,
+      "titleEn": null,
+      "englishTextSha256": "4161a2a75049a75d8bf0101eccfc17330dbefdec58edd0ea2e93acf9fbf74883"
+    },
+    {
+      "articleId": "54",
+      "status": "ALIGNED",
+      "titleKo": null,
+      "titleEn": null,
+      "englishTextSha256": "4161a2a75049a75d8bf0101eccfc17330dbefdec58edd0ea2e93acf9fbf74883"
+    },
+    {
+      "articleId": "55",
+      "status": "ALIGNED",
+      "titleKo": null,
+      "titleEn": null,
+      "englishTextSha256": "4161a2a75049a75d8bf0101eccfc17330dbefdec58edd0ea2e93acf9fbf74883"
+    },
+    {
+      "articleId": "56",
+      "status": "ALIGNED",
+      "titleKo": null,
+      "titleEn": null,
+      "englishTextSha256": "4161a2a75049a75d8bf0101eccfc17330dbefdec58edd0ea2e93acf9fbf74883"
+    },
+    {
+      "articleId": "57",
+      "status": "ALIGNED",
+      "titleKo": "인지보고",
+      "titleEn": "Reporting on recognition",
+      "englishTextSha256": "684529f29ead74df2d43db198b31efefada17bb31e73634d7520501b4fcbfd86"
+    },
+    {
+      "articleId": "58",
+      "status": "ALIGNED",
+      "titleKo": "출석요구",
+      "titleEn": "Requests to appear",
+      "englishTextSha256": "441e12199108bdd244e98212d21955b1b710de0998590a2fcf0706898f5f6c69"
+    },
+    {
+      "articleId": "59",
+      "status": "ALIGNED",
+      "titleKo": "신문조서",
+      "titleEn": "Interrogatories",
+      "englishTextSha256": "bed2f3f6c9c972fa07ddf265d96b96a9423daefe5257da403d3eabbac57a11e9"
+    },
+    {
+      "articleId": "60",
+      "status": "ALIGNED",
+      "titleKo": "참고인 진술조서",
+      "titleEn": "Record of statement of witnesses",
+      "englishTextSha256": "90f68b320e3682e11012c7adadd308c8dac8c304c8b7ee903426a1e7ec4cb2b5"
+    },
+    {
+      "articleId": "61",
+      "status": "ALIGNED",
+      "titleKo": "검사 및 서류 등의 제출요구",
+      "titleEn": "Inspections and requests for presentation of documents",
+      "englishTextSha256": "3e2f968a5c1f6ed41d1aa46c9db2b11f985420ac31e35ea151350e5a35b0f42d"
+    },
+    {
+      "articleId": "62",
+      "status": "ALIGNED",
+      "titleKo": "제출물조서 등",
+      "titleEn": "Record of presented articles",
+      "englishTextSha256": "a2e4006226d877c2bcfcafedea4d9fe3949ed5f0952e89feb1c41ddde7f8e3e7"
+    },
+    {
+      "articleId": "63",
+      "status": "ALIGNED",
+      "titleKo": "보호명령서",
+      "titleEn": "Detention orders",
+      "englishTextSha256": "13d0826d45c716b4f4a74d713dcd0f8ffbfda31a7dc6b197e2b033e50718603a"
+    },
+    {
+      "articleId": "64",
+      "status": "ALIGNED",
+      "titleKo": "보호의 의뢰 등",
+      "titleEn": "Requests for detention",
+      "englishTextSha256": "faf6520d357c63e237e016d2e8a732179e87b7b656f04095adacece516023aeb"
+    },
+    {
+      "articleId": "65",
+      "status": "ALIGNED",
+      "titleKo": "보호기간의 연장",
+      "titleEn": "Extension of period of detention",
+      "englishTextSha256": "a0f5ad0934e8fbde47e471458a65aa97f7e1d67c636a480028a1a93a3df7d5cd"
+    },
+    {
+      "articleId": "66",
+      "status": "ALIGNED",
+      "titleKo": "보호기간 중의 보호해제",
+      "titleEn": "Release from Detention during Period of Detention",
+      "englishTextSha256": "384ae76460291d6fcdc777bffc69907580dc7ddd1032e3666ed155d6cfe8b088"
+    },
+    {
+      "articleId": "67",
+      "status": "ALIGNED",
+      "titleKo": "보호시설의 장의 의무",
+      "titleEn": "Obligation of heads of detention facilities",
+      "englishTextSha256": "27859dc1bbd1bd82097e617972d69ccb281b05e322ae803c4cba56fc1965e2d8"
+    },
+    {
+      "articleId": "68",
+      "status": "ALIGNED",
+      "titleKo": "보호의 통지",
+      "titleEn": "Notification of detention",
+      "englishTextSha256": "1db7fbacc598598169d6be3692b58b73e99b0c6560c8be690aa2694360030210"
+    },
+    {
+      "articleId": "69",
+      "status": "ALIGNED",
+      "titleKo": "보호에 대한 심사청구",
+      "titleEn": "Request for examination on detention",
+      "englishTextSha256": "691fd821a1afd7697ca558e09312a16466ed597e508c5a174d33bb8630d2efa2"
+    },
+    {
+      "articleId": "70",
+      "status": "ALIGNED",
+      "titleKo": "심사청구에 대한 결정",
+      "titleEn": "Decision on request for examination",
+      "englishTextSha256": "22bc4a44b276f239ce9cb7b9e483b070815054b3e246290f72f5540d7ce84c91"
+    },
+    {
+      "articleId": "71",
+      "status": "ALIGNED",
+      "titleKo": "외국인의 일시보호",
+      "titleEn": "Temporary detention of aliens",
+      "englishTextSha256": "e489e5f73781670e199b13ea44f0f20a02467dfc4428e239327029bbf3a18396"
+    },
+    {
+      "articleId": "72",
+      "status": "ALIGNED",
+      "titleKo": "심사결정서",
+      "titleEn": "Examinations and decisions",
+      "englishTextSha256": "86073dd01ebec962e871004c5b1e88b5503566f8cc65812128e4b342cb113331"
+    },
+    {
+      "articleId": "73",
+      "status": "ALIGNED",
+      "titleKo": "심사 후의 절차",
+      "titleEn": "Procedures after examinations",
+      "englishTextSha256": "fd06a52c5766208d556a6003d54ad0f091606537c79be71a7ed92b6b3284579b"
+    },
+    {
+      "articleId": "74",
+      "status": "ALIGNED",
+      "titleKo": "강제퇴거명령서",
+      "titleEn": "Deportation orders",
+      "englishTextSha256": "07428c299e01b01c9f368740eb8a7e0905ebf3b656d7b420e245b943a66cdef2"
+    },
+    {
+      "articleId": "75",
+      "status": "ALIGNED",
+      "titleKo": "이의신청 및 결정",
+      "titleEn": "Filing objections and decisions",
+      "englishTextSha256": "f77ea66329c91168b14cd12315df66801b10f024d3ad7e5dcbcf4cf263c90e0c"
+    },
+    {
+      "articleId": "76",
+      "status": "ALIGNED",
+      "titleKo": "체류허가의 특례",
+      "titleEn": "Special cases on permission to stay",
+      "englishTextSha256": "273cfd41ab13c069321580f3c5ad6dbc660ac7d34e5245b578ba4891abf47f6f"
+    },
+    {
+      "articleId": "77",
+      "status": "ALIGNED",
+      "titleKo": "강제퇴거명령서의 집행",
+      "titleEn": "Execution of written orders of deportation",
+      "englishTextSha256": "386d3a067fbc7b4434ee4d434738c05a0f2e647af434fbe3cb2132d77b16a5e1"
+    },
+    {
+      "articleId": "78",
+      "status": "ALIGNED",
+      "titleKo": "강제퇴거명령을 받은 사람의 보호 및 보호기간 연장 승인",
+      "titleEn": "Detention of persons subject to deportation orders and approval for extension of period of detention",
+      "englishTextSha256": "0ed536a9033cafa67167bf732406c65d60aaac1754292bfff75b561798023abe"
+    },
+    {
+      "articleId": "78-2",
+      "status": "ALIGNED",
+      "titleKo": "보호기간 연장 사유에 해당하는 범죄",
+      "titleEn": "Crimes falling under reasons for extension of period of detention",
+      "englishTextSha256": "5a7fb6ef7448346a61f9e40d9466b892bcd044927a0501dabfa5ed03a3e94e7b"
+    },
+    {
+      "articleId": "78-3",
+      "status": "ALIGNED",
+      "titleKo": "강제퇴거명령을 받은 사람의 보호해제",
+      "titleEn": "Release from detention of persons subject to deportation orders",
+      "englishTextSha256": "7787b7c09867b1f1bcb543f8a2895c8b520f657ef67e8a77f0035c4436b1c518"
+    },
+    {
+      "articleId": "79",
+      "status": "ALIGNED",
+      "titleKo": "직권에 의한 보호의 일시해제",
+      "titleEn": "Temporary release from detention ex officio",
+      "englishTextSha256": "2a687ead8a69629a43efaac737f7730454839954f09b3a93e1b416f70ee5992c"
+    },
+    {
+      "articleId": "79-2",
+      "status": "ALIGNED",
+      "titleKo": "신청에 따른 보호의 일시해제",
+      "titleEn": "Temporary release from detention upon request",
+      "englishTextSha256": "7de49d3f7cb33a4186d7879b9ad8be6665d998ea6213824a6fa7791104bef4a4"
+    },
+    {
+      "articleId": "79-3",
+      "status": "ALIGNED",
+      "titleKo": "보호 일시해제 심사기준",
+      "titleEn": "Criteria for examination for temporary release from detention",
+      "englishTextSha256": "19f9b1911fb263b304f929fc5c2faceceec96ad352ed92c51265b7b57d06663d"
+    },
+    {
+      "articleId": "80",
+      "status": "ALIGNED",
+      "titleKo": "보호 일시해제의 취소",
+      "titleEn": "Revocation of temporary release from detention",
+      "englishTextSha256": "9ed0bfa72d2274eb807e77f7de9aa1c2ad66f1666d4a303e9a1756cdc0965e37"
+    },
+    {
+      "articleId": "80-2",
+      "status": "ALIGNED",
+      "titleKo": "보호명령서 발급 등에 대한 의견진술",
+      "titleEn": "Statement of opinions on issuance of detention orders",
+      "englishTextSha256": "7cf51a68dca89ef45d2ec3c3773d7ba343d877f59d4c31f385a732cec4261a40"
+    },
+    {
+      "articleId": "80-3",
+      "status": "ALIGNED",
+      "titleKo": "외국인보호위원회의 구성",
+      "titleEn": "Composition of Immigration Detention Review Committee",
+      "englishTextSha256": "1164e5233302576fd6a99795e219d4ec785e53ec081a09665fb4122442ba64be"
+    },
+    {
+      "articleId": "80-4",
+      "status": "ALIGNED",
+      "titleKo": "위원의 기피 처리 등",
+      "titleEn": "Treatment of challenge to members",
+      "englishTextSha256": "909957aa7b6dee8f6638a281fd315df5002af1f6c20fc11524a7ea3465cb219c"
+    },
+    {
+      "articleId": "80-5",
+      "status": "ALIGNED",
+      "titleKo": "외국인보호위원회의 보완 요구 등",
+      "titleEn": "Request for supplementation by Immigration Detention Review Committee",
+      "englishTextSha256": "51feed6c6227405d9428e0de79db255195731bc403f0e1ffe25bc6469b69a4fc"
+    },
+    {
+      "articleId": "80-6",
+      "status": "ALIGNED",
+      "titleKo": "외국인보호위원회의 각하 결정",
+      "titleEn": "Decision of dismissal by Immigration Detention Review Committee",
+      "englishTextSha256": "0d7a616eef7a47b5e431ea9026190df548ee0da0309b25aed328449b2c573e34"
+    },
+    {
+      "articleId": "80-7",
+      "status": "ALIGNED",
+      "titleKo": "심사청구등의 철회",
+      "titleEn": "Withdrawal of request for examination",
+      "englishTextSha256": "480b9fe186ab61a9d60d73f61076cf46531dcfcb3a0f3f887e97c3703c0cc9fc"
+    },
+    {
+      "articleId": "80-8",
+      "status": "ALIGNED",
+      "titleKo": "외국인보호위원회의 회의 등",
+      "titleEn": "Meetings of Immigration Detention Review Committee",
+      "englishTextSha256": "90ca8fd60111b2906d72553ab9438ffa06ed97f4dbf9475404550fa8f6804b20"
+    },
+    {
+      "articleId": "80-9",
+      "status": "ALIGNED",
+      "titleKo": "구술심리 등",
+      "titleEn": "Oral hearings",
+      "englishTextSha256": "2f04919b053c00cb9272920ccba36cc98c2b815783cdb0c7461de4aea71fbdce"
+    },
+    {
+      "articleId": "80-10",
+      "status": "ALIGNED",
+      "titleKo": "원격영상회의 및 의결정족수 등",
+      "titleEn": "Video conferencing and quorum for resolution",
+      "englishTextSha256": "d782795a00738373a072996a7107eeb2b289e3fcda69c863e2276e026d213461"
+    },
+    {
+      "articleId": "80-11",
+      "status": "ALIGNED",
+      "titleKo": "의결서의 작성",
+      "titleEn": "Preparation of written resolutions",
+      "englishTextSha256": "2649371cf867f65ee5f17424e2145c311b93433fb351275aa32edf3cae4a7e58"
+    },
+    {
+      "articleId": "80-12",
+      "status": "ALIGNED",
+      "titleKo": "분과위원회",
+      "titleEn": "Subcommittee",
+      "englishTextSha256": "e1ed7e05966646bf51eb5f9a2fe46145d5ff4d714486fff13a409f5bd5aad55c"
+    },
+    {
+      "articleId": "80-13",
+      "status": "ALIGNED",
+      "titleKo": "외국인보호 조사관의 자격 등",
+      "titleEn": "Qualifications of immigration detention investigators",
+      "englishTextSha256": "0b31a367180a0724c0a1a6fd49762f59c7538e87a96f3b215326ff12f4231da6"
+    },
+    {
+      "articleId": "80-14",
+      "status": "ALIGNED",
+      "titleKo": "간사",
+      "titleEn": "Secretary",
+      "englishTextSha256": "0331ddc89d6993bf6a6aebd457581e37760ed6e66fbf2f0f987d9540ddb65d23"
+    },
+    {
+      "articleId": "80-15",
+      "status": "ALIGNED",
+      "titleKo": "수당 등",
+      "titleEn": "Allowances",
+      "englishTextSha256": "d17c62fdbd8aa8762cf3d9e209fa8b9f8936eeedcbd0f9daa7ec3d7e678e27b3"
+    },
+    {
+      "articleId": "80-16",
+      "status": "ALIGNED",
+      "titleKo": "발언 내용 등의 비공개",
+      "titleEn": "Non-disclosure of details of remarks",
+      "englishTextSha256": "e788ee0384fcc992b854551915d8a669b9044fb44a228a7c1bd4cf629b152678"
+    },
+    {
+      "articleId": "80-17",
+      "status": "ALIGNED",
+      "titleKo": "청장ㆍ사무소장ㆍ출장소장 또는 보호소장의 협조",
+      "titleEn": "Cooperation of head of Immigration Office, head of office, head of branch office, or head of detention center",
+      "englishTextSha256": "ecc6f4600c2a12af6498252a0bdd1298366290935bbc3934383208606496fa23"
+    },
+    {
+      "articleId": "80-18",
+      "status": "ALIGNED",
+      "titleKo": "운영세칙",
+      "titleEn": "Detailed operating rules",
+      "englishTextSha256": "85e1b73fd2fb388770bbd4340a872f6298f4cada03de3642ed48e12c813e7042"
+    },
+    {
+      "articleId": "81",
+      "status": "ALIGNED",
+      "titleKo": "출국권고",
+      "titleEn": "Recommendations for departure from the Republic of Korea",
+      "englishTextSha256": "8b331230dada2f3fabb85d9f004af627e28273895b251c7332fda642588134a6"
+    },
+    {
+      "articleId": "81-2",
+      "status": "ALIGNED",
+      "titleKo": "출국명령 이행보증금의 예치 및 반환과 국고 귀속절차",
+      "titleEn": "Deposit and return of performance guarantee for departure orders and procedures for devolvement on National Treasury",
+      "englishTextSha256": "c1b84a4296444291a99e78268f73aa3f49a49165ab7bf5afa04e8d14fc58f926"
+    },
+    {
+      "articleId": "82",
+      "status": "ALIGNED",
+      "titleKo": "선박등의 검색 및 심사",
+      "titleEn": "Searches and examinations of ships",
+      "englishTextSha256": "53f032c1b17cd7b2e6049477aaadf1db2399f4aca6036f513c6d74fe109e6efc"
+    },
+    {
+      "articleId": "82-2",
+      "status": "ALIGNED",
+      "titleKo": "검색 및 심사 선박등의 범위",
+      "titleEn": "Scope of ships subject to searches and examinations",
+      "englishTextSha256": "7c0931969a80b83fdd6c4218b47108e703b49d7131cbb6963b9b59c20e50f587"
+    },
+    {
+      "articleId": "83",
+      "status": "ALIGNED",
+      "titleKo": "출입국항 외의 장소에서의 검색 및 출입국심사",
+      "titleEn": "Searches and entry or departure inspections at places other than ports of entry and departure",
+      "englishTextSha256": "2a1290eb875c35b827fe040325c62797e7a2b810ea99b48ae2db9bb5a8e8b8f7"
+    },
+    {
+      "articleId": "84",
+      "status": "ALIGNED",
+      "titleKo": "승선허가",
+      "titleEn": "Permission to embark",
+      "englishTextSha256": "815e01a96a7c401b267b357ee417fe1455be22c09c3055986078782897b640dd"
+    },
+    {
+      "articleId": "85",
+      "status": "ALIGNED",
+      "titleKo": "승객예약정보의 열람 및 제출시기 등",
+      "titleEn": "Timing for perusal or submission of passenger reservation information",
+      "englishTextSha256": "c6bd1f50a4c0369aaedaf65ee5b56fb9ea7cfa2c10e8dc2476672b9c4db2e94c"
+    },
+    {
+      "articleId": "86",
+      "status": "ALIGNED",
+      "titleKo": "출ㆍ입항 예정통보",
+      "titleEn": "Notice of scheduled arrival or departure",
+      "englishTextSha256": "5b033e31098f605c4c924f629d87467b282f2698f6df8b867267713023a64edd"
+    },
+    {
+      "articleId": "87",
+      "status": "ALIGNED",
+      "titleKo": "보고의 의무",
+      "titleEn": "Obligation to report",
+      "englishTextSha256": "65b9e255fd223779ddb14fcd025e242da2582686a43f1ccf9b3f54899ac00f98"
+    },
+    {
+      "articleId": "88",
+      "status": "ALIGNED",
+      "titleKo": "송환의 의무",
+      "titleEn": "Obligation to repatriate",
+      "englishTextSha256": "cb7b8b843983ad2fe28a307e2b084ea0edeb30c56b6425fd1635cb418f511765"
+    },
+    {
+      "articleId": "88-2",
+      "status": "ALIGNED",
+      "titleKo": "출입국항 내에서의 송환대기장소 변경",
+      "titleEn": "Change of repatriation waiting place within port of entry and departure",
+      "englishTextSha256": "6168cbec71bcfb40512ab08ccd169e5fd857989d170cab3f7973f51086c24ac5"
+    },
+    {
+      "articleId": "88-3",
+      "status": "ALIGNED",
+      "titleKo": "출입국항 사이의 송환대기장소의 변경",
+      "titleEn": "Change of repatriation waiting places between ports of entry and departure",
+      "englishTextSha256": "fbaa9ca404011997fa2aece277a7a180e6979376059d8edc3e6f3c415cc657a0"
+    },
+    {
+      "articleId": "88-4",
+      "status": "ALIGNED",
+      "titleKo": "송환대상외국인의 외출",
+      "titleEn": "Going-out of aliens subject to repatriation",
+      "englishTextSha256": "1cadf33e070bda0aa0c8f1ab5e74c52a3d05dc7443bacf7f067a804ccea89f2c"
+    },
+    {
+      "articleId": "88-5",
+      "status": "ALIGNED",
+      "titleKo": "관리비용의 부담 및 납부 절차",
+      "titleEn": "Bearing of management expenses and procedures for payment thereof",
+      "englishTextSha256": "3d9bc08162b1ee90351cab98bb857c7f425a254fef0120d75d8422a59451e2a1"
+    },
+    {
+      "articleId": "88-6",
+      "status": "ALIGNED",
+      "titleKo": "난민여행증명서의 발급",
+      "titleEn": "Issuance of refugee travel documents",
+      "englishTextSha256": "1f65238ffb42e791f8555f9c3389d89ac9cb28aa21613987d4138b27ae4bacd6"
+    },
+    {
+      "articleId": "88-7",
+      "status": "ALIGNED",
+      "titleKo": "난민여행증명서의 재발급",
+      "titleEn": "Reissuance of refugee travel documents",
+      "englishTextSha256": "661a7d27c5b7cd86d68c58814443784db12ebae98669580e109bdf8d6a41bce3"
+    },
+    {
+      "articleId": "88-8",
+      "status": "ALIGNED",
+      "titleKo": "난민여행증명서의 유효기간 연장",
+      "titleEn": "Extension of effective period of refugee travel documents",
+      "englishTextSha256": "8470d9ec4e3cbbd1dc2cc5eb35472fe676de13c7bac075f2933c620efba91f37"
+    },
+    {
+      "articleId": "88-9",
+      "status": "ALIGNED",
+      "titleKo": "난민여행증명서의 반납",
+      "titleEn": "Surrender of refugee travel documents",
+      "englishTextSha256": "37341ef197649a4b4c3cb93608ccbb5ce4b9582ec689df8ef8198cd504b34177"
+    },
+    {
+      "articleId": "88-10",
+      "status": "ALIGNED",
+      "titleKo": "난민 등의 처우",
+      "titleEn": "Treatment of refugees",
+      "englishTextSha256": "cf7e5b27910316505bf8481a3e612f66914e8f34ab4541009d26e761022093f5"
+    },
+    {
+      "articleId": "88-11",
+      "status": "ALIGNED",
+      "titleKo": "난민여행증명서의 발급 등 사무의 대행",
+      "titleEn": "Performance of entrusted administrative affairs, such as issuance of refugee travel documents",
+      "englishTextSha256": "e182be7e5670d41ae23a0be6cea21102b32cc917c206caa84e53e54fb473165a"
+    },
+    {
+      "articleId": "88-12",
+      "status": "ALIGNED",
+      "titleKo": "소득금액 정보",
+      "titleEn": "Information about income",
+      "englishTextSha256": "b567de778131ecdc0f358b9cc04d0e05d507268bc6814caf5a84008e45f1d4bd"
+    },
+    {
+      "articleId": "89",
+      "status": "ALIGNED",
+      "titleKo": "허가신청 등의 의무자",
+      "titleEn": "Persons obligated to file applications for permission",
+      "englishTextSha256": "1b8552a4850c234afa70f21f87b2886bc319fb1d86f022705b0bd588f2217aae"
+    },
+    {
+      "articleId": "90",
+      "status": "ALIGNED",
+      "titleKo": "사실조사",
+      "titleEn": "Fact-finding investigations",
+      "englishTextSha256": "9c2f28676cc2a7a152f3f9e5d309b10acf4e684fe567cb12abfc84a196c01fe6"
+    },
+    {
+      "articleId": "91",
+      "status": "ALIGNED",
+      "titleKo": "외국인 동향조사",
+      "titleEn": "Investigation of movements of aliens",
+      "englishTextSha256": "a2b96c6f30a3b8f23c0d624b6ce8af4e34ebf20641f83531f930bb3ecf488376"
+    },
+    {
+      "articleId": "91-2",
+      "status": "ALIGNED",
+      "titleKo": "관계 기관 소속 공무원",
+      "titleEn": "Public officials belonging to related agencies",
+      "englishTextSha256": "05b1e32c8f3dc2c918672825f0c75a5747babc5fafd09fa71985bafcfe9d4295"
+    },
+    {
+      "articleId": "92",
+      "status": "ALIGNED",
+      "titleKo": "출입국관리공무원의 제복 및 신분증",
+      "titleEn": "Uniforms and identification cards of immigration control officials",
+      "englishTextSha256": "f0487412a049b9a6f2332baac700bb033cb90367a7e20c47e8cf897575a9a283"
+    },
+    {
+      "articleId": "92-2",
+      "status": "ALIGNED",
+      "titleKo": "통보의무의 면제",
+      "titleEn": "Exemption from obligation to notify",
+      "englishTextSha256": "0f2693fd415f11a1ab62a94cb2fa161f52dad479332f402cb8d4fc8498d48954"
+    },
+    {
+      "articleId": "93",
+      "status": "ALIGNED",
+      "titleKo": "형사절차와의 관계",
+      "titleEn": "Relationship to criminal procedure",
+      "englishTextSha256": "a63b87885bb0c279f23e6f707dddebe41b2f7ed88aa2948f1c0694f8ef713b84"
+    },
+    {
+      "articleId": "93-2",
+      "status": "ALIGNED",
+      "titleKo": "금융회사 등의 범위",
+      "titleEn": "Scope of Financial Companies",
+      "englishTextSha256": "916bf3c47fe1d75a0e66bdefbca51063e8362aedc19a772f3f07890dc9ede836"
+    },
+    {
+      "articleId": "94",
+      "status": "ALIGNED",
+      "titleKo": "각종 허가 등의 취소ㆍ변경",
+      "titleEn": "Revocation and change of various permission",
+      "englishTextSha256": "882ea78bbff3bbb3b80449958f3d65d40234859a47b9f171e6f74cc9862eebc8"
+    },
+    {
+      "articleId": "94-2",
+      "status": "ALIGNED",
+      "titleKo": "의견진술 절차",
+      "titleEn": "Procedures for stating opinions",
+      "englishTextSha256": "684ba9db3be328422c32abe14177f9c73515fd30ba9810268ababd9dc31c2f68"
+    },
+    {
+      "articleId": "94-3",
+      "status": "ALIGNED",
+      "titleKo": "전자민원창구",
+      "titleEn": "Electronic window for civil petitions",
+      "englishTextSha256": "4a5256a86562bf979ef0225244785b3aa0564689e51c367bb3d09f51252734dc"
+    },
+    {
+      "articleId": "94-4",
+      "status": "ALIGNED",
+      "titleKo": "영주자격의 취소 특례",
+      "titleEn": "Special cases concerning cancellation of the status of permanent residency",
+      "englishTextSha256": "069ee565754e2ba050a0bfb038c6cac10b73c25f2c70c7a3c87719e0565b3b7e"
+    },
+    {
+      "articleId": "95",
+      "status": "ALIGNED",
+      "titleKo": "신원보증",
+      "titleEn": "References",
+      "englishTextSha256": "1c4843015ba21a0cbf7e396b5168bb9e29e278c2191a4d5140c56ad9696e0e5c"
+    },
+    {
+      "articleId": "95-2",
+      "status": "ALIGNED",
+      "titleKo": "구상권 행사 절차",
+      "titleEn": "Procedures for exercise of right to indemnity",
+      "englishTextSha256": "b0835f151aa53011ff5d82bc63a5275480bf6470684a2b944a50210edb054dc3"
+    },
+    {
+      "articleId": "96",
+      "status": "ALIGNED",
+      "titleKo": "권한의 위임",
+      "titleEn": "Delegation of authority",
+      "englishTextSha256": "01a6f0b6688e103c8a74479e2d38e3005b3d75107d5ddf95752ff880b2cc0bac"
+    },
+    {
+      "articleId": "96-2",
+      "status": "ALIGNED",
+      "titleKo": "업무의 위탁",
+      "titleEn": "Entrustment of affairs",
+      "englishTextSha256": "8e20044ef7b08379268338c00c416c64cda7322412137b4ce12acbb1d94d53f2"
+    },
+    {
+      "articleId": "97",
+      "status": "ALIGNED",
+      "titleKo": "남북한 왕래 등의 출입국심사절차",
+      "titleEn": "Procedures for immigration inspections for travel between South and North Korea",
+      "englishTextSha256": "25a7df13de038393517516c8f9b976f40231102436808a39d5d944152a536d7e"
+    },
+    {
+      "articleId": "98",
+      "status": "ALIGNED",
+      "titleKo": "출입국항",
+      "titleEn": "Ports of entry and departure",
+      "englishTextSha256": "dfc74cba35c490b13f836fc1b51131d836b9f44ec8adff7b4ffa6e840e660e5a"
+    },
+    {
+      "articleId": "99",
+      "status": "ALIGNED",
+      "titleKo": "임시납부금 등의 보관",
+      "titleEn": "Safekeeping of temporary payments",
+      "englishTextSha256": "820ba2c45ce3c814dc912596939e7d51c626d1aa9d5a680843b1e400974cb18f"
+    },
+    {
+      "articleId": "100",
+      "status": "ALIGNED",
+      "titleKo": "서식의 제정",
+      "titleEn": "Establishment of due forms",
+      "englishTextSha256": "c6856d449392004c74b75bd5b5c45049819888d1913f53524e3b4eb241775b6a"
+    },
+    {
+      "articleId": "101",
+      "status": "ALIGNED",
+      "titleKo": "민감정보 및 고유식별정보의 처리",
+      "titleEn": "Management of sensitive information and personally identifiable information",
+      "englishTextSha256": "646ccfcec37e67ff34c00f340b335b691d9c0160596e7d5e3b5cde4065d4df26"
+    },
+    {
+      "articleId": "101-2",
+      "status": "ALIGNED",
+      "titleKo": null,
+      "titleEn": null,
+      "englishTextSha256": "7b186a95b8c5b018abe83cdea6c1dbee0e2576beaf29f7f97de692b13eec2452"
+    },
+    {
+      "articleId": "102",
+      "status": "ALIGNED",
+      "titleKo": "과태료의 부과기준",
+      "titleEn": "Criteria for Imposition of Administrative Fines",
+      "englishTextSha256": "4760c22dc394193a71002b949027878169eada982dd9e46c479600097b637483"
+    },
+    {
+      "articleId": "103",
+      "status": "ALIGNED",
+      "titleKo": "사건의 처분 결과 통보",
+      "titleEn": "Notification of results of dealing with cases",
+      "englishTextSha256": "2a2b01d1d018b5effa3adb0246a647b295017980011407263333e3d331460f55"
+    },
+    {
+      "articleId": "104",
+      "status": "ALIGNED",
+      "titleKo": "통고처분의 절차",
+      "titleEn": "Procedures for disposition of notice",
+      "englishTextSha256": "dec1c81ee95863aa4da7de282c9dbdcd22506d9f63047e043303fe47468444bf"
+    },
+    {
+      "articleId": "105",
+      "status": "ALIGNED",
+      "titleKo": "범칙금의 납부절차 등",
+      "titleEn": "Procedures for payment of penalties",
+      "englishTextSha256": "7e26c7346cdc09b67d34fa1706976b43b6328f0077644ad6bfca3fa9e870af08"
+    },
+    {
+      "articleId": "105-2",
+      "status": "ALIGNED",
+      "titleKo": "범칙금 납부대행기관 등",
+      "titleEn": "Penalty payment service providers",
+      "englishTextSha256": "f8a2adb9bb13d3993404e5bfc4336385e93bc52b9a6ee4ee4cb7810d85d98047"
+    },
+    {
+      "articleId": "106",
+      "status": "ALIGNED",
+      "titleKo": "통고서의 송달",
+      "titleEn": "Service of written notice",
+      "englishTextSha256": "1102b90331437f0550e575a520b56b2038998226d22bd9cc75b143ccd1fd7f72"
+    },
+    {
+      "articleId": "107",
+      "status": "ALIGNED",
+      "titleKo": "범칙금의 임시납부",
+      "titleEn": "Provisional payment of penalties",
+      "englishTextSha256": "8fd05aba0283c1b624b14f99db980253aa2ca464c7a3471f8ed4e9699e1f5c63"
+    }
+  ],
+  "englishArticleCount": 185,
+  "koreanArticleCount": 185,
+  "englishOnlyArticles": [],
+  "note": "공식 영문 번역본의 본문은 저작권상 재배포가 허용되지 않아 저장하지 않습니다. 조문 제목·해시·대응 관계만 기록합니다.",
+  "checkedAt": "2026-11-04T14:46:36+09:00"
+}

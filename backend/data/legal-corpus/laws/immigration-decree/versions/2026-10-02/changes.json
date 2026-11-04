@@ -1,0 +1,57 @@
+{
+  "type": "VERSION_DIFF",
+  "previousVersion": "2025-06-01",
+  "addedArticles": [],
+  "removedArticles": [],
+  "modifiedArticles": [
+    {
+      "articleId": "48",
+      "titleKo": "사회통합 프로그램의 내용 및 개발",
+      "oldSha256": "aecd40a6e43c840a5ae8db8a6a0fb7b16d1dacc99ccdd2c34d6a45ec00b0a50d",
+      "newSha256": "17b873e9cb903236076a30e7597d9139319bee7a63d84f3b469602d3e3c971f4",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "5-2",
+      "titleKo": "긴급출국금지 절차",
+      "oldSha256": "b00627132240cea28de4c65202bfa9de64018ea346bc202d5127bd339b80ce8e",
+      "newSha256": "cc4641bc74fa71f18a139703a2e403a874d76ef5d1e1bcfa5f664c12bcc4a28c",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "5-3",
+      "titleKo": "긴급출국금지 승인 절차",
+      "oldSha256": "90531e517995087a977383d8a93e7e07e21a0f60b6c5b6389593a8e232cb566e",
+      "newSha256": "cb677a2109b2810f4af31051299487f35c1a20b27b209a5e5d93d6c660607b5a",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "5-4",
+      "titleKo": "긴급출국금지 요청대장의 작성 및 관리",
+      "oldSha256": "ba8a397d1ab4f5dde5054f69b247e7f911737fb6602700489da6ad53e418ac9b",
+      "newSha256": "6119e4d802bc99dfc77bb125d6713601876a7f70354795026af31dbf78c7bd1a",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "88-12",
+      "titleKo": "소득금액 정보",
+      "oldSha256": "51554bb4a1852703c938a9219412feee180b1e768e988debcf5760ac284a7b33",
+      "newSha256": "41f95c395a51174dc4ccfafde57ef57131b93b706d1d82ecbf7acd07bad38353",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "93",
+      "titleKo": "형사절차와의 관계",
+      "oldSha256": "d21b5a867380171c3345e133f4acb4e7dac0cb577ca62024e9abc812716b44e6",
+      "newSha256": "7a43e33abe601bc97762327c7a4e2e5ceada28562fc2524baaaf22a7ea3bc459",
+      "oldDeleted": false,
+      "newDeleted": false
+    }
+  ],
+  "unchangedCount": 179
+}

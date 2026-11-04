@@ -1,0 +1,102 @@
+name: legal-corpus-sync
+
+# Weekly check for amendments to the P0 immigration laws stored in
+# backend/data/legal-corpus. When the official source (law.go.kr) changes,
+# stage the new corpus snapshot and open a DRAFT PR for human review.
+#
+# Safety rules baked into this workflow:
+# - It never edits production data and never merges anything.
+# - It never touches backend/data/enforcement/legal_rules.json — annex 7
+#   differences are reported only (see rules/annex7-vs-legal-rules.diff.json).
+# - The optional DRF Open API identifier (LAW_API_OC secret) is passed via
+#   env only and is never printed.
+# - If validation tests fail, no PR is opened.
+
+on:
+  schedule:
+    - cron: '0 18 * * 0'   # Mondays 03:00 KST (Sundays 18:00 UTC)
+  workflow_dispatch:
+    inputs:
+      law:
+        description: 'Optional law slug to sync only (e.g. immigration-act)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: legal-corpus-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends poppler-utils
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r backend/requirements-dev.txt
+
+      - name: Run legal corpus sync
+        id: sync
+        env:
+          # Optional cross-check identifier for the DRF Open API. The sync
+          # works without it (public law.go.kr endpoints); the value is a
+          # caller identifier and must never appear in logs or artifacts.
+          LAW_API_OC: ${{ secrets.LAW_API_OC }}
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.law }}" ]; then ARGS="--law ${{ inputs.law }}"; fi
+          python3 -m backend.services.legal_corpus.sync $ARGS > build-legal-corpus-sync.json
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          report = json.load(open('build-legal-corpus-sync.json'))
+          print('changed=' + str(len(report.get('changedFiles', [])) > 0).lower())
+          print('errors=' + str(len(report.get('errors', []))))
+          PY
+
+      - name: Validate corpus (schema, hashes, translation integrity, annex 7 diff)
+        if: steps.sync.outputs.errors == '0'
+        run: |
+          python3 -m pytest backend/tests/test_legal_corpus_data.py backend/tests/test_legal_corpus_units.py -q
+
+      - name: Open draft PR
+        if: steps.sync.outputs.changed == 'true' && steps.sync.outputs.errors == '0'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: auto/legal-corpus-sync
+          base: main
+          draft: true
+          title: 'Legal corpus update detected — review required'
+          body: |
+            Auto-detected by legal-corpus-sync: the official text of a P0
+            immigration law (or Annex 7) changed on law.go.kr.
+
+            Review checklist:
+            - `changes.json` in the new version directory (article-level diff)
+            - `coverage-report.json` / `COVERAGE_REPORT.md` (status changes)
+            - `rules/annex7-vs-legal-rules.diff.json` — if Annex 7 amounts
+              changed, the enforcement calculator rules must be updated in a
+              SEPARATE reviewed PR. This workflow never changes amounts.
+          labels: legal-corpus-sync
+          add-paths: |
+            backend/data/legal-corpus/**
+          commit-message: |
+            chore(legal): stage updated legal corpus snapshot for review
+
+            Auto-detected by legal-corpus-sync. Promotion of any legal
+            content is a reviewed, manual step.
+
+      - name: No changes
+        if: steps.sync.outputs.changed != 'true'
+        run: echo "No legal corpus changes detected (official sources match the stored snapshot)."

@@ -1,0 +1,107 @@
+{
+  "type": "VERSION_DIFF",
+  "previousVersion": "2026-01-23",
+  "addedArticles": [
+    "53-12"
+  ],
+  "removedArticles": [],
+  "modifiedArticles": [
+    {
+      "articleId": "18-4",
+      "titleKo": "영주자격 취득 요건의 기준ㆍ범위 등",
+      "oldSha256": "7d1b89d826f59ea1ee98f42a7a43846f7ed8e01393fb7be75c0001730961770f",
+      "newSha256": "55cac3151c1e04f28a0cf663ade4905166fa02a56d13cee9dbff7d4f58a4ddc7",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "28-2",
+      "titleKo": "계절근로 정책협의회의 구성 및 운영",
+      "oldSha256": "621a1fcf6c89a263b80b01f36e0b91adf92890418ce12ea7997af00c016df62f",
+      "newSha256": "c306ca384b92c7489393898529b65db9e2a3b43d81425d15f5bd1d79a276030f",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "53-10",
+      "titleKo": "사회통합위원 등의 자치조직",
+      "oldSha256": "bcdb8d23a6242801b8eea7968be2c25770b9e0dbf3ada5074b2a0e2617f8e618",
+      "newSha256": "826ba5d0cb8f1b77286bb1846ae43e346be3e999d587f0b15e1ede505695638b",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "53-11",
+      "titleKo": "비용의 지급",
+      "oldSha256": "643fd496ee64ecaca9bb5faa0c3d96f9e3ce0a2206fa8bcd9ee7886cb0c1e7f1",
+      "newSha256": "209cb37684fe85b864cdf1ac96fc4d30d7ea280b7e96abe2de995ed0aca3853f",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "53-2",
+      "titleKo": "사회통합 프로그램 운영기관의 지정",
+      "oldSha256": "bfc2eba8fddad9dc084fd3d49f3747f3209ddff0a26129cea79b5dda1d88b6fe",
+      "newSha256": "4985e5a97495fc75907f7db5aea99191ae32cbf5f9f65353d342b9bb905452f8",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "53-4",
+      "titleKo": "사회통합 자문위원회",
+      "oldSha256": "6edcff35d0bb2cf3f6530bdd147e9972b9338ddd4a8f69abb8f9fe1b6de5ee2b",
+      "newSha256": "3c55e0a50b15642aa7fae496123d07ac9ae38bb93ccc64b1ea5cb5befd8776b5",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "53-5",
+      "titleKo": "외국인의 조기 적응 지원을 위한 프로그램",
+      "oldSha256": "7e0e0e288f797936e7137f48d1a3a23b028b78823cd6e22ffa36a4a794b27438",
+      "newSha256": "a3fcdccb31cad936d88240ba32a62938be8d5de5051e72a080ce5d0da113dcf5",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "53-6",
+      "titleKo": "지원단의 구성 및 운영",
+      "oldSha256": "1d1c9a4b98d4253ae9930108bbadf0438604a136e7b18aa50b9c664630808cad",
+      "newSha256": "a5a1693fe63b0e736dc15635a3637c5ee964beee33629cdcac9967531a5d3e7f",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "53-7",
+      "titleKo": "사회통합 자원봉사위원의 위촉 및 해촉",
+      "oldSha256": "3424c3cce41de67e8ea793d018ed259f2d04c45e31018b367380f73743744b7e",
+      "newSha256": "dd0a980bb328ba8b390cabdb9df5e250cf698ce17315ce30a3dc487229bc897d",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "53-8",
+      "titleKo": "특별사회통합 자원봉사위원",
+      "oldSha256": "1004284210dfa33840fe6c73386f5e5d348cc3989e6595606cf11c34b30e910f",
+      "newSha256": "ee4091b6aa8d770cefcde43216ab0267a8ccc9b9f9cee7957b59f722cb92ab54",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "53-9",
+      "titleKo": "사회통합위원 등의 정원",
+      "oldSha256": "01600e902ca7a6f3a7da922752fff9570d3886fe186434cd8482121fd6fec0f8",
+      "newSha256": "8a8fd63b03858f8a55c35d618eba581152fd73097feda6ab61e63417cd24f227",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "70-2",
+      "titleKo": "통보의무 면제에 해당하는 업무",
+      "oldSha256": "2f261705133d8b0de15dc99b2a917bb07da7aee0c1383d9e78c3976e33a71805",
+      "newSha256": "529ece9520c8896f61630ce0591b12f3e042976fc9fbd602da40ead4e0620c10",
+      "oldDeleted": false,
+      "newDeleted": false
+    }
+  ],
+  "unchangedCount": 179
+}

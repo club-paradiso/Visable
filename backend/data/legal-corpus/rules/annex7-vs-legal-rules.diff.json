@@ -1,0 +1,436 @@
+{
+  "annexRevisedDate": "2026-01-23",
+  "comparisons": [
+    {
+      "snapshotId": "kr-immigration-enforcement-2026-01-23",
+      "annexItem": "너",
+      "violationCode": "UNAUTHORIZED_STAY_OR_WORK_ART18_1",
+      "statute": "제18조제1항",
+      "status": "MATCH",
+      "annexTiers": [
+        {
+          "minimumMonths": 0,
+          "maximumMonths": 1,
+          "amountKrw": 2000000
+        },
+        {
+          "minimumMonths": 1,
+          "maximumMonths": 3,
+          "amountKrw": 3000000
+        },
+        {
+          "minimumMonths": 3,
+          "maximumMonths": 6,
+          "amountKrw": 4000000
+        },
+        {
+          "minimumMonths": 6,
+          "maximumMonths": 12,
+          "amountKrw": 7000000
+        },
+        {
+          "minimumMonths": 12,
+          "maximumMonths": 24,
+          "amountKrw": 10000000
+        },
+        {
+          "minimumMonths": 24,
+          "maximumMonths": 36,
+          "amountKrw": 15000000
+        },
+        {
+          "minimumMonths": 36,
+          "maximumMonths": 60,
+          "amountKrw": 20000000
+        },
+        {
+          "minimumMonths": 60,
+          "maximumMonths": 84,
+          "amountKrw": 25000000
+        },
+        {
+          "minimumMonths": 84,
+          "maximumMonths": null,
+          "amountKrw": 30000000
+        }
+      ],
+      "ruleTiers": [
+        {
+          "minimumMonths": 0,
+          "maximumMonths": 1,
+          "amountKrw": 2000000
+        },
+        {
+          "minimumMonths": 1,
+          "maximumMonths": 3,
+          "amountKrw": 3000000
+        },
+        {
+          "minimumMonths": 3,
+          "maximumMonths": 6,
+          "amountKrw": 4000000
+        },
+        {
+          "minimumMonths": 6,
+          "maximumMonths": 12,
+          "amountKrw": 7000000
+        },
+        {
+          "minimumMonths": 12,
+          "maximumMonths": 24,
+          "amountKrw": 10000000
+        },
+        {
+          "minimumMonths": 24,
+          "maximumMonths": 36,
+          "amountKrw": 15000000
+        },
+        {
+          "minimumMonths": 36,
+          "maximumMonths": 60,
+          "amountKrw": 20000000
+        },
+        {
+          "minimumMonths": 60,
+          "maximumMonths": 84,
+          "amountKrw": 25000000
+        },
+        {
+          "minimumMonths": 84,
+          "maximumMonths": null,
+          "amountKrw": 30000000
+        }
+      ]
+    },
+    {
+      "snapshotId": "kr-immigration-enforcement-2026-01-23",
+      "annexItem": "어",
+      "violationCode": "STATUS_OUTSIDE_ACTIVITY_ART20",
+      "statute": "제20조",
+      "status": "MATCH",
+      "annexTiers": [
+        {
+          "minimumMonths": 0,
+          "maximumMonths": 1,
+          "amountKrw": 2000000
+        },
+        {
+          "minimumMonths": 1,
+          "maximumMonths": 3,
+          "amountKrw": 3000000
+        },
+        {
+          "minimumMonths": 3,
+          "maximumMonths": 6,
+          "amountKrw": 4000000
+        },
+        {
+          "minimumMonths": 6,
+          "maximumMonths": 12,
+          "amountKrw": 7000000
+        },
+        {
+          "minimumMonths": 12,
+          "maximumMonths": 24,
+          "amountKrw": 10000000
+        },
+        {
+          "minimumMonths": 24,
+          "maximumMonths": 36,
+          "amountKrw": 15000000
+        },
+        {
+          "minimumMonths": 36,
+          "maximumMonths": 60,
+          "amountKrw": 20000000
+        },
+        {
+          "minimumMonths": 60,
+          "maximumMonths": 84,
+          "amountKrw": 25000000
+        },
+        {
+          "minimumMonths": 84,
+          "maximumMonths": null,
+          "amountKrw": 30000000
+        }
+      ],
+      "ruleTiers": [
+        {
+          "minimumMonths": 0,
+          "maximumMonths": 1,
+          "amountKrw": 2000000
+        },
+        {
+          "minimumMonths": 1,
+          "maximumMonths": 3,
+          "amountKrw": 3000000
+        },
+        {
+          "minimumMonths": 3,
+          "maximumMonths": 6,
+          "amountKrw": 4000000
+        },
+        {
+          "minimumMonths": 6,
+          "maximumMonths": 12,
+          "amountKrw": 7000000
+        },
+        {
+          "minimumMonths": 12,
+          "maximumMonths": 24,
+          "amountKrw": 10000000
+        },
+        {
+          "minimumMonths": 24,
+          "maximumMonths": 36,
+          "amountKrw": 15000000
+        },
+        {
+          "minimumMonths": 36,
+          "maximumMonths": 60,
+          "amountKrw": 20000000
+        },
+        {
+          "minimumMonths": 60,
+          "maximumMonths": 84,
+          "amountKrw": 25000000
+        },
+        {
+          "minimumMonths": 84,
+          "maximumMonths": null,
+          "amountKrw": 30000000
+        }
+      ]
+    },
+    {
+      "snapshotId": "kr-immigration-enforcement-2026-01-23",
+      "annexItem": "더",
+      "violationCode": "UNAUTHORIZED_EMPLOYMENT_ART18_2",
+      "statute": "제18조제2항",
+      "status": "MATCH",
+      "annexTiers": [
+        {
+          "minimumMonths": 0,
+          "maximumMonths": 3,
+          "amountKrw": 1000000
+        },
+        {
+          "minimumMonths": 3,
+          "maximumMonths": 6,
+          "amountKrw": 2000000
+        },
+        {
+          "minimumMonths": 6,
+          "maximumMonths": 12,
+          "amountKrw": 3000000
+        },
+        {
+          "minimumMonths": 12,
+          "maximumMonths": 24,
+          "amountKrw": 5000000
+        },
+        {
+          "minimumMonths": 24,
+          "maximumMonths": null,
+          "amountKrw": 10000000
+        }
+      ],
+      "ruleTiers": [
+        {
+          "minimumMonths": 0,
+          "maximumMonths": 3,
+          "amountKrw": 1000000
+        },
+        {
+          "minimumMonths": 3,
+          "maximumMonths": 6,
+          "amountKrw": 2000000
+        },
+        {
+          "minimumMonths": 6,
+          "maximumMonths": 12,
+          "amountKrw": 3000000
+        },
+        {
+          "minimumMonths": 12,
+          "maximumMonths": 24,
+          "amountKrw": 5000000
+        },
+        {
+          "minimumMonths": 24,
+          "maximumMonths": null,
+          "amountKrw": 10000000
+        }
+      ]
+    },
+    {
+      "snapshotId": "kr-immigration-enforcement-2026-01-23",
+      "annexItem": "저",
+      "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+      "statute": "제21조제1항",
+      "status": "MATCH",
+      "annexTiers": [
+        {
+          "minimumMonths": 0,
+          "maximumMonths": 3,
+          "amountKrw": 1000000
+        },
+        {
+          "minimumMonths": 3,
+          "maximumMonths": 6,
+          "amountKrw": 2000000
+        },
+        {
+          "minimumMonths": 6,
+          "maximumMonths": 12,
+          "amountKrw": 3000000
+        },
+        {
+          "minimumMonths": 12,
+          "maximumMonths": 24,
+          "amountKrw": 5000000
+        },
+        {
+          "minimumMonths": 24,
+          "maximumMonths": null,
+          "amountKrw": 10000000
+        }
+      ],
+      "ruleTiers": [
+        {
+          "minimumMonths": 0,
+          "maximumMonths": 3,
+          "amountKrw": 1000000
+        },
+        {
+          "minimumMonths": 3,
+          "maximumMonths": 6,
+          "amountKrw": 2000000
+        },
+        {
+          "minimumMonths": 6,
+          "maximumMonths": 12,
+          "amountKrw": 3000000
+        },
+        {
+          "minimumMonths": 12,
+          "maximumMonths": 24,
+          "amountKrw": 5000000
+        },
+        {
+          "minimumMonths": 24,
+          "maximumMonths": null,
+          "amountKrw": 10000000
+        }
+      ]
+    },
+    {
+      "snapshotId": "kr-immigration-enforcement-2026-01-23",
+      "annexItem": "고",
+      "violationCode": "OVERSTAY_ART25",
+      "statute": "제25조",
+      "status": "MATCH",
+      "annexTiers": [
+        {
+          "minimumMonths": 0,
+          "maximumMonths": 1,
+          "amountKrw": 500000
+        },
+        {
+          "minimumMonths": 1,
+          "maximumMonths": 3,
+          "amountKrw": 1000000
+        },
+        {
+          "minimumMonths": 3,
+          "maximumMonths": 6,
+          "amountKrw": 2000000
+        },
+        {
+          "minimumMonths": 6,
+          "maximumMonths": 12,
+          "amountKrw": 5000000
+        },
+        {
+          "minimumMonths": 12,
+          "maximumMonths": 24,
+          "amountKrw": 10000000
+        },
+        {
+          "minimumMonths": 24,
+          "maximumMonths": 36,
+          "amountKrw": 15000000
+        },
+        {
+          "minimumMonths": 36,
+          "maximumMonths": 60,
+          "amountKrw": 20000000
+        },
+        {
+          "minimumMonths": 60,
+          "maximumMonths": 84,
+          "amountKrw": 25000000
+        },
+        {
+          "minimumMonths": 84,
+          "maximumMonths": null,
+          "amountKrw": 30000000
+        }
+      ],
+      "ruleTiers": [
+        {
+          "minimumMonths": 0,
+          "maximumMonths": 1,
+          "amountKrw": 500000
+        },
+        {
+          "minimumMonths": 1,
+          "maximumMonths": 3,
+          "amountKrw": 1000000
+        },
+        {
+          "minimumMonths": 3,
+          "maximumMonths": 6,
+          "amountKrw": 2000000
+        },
+        {
+          "minimumMonths": 6,
+          "maximumMonths": 12,
+          "amountKrw": 5000000
+        },
+        {
+          "minimumMonths": 12,
+          "maximumMonths": 24,
+          "amountKrw": 10000000
+        },
+        {
+          "minimumMonths": 24,
+          "maximumMonths": 36,
+          "amountKrw": 15000000
+        },
+        {
+          "minimumMonths": 36,
+          "maximumMonths": 60,
+          "amountKrw": 20000000
+        },
+        {
+          "minimumMonths": 60,
+          "maximumMonths": 84,
+          "amountKrw": 25000000
+        },
+        {
+          "minimumMonths": 84,
+          "maximumMonths": null,
+          "amountKrw": 30000000
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total": 5,
+    "matched": 5,
+    "differ": 0
+  },
+  "policy": "Differences are reported only. Calculator amounts are never auto-approved or auto-applied."
+}

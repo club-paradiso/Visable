@@ -1,0 +1,29 @@
+{
+  "annexOf": "immigration-rule",
+  "parentRuleMst": "291289",
+  "parentRuleEffectiveFrom": "2026-10-23",
+  "annexNo": "7",
+  "titleKo": "출입국관리법 시행규칙 별표 7 — 범칙금의 양정기준 (제86조제1항 관련)",
+  "revisedDate": "2026-01-23",
+  "sourceProvider": "국가법령정보센터 (법제처)",
+  "sourceUrl": "https://www.law.go.kr/LSW/flDownload.do?gubun=&flSeq=170813013&bylClsCd=110201",
+  "retrievedAt": "2026-11-04T14:46:49+09:00",
+  "reusePermission": "FREE_WITH_ATTRIBUTION — 법령 본문은 저작권법 제7조상 보호받지 못하는 저작물이며, 국가법령정보센터 법령정보는 공공데이터로서 출처 표시를 조건으로 영리 목적 포함 자유 이용이 보장됩니다. 위조·변조 및 출처 미표기는 금지됩니다.",
+  "files": [
+    {
+      "flSeq": "170813011",
+      "bylClsCd": "110201",
+      "detectedFormat": "hwp",
+      "sha256": "82129b4d6ee4c1201fb47f03478686efb21d062ba4889d760be9aa7a19a54cc3",
+      "bytes": 89600
+    },
+    {
+      "flSeq": "170813013",
+      "bylClsCd": "110201",
+      "detectedFormat": "pdf",
+      "sha256": "437f8007013e018f7cf833ddb8059e29d2885878768d3ba2202770ac97c460e7",
+      "bytes": 221803
+    }
+  ],
+  "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT"
+}

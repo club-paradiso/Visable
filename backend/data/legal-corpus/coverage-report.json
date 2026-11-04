@@ -1,0 +1,123 @@
+{
+  "generatedBy": "backend.services.legal_corpus.sync",
+  "scope": "P0 only (Immigration Act / Enforcement Decree / Enforcement Rule / MOJ Notice 2020-212 / Annex 7)",
+  "laws": [
+    {
+      "slug": "immigration-act",
+      "titleKo": "출입국관리법",
+      "versions": [
+        {
+          "effectiveFrom": "2026-01-23",
+          "articleCount": 188,
+          "priorityArticles": {
+            "18": true,
+            "20": true,
+            "21": true,
+            "25": true,
+            "46": true,
+            "67": true,
+            "68": true,
+            "94": true,
+            "95": true,
+            "100": true
+          },
+          "translationAlignment": "ALIGNED",
+          "englishArticleCount": 188
+        },
+        {
+          "effectiveFrom": "2026-10-02",
+          "articleCount": 188,
+          "priorityArticles": {
+            "18": true,
+            "20": true,
+            "21": true,
+            "25": true,
+            "46": true,
+            "67": true,
+            "68": true,
+            "94": true,
+            "95": true,
+            "100": true
+          },
+          "translationAlignment": "OLDER_TRANSLATION",
+          "englishArticleCount": null
+        }
+      ]
+    },
+    {
+      "slug": "immigration-decree",
+      "titleKo": "출입국관리법 시행령",
+      "versions": [
+        {
+          "effectiveFrom": "2025-06-01",
+          "articleCount": 185,
+          "priorityArticles": {
+            "23": true,
+            "26": true,
+            "26-2": true
+          },
+          "translationAlignment": "ALIGNED",
+          "englishArticleCount": 185
+        },
+        {
+          "effectiveFrom": "2026-10-02",
+          "articleCount": 185,
+          "priorityArticles": {
+            "23": true,
+            "26": true,
+            "26-2": true
+          },
+          "translationAlignment": "OLDER_TRANSLATION",
+          "englishArticleCount": null
+        }
+      ]
+    },
+    {
+      "slug": "immigration-rule",
+      "titleKo": "출입국관리법 시행규칙",
+      "versions": [
+        {
+          "effectiveFrom": "2026-01-23",
+          "articleCount": 191,
+          "priorityArticles": {
+            "86": true
+          },
+          "translationAlignment": "NOT_AVAILABLE",
+          "englishArticleCount": null
+        },
+        {
+          "effectiveFrom": "2026-10-23",
+          "articleCount": 192,
+          "priorityArticles": {
+            "86": true
+          },
+          "translationAlignment": "NOT_AVAILABLE",
+          "englishArticleCount": null
+        }
+      ]
+    }
+  ],
+  "annex7": {
+    "stored": true,
+    "revisedDate": "2026-01-23",
+    "path": "annexes/immigration-rule-annex-7/versions/2026-01-23"
+  },
+  "totals": {
+    "koreanArticlesStored": 1129,
+    "articlesWithAlignedOfficialEnglish": 373,
+    "englishBodyTextStored": 0,
+    "englishNote": "Official English body text is never stored (KLRI/ministerial copyright, redistribution prohibited). Alignment metadata only."
+  },
+  "notCovered": [
+    {
+      "item": "출입국관리법 시행규칙 영문본",
+      "status": "NOT_AVAILABLE",
+      "reason": "국가법령정보센터 영문 페이지가 현행·직전 버전 모두 본문 없이 헤더만 반환함을 2026-11-04 확인"
+    },
+    {
+      "item": "P1 법령 (재한외국인 처우 기본법, 난민법, 국적법, 외국인고용법 등)",
+      "status": "NOT_STARTED",
+      "reason": "P0 완료 전 확장하지 않는다는 작업 원칙에 따라 이번 범위에 포함하지 않음"
+    }
+  ]
+}
