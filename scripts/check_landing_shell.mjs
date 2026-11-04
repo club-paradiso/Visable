@@ -83,12 +83,14 @@ const examples = [...current.matchAll(/<button type="button" data-cs-query="([^"
 ok(examples.length >= 3 && examples.length <= 5, `a restrained set of example searches (${examples.length})`);
 ok(/class="cs-examples" role="group" aria-labelledby="csExamplesLabel"/.test(current) && !/자주 찾는|인기|popular/i.test(current.slice(at('class="cs-examples"'), current.indexOf('</section>', at('class="cs-examples"')))), 'examples are a labelled group and do not claim popularity');
 ok(/<a class="cs-example-link" href="form-helper\.html">/.test(current), 'the integrated application example opens Form Helper directly');
-for (const href of ['immigration-checklists.html', 'form-helper.html']) ok(new RegExp(`<a class="cs-tool" href="${href}"`).test(current), `core tool links to ${href}`);
+ok(/<a class="cs-tool" href="form-helper\.html"/.test(current), 'form helper stays prominent in the core tools');
+ok(!/<a class="cs-tool" href="immigration-checklists\.html"/.test(current), 'checklist entry no longer duplicates the main search on the core grid');
+ok(/<a href="immigration-checklists\.html" class="cs-service"/.test(current), 'detailed checklist remains in the full tools directory');
 for (const action of ['open-hikorea-guide', 'open-jurisdiction-modal', 'open-jobcode-modal']) ok(new RegExp(`<button type="button" class="cs-tool" data-action="${action}"`).test(current), `core tool opens ${action}`);
 ok(/class="cs-tool" data-action="reveal-home-section" data-target="reminderSection"/.test(current), 'core deadline tool reaches the existing date calculator');
 const core = current.slice(at('class="cs-tools cs-tools-core"'), at('class="cs-waymaker-entry"'));
-ok(JSON.stringify([...core.matchAll(/data-cs-tool="([^"]+)"/g)].map(m => m[1])) === JSON.stringify(['checklists', 'forms', 'reminders', 'reservation', 'office', 'jobs']), 'six core tools follow application preparation order');
-ok((current.match(/class="cs-tool"/g) || []).length === 6, 'six tools in the core grid');
+ok(JSON.stringify([...core.matchAll(/data-cs-tool="([^"]+)"/g)].map(m => m[1])) === JSON.stringify(['forms', 'reminders', 'reservation', 'office', 'jobs']), 'five core tools prioritize distinct tasks');
+ok((current.match(/class="cs-tool"/g) || []).length === 5, 'five tools in the core grid');
 ok(/<a class="cs-waymaker-entry" href="ai.html"/.test(current) && at('class="cs-waymaker-entry"') < at('class="cs-directory"'), 'Waymaker remains directly accessible below the core tools');
 ok(/<a href="new-home.html" class="cs-service"/.test(current), 'nationality guidance remains available in the full directory');
 ok(/class="cs-references"[\s\S]*data-cs-manual[\s\S]*href="manual.html"/.test(current), 'official source search and manual reader share a reference section');
