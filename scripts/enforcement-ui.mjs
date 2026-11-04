@@ -224,7 +224,7 @@ function deterministicSummary(caseData) {
       : `${subject}허가된 체류기간이 지난 뒤에도 계속 머문 상황이에요.`);
   } else if (activity || workplace || caseData.authorizationObtained === false) {
     const place = workplace ? `${workplace}에서 ` : '';
-    const permission = caseData.authorizationObtained === false ? '필요한 허가 없이 ' : '';
+    const permission = caseData.authorizationObtained === false ? (/^E-[1-7](?:-|$)/i.test(status || '') ? '사전허가를 받지 않고 ' : '필요한 허가 없이 ') : '';
     const period = days != null ? `${days}일 동안 ` : '';
     sentences.push(`${subject}${place}${permission}${period}일한 상황이에요.`);
   } else if (caseData.violationCode) {
@@ -254,7 +254,7 @@ function renderFactList(caseData) {
     ['체류자격', displayValue(caseData.statusOfStay)],
     ['상황', caseData.violationCode ? (violationLabels[caseData.violationCode] || caseData.violationCode) : '정확한 유형을 더 확인해야 함'],
     ['기간', caseData.durationDays == null ? '확인되지 않음' : `${Number(caseData.durationDays)}일`],
-    ['허가 여부', caseData.authorizationObtained == null ? '확인되지 않음' : (caseData.authorizationObtained ? '필요한 허가를 받은 것으로 입력됨' : '필요한 허가를 받지 않은 것으로 입력됨')],
+    ['허가 여부', /^E-[1-7](?:-|$)/i.test(caseData.statusOfStay || '') && ['UNAUTHORIZED_EMPLOYMENT_ART18_2', 'UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1'].includes(caseData.violationCode) && caseData.workplaceRegime !== 'PERMIT' ? '사전허가 의무가 적용되는지 추가 확인 필요' : caseData.authorizationObtained == null ? '확인되지 않음' : (caseData.authorizationObtained ? '허가를 받았다고 입력함' : '허가를 받지 않았다고 입력함')],
     ...(caseData.workplaceRegime ? [['근무처 절차', caseData.workplaceRegime === 'PERMIT' ? '사전허가 대상(사용자 확인)' : '사후신고 대상(사용자 확인)']] : []),
     ['과거 위반', caseData.priorViolations == null ? '확인되지 않음' : (Number(caseData.priorViolations) === 0 ? '첫 위반으로 입력됨' : `${Number(caseData.priorViolations)}회${Number(caseData.priorViolations) >= 2 ? ' 이상' : ''}`)],
     ['자진신고·자진방문', caseData.voluntaryDisclosure == null ? '확인되지 않음' : (caseData.voluntaryDisclosure ? '예' : '아니요')],
@@ -296,7 +296,7 @@ function clarificationFor(caseData) {
     add('STATUS_OUTSIDE_ACTIVITY_ART20', '학생 등의 체류자격으로, 필요한 활동 허가 없이 일을 했어요');
     add('UNAUTHORIZED_STAY_OR_WORK_ART18_1', '애초에 취업할 수 없는 체류자격인데 일을 했어요');
     add('UNAUTHORIZED_EMPLOYMENT_ART18_2', '허가된 회사는 그대로이고, 지정된 근무처가 아닌 곳에서도 일했어요');
-    add('UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1', '다른 회사·사업장으로 옮기거나 추가했는데 필요한 변경·추가 허가를 받지 않았어요');
+    add('UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1', '다른 회사·사업장으로 옮기거나 추가했어요 (허가·신고 구분은 별도로 확인)');
     add('OVERSTAY_ART25', '체류기간이 지난 뒤에도 계속 체류했어요');
     return {
       kind: 'violationCode',
@@ -557,7 +557,7 @@ function nextStepCard(baseline) {
       <p class="card-kicker">범칙금 계산 대상 아님</p>
       <h3 id="next-step-title">사후신고 대상이라면 별도의 과태료 기준을 확인해야 해요.</h3>
       <p>신고 의무 위반은 출입국관리법 제100조제1항제3호에 따라 과태료 검토 대상입니다. 범칙금 계산식을 대신 적용하지 않으며, 실제 신고의무 위반 여부는 별도 확인이 필요합니다.</p>
-      <button type="button" class="primary-button" data-next-step-back>허가·신고 구분 수정하기</button>
+      <button type="button" class="primary-button" data-next-step-back data-reset-workplace-regime>허가·신고 구분 수정하기</button>
     </section>`;
   }
   if (needsExactDates(baseline)) {
@@ -609,7 +609,8 @@ function wireNextStep() {
       analyzeCase(next);
     });
   }
-  $('[data-next-step-back]')?.addEventListener('click', () => {
+  $('[data-next-step-back]')?.addEventListener('click', (event) => {
+    if (event.currentTarget.hasAttribute('data-reset-workplace-regime') && structuredCase) structuredCase.workplaceRegime = null;
     analysisSequence++;
     skippedClarifications.delete('violationCode');
     skippedClarifications.delete('workplaceRegime');
