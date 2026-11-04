@@ -33,7 +33,9 @@ function ok(cond, label, extra) {
 function section(t) { console.log(`\n== ${t}`); }
 
 const src = read('assets/js/hikorea-reservation-helper.js');
-const indexHtml = read('index.html');
+// Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): Phase 3 of the rebuild
+// moves inline index.html code into ES modules; a brace-matching slice must find the real definition, not the stub.
+const indexHtml = [...JSON.parse(read('scripts/frontend_modules.json')).sources.map((rel) => read(rel)), read('index.html')].join('\n');
 
 /* ------------------------------------------------ extract the pure function */
 // Brace-balanced extraction (indentation-independent). The function contains no

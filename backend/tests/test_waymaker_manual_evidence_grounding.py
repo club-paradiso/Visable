@@ -35,6 +35,8 @@ from fastapi import HTTPException
 from fastapi.testclient import TestClient
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _i18n_pack_support import page_source  # noqa: E402  # page + the scripts Phase 5 moved its inline code into
 BACKEND_DIR = REPO_ROOT / "backend"
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
@@ -421,7 +423,7 @@ class FrontendRenderingContractTests(unittest.TestCase):
     """ai.html renders manual_evidence_sources in the source panel."""
 
     def setUp(self):
-        self.html = (REPO_ROOT / "ai.html").read_text(encoding="utf-8")
+        self.html = page_source("ai.html")
 
     def test_source_panel_renders_the_excerpt_row(self):
         self.assertIn("manual_evidence_sources: asArray(m.manual_evidence_sources)", self.html)

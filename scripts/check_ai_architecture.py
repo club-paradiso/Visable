@@ -336,6 +336,8 @@ BACKEND_ORIGIN_OWNER = "assets/js/backend-origin.js"
 BACKEND_ORIGIN_FALLBACK_ALLOWED = {
     "index.html",
     "ai.html",
+    "assets/js/pages/ai-main.js",  # ai.html's page script since Phase 5 of the frontend rebuild
+    "assets/js/pages/ai-navigator-handoff.js",  # the navigator handoff IIFE of ai.html (same move)
     "assets/js/unified-search.js",
     "assets/js/legal-source-search.js",
     "assets/js/nationality-interview-hub.js",

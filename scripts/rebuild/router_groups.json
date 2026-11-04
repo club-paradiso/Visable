@@ -1,0 +1,14 @@
+[
+ {"module": "health", "doc": "Service info and health routes: /, /health, /api/health/ai.", "routes": ["root", "health", "health_ai"]},
+ {"module": "visas", "doc": "Static visa catalog and procedure packets: /api/visas*, /api/procedure-packet.", "routes": ["list_visas", "get_structured_requirements_endpoint", "get_procedure_packet_endpoint", "get_available_packets_endpoint"]},
+ {"module": "ask", "doc": "Waymaker answer endpoint: /api/ask.", "routes": ["ask"]},
+ {"module": "jobcode", "doc": "Employment code keyword extraction: /api/jobcodekeywords.", "routes": ["job_code_keywords"]},
+ {"module": "legal", "doc": "Public legal source search and research: /api/legal/*.", "routes": ["legal_laws_search", "legal_precedents_search", "legal_precedent_detail", "legal_research_endpoint", "legal_research_stream_endpoint"]},
+ {"module": "debug_law_grounding", "doc": "Law-grounding diagnostics: /api/debug/law-grounding*.", "routes": ["debug_law_grounding_preflight", "debug_law_grounding_selftest", "debug_law_grounding_netdiag", "debug_law_grounding"]},
+ {"module": "nationality", "doc": "Nationality services coach: /api/nationality-coach.", "routes": ["nationality_coach"]},
+ {"module": "preview", "doc": "PreView MOFA public-data proxy: /api/preview/mission.", "routes": ["preview_mission"]},
+ {"module": "search", "doc": "Unified search and AI overview: /api/search/unified*.", "routes": ["search_unified", "search_unified_ai_overview", "search_unified_ai_overview_stream"]},
+ {"module": "enforcement", "doc": "Enforcement disposition tools: /api/enforcement/*.", "routes": ["enforcement_provider_probe", "enforcement_extract", "enforcement_analyze"]},
+ {"module": "employment", "doc": "Employment interpretation: /api/employment/interpret.", "routes": ["employment_interpret"]},
+ {"module": "manual_evidence", "doc": "Manual evidence state: /api/search/manual-evidence-state.", "routes": ["manual_evidence_state_endpoint"]}
+]

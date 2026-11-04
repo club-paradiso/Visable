@@ -2,8 +2,9 @@
 /*
  * scripts/check_deadline_helpers.js
  *
- * Deterministic FUNCTIONAL check (not just string presence) for the inline
- * deadline-calculator helpers in index.html. It extracts the pure date / ICS /
+ * Deterministic FUNCTIONAL check (not just string presence) for the
+ * deadline-calculator helpers in src/features/deadline.js (moved out of index.html in
+ * Phase 3 of the frontend rebuild). It extracts the pure date / ICS /
  * Google-Calendar helper functions and exercises them with a small `tx` stub:
  *
  *   - paradisoDeadlineAddDays  : timezone-neutral date math, invalid handling
@@ -19,7 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const INDEX_PATH = path.resolve(__dirname, '..', 'index.html');
+const INDEX_PATH = path.resolve(__dirname, '..', 'src', 'features', 'deadline.js');
 
 function fail(msg) {
   console.error(`[check_deadline_helpers] ${msg}`);

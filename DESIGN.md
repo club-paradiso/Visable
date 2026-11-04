@@ -4,10 +4,11 @@ name: Visable
 description: >
   대한민국 비자·체류 정보 안내 플랫폼(Visable). 공식 출처 기반 civic-tech.
   신뢰감 있고 차분하며 공적 질감을 유지하는 따뜻한 종이+잉크 시각 언어.
-  색 토큰의 단일 진실 출처는 index.html의 civic token layer
-  (":root:not([data-theme=\"archive_diary\"])", UX-10 Foundations)이며,
+  색 토큰의 단일 진실 출처는 assets/css/tokens.css의 civic token layer
+  (":root:not([data-theme=\"archive_diary\"])", UX-10 Foundations)이며
+  (2026-11-04 프런트엔드 재구축 Phase 4에서 index.html 인라인 스타일에서 그대로 옮김),
   scripts/check_civic_tokens.mjs가 그 값으로 WCAG 대비 하한을 계산한다.
-  아래 colors 값은 그 층을 옮겨 적은 것이다. 값이 다르면 index.html이 맞다.
+  아래 colors 값은 그 층을 옮겨 적은 것이다. 값이 다르면 tokens.css가 맞다.
   단, 사용자가 스킨(Default/Stamp/Chrome/Neon, assets/css/visable-theme-skins.css)을
   고른 상태에서는 그 스킨의 --vs-* 값이 --cs-*/--vp-* 토큰을 !important로 덮어쓴다.
   화면에 보이는 색이 아래 값과 다르면 먼저 활성 스킨을 확인할 것(2026-10-24 메모).

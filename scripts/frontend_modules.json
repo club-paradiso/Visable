@@ -1,0 +1,44 @@
+{
+  "_comment": "Sources that Phase 3/4 of the frontend rebuild moved out of index.html: ES modules (former inline script) and stylesheets (former inline <style> blocks), in the order they appeared. Legacy source-slicing checks (scripts/, backend/tests) read these BEFORE index.html so a brace-matching extractor finds the real definition rather than the one-line delegating stub index.html keeps, and so CSS-rule assertions still see the rules. Maintained by hand with every move (docs/rebuild/STATUS.md). `pages` (Phase 5): for each other root page, the external classic scripts its inline logic moved into, in document order; checks that slice that page read them first, then the page.",
+  "sources": [
+    "src/core/helpers.js",
+    "src/features/jobcode.js",
+    "src/features/jurisdiction-data.js",
+    "src/features/jurisdiction.js",
+    "src/docs/normalize.js",
+    "src/render/cards/procedure-panels.js",
+    "src/render/cards/sections.js",
+    "src/render/cards/doc-tabs-easy-mode.js",
+    "src/render/cards/fees.js",
+    "src/boot.js",
+    "src/i18n/runtime.js",
+    "src/features/modals-ai.js",
+    "src/search/results.js",
+    "src/features/deadline.js",
+    "src/features/landing-animation.js",
+    "src/features/finders.js",
+    "src/features/reminders.js",
+    "src/shims/detail-code-resolver.js",
+    "src/shims/doc-section-unification.js",
+    "src/shims/doc-term-fee-ui.js",
+    "src/shims/global-settings.js",
+    "assets/css/tokens.css",
+    "assets/css/index-base.css",
+    "assets/css/index-gateway-ratio-polish.css",
+    "assets/css/index-task-pass-20260612.css",
+    "assets/css/index-mobile-interface-polish-20260628.css",
+    "assets/css/index-brand-intro-2026.css",
+    "assets/css/index-markup-styles.css"
+  ],
+  "pages": {
+    "ai.html": [
+      "assets/js/pages/ai-theme-button.js",
+      "assets/js/pages/ai-main.js",
+      "assets/js/pages/ai-navigator-handoff.js",
+      "assets/js/pages/ai-surface-switcher.js"
+    ],
+    "new-home.html": [
+      "assets/js/pages/new-home-main.js"
+    ]
+  }
+}

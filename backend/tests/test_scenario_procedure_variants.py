@@ -19,7 +19,7 @@ for path in (str(BACKEND_DIR), str(SCRIPTS_DIR)):
         sys.path.insert(0, path)
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _i18n_pack_support import load_packs, localized, pack_blobs  # noqa: E402
+from _i18n_pack_support import frontend_source, load_packs, localized, pack_blobs, page_source  # noqa: E402
 from check_required_documents_coverage import validate_procedure_variants  # noqa: E402
 import audit_manual_ref_editions_2026_11 as manual_ref_audit  # noqa: E402
 
@@ -227,10 +227,11 @@ class ScenarioProcedureVariantApiTests(unittest.TestCase):
 
 class ScenarioProcedureVariantFrontendTests(unittest.TestCase):
     def test_variants_render_before_generic_fallback_when_parent_docs_empty(self):
-        html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
+        docs_js = (REPO_ROOT / "src" / "docs" / "normalize.js").read_text(encoding="utf-8")  # getProcedure() moved here in Phase 3
         blobs = pack_blobs()
+        self.assertIn("variants: normalizeProcedureVariants(raw?.variants)", docs_js)
         # Wiring stays inline in index.html...
-        self.assertIn("variants: normalizeProcedureVariants(raw?.variants)", html)
         self.assertIn("selected_procedure_key: currentAiSelectedProcedureKey", html)
         self.assertIn("selected_procedure_variant_id: currentAiSelectedProcedureVariantId", html)
         self.assertIn('title.closest(".procedure-panel, .procedure-variant-list, .doc-group-grid, .docs-section")', html)
@@ -243,7 +244,7 @@ class ScenarioProcedureVariantFrontendTests(unittest.TestCase):
         self.assertIn("시나리오별 서류 근거", blobs["ko"])
 
     def test_multilingual_selector_source_panel_and_handoff_copy_is_present(self):
-        html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
         blobs = pack_blobs()
         # Selector + handoff + source-panel copy now lives in the locale packs.
         self.assertIn("Choose the scenario closest to your situation", blobs["en"])
@@ -278,17 +279,19 @@ class SelectedScenarioAiHandoffHardeningTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
-        cls.ai = (REPO_ROOT / "ai.html").read_text(encoding="utf-8")
+        cls.html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
+        # Renderers moved out of index.html in Phase 3 of the frontend rebuild (ends with its `export {` block).
+        cls.docs_js = (REPO_ROOT / "src" / "docs" / "normalize.js").read_text(encoding="utf-8")
+        cls.ai = page_source("ai.html")
         cls.route = (REPO_ROOT / "assets" / "js" / "visa-route-guide.js").read_text(encoding="utf-8")
         cls.blobs = pack_blobs()
 
     # --- in-card selected-context banner -----------------------------------
     def test_selected_context_banner_renderer_present(self):
-        self.assertIn("function renderScenarioSelectedContextBanner(", self.html)
+        self.assertIn("function renderScenarioSelectedContextBanner(", self.docs_js)
         # Banner is rendered inside the selected-scenario actions block.
         self.assertIn("renderScenarioSelectedContextBanner(visaCode, procedureKey, variant.label)", self.html)
-        self.assertIn('class="scenario-selected-context"', self.html)
+        self.assertIn('class="scenario-selected-context"', self.docs_js)
 
     def test_selected_context_label_present_in_all_target_languages(self):
         self.assertIn("선택한 시나리오:", self.blobs["ko"])
@@ -298,7 +301,7 @@ class SelectedScenarioAiHandoffHardeningTests(unittest.TestCase):
     def test_banner_uses_only_safe_public_labels(self):
         # The banner is built from visa code, procedure label, and scenario label
         # — never checklist/checkbox/reminder/raw doc state.
-        renderer = self.html.split("function renderScenarioSelectedContextBanner(", 1)[1].split("function renderProcedureVariant(", 1)[0]
+        renderer = self.docs_js.split("function renderScenarioSelectedContextBanner(", 1)[1].split("\nexport {", 1)[0]
         self.assertIn("getProcedureLabelByKey(procedureKey", renderer)
         self.assertIn("[visaCode, procedureLabel, variantLabel]", renderer)
         for forbidden in ("checklist", "checkbox", "requiredDocs", "localStorage", "reminder"):
@@ -376,7 +379,7 @@ class SelectedScenarioAiHandoffHardeningTests(unittest.TestCase):
         # so any variant-bearing procedure (F-6, F-2, G-1, E-7/E-9) is covered by
         # construction rather than per-code special casing.
         self.assertNotIn("F-6", "".join(
-            self.html.split("function renderScenarioSelectedContextBanner(", 1)[1].split("function renderProcedureVariant(", 1)[0:1]
+            self.docs_js.split("function renderScenarioSelectedContextBanner(", 1)[1].split("\nexport {", 1)[0:1]
         ))
 
 
@@ -392,7 +395,7 @@ class ScenarioPickerBackdropRegressionTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        cls.html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
         cls.blobs = pack_blobs()
 
     def _css_block(self, selector):
@@ -458,7 +461,7 @@ class SelectedScenarioActionChecklistFrontendTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        cls.html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
         cls.packs = load_packs()
         cls.blobs = pack_blobs()
 
@@ -550,7 +553,7 @@ class SelectedScenarioActionChecklistFrontendTests(unittest.TestCase):
     def test_checklist_does_not_send_checkbox_state_to_api_ask(self):
         # Isolate the /api/ask request body and assert it carries no checklist
         # / checkbox state of any kind.
-        start = self.html.index("await fetch(`${API_BASE}/api/ask`")
+        start = self.html.index("Visable.data.postRaw(`${API_BASE}/api/ask`")
         end = self.html.index("signal: currentAiController.signal", start)
         body = self.html[start:end]
         for forbidden in (
@@ -564,7 +567,7 @@ class SelectedScenarioActionChecklistFrontendTests(unittest.TestCase):
             self.assertNotIn(forbidden, body, f"/api/ask body unexpectedly references {forbidden!r}")
 
     def test_selected_ai_payload_still_includes_required_fields(self):
-        start = self.html.index("await fetch(`${API_BASE}/api/ask`")
+        start = self.html.index("Visable.data.postRaw(`${API_BASE}/api/ask`")
         end = self.html.index("signal: currentAiController.signal", start)
         body = self.html[start:end]
         self.assertIn("lang: currentLanguage", body)

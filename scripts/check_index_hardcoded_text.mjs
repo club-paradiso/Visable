@@ -26,7 +26,8 @@ const requiredRuntimeMarkers = [
 const suspicious = [];
 const scriptBlocks = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)];
 const i18nStart = html.indexOf('const LANGUAGE_STORAGE_KEY');
-const i18nEnd = html.indexOf('function toggleTheme()', i18nStart);
+// `toggleTheme(` (no closing paren): since Phase 3 of the rebuild the inline toggleTheme is a `(...args)` stub.
+const i18nEnd = html.indexOf('function toggleTheme(', i18nStart);
 const textRe = /[가-힯\u3400-\u9fff]|\b(?:search|find|loading|error|source|document|deadline|hospital|agency|visa|residence|official)\b/i;
 const bootstrapFallbackRe = /const BOOTSTRAP_KO_FALLBACK\s*=\s*\{[\s\S]*?\n\};/;
 
@@ -171,6 +172,24 @@ for (const block of scriptBlocks) {
     if (isAllowed(value)) continue;
     const line = html.slice(0, scriptOffset + literal.index).split('\n').length;
     suspicious.push(`${line}: ${value.slice(0, 120).replace(/\s+/g, ' ')}`);
+  }
+}
+
+// Phase 3 of the frontend rebuild moved the i18n runtime functions to src/i18n/runtime.js; the
+// region above now holds only the state owners and delegating stubs, so the module gets the same
+// literal scan (comments stripped, same allowlist). Reported as "<module>:<line>".
+{
+  const i18nModulePath = path.join(repoRoot, 'src', 'i18n', 'runtime.js');
+  if (fs.existsSync(i18nModulePath)) {
+    const moduleSrc = fs.readFileSync(i18nModulePath, 'utf8');
+    const script = moduleSrc.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+    for (const literal of scanStringLiterals(script)) {
+      const value = literal.value;
+      if (!textRe.test(value)) continue;
+      if (isAllowed(value)) continue;
+      const line = script.slice(0, literal.index).split('\n').length;
+      suspicious.push(`src/i18n/runtime.js:${line}: ${value.slice(0, 120).replace(/\s+/g, ' ')}`);
+    }
   }
 }
 

@@ -24,3 +24,6 @@ playwright-report/
 
 # Local/CI QA output (mobile render/WebKit QA, post-search screenshots); uploaded as workflow artifacts, never committed
 artifacts/
+
+# Vite build output (Phase 2); Vercel builds it, never committed
+dist/

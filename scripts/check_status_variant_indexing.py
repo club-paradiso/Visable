@@ -59,7 +59,8 @@ def searchable_codes(data):
 
 def main():
     data = json.loads((REPO / "visa_data.json").read_text(encoding="utf-8"))
-    html = (REPO / "index.html").read_text(encoding="utf-8")
+    # Frontend source corpus: index.html plus src/docs/normalize.js (Phase 3 moved getExactQueryMatchRank there).
+    html = (REPO / "index.html").read_text(encoding="utf-8") + "\n" + (REPO / "src" / "docs" / "normalize.js").read_text(encoding="utf-8")
     failures = []
 
     # indexer reads variant statusCodes

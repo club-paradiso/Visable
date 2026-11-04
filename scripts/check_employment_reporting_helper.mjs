@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
- * UI + behavior tests for the HiKorea employment-reporting helper in index.html.
+ * UI + behavior tests for the HiKorea employment-reporting helper (markup in index.html,
+ * logic in src/features/jobcode.js since Phase 3 of the frontend rebuild).
  *
- * Part A — static structure & microcopy assertions on index.html / i18n.
- * Part B — loads the REAL helper functions from index.html into a vm sandbox
+ * Part A — static structure & microcopy assertions on index.html / the module / i18n.
+ * Part B — loads the REAL helper functions from src/features/jobcode.js into a vm sandbox
  *          (with a tiny DOM stub) and exercises search/scoring/guidance/memo.
  *
  * No browser or npm deps. Run: node scripts/check_employment_reporting_helper.mjs
@@ -15,13 +16,17 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(__dirname, '..');
-const html = fs.readFileSync(path.join(repo, 'index.html'), 'utf8');
+// Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): the data-action dispatcher
+// that wires the helper's actions lives in src/boot.js since Phase 3 of the rebuild; the markup stays in index.html.
+const html = [...JSON.parse(fs.readFileSync(path.join(repo, 'scripts', 'frontend_modules.json'), 'utf8')).sources.map((rel) => fs.readFileSync(path.join(repo, rel), 'utf8')), fs.readFileSync(path.join(repo, 'index.html'), 'utf8')].join('\n');
+const js = fs.readFileSync(path.join(repo, 'src', 'features', 'jobcode.js'), 'utf8');
 const data = JSON.parse(fs.readFileSync(path.join(repo, 'data', 'jobcode_master.json'), 'utf8'));
 const ko = JSON.parse(fs.readFileSync(path.join(repo, 'data', 'i18n', 'ko.json'), 'utf8'));
 
 const failures = [];
 const ok = (cond, msg) => { if (!cond) failures.push(msg); };
 const has = (needle, msg) => ok(html.includes(needle), msg || `missing in index.html: ${needle}`);
+const hasJs = (needle, msg) => ok(js.includes(needle), msg || `missing in src/features/jobcode.js: ${needle}`);
 
 // ── Part A · static structure & microcopy ───────────────────────────────────
 has('취업정보 신고용 직종·업종 찾기', 'header title microcopy missing');
@@ -39,13 +44,13 @@ ok(!/id="jcScopeWarn"[^>]*\shidden/.test(html),
 ok(/class="jc2-scope-warn"/.test(html), 'scope warning missing its amber styling hook');
 // UX-08 Emp / Special States (442:39): ten states, each with one next action.
 has('id="jcSpecialStates"', 'special-states container missing');
-has('renderEmploymentSpecialStates', 'special-states renderer not wired');
-has('runEmploymentSpecialAction', 'special-state actions not wired');
+hasJs('renderEmploymentSpecialStates', 'special-states renderer not wired');
+hasJs('runEmploymentSpecialAction', 'special-state actions not wired');
 {
   const ids = ['no_official_code', 'broad_indirect_match', 'freelancer', 'self_employed',
     'trainee', 'arts_entertainment', 'legally_sensitive', 'mixed_language',
     'low_confidence', 'source_unverifiable'];
-  const i18nMap = html.slice(html.indexOf('const JC_SPECIAL_I18N'), html.indexOf('function renderEmploymentSpecialStates'));
+  const i18nMap = js.slice(js.indexOf('const JC_SPECIAL_I18N'), js.indexOf('function renderEmploymentSpecialStates'));
   for (const id of ids) {
     ok(i18nMap.includes(id), `special state ${id} has no i18n mapping`);
   }
@@ -129,14 +134,16 @@ ok(/E-7/.test(ko.jobCodeBoundaryWarn), 'jobCodeBoundaryWarn must mention E-7');
 ok(ko.jobCodeAmbiguity.includes('직종') && ko.jobCodeAmbiguity.includes('업종'), 'jobCodeAmbiguity must explain 직종 vs 업종');
 
 // ── Part B · exercise the REAL helper functions ─────────────────────────────
+// The module is plain script apart from its trailing `export {…}` block, so the slice up
+// to that block evaluates as a classic script in the sandbox.
 const startMark = '// --- Job Code Modal · HiKorea';
-const start = html.indexOf(startMark);
-const endMark = '\nfunction fallbackCopy(';
-const end = html.indexOf(endMark, start);
-ok(start !== -1 && end !== -1, 'could not locate helper JS region in index.html');
+const start = js.indexOf(startMark);
+const endMark = '\nexport {';
+const end = js.indexOf(endMark, start);
+ok(start !== -1 && end !== -1, 'could not locate helper JS region in src/features/jobcode.js');
 
 if (start !== -1 && end !== -1) {
-  const region = html.slice(start, end);
+  const region = js.slice(start, end);
   const dom = (() => {
     const els = {};
     return {

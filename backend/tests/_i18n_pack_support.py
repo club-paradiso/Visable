@@ -79,3 +79,33 @@ def localized(packs: dict, locale: str, key: str) -> str:
     if isinstance(value, list):
         return "\n".join(str(item) for item in value)
     return str(value)
+
+
+# Phase 3 of the frontend rebuild moves inline index.html code into ES modules under src/
+# (list: scripts/frontend_modules.json). Static frontend tests that slice function source by
+# name read this corpus: the modules FIRST (so a slice finds the real definition, not the
+# one-line delegating stub index.html keeps for it), then index.html.
+_FRONTEND_SOURCE_LIST = json.loads((REPO_ROOT / "scripts" / "frontend_modules.json").read_text(encoding="utf-8"))
+FRONTEND_MODULES = tuple(_FRONTEND_SOURCE_LIST["sources"])
+# Phase 5 moves the inline logic of the other root pages into external classic scripts
+# (frontend_modules.json "pages": page -> scripts in document order).
+PAGE_SOURCES = {page: tuple(files) for page, files in _FRONTEND_SOURCE_LIST.get("pages", {}).items()}
+
+
+def frontend_source() -> str:
+    """index.html plus every extracted module, modules first (see FRONTEND_MODULES)."""
+    parts = [(REPO_ROOT / rel).read_text(encoding="utf-8") for rel in FRONTEND_MODULES if (REPO_ROOT / rel).exists()]
+    parts.append((REPO_ROOT / "index.html").read_text(encoding="utf-8"))
+    return "\n".join(parts)
+
+
+def page_source(page: str) -> str:
+    """A root page plus the external scripts its inline code moved into, scripts first.
+
+    `index.html` resolves to frontend_source(); other pages use PAGE_SOURCES.
+    """
+    if page == "index.html":
+        return frontend_source()
+    parts = [(REPO_ROOT / rel).read_text(encoding="utf-8") for rel in PAGE_SOURCES.get(page, ()) if (REPO_ROOT / rel).exists()]
+    parts.append((REPO_ROOT / page).read_text(encoding="utf-8"))
+    return "\n".join(parts)

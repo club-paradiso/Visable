@@ -26,6 +26,8 @@ from unittest.mock import patch
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BACKEND_DIR = REPO_ROOT / "backend"
 INDEX = REPO_ROOT / "index.html"
+# Jurisdiction finder source (moved out of index.html in Phase 3 of the frontend rebuild).
+JURISDICTION_JS = REPO_ROOT / "src" / "features" / "jurisdiction.js"
 CHECK_I18N = REPO_ROOT / "scripts" / "check_i18n.js"
 CHECK_I18N_COVERAGE = REPO_ROOT / "scripts" / "check_i18n_coverage.mjs"
 CHECK_I18N_HARDCODED = REPO_ROOT / "scripts" / "check_index_hardcoded_text.mjs"
@@ -36,7 +38,7 @@ if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _i18n_pack_support import SUPPORTED_LOCALES, load_packs, localized, pack_blobs  # noqa: E402
+from _i18n_pack_support import SUPPORTED_LOCALES, frontend_source, load_packs, localized, pack_blobs  # noqa: E402
 
 # Localized UI copy now lives in external per-locale JSON packs (data/i18n/*.json);
 # the inline check_i18n guard was split into scripts/check_i18n_coverage.mjs (strict
@@ -280,6 +282,9 @@ class I18nLeakGuardTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.html = INDEX.read_text(encoding="utf-8")
+        # index.html + the modules Phase 3 moved code into (modules first); for slices of moved functions.
+        cls.frontend = frontend_source()
+        cls.jurisdiction_js = JURISDICTION_JS.read_text(encoding="utf-8")
         cls.guard_src = CHECK_I18N.read_text(encoding="utf-8")
         cls.packs = load_packs()
         cls.blobs = pack_blobs()
@@ -357,11 +362,11 @@ class I18nLeakGuardTests(unittest.TestCase):
 
     def test_doc_modal_titles_routed_through_tx(self):
         # openDocModal no longer uses a ko/en-only ternary for stage titles.
-        modal = self.html.split("function openDocModal", 1)[1].split("function ", 1)[0]
+        modal = self.frontend.split("function openDocModal", 1)[1].split("function ", 1)[0]
         for key in ("docModalTitleNew", "docModalTitleExt", "docModalTitleChange",
                     "docModalTitleSub", "docModalTitleSubGeneric", "docStageReference"):
             self.assertIn("tx('%s'" % key, modal)
-        self.assertNotIn("currentLanguage === 'en' ? 'Visa / new application documents'", self.html)
+        self.assertNotIn("currentLanguage === 'en' ? 'Visa / new application documents'", self.frontend)
         # Present in all supported packs.
         for key in ("docModalTitleNew", "docModalTitleExt", "docModalTitleChange",
                     "docStageReference"):
@@ -370,12 +375,13 @@ class I18nLeakGuardTests(unittest.TestCase):
 
     def test_jurisdiction_chrome_routed_through_tx(self):
         for key in ("jurSidoPlaceholder", "jurSigunguPlaceholder", "jurMissingInfo", "jurResultMsg"):
-            self.assertIn("tx('%s'" % key, self.html)
+            self.assertIn("tx('%s'" % key, self.jurisdiction_js)
             for locale in SUPPORTED_LOCALES:
                 self.assertIn(key, self.packs[locale], f"{key} missing from {locale} pack")
         # No longer hard-codes the Korean placeholders/messages.
-        self.assertNotIn("'<option value=\"\">시/도 선택</option>'", self.html)
-        self.assertNotIn('showToast("관할 관서 정보가 누락되었습니다.")', self.html)
+        for src in (self.html, self.jurisdiction_js):
+            self.assertNotIn("'<option value=\"\">시/도 선택</option>'", src)
+            self.assertNotIn('showToast("관할 관서 정보가 누락되었습니다.")', src)
 
     def test_source_panel_labels_present_in_supported_languages(self):
         self.assertEqual(localized(self.packs, "ko", "sourceStatusTitle"), "출처 및 검증 상태")
@@ -386,7 +392,7 @@ class I18nLeakGuardTests(unittest.TestCase):
         self.assertIn("✨ 请求综合情况分析", localized(self.packs, "zh-CN", "aiActionLabels"))
 
     def test_source_panel_renders_manual_to_law_fallback_row(self):
-        fn = self.html.split("function renderGroundingSourcePanel", 1)[1].split("\nfunction ", 1)[0]
+        fn = self.frontend.split("function renderGroundingSourcePanel", 1)[1].split("\nfunction ", 1)[0]
         self.assertIn("m.manual_to_law_fallback_used", fn)
         self.assertIn("tx('manualToLawFallbackLabel')", fn)
         self.assertIn("tx('manualToLawFallbackChecked')", fn)

@@ -54,7 +54,10 @@ const EXCLUDED = new Set(['F-4']);
 const issuance = readJson('data/visa_issuance_records.json');
 const evidence = readJson('data/procedure_evidence_bindings.json');
 const koPack = readJson('data/i18n/ko.json');
-const indexHtml = readText('index.html');
+// Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): Phase 3 of the rebuild
+// moves inline index.html code into ES modules; a brace-matching slice must find the real definition, not the stub.
+const indexHtml = [...JSON.parse(readText('scripts/frontend_modules.json')).sources.map((rel) => readText(rel)), readText('index.html')].join('\n');
+const docsJs = readText('src/docs/normalize.js'); // Phase 3: normalizeVisaCode() moved out of index.html
 
 const records = Array.isArray(issuance.records) ? issuance.records : [];
 const bindings = (Array.isArray(evidence.records) ? evidence.records : [])
@@ -166,7 +169,7 @@ ok(/GENERIC_VISA_ISSUANCE_EXCLUDED_CODES\s*=\s*new Set\(\[\s*'F-4'/.test(indexHt
 ok(/function renderVisaIssuanceSection[\s\S]*?isGenericVisaIssuanceExcluded\(\s*v\.code\s*\)/.test(indexHtml),
   'renderVisaIssuanceSection short-circuits excluded codes before rendering');
 // Execute the real exclusion guard to prove it filters F-4 (all spellings).
-const normSrc = extractFunction(indexHtml, 'normalizeVisaCode');
+const normSrc = extractFunction(docsJs, 'normalizeVisaCode');
 const guardSrc = extractFunction(indexHtml, 'isGenericVisaIssuanceExcluded');
 const setSrc = (indexHtml.match(/const GENERIC_VISA_ISSUANCE_EXCLUDED_CODES = new Set\(\[[^\]]*\]\);/) || [''])[0];
 try {

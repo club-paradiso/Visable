@@ -45,14 +45,14 @@ Visable은 단순한 정적 비자 목록을 넘어 검색, AI 안내, 국적·�
 
 | Layer | Implementation |
 | --- | --- |
-| Frontend | Vanilla HTML / CSS / JavaScript |
+| Frontend | Vanilla HTML / CSS / JavaScript. Vite multi-page build (`npm run build` → `dist/`, deployed by Vercel); index.html's code lives in ES modules under `src/` behind one `window.Visable` bridge, the other pages' scripts under `assets/js/pages/`, the design tokens in `assets/css/tokens.css` (2026-11 rebuild, see `docs/rebuild/`) |
 | Main data | JSON-based visa, document, i18n and grounding datasets |
-| Backend | FastAPI + serverless API surfaces |
+| Backend | FastAPI (`backend/paradiso_backend.py` facade + `backend/routers/` route groups) + serverless API surfaces under `api/` |
 | AI routing | OpenRouter first, optional Groq fallback |
 | Optional local fallback | Ollama scaffold |
 | Law grounding | Korean Open Law API and source-grounded retrieval flows |
 | Deployment | Static frontend + backend deployment configuration |
-| Validation | Python, Node.js and shell-based repository checks |
+| Validation | Python, Node.js and shell-based repository checks; Playwright golden suite (`tests/golden/`, functional + visual) |
 
 Visable의 AI 기능은 프론트엔드에서 모델 제공자에 직접 연결하지 않고 서버 측 API를 통해 동작하도록 구성되어 있습니다.
 
@@ -66,16 +66,24 @@ Visable의 AI 기능은 프론트엔드에서 모델 제공자에 직접 연결�
 ├── ai.html                     # Waymaker / AI experience
 ├── enforcement.html            # Enforcement Intelligence
 ├── new-home.html               # nationality / naturalization surface
+├── src/                        # index.html's JavaScript as ES modules (entry: src/main.js → window.Visable)
 ├── assets/                     # frontend assets, styles and scripts
+│   ├── css/tokens.css          # design tokens (DESIGN.md colours map onto these variables)
+│   ├── css/index-*.css         # index.html's former inline stylesheets, in cascade order
+│   └── js/pages/               # the other pages' former inline scripts (classic, same load order)
 ├── data/                       # frontend datasets and i18n
 ├── api/                        # serverless API surfaces
-├── backend/                    # FastAPI backend
-│   ├── paradiso_backend.py     # legacy filename; current Visable backend
+├── backend/                    # FastAPI backend (Railway: uvicorn paradiso_backend:app)
+│   ├── paradiso_backend.py     # facade: config, schemas, state, helpers, router includes
+│   ├── routers/                # HTTP route groups, build_router(pb) each
 │   ├── data/                   # backend deploy-context data copies
 │   ├── services/               # backend services
-│   └── tests/                  # regression tests
+│   └── tests/                  # regression tests (python3 scripts/run_backend_tests.py)
+├── tests/golden/               # Playwright golden suite: behaviour + visual baselines
 ├── docs/                       # audits, architecture and policy documents
+│   └── rebuild/                # 2026-11 frontend rebuild: STATUS, DECISIONS (ADRs), FINAL-REPORT
 ├── scripts/                    # validation, sync and evaluation tools
+│   └── frontend_modules.json   # source list the static checks read (modules + stylesheets + page scripts)
 ├── visa_data.json              # canonical visa/status data
 ├── doc_master.json             # canonical document metadata
 ├── DESIGN.md                   # design system / visual direction
@@ -84,10 +92,17 @@ Visable의 AI 기능은 프론트엔드에서 모델 제공자에 직접 연결�
 
 ## 로컬 실행
 
-프론트엔드는 별도의 빌드 단계 없이 정적 서버에서 실행할 수 있습니다.
+프론트엔드는 정적 서버에서 소스 그대로 실행할 수 있습니다(ES 모듈은 `src/`에서 바로 로드됩니다).
 
 ```bash
 python3 -m http.server 8080
+```
+
+배포본과 같은 결과를 보려면 Vite 빌드를 사용합니다(`dist/`에 생성, Vercel이 배포하는 형태).
+
+```bash
+npm install
+npm run build && npm run preview
 ```
 
 브라우저에서 다음 주소를 엽니다.
@@ -132,10 +147,19 @@ uvicorn paradiso_backend:app --reload --port 8000
 bash scripts/check_repo.sh
 ```
 
-백엔드 회귀 테스트:
+백엔드 회귀 테스트(모듈별 격리 실행, 알려진 실패 레지스터 포함):
 
 ```bash
-python3 backend/tests/test_paradiso_backend.py
+pip install -r backend/requirements.txt pytest
+python3 scripts/run_backend_tests.py
+```
+
+프론트엔드 골든 테스트(동작 + 시각 기준선, Playwright):
+
+```bash
+npm run test:golden          # 기능 테스트, 데스크톱/모바일
+npm run test:golden:visual   # 시각 기준선 비교 (tests/golden/README.md 참고)
+node scripts/check_url_parity.mjs   # 소스와 dist/가 같은 URL을 같은 상태로 제공하는지
 ```
 
 네트워크가 제한된 개발 환경에서는 제한 모드를 사용할 수 있습니다.

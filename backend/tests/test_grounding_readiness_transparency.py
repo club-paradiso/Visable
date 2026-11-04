@@ -25,7 +25,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _i18n_pack_support import SUPPORTED_LOCALES, load_packs, pack_blobs  # noqa: E402
+from _i18n_pack_support import SUPPORTED_LOCALES, frontend_source, load_packs, pack_blobs  # noqa: E402
 
 
 def _fn(html: str, name: str) -> str:
@@ -38,7 +38,9 @@ def _fn(html: str, name: str) -> str:
 class _IndexHtml(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        cls.html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
+        # Deadline calculator source (moved out of index.html in Phase 3 of the frontend rebuild).
+        cls.deadline_js = (REPO_ROOT / "src" / "features" / "deadline.js").read_text(encoding="utf-8")
         cls.packs = load_packs()
         cls.blobs = pack_blobs()
 
@@ -128,7 +130,7 @@ class DeadlineSourceStatusTests(_IndexHtml):
         self.assertIn("基于通用规则的准备参考日期", self.blobs["zh-CN"])
 
     def test_registration_90day_uses_common_rule_not_official(self):
-        fn = _fn(self.html, "computeDeadlines")
+        fn = _fn(self.deadline_js, "computeDeadlines")
         # The 90-day registration row is tagged as a common-rule preparation aid.
         self.assertIn("paradisoDeadlineAddDays(entry, 90)", fn)
         self.assertRegex(fn, r"deadlineRowHtml\(tx\('deadlineRegEstimate'\),\s*regDate,\s*tx\('deadlineRegCaution'\),\s*tx\('deadlineSourceCommonRule'\)\)")
@@ -137,22 +139,22 @@ class DeadlineSourceStatusTests(_IndexHtml):
         self.assertIn("not a confirmed official deadline", self.blobs["en"])
 
     def test_custom_reminder_uses_custom_source(self):
-        fn = _fn(self.html, "computeDeadlines")
+        fn = _fn(self.deadline_js, "computeDeadlines")
         self.assertIn("tx('deadlineSourceCustom')", fn)
 
     def test_row_renders_source_badge(self):
-        fn = _fn(self.html, "deadlineRowHtml")
+        fn = _fn(self.deadline_js, "deadlineRowHtml")
         self.assertIn("deadline-row-source", fn)
         self.assertIn("data-deadline-source", fn)
 
     def test_ics_description_carries_caution_not_just_summary(self):
-        fn = _fn(self.html, "buildDeadlineIcs")
+        fn = _fn(self.deadline_js, "buildDeadlineIcs")
         self.assertIn("DESCRIPTION:", fn)
         self.assertIn("item.note", fn)
         self.assertIn("Not an official deadline", fn)
 
     def test_google_calendar_includes_details_caution(self):
-        fn = _fn(self.html, "deadlineGoogleCalUrl")
+        fn = _fn(self.deadline_js, "deadlineGoogleCalUrl")
         self.assertIn("&details=", fn)
         self.assertIn("encodeURIComponent(note)", fn)
 
@@ -164,13 +166,16 @@ class DeadlineSourceStatusTests(_IndexHtml):
         start = self.html.find("function submitAiAnalysis")
         self.assertNotEqual(start, -1)
         body = self.html[start: start + 3500]
-        send = body[body.find("JSON.stringify"): body.find("signal:")]
+        # The request is Visable.data.postRaw(`${API_BASE}/api/ask`, { ...body... }, { signal }).
+        send_start = body.find("Visable.data.postRaw(`${API_BASE}/api/ask`")
+        self.assertNotEqual(send_start, -1)
+        send = body[send_start: body.find("signal:", send_start)]
         for forbidden in ("deadline", "data-deadline", "reminder", "entryDate", "expiryDate"):
             self.assertNotIn(forbidden, send, forbidden)
 
     def test_calculator_does_not_persist_dates(self):
         for name in ("renderDeadlineCalculator", "computeDeadlines"):
-            self.assertNotIn("localStorage", _fn(self.html, name))
+            self.assertNotIn("localStorage", _fn(self.deadline_js, name))
 
 
 class F4RouteFollowThroughTests(_IndexHtml):

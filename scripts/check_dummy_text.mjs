@@ -111,7 +111,8 @@ for (const rel of TARGET_FILES) {
 // run the full BANNED list against HTML — attributes like placeholder="…" and dev
 // TODO comments would false-positive; only the high-confidence provenance/diagnostic
 // strings (which must never appear anywhere user-facing) are checked here.
-const HTML_FILES = ['index.html', 'ai.html'];
+// Phase 5 moved ai.html's inline scripts into external files (scripts/frontend_modules.json "pages"); scan those too.
+const HTML_FILES = ['index.html', 'ai.html', ...Object.values(JSON.parse(fs.readFileSync(path.join(repoRoot, 'scripts', 'frontend_modules.json'), 'utf8')).pages || {}).flat()];
 for (const rel of HTML_FILES) {
   const abs = path.join(repoRoot, rel);
   if (!fs.existsSync(abs)) continue;

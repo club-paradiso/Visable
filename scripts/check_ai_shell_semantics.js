@@ -23,7 +23,11 @@ const path = require('path');
 const AI_HTML = process.env.CHECK_AI_HTML
   || path.join(__dirname, '..', 'ai.html');
 
-const src = fs.readFileSync(AI_HTML, 'utf8');
+// Phase 5 of the frontend rebuild moved ai.html's inline logic into external classic scripts
+// (scripts/frontend_modules.json "pages"); slice those first, then the page. CHECK_AI_HTML keeps the
+// single-file override.
+const PAGE_SCRIPTS = process.env.CHECK_AI_HTML ? [] : (JSON.parse(fs.readFileSync(path.join(__dirname, 'frontend_modules.json'), 'utf8')).pages || {})['ai.html'] || [];
+const src = [...PAGE_SCRIPTS.map((rel) => fs.readFileSync(path.join(__dirname, '..', rel), 'utf8')), fs.readFileSync(AI_HTML, 'utf8')].join('\n');
 const failures = [];
 function check(cond, msg) { if (!cond) failures.push(msg); }
 

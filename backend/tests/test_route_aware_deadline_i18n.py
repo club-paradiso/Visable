@@ -26,14 +26,14 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 
 # Import the shared external-locale-pack helper regardless of pytest import mode.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _i18n_pack_support import SUPPORTED_LOCALES, load_packs, pack_blobs  # noqa: E402
+from _i18n_pack_support import SUPPORTED_LOCALES, frontend_source, load_packs, pack_blobs  # noqa: E402
 
 
 def _extract_function(html: str, name: str) -> str:
     """Return the source slice from `function <name>(` up to the next
     top-level `function ` declaration (good enough for substring guards)."""
     start = html.find(f"function {name}(")
-    assert start != -1, f"function {name} not found in index.html"
+    assert start != -1, f"function {name} not found in the given source"
     nxt = html.find("\nfunction ", start + 1)
     return html[start: nxt if nxt != -1 else start + 4000]
 
@@ -41,7 +41,9 @@ def _extract_function(html: str, name: str) -> str:
 class _IndexHtml(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        cls.html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
+        # Deadline calculator source (moved out of index.html in Phase 3 of the frontend rebuild).
+        cls.deadline_js = (REPO_ROOT / "src" / "features" / "deadline.js").read_text(encoding="utf-8")
         cls.packs = load_packs()
         cls.blobs = pack_blobs()
 
@@ -163,33 +165,33 @@ class DeadlineCalculatorFrontendTests(_IndexHtml):
             self.assertIn(s, self.blobs["zh-CN"], s)
 
     def test_ninety_day_registration_rule_labeled_as_preparation_aid(self):
-        self.assertIn("paradisoDeadlineAddDays(entry, 90)", self.html)
+        self.assertIn("paradisoDeadlineAddDays(entry, 90)", self.deadline_js)
         # The 90-day estimate must be presented as a general preparation aid.
         self.assertIn("일반 준비용 안내이며 공식 확정 기한이 아닙니다.", self.blobs["ko"])
         self.assertIn("general preparation aid, not a confirmed official deadline", self.blobs["en"])
 
     def test_extension_reminder_offsets_present(self):
-        self.assertIn("[60, 30, 7, 0]", self.html)
+        self.assertIn("[60, 30, 7, 0]", self.deadline_js)
 
     def test_invalid_date_handling_present(self):
         # The pure date helper guards input with a strict YYYY-MM-DD regex.
-        fn = _extract_function(self.html, "paradisoDeadlineAddDays")
+        fn = _extract_function(self.deadline_js, "paradisoDeadlineAddDays")
         self.assertIn(r"/^(\d{4})-(\d{2})-(\d{2})$/", fn)
         self.assertIn("return ''", fn)
 
     def test_ics_generation_contains_dtstart_and_summary(self):
-        fn = _extract_function(self.html, "buildDeadlineIcs")
+        fn = _extract_function(self.deadline_js, "buildDeadlineIcs")
         self.assertIn("DTSTART;VALUE=DATE:", fn)
         self.assertIn("SUMMARY:", fn)
         self.assertIn("BEGIN:VEVENT", fn)
 
     def test_ics_has_no_personal_data_fields(self):
-        fn = _extract_function(self.html, "buildDeadlineIcs")
+        fn = _extract_function(self.deadline_js, "buildDeadlineIcs")
         for forbidden in ("passport", "email", "phone", "nationality", "name:"):
             self.assertNotIn(forbidden, fn.lower())
 
     def test_google_calendar_url_encodes_safely(self):
-        fn = _extract_function(self.html, "deadlineGoogleCalUrl")
+        fn = _extract_function(self.deadline_js, "deadlineGoogleCalUrl")
         self.assertIn("https://calendar.google.com/calendar/render?action=TEMPLATE", fn)
         self.assertIn("encodeURIComponent(title)", fn)
 
@@ -202,7 +204,10 @@ class DeadlineCalculatorFrontendTests(_IndexHtml):
         start = self.html.find("function submitAiAnalysis")
         self.assertNotEqual(start, -1)
         body = self.html[start: start + 3500]
-        send = body[body.find("JSON.stringify"): body.find("signal:")]
+        # The request is Visable.data.postRaw(`${API_BASE}/api/ask`, { ...body... }, { signal }).
+        send_start = body.find("Visable.data.postRaw(`${API_BASE}/api/ask`")
+        self.assertNotEqual(send_start, -1)
+        send = body[send_start: body.find("signal:", send_start)]
         for forbidden in ("deadline", "data-deadline", "reminder", "entryDate", "expiryDate"):
             self.assertNotIn(forbidden, send, f"AI payload must not include {forbidden}")
 
@@ -210,11 +215,11 @@ class DeadlineCalculatorFrontendTests(_IndexHtml):
         # Ephemeral by design: the calculator render/compute functions never
         # touch localStorage.
         for name in ("renderDeadlineCalculator", "computeDeadlines"):
-            fn = _extract_function(self.html, name)
+            fn = _extract_function(self.deadline_js, name)
             self.assertNotIn("localStorage", fn)
 
     def test_calendar_links_use_safe_rel(self):
-        fn = _extract_function(self.html, "deadlineRowHtml")
+        fn = _extract_function(self.deadline_js, "deadlineRowHtml")
         self.assertIn('target="_blank" rel="noopener noreferrer"', fn)
 
 

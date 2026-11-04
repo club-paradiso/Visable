@@ -1,0 +1,93 @@
+# Keep archive-only and server-only material out of the Vercel upload.
+# gitignore syntax. Written in Phase 1 of the frontend rebuild (docs/rebuild/STATUS.md).
+# Rule: anything the shipped HTML/JS or api/ functions reference at runtime stays.
+# Runtime references (verified by grep): the two current manual PDFs, docs/forms_official/,
+# scripts/*.mjs loaded by pages, lib/, backend/data/enforcement/legal_rules.json (api/enforcement).
+
+# --- documentation and archives (never fetched by the site) ---
+docs/adr
+docs/agent-skills
+docs/ai
+docs/archive
+docs/audit
+docs/audits
+docs/backend
+docs/crosswalk
+docs/data
+docs/data-pipeline
+docs/data-sources
+docs/design
+docs/enforcement
+docs/generated_candidate_attempts
+docs/i18n
+docs/integrations
+docs/legal
+docs/ops
+docs/preview
+docs/qa
+docs/rebuild
+docs/reports
+docs/safety
+docs/source-laws
+docs/verification
+docs/*.md
+
+# superseded manual editions and conversion by-products (the site links only the two current PDFs)
+docs/source-manuals/2026-05
+docs/source-manuals/2026-06
+docs/source-manuals/2026-06-17
+docs/source-manuals/2026-07-31
+docs/source-manuals/2026-09
+docs/source-manuals/2026-09-01
+docs/source-manuals/incoming
+docs/source-manuals/law
+docs/source-manuals/ocr
+docs/source-manuals/*.md
+docs/source-manuals/*.json
+docs/source-manuals/2026-10-19/derived
+docs/source-manuals/2026-10-19/extracted
+docs/source-manuals/2026-10-19/markdown
+docs/source-manuals/2026-10-19/*.hwp
+docs/source-manuals/2026-10-19/stay_manual_261019.pdf
+docs/source-manuals/2026-11-02/extracted
+docs/source-manuals/2026-11-02/markdown
+docs/source-manuals/2026-11-02/*.hwp
+
+# --- Python backend (deployed on Railway, not Vercel) except the JSON api/enforcement requires ---
+backend/*.py
+backend/*.txt
+backend/*.md
+backend/Procfile
+backend/railway.json
+backend/services
+backend/tests
+backend/data/audits
+backend/data/eval
+backend/data/knowledge
+backend/data/knowledge_deploy
+backend/data/manual_grounding
+backend/data/sources
+backend/data/visa_authoring
+backend/data/manual_search_index.sqlite3
+backend/data/procedure_classifier_lexicon.json
+backend/data/doc_master.json
+backend/data/visas.json
+
+# --- development-only trees ---
+experiments
+tests
+audits
+reports
+research
+prototype
+guidelines
+scripts/tests
+.github
+test-results
+playwright-report
+artifacts
+tmp
+playwright.config.mjs
+playwright.golden.config.mjs
+playwright.webkit.config.mjs
+playwright.immigration-webkit.config.mjs

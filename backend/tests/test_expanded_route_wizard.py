@@ -10,7 +10,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _i18n_pack_support import SUPPORTED_LOCALES, load_packs, localized  # noqa: E402
+from _i18n_pack_support import SUPPORTED_LOCALES, frontend_source, load_packs, localized  # noqa: E402
 
 # Localized route copy now lives in external per-locale JSON packs (data/i18n/*.json);
 # supported display locales are ko, en, zh-CN (zh-Hant aliases to zh-CN).
@@ -19,7 +19,7 @@ from _i18n_pack_support import SUPPORTED_LOCALES, load_packs, localized  # noqa:
 class ExpandedRouteWizardTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        cls.html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
         cls.config = cls._slice("const ROUTE_WIZARD_CONFIG", "function getRouteWizardConfig")
         cls.packs = load_packs()
         visas = json.loads((REPO_ROOT / "visa_data.json").read_text(encoding="utf-8"))

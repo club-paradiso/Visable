@@ -185,10 +185,13 @@ for (const [termId, entry] of Object.entries(terms)) {
 // ── 6. Invisible / suspicious Unicode ──────────────────────────────────────
 // U+200D (emoji ZWJ) is allowed; everything below is banned.
 const INVISIBLE_RE = /[\u202F\u200B\u200C\u200E\u200F\u2060\uFEFF\u00AD\u180E]/;
+// The other pages' inline scripts live in external files since Phase 5 (scripts/frontend_modules.json "pages").
+const PAGE_SCRIPTS = Object.values(JSON.parse(fs.readFileSync(path.join(repoRoot, 'scripts', 'frontend_modules.json'), 'utf8')).pages || {}).flat();
 const unicodeTargets = [
   'index.html',
   'ai.html',
   'form-helper.html',
+  ...PAGE_SCRIPTS,
   ...fs.readdirSync(i18nDir).map((f) => path.join('data/i18n', f)),
 ];
 for (const file of unicodeTargets) {
@@ -211,7 +214,7 @@ const CREDENTIAL_RES = [
   /\bAIza[0-9A-Za-z_-]{30,}/,
   /serviceKey=[A-Za-z0-9%+/=]{20,}/,
 ];
-for (const file of ['index.html', 'ai.html', 'form-helper.html']) {
+for (const file of ['index.html', 'ai.html', 'form-helper.html', ...PAGE_SCRIPTS]) {
   const full = path.join(repoRoot, file);
   if (!fs.existsSync(full)) continue;
   const text = fs.readFileSync(full, 'utf8');

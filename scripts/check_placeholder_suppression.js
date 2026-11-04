@@ -18,8 +18,13 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
-const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
-const aiHtml = fs.readFileSync(path.join(ROOT, 'ai.html'), 'utf8');
+// The frontend source corpus: index.html plus the module that Phase 3 of the rebuild moved the
+// document-normalisation helpers (isDocPlaceholder, dedupeDocs, renderDocGroup, DOC_PLACEHOLDER_TOKENS) into.
+// The module comes first so extractFunction() finds the real definitions, not the inline delegating stubs.
+const FRONTEND_MODULES = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts', 'frontend_modules.json'), 'utf8')).sources;
+const html = FRONTEND_MODULES.filter(rel => fs.existsSync(path.join(ROOT, rel))).map(rel => fs.readFileSync(path.join(ROOT, rel), 'utf8')).concat(fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8')).join('\n');
+// ai.html plus the external classic scripts Phase 5 moved its inline logic into (scripts first).
+const aiHtml = [...((JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts', 'frontend_modules.json'), 'utf8')).pages || {})['ai.html'] || []).map((rel) => fs.readFileSync(path.join(ROOT, rel), 'utf8')), fs.readFileSync(path.join(ROOT, 'ai.html'), 'utf8')].join('\n');
 
 const failures = [];
 const passed = [];
@@ -152,7 +157,7 @@ const regressions = [
   ['13. D-2 golden path checks still pass', 'check_d2_student_journey.js'],
   ['14. expanded priority status checks still pass', 'check_priority_status_journeys.js'],
   ['15. remaining status journey checks still pass', 'check_remaining_status_journeys.js'],
-  ['16. exact-code search QA checks still pass', 'check_exact_code_search.js'],
+  // 16. exact-code search QA: retired 2026-11-04 (Phase 7 of the rebuild) in favour of tests/golden/specs/search.spec.mjs.
   ['17. static visa result card checks still pass', 'check_static_visa_result_cards.js'],
   ['18. AI shell semantics checks still pass', 'check_ai_shell_semantics.js'],
 ];

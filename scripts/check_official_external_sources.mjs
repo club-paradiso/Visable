@@ -13,7 +13,13 @@ const nationalityContent = readJson('data/nationality_content.json');
 const nationalityPaths = readJson('data/nationality_paths.json');
 const overlays = readJson('data/official_web_overlays.json');
 const newHomeHtml = readText('new-home.html');
-const indexHtml = readText('index.html');
+// New Home's inline logic moved to external classic scripts in Phase 5 of the frontend rebuild
+// (scripts/frontend_modules.json "pages"); the wiring checks read scripts + page, the markup
+// regexes below (stylesheet links, <style>, badge spans) keep reading the raw page.
+const newHomeSource = [...((JSON.parse(readText('scripts/frontend_modules.json')).pages || {})['new-home.html'] || []).map(readText), newHomeHtml].join('\n');
+// Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): Phase 3 of the rebuild
+// moves inline index.html code into ES modules (the visa-issuance section now lives in src/render/cards/sections.js).
+const indexHtml = [...JSON.parse(readText('scripts/frontend_modules.json')).sources.map((rel) => readText(rel)), readText('index.html')].join('\n');
 
 const failures = [];
 const passes = [];
@@ -90,10 +96,10 @@ check('global promotion requires central authority', overlays.policy?.globalProm
 for (const riskyPhrase of ['귀화 가능성 진단', '2분 귀화 진단']) {
   check(`New Home avoids eligibility-engine phrase: ${riskyPhrase}`, !readText('data/nationality_content.json').includes(riskyPhrase));
 }
-check('New Home renders source scope', newHomeHtml.includes('nh-source-scope') && newHomeHtml.includes('sourceScopeLabel'));
-check('New Home renders source dates/access dates', newHomeHtml.includes('sourceAccessedLabel') && newHomeHtml.includes('sourceEffectiveLabel'));
+check('New Home renders source scope', newHomeSource.includes('nh-source-scope') && newHomeSource.includes('sourceScopeLabel'));
+check('New Home renders source dates/access dates', newHomeSource.includes('sourceAccessedLabel') && newHomeSource.includes('sourceEffectiveLabel'));
 check('New Home carries a non-affiliation disclaimer', String(nationalityContent.sourcesPanel?.disclaimer?.ko || '').includes('제휴 또는 소속 관계가 없습니다'));
-check('New Home marks future-effective sources', newHomeHtml.includes('futureEffectiveBadge') && newHomeHtml.includes('correction_signal_only'));
+check('New Home marks future-effective sources', newHomeSource.includes('futureEffectiveBadge') && newHomeSource.includes('correction_signal_only'));
 // The official-source badge tells people to CHECK an official source; it must
 // never read as Visable/New Home having verified or certified the content.
 // Inspect the effective presentation — the page's inline <style> plus every

@@ -31,7 +31,9 @@ assert(tx('en', 'heroTitle') !== tx('zh-CN', 'heroTitle'), 'hero title should ch
 assert(tx('en', 'dataReady', { count: 39, source: 'static' }).includes('39'), 'interpolation should substitute {count}');
 assert(tx('missing-locale', 'qPlaceholder') === tx('ko', 'qPlaceholder'), 'missing locale should fall back to ko');
 
-const html = fs.readFileSync(path.join(repoRoot, 'index.html'), 'utf8');
+// Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): Phase 3 of the rebuild
+// moved the i18n runtime functions to src/i18n/runtime.js; the state owners and BOOTSTRAP_KO_FALLBACK stay in index.html.
+const html = [...JSON.parse(fs.readFileSync(path.join(repoRoot, 'scripts', 'frontend_modules.json'), 'utf8')).sources.map((rel) => fs.readFileSync(path.join(repoRoot, rel), 'utf8')), fs.readFileSync(path.join(repoRoot, 'index.html'), 'utf8')].join('\n');
 assert(html.includes('BOOTSTRAP_KO_FALLBACK'), 'index.html should include a built-in bootstrap fallback for failed i18n fetches');
 assert(html.includes('hasFullKoI18nPack()'), 'index.html should guard full language binding when packs fail to load');
 assert(!html.includes('UI_TRANSLATIONS.ko.landingHints[idx]'), 'landing hints must not assume ko landingHints exists during fallback');
@@ -41,7 +43,10 @@ const hardcodedCheck = fs.readFileSync(path.join(repoRoot, 'scripts/check_index_
 assert(hardcodedCheck.includes('blockEnd <= i18nStart'), 'hardcoded-text scanner must not skip a script just because it starts before the i18n runtime');
 assert(hardcodedCheck.includes('scanStringLiterals'), 'hardcoded-text scanner should parse JS literals without broad template-regex spans');
 
-const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map((match) => match[1]);
+// Inline classic scripts are parsed from index.html alone (the module sources in the corpus above are ES modules
+// and may contain '<script' inside string literals).
+const indexOnly = fs.readFileSync(path.join(repoRoot, 'index.html'), 'utf8');
+const scripts = [...indexOnly.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map((match) => match[1]);
 for (const script of scripts) new Function(script);
 
 const visaData = JSON.parse(fs.readFileSync(path.join(repoRoot, 'visa_data.json'), 'utf8'));

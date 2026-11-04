@@ -30,7 +30,7 @@ PAGES = {
     "immigration-checklists": ["assets/css/immigration-checklists.css", "immigration-checklists.html"],
     "agency-directory": ["agency-directory/style.css", "agency-directory/index.html"],
     "enforcement": ["assets/css/enforcement.css", "enforcement.html"],
-    "nationality-interview-hub": ["nationality-interview-hub.html"],
+    "nationality-interview-hub": ["assets/css/nationality-interview-hub.css", "nationality-interview-hub.html"],
     "form-helper": ["assets/css/form-helper.css", "form-helper.html"],
     "knowledge-studio": ["assets/css/knowledge-studio.css", "knowledge-studio.html"],
     "content-studio": ["assets/css/content-studio.css", "content-studio.html"],

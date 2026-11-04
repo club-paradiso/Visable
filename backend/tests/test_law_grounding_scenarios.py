@@ -24,6 +24,8 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _i18n_pack_support import page_source  # noqa: E402  # page + the scripts Phase 5 moved its inline code into
 BACKEND_DIR = REPO_ROOT / "backend"
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
@@ -462,7 +464,7 @@ class LanguageQualityTests(unittest.TestCase):
 class FrontendSourceDisplayTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.ai = (REPO_ROOT / "ai.html").read_text(encoding="utf-8")
+        cls.ai = page_source("ai.html")
 
     def test_friendly_unavailable_text_present(self):
         self.assertIn("Legal source lookup returned an unsupported response format", self.ai)

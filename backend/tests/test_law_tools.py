@@ -18,6 +18,8 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _i18n_pack_support import page_source  # noqa: E402  # page + the scripts Phase 5 moved its inline code into
 BACKEND_DIR = REPO_ROOT / "backend"
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
@@ -348,7 +350,7 @@ class HealthAndDebugSecurityTests(unittest.TestCase):
         # shipped HTML. The non-secret warning-code label LAW_API_KEY_MISSING and
         # the brand name "Paradiso" are allowed; a credential/assignment is not.
         for name in ("ai.html", "index.html"):
-            text = (REPO_ROOT / name).read_text(encoding="utf-8")
+            text = page_source(name)
             self.assertNotIn("OC=paradiso", text, name)
             self.assertNotIn("LAW_API_OC=", text, name)
             self.assertNotIn("LAW_API_KEY=", text, name)

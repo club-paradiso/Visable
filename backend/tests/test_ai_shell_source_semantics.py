@@ -30,7 +30,7 @@ AI_CSS = REPO_ROOT / "assets" / "css" / "waymaker-workspace.css"
 CHECKER = REPO_ROOT / "scripts" / "check_ai_shell_semantics.js"
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _i18n_pack_support import pack_blob  # noqa: E402
+from _i18n_pack_support import pack_blob, page_source  # noqa: E402
 
 # Some English answer-shell labels migrated into the external en.json locale pack;
 # others remain inline in ai.html/index.html, so assert against both surfaces.
@@ -61,7 +61,7 @@ class AiShellStaticTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.html = AI_HTML.read_text(encoding="utf-8")
+        cls.html = page_source("ai.html")  # ai.html + its external page scripts (Phase 5), scripts first
         cls.page_css = cls.html + "\n" + AI_CSS.read_text(encoding="utf-8")
 
     # -- Source chip semantics (Part A / F) ---------------------------------
@@ -167,7 +167,7 @@ if __name__ == "__main__":
 class LegalAnalysisSourcePanelStaticTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.html = AI_HTML.read_text(encoding="utf-8")
+        cls.html = page_source("ai.html")  # ai.html + its external page scripts (Phase 5), scripts first
         cls.index_html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
         cls.en_blob = pack_blob("en")
 

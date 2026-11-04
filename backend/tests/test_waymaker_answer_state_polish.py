@@ -20,13 +20,13 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _i18n_pack_support import SUPPORTED_LOCALES, load_packs  # noqa: E402
+from _i18n_pack_support import SUPPORTED_LOCALES, frontend_source, load_packs  # noqa: E402
 
 
 class WaymakerAnswerStatePolishTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        cls.html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
         start = cls.html.find("async function submitAiAnalysis")
         assert start != -1, "submitAiAnalysis not found in index.html"
         nxt = cls.html.find("\nasync function ", start + 1)

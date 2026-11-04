@@ -224,17 +224,19 @@ function assertInvariants(id, st) {
 }
 
 /* 12 · DOM render smoke — run the REAL renderEmploymentChecklist / weak-help from
- *      index.html in a vm sandbox to verify the rendered markup reflects state. */
+ *      src/features/jobcode.js in a vm sandbox to verify the rendered markup reflects state. */
 {
   const fs = await import('node:fs');
   const vm = await import('node:vm');
   const { fileURLToPath: f2 } = await import('node:url');
   const { dirname: d2, join: j2 } = await import('node:path');
   const repo = j2(d2(f2(import.meta.url)), '..');
-  const html = fs.readFileSync(j2(repo, 'index.html'), 'utf8');
+  // Plain script apart from the trailing `export {…}` block; slice up to it (see
+  // check_employment_reporting_helper.mjs).
+  const html = fs.readFileSync(j2(repo, 'src', 'features', 'jobcode.js'), 'utf8');
   const chk = await import('./employment_checklist.mjs');
   const start = html.indexOf('// --- Job Code Modal · HiKorea');
-  const end = html.indexOf('\nfunction fallbackCopy(', start);
+  const end = html.indexOf('\nexport {', start);
   if (start === -1 || end === -1) { fail('render', 'could not locate helper region'); }
   else {
     const els = {};

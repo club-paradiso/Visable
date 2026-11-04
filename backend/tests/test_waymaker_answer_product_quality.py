@@ -439,6 +439,8 @@ class FastRoutingTests(_AskHarness):
 
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from _i18n_pack_support import page_source  # noqa: E402  # page + the scripts Phase 5 moved its inline code into
 
 
 class FrontendContractTests(unittest.TestCase):
@@ -446,10 +448,18 @@ class FrontendContractTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        with open(os.path.join(REPO_ROOT, "ai.html"), encoding="utf-8") as fh:
-            cls.ai = fh.read()
+        cls.ai = page_source("ai.html")
         with open(os.path.join(REPO_ROOT, "index.html"), encoding="utf-8") as fh:
             cls.index = fh.read()
+        # Phase 3 of the frontend rebuild moves inline index.html code into ES modules (scripts/frontend_modules.json);
+        # the static guards below read those modules too, modules first.
+        with open(os.path.join(REPO_ROOT, "scripts", "frontend_modules.json"), encoding="utf-8") as fh:
+            modules = json.load(fh)["sources"]
+        parts = []
+        for rel in modules:
+            with open(os.path.join(REPO_ROOT, rel), encoding="utf-8") as fh:
+                parts.append(fh.read())
+        cls.index = "\n".join(parts + [cls.index])
 
     def test_no_public_model_label_renderers(self):
         for html in (self.ai, self.index):

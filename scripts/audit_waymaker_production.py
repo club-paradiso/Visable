@@ -34,6 +34,7 @@ SYNTHETIC_QUESTION = (
 def _repo_backend_url() -> str:
     candidates = [
         REPO_ROOT / "assets/js/backend-origin.js",
+        REPO_ROOT / "assets/js/pages/ai-main.js",
         REPO_ROOT / "ai.html",
         REPO_ROOT / "index.html",
     ]

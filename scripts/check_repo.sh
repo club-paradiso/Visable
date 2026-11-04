@@ -12,7 +12,7 @@ ALLOW_BACKEND_TEST_SKIP="${ALLOW_BACKEND_TEST_SKIP:-0}"
 
 run_offline_backend_checks() {
   echo "INFO: Running offline-safe backend syntax checks..."
-  if ! python3 -m py_compile backend/services/*.py backend/services/knowledge/*.py backend/paradiso_backend.py backend/tests/test_paradiso_backend.py backend/tests/test_e7_workplace_change_law_grounding.py; then
+  if ! python3 -m py_compile backend/services/*.py backend/services/knowledge/*.py backend/paradiso_backend.py backend/routers/*.py backend/tests/test_paradiso_backend.py backend/tests/test_e7_workplace_change_law_grounding.py; then
     echo "ERROR: Offline-safe backend syntax checks failed." >&2
     exit 1
   fi
@@ -478,6 +478,10 @@ echo "[10/14] Scanning key user-facing files for forbidden branding strings..."
 KEY_FILES=(
   "index.html"
   "ai.html"
+  "assets/js/pages/ai-main.js"
+  "assets/js/pages/ai-navigator-handoff.js"
+  "assets/js/pages/ai-surface-switcher.js"
+  "assets/js/pages/ai-theme-button.js"
   "visa_data.json"
   "moonshot_backend_fastapi.py"
 )

@@ -98,7 +98,10 @@ const visaData = readJson('visa_data.json') || [];
 const issuance = readJson('data/visa_issuance_records.json') || {};
 const evidence = readJson('data/procedure_evidence_bindings.json') || {};
 const overlays = readJson('data/official_web_overlays.json') || {};
-const indexHtml = readText('index.html');
+// Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): Phase 3 of the rebuild
+// moves inline index.html code into ES modules; a brace-matching slice must find the real definition, not the stub.
+const indexHtml = [...JSON.parse(readText('scripts/frontend_modules.json')).sources.map((rel) => readText(rel)), readText('index.html')].join('\n');
+const docsJs = readText('src/docs/normalize.js'); // Phase 3: normalisation/render helpers moved out of index.html
 
 const canonicalCodes = visaData
   .filter(v => v && !['faq', 'scn', 'nhis'].includes(v.cat))
@@ -211,7 +214,7 @@ check('overlay policy includes the required consular caution',
 check('UI renders visa issuance section', indexHtml.includes('function renderVisaIssuanceSection') && indexHtml.includes('visa-issuance-section'));
 check('UI renders actionable mission-specific source links',
   indexHtml.includes('issuance-mission-sources') && indexHtml.includes('record.sourceUrl') && !indexHtml.includes('<select>${options}</select>'));
-check('UI renders source limitation explanation', indexHtml.includes('function renderSourceLimitationExplanation'));
+check('UI renders source limitation explanation', docsJs.includes('function renderSourceLimitationExplanation'));
 check('UI avoids stale exact-rank 6/5 filters',
   !indexHtml.includes('v._exactRank === 6') && !indexHtml.includes('v._exactRank === 5'));
 check('UI uses numeric exact-code thresholds',

@@ -69,7 +69,9 @@ const byCode = (c) => visas.find((v) => v.code === c);
 
 const f4Src = read('assets/js/f4-route-guide.js');
 const csgSrc = read('assets/js/complex-status-guide.js');
-const indexHtml = read('index.html');
+// Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): Phase 3 of the rebuild
+// moves inline index.html code into ES modules (COMPLEX_GUIDE_MIGRATED now lives in src/render/cards/sections.js).
+const indexHtml = [...JSON.parse(read('scripts/frontend_modules.json')).sources.map((rel) => read(rel)), read('index.html')].join('\n');
 const STATUSES = ['F-4', 'F-6', 'G-1', 'E-7', 'F-5', 'D-2', 'D-4'];
 const SIX = ['F-6', 'G-1', 'E-7', 'F-5', 'D-2', 'D-4'];
 
