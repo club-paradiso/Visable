@@ -91,13 +91,9 @@ has('data-jc-filter="all"', 'filter: all missing');
 has('data-jc-filter="occupation"', 'filter: occupation missing');
 has('data-jc-filter="industry"', 'filter: industry missing');
 ['전체', '직종만', '업종만'].forEach(t => has(`>${t}<`, `filter label ${t} missing`));
-// friendly natural-language example chips (field + service + professional +
-// retail + logistics coverage), each runs the analyzer. Entertainment/tattoo
-// (아이돌 연습생/타투이스트) are intentionally NOT featured as main-screen chips —
-// they're legally-sensitive umbrella terms; the decomposition + caution logic
-// is still fully covered by scripts/check_employment_code_analyzer.mjs fixtures.
-['골프장 청소해요', '한치잡이 배에서 일해요', '학원에서 영어 가르쳐요', '카페에서 음료 만들어요', '편의점에서 계산해요', '택배 상하차 해요'].forEach(c =>
-  has(`data-jc-chip="${c}"`, `example chip ${c} missing`));
+// Keep the initial search focused: examples appear only as contextual weak-result help.
+ok(!/id="jcExamplesLabel"|id="jcChips"|data-jc-chip=/.test(html), 'default-view example prompts must be absent');
+ok(ko.jobCodePlaceholder === '직종명, 업종명 또는 하는 일을 검색하세요', 'KO search placeholder should guide without a sample list');
 // separate panes + badges
 has('data-pane="occupation"', 'occupation pane missing');
 has('data-pane="industry"', 'industry pane missing');
@@ -112,14 +108,14 @@ has('취업정보 신고용 분류 참고', 'required reference-only warning mis
 has('자격외활동 허가 여부를 판단하지 않습니다', 'required boundary warning missing');
 has('HiKorea 신고 화면 또는 1345', 'required final-confirmation warning missing');
 // wiring: action handlers present
-['set-jobcode-filter', 'search-jobcode-chip', 'select-jobcode', 'copy-jobcode-memo'].forEach(a =>
+['set-jobcode-filter', 'select-jobcode', 'copy-jobcode-memo'].forEach(a =>
   has(`'${a}'`, `action handler '${a}' not wired`));
 // risky label replaced: AI button must not say "공식 직종·업종"
 ok(!ko.jobCodeNaturalSearchLocal.includes('공식'), 'jobCodeNaturalSearchLocal still uses risky "공식" wording');
 // keyboard: interactive controls are native focusable elements
 has('type="search" id="jcSearchInput"', 'search input must be a native <input type=search>');
 ok(/<button type="button"[^>]*class="jc2-seg/.test(html), 'filter tabs must be native <button> (keyboard focusable)');
-ok(/<button type="button" class="jc2-chip"/.test(html), 'chips must be native <button> (keyboard focusable)');
+hasJs('class="jc2-weak-chip"', 'contextual weak-result example buttons must remain available');
 ok(/<button type="button" class="jc2-copy"/.test(html), 'copy must be native <button> (keyboard focusable)');
 has('class="sr-only">직종 또는 업종 검색', 'screen-reader label for search input missing');
 has('aria-label="검색 범위 선택"', 'screen-reader label for filter group missing');
