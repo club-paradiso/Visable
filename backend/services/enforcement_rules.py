@@ -301,7 +301,7 @@ def calculate_legal_baseline(case: StructuredCase, *, database: Optional[Dict[st
         return LegalBaseline(
             status="HISTORICAL_RULE_UNAVAILABLE",
             violation_code=case.violation_code,
-            missing_facts=["해당 위반기간 전체에 적용되는 검증된 법령 스냅샷"],
+            missing_facts=["해당 위반기간 전체에 적용되는 법령 기준"],
             confidence="INSUFFICIENT",
             workplace_determination=determination,
         )

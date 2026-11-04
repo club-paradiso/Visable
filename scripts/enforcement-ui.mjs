@@ -629,7 +629,7 @@ const won = (value) => value == null ? '산출 불가' : `${Number(value).toLoca
 const range = (value) => !value ? '예상 범위 산출 불가' : `${won(value.minimumKrw)} – ${won(value.maximumKrw)}`;
 const confidenceLabels = { VERY_HIGH: '매우 높음', HIGH: '높음', MEDIUM: '중간', LOW: '낮음', VERY_LOW: '매우 낮음', INSUFFICIENT: '근거 부족' };
 const likelihoodLabels = { VERY_HIGH: '매우 높음', HIGH: '높음', MODERATE: '중간', LOW: '낮음', VERY_LOW: '매우 낮음', UNKNOWN: '특정 어려움' };
-const groundingLabels = { VERIFIED: '실시간 법령 API 검증 완료', AUDIT_ONLY: '법령 API 감사 모드', LIMITED: '법령 API 부분 검증', UNAVAILABLE: '정적 법령 스냅샷 사용' };
+const groundingLabels = { VERIFIED: '법령 원문 대조 완료', AUDIT_ONLY: '법령 원문 대조 중', LIMITED: '법령 원문 일부 대조', UNAVAILABLE: '저장된 법령 기준' };
 const dispositionLabels = {
   STAY_PERMISSION_DISADVANTAGE: '체류허가상 불이익',
   DEPARTURE_ORDER: '출국명령',
@@ -646,10 +646,12 @@ function factors(items = []) {
 
 // Server limitations are written for operators ("OpenRouter prediction unavailable:
 // http_404", "Vercel에 ... 환경변수"). Keep every notice, but say it in plain Korean.
+// Failure codes stay internal; users only ever see the calm retry wording
+// below — never provider names, configuration state, or validation internals.
 const providerReasonLabels = {
-  provider_rate_limit: '무료 AI 호출 한도 도달', timeout: '응답 시간 초과', network_error: '네트워크 오류',
-  no_compatible_endpoint: '사용할 수 있는 AI 모델 없음', http_404: '사용할 수 있는 AI 모델 없음',
-  empty_response: 'AI가 빈 응답을 보냄', openrouter_not_configured: 'AI 서버 설정 필요', provider_auth_error: 'AI 서버 인증 오류',
+  provider_rate_limit: '일시적 사용량 제한', timeout: '응답 시간 초과', network_error: '연결 문제',
+  no_compatible_endpoint: '일시적 오류', http_404: '일시적 오류',
+  empty_response: '일시적 오류', openrouter_not_configured: '일시적 오류', provider_auth_error: '일시적 오류',
 };
 function plainLimitation(text) {
   const value = String(text || '').trim();
@@ -671,8 +673,9 @@ function plainLimitation(text) {
   }
   const provider = value.match(/^OpenRouter prediction unavailable:\s*(\S+)/i);
   if (provider) return `AI 예상을 받지 못했습니다 (${providerReasonLabels[provider[1]] || '일시적 오류'}). 법령 기준은 그대로 유효합니다.`;
-  if (/^OpenRouter prediction rejected/i.test(value)) return 'AI 응답이 근거·형식 검증을 통과하지 못해 표시하지 않았습니다.';
-  if (/Vercel에 지원되는 법령 API 인증/.test(value)) return '실시간 법령 조회를 쓸 수 없어, 저장된 법령 기준(검증 스냅샷)으로 계산했습니다.';
+  if (/^OpenRouter prediction rejected/i.test(value)) return '일시적으로 분석을 불러오지 못했습니다. 법령 기준 결과는 그대로 확인할 수 있습니다.';
+  if (/Vercel에 지원되는 법령 API 인증|정적 검증 스냅샷|버전 고정 스냅샷|저장된 법령 스냅샷/.test(value)) return '실시간 법령 조회를 쓸 수 없어, 저장된 법령 기준으로 계산했습니다.';
+  if (/LAW_GROUNDING_MODE|grounding이 disabled/.test(value)) return '실시간 법령 원문 대조가 완료되지 않았습니다. 저장된 기준과 최신 공식 법령을 비교해 주세요.';
   if (/법령 API 인증값이 없어/.test(value)) return '실시간 판례 조회를 쓸 수 없어 공식 판례 본문은 검색하지 않았습니다.';
   return value;
 }
@@ -854,7 +857,7 @@ function verdictSentence(baseline, prediction, grounding) {
   }
   const primary = prediction.primaryDisposition;
   if (primary) parts.push(`가장 유력한 처분은 <strong>${escapeHtml(dispositionLabels[primary.type] || primary.type)}</strong>(가능성 ${escapeHtml(likelihoodLabels[primary.likelihood] || '특정 어려움')})이에요.`);
-  if (!money && !primary) parts.push('AI 예상은 이번에 검증을 통과하지 못해, 법령 기준만 확정적으로 보여드려요.');
+  if (!money && !primary) parts.push('AI 예상은 일시적으로 불러오지 못해, 법령 기준만 보여드려요.');
   return parts.join(' ');
 }
 
@@ -915,7 +918,6 @@ function determinationCard(data) {
     ${det.exceptionsChecked?.length ? `<div><strong>확인한 고시 요건·적용제외</strong>${list(det.exceptionsChecked)}</div>` : ''}
     ${det.missingFacts?.length ? `<div><strong>아직 확인할 사항</strong>${list(det.missingFacts)}${det.nextQuestions?.length ? `<p class="subtle">확인 방법: 외국인등록증(체류자격·직종), 고용계약서와 계약종료 확인 자료, 허가서·신고 접수증을 보거나 관할 출입국·외국인관서(☎1345)에 문의해 주세요.</p>` : ''}</div>` : ''}
     ${det.warnings?.length ? `<div><strong>주의</strong>${list(det.warnings)}</div>` : ''}
-    ${det.humanReviewReason ? `<p class="subtle">사람의 검토가 필요한 이유: ${escapeHtml(det.humanReviewReason)}</p>` : ''}
     ${det.effectiveLawVersion ? `<p class="subtle">적용 법령 버전: ${escapeHtml(det.effectiveLawVersion)}</p>` : ''}
     ${evidence ? `<div class="evidence-list">${evidence}</div>` : ''}
   </article>`;
@@ -934,19 +936,23 @@ function renderResult(data) {
   const displayLimitations = [...new Set(limitations.map(plainLimitation).filter(Boolean))];
   const groundingLabel = groundingLabels[grounding.status] || '실시간 검증 없음 · 저장된 법령 기준';
   const baselineReady = baseline.status === 'AVAILABLE';
+  // Failure categories are internal codes. Whatever the cause, the user
+  // sees one calm message: retry later, and the legal baseline still stands.
+  // Internal ops state (provider config, API keys, validation details) is
+  // never shown to end users.
   const failureMessages = {
-    provider_rate_limit: ['AI 서비스 요청 제한', '무료 AI 모델의 호출 한도에 도달했습니다. 잠시 후 다시 시도할 수 있습니다.'],
-    timeout: ['AI 응답 시간 초과', 'AI 제공자가 제한 시간 내 응답하지 않았습니다.'],
-    network_error: ['AI 네트워크 연결 실패', 'AI 제공자 연결에 문제가 발생했습니다.'],
-    invalid_structured_prediction: ['AI 응답 형식 검증 실패', 'AI의 응답이 법적 근거 또는 데이터 형식 검증을 통과하지 못했습니다.'],
-    openrouter_not_configured: ['AI 제공자 설정 필요', '서버의 AI 제공자 인증 설정을 확인해야 합니다.'],
-    no_compatible_endpoint: ['AI 모델 일시 사용 불가', '지금 쓸 수 있는 무료 AI 모델이 없습니다. 법령 기준은 그대로 유효하며, 잠시 후 다시 시도할 수 있습니다.'],
-    http_404: ['AI 모델 일시 사용 불가', '지금 쓸 수 있는 무료 AI 모델이 없습니다. 법령 기준은 그대로 유효하며, 잠시 후 다시 시도할 수 있습니다.'],
-    provider_auth_error: ['AI 서버 인증 오류', 'AI 제공자 인증에 실패했습니다. 운영자가 API 키 설정을 확인해야 합니다. 법령 기준은 그대로 유효합니다.'],
-    empty_response: ['AI 빈 응답', 'AI가 내용 없는 응답을 보내 표시하지 않았습니다. 잠시 후 다시 시도해 주세요.'],
+    provider_rate_limit: ['일시적으로 분석을 불러오지 못했습니다', '잠시 후 다시 시도해 주세요. 법령 기준 결과는 그대로 확인할 수 있습니다.'],
+    timeout: ['일시적으로 분석을 불러오지 못했습니다', '응답이 늦어지고 있습니다. 잠시 후 다시 시도해 주세요. 법령 기준 결과는 그대로 확인할 수 있습니다.'],
+    network_error: ['일시적으로 분석을 불러오지 못했습니다', '연결이 원활하지 않습니다. 잠시 후 다시 시도해 주세요. 법령 기준 결과는 그대로 확인할 수 있습니다.'],
+    invalid_structured_prediction: ['일시적으로 분석을 불러오지 못했습니다', '잠시 후 다시 시도해 주세요. 법령 기준 결과는 그대로 확인할 수 있습니다.'],
+    openrouter_not_configured: ['일시적으로 분석을 불러오지 못했습니다', '잠시 후 다시 시도해 주세요. 법령 기준 결과는 그대로 확인할 수 있습니다.'],
+    no_compatible_endpoint: ['일시적으로 분석을 불러오지 못했습니다', '잠시 후 다시 시도해 주세요. 법령 기준 결과는 그대로 확인할 수 있습니다.'],
+    http_404: ['일시적으로 분석을 불러오지 못했습니다', '잠시 후 다시 시도해 주세요. 법령 기준 결과는 그대로 확인할 수 있습니다.'],
+    provider_auth_error: ['일시적으로 분석을 불러오지 못했습니다', '잠시 후 다시 시도해 주세요. 법령 기준 결과는 그대로 확인할 수 있습니다.'],
+    empty_response: ['일시적으로 분석을 불러오지 못했습니다', '잠시 후 다시 시도해 주세요. 법령 기준 결과는 그대로 확인할 수 있습니다.'],
   };
   const failureNotice = failureMessages[prediction.failureCategory]
-    || ['AI 추정 근거 부족', '안전하게 표시할 수 있는 검증된 AI 예측이 없습니다.'];
+    || ['일시적으로 분석을 불러오지 못했습니다', '잠시 후 다시 시도해 주세요. 법령 기준 결과는 그대로 확인할 수 있습니다.'];
   const modelLabel = data.analysisPending ? '처분 전망 분석 중' : prediction.status === 'UNAVAILABLE' ? '처분 전망 보류' : 'AI 보조 분석 · 최종 처분 아님';
   const durationDays = Number(data.case?.durationDays ?? structuredCase?.durationDays);
   // When the next-step card asks for dates, it already carries this explanation.
