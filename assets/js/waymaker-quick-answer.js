@@ -305,6 +305,21 @@
     if (/<|>|https?:|javascript:|\[|\]|\{|\}/i.test(s)) reasons.push('markup');
     var corpus = allowedCorpus(qa);
     var corpusNorm = normalizeToken(corpus);
+    // A digit seen elsewhere in the evidence is not proof that the *same quantity*
+    // or currency amount was approved. Preserve units and compare actual fee values.
+    (s.match(/₩\s?[\d,]+|[\d,]+\s*(?:만\s?원|천\s?원|원|won|krw)/gi) || []).forEach(function (token) {
+      var parsed = token.match(/([\d,]+)\s*(만\s?원|천\s?원|원|won|krw)?/i);
+      if (!parsed) return;
+      var multiplier = parsed[2] && /만/.test(parsed[2]) ? 10000 : parsed[2] && /천/.test(parsed[2]) ? 1000 : 1;
+      var amount = Number(parsed[1].replace(/,/g, '')) * multiplier;
+      if (!(qa.fees || []).some(function (f) { return f.amountState === 'FIXED' && Number(f.amount) === amount; })) reasons.push('number ' + token);
+    });
+    (s.match(/\d[\d,]*\s*(?:부|장|매|통|일|개월|년|days?|months?|years?|copies?|%)/gi) || []).forEach(function (token) {
+      if (corpusNorm.indexOf(normalizeToken(token)) < 0) reasons.push('number ' + token);
+    });
+    (s.match(/\b(?:one|two|three|four|five|six|seven|eight|nine|ten)\s+(?:copies?|originals?|pages?|photographs?)\b/gi) || []).forEach(function (token) {
+      if (corpus.toLowerCase().indexOf(token.toLowerCase()) < 0) reasons.push('fact word ' + token);
+    });
     var facts = s.match(FACT_TOKEN_RE) || [];
     facts.forEach(function (f) { var n = normalizeToken(f); var digits = n.replace(/[^\d]/g, ''); if (digits && corpusNorm.indexOf(digits) < 0) reasons.push('number ' + f); });
     var words = s.match(NEW_FACT_WORDS) || [];

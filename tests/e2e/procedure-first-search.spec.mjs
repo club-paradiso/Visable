@@ -82,6 +82,9 @@ test.describe('status-independent procedures answer without a status', () => {
     await expect(fee).toContainText('납부 방식');
     const docNames = await sg.locator('.sg-doc-name').allTextContents();
     expect(docNames.filter((n) => /수수료/.test(n))).toEqual([]);
+    expect(docNames).toEqual(expect.arrayContaining(['여권 원본', '여권 인적사항면 사본']));
+    await expect(sg.locator('.sg-doc-group-required')).toContainText('여권 원본');
+    await expect(sg.locator('.sg-doc-group-required')).toContainText('여권 인적사항면 사본');
     // physical form only where the regulation says it (existing card = original, not returned)
     await expect(sg.locator('.sg-doc-form').first()).toBeVisible();
     await noHorizontalScroll(page);
@@ -93,10 +96,14 @@ test.describe('status-independent procedures answer without a status', () => {
     const sg = await search(page, '외국인등록증 재발급');
     await expect(sg.locator('.sg-doc-group-conditional')).toContainText('원래의 외국인등록증');
     await answer(page, 'lost', 'reissue_reason');
+    await expect(sg.locator('.sg-doc-group-required')).toContainText('여권 원본');
+    await expect(sg.locator('.sg-doc-group-required')).toContainText('여권 인적사항면 사본');
     await expect(sg.locator('.sg-doc-group-na')).toBeVisible();
     await expect(sg.locator('.sg-doc-group-na')).toContainText('원래의 외국인등록증');
     await expect(sg.locator('.sg-doc-group-required')).toBeVisible();
     await answer(page, 'damaged', 'reissue_reason');
+    await expect(sg.locator('.sg-doc-group-required')).toContainText('여권 원본');
+    await expect(sg.locator('.sg-doc-group-required')).toContainText('여권 인적사항면 사본');
     await expect(sg.locator('.sg-doc-group-na')).toHaveCount(0);
     await expect(sg.locator('.sg-doc-group-required')).toContainText('원래의 외국인등록증');
     // the fee never changes with the reason
@@ -144,6 +151,8 @@ test.describe('status-independent procedures answer without a status', () => {
     const sg = await search(page, 'residence card reissue');
     await expect(sg).toHaveAttribute('data-sg-kind', 'procedure');
     await expect(sg.locator('#sgAnswerTitle')).toContainText('Residence card reissue');
+    await expect(sg.locator('.sg-doc-group-required')).toContainText('Original passport');
+    await expect(sg.locator('.sg-doc-group-required')).toContainText('Copy of passport bio-data page');
     await expect(sg.locator('.sg-fee-amount')).toHaveText('₩35,000');
     await noHorizontalScroll(page);
   });
