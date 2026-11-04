@@ -1,0 +1,416 @@
+{
+  "cases": [
+    {
+      "baselineAmountKrw": 1000000,
+      "baselineStatus": "AVAILABLE",
+      "case": {
+        "assessmentDate": "2026-11-04",
+        "durationDays": 63,
+        "occupationCode": "441",
+        "previousEmploymentEndReason": "CONTRACT_EXPIRED",
+        "procedureStatus": "NONE",
+        "statusOfStay": "E-7-4",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "workplaceChangeType": "CHANGE"
+      },
+      "description": "E-7 excluded occupation (441 cook) is a prior-permission case; fine table applies.",
+      "dutyBreach": "ESTABLISHED",
+      "id": "e7-permit-excluded-occupation",
+      "regime": "PERMIT"
+    },
+    {
+      "baselineAmountKrw": null,
+      "baselineStatus": "ADMINISTRATIVE_FINE_TRACK",
+      "case": {
+        "actuallyStartedWork": true,
+        "alienRegistered": true,
+        "assessmentDate": "2026-11-04",
+        "durationDays": 63,
+        "meetsNewWorkplaceQualifications": true,
+        "occupationCode": "1234",
+        "previousEmploymentEndReason": "CONTRACT_EXPIRED",
+        "procedureStatus": "NONE",
+        "statusOfStay": "E-7-4",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "workplaceChangeDate": "2026-09-05",
+        "workplaceChangeType": "CHANGE"
+      },
+      "description": "All Notice 2020-212 requirements met, no exclusions, never reported, deadline passed.",
+      "dutyBreach": "ESTABLISHED",
+      "id": "e7-report-confirmed-deadline-passed",
+      "regime": "REPORT",
+      "reportTimeliness": "NOT_REPORTED_DEADLINE_PASSED"
+    },
+    {
+      "baselineAmountKrw": null,
+      "baselineStatus": "MISSING_FACTS",
+      "case": {
+        "assessmentDate": "2026-11-04",
+        "durationDays": 63,
+        "statusOfStay": "E-7",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+      },
+      "description": "E-7 without an occupation code cannot be classified.",
+      "id": "e7-occupation-unknown",
+      "regime": "UNRESOLVED"
+    },
+    {
+      "baselineAmountKrw": null,
+      "baselineStatus": "MISSING_FACTS",
+      "case": {
+        "alienRegistered": true,
+        "assessmentDate": "2026-11-04",
+        "durationDays": 63,
+        "meetsNewWorkplaceQualifications": true,
+        "occupationCode": "2742",
+        "previousEmploymentEndReason": "CONTRACT_EXPIRED",
+        "statusOfStay": "E-7-1",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+      },
+      "description": "Occupation 2742 is excluded only for overseas online product sellers; detail unknown.",
+      "id": "e7-occupation-2742-conditional",
+      "regime": "UNRESOLVED"
+    },
+    {
+      "baselineAmountKrw": 1000000,
+      "baselineStatus": "AVAILABLE",
+      "case": {
+        "assessmentDate": "2026-11-04",
+        "durationDays": 63,
+        "procedureStatus": "NONE",
+        "statusOfStay": "E-6-2",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+      },
+      "description": "E-6-2 is expressly excluded from the report track by the notice.",
+      "dutyBreach": "ESTABLISHED",
+      "id": "e6-2-special-restriction",
+      "regime": "PERMIT"
+    },
+    {
+      "baselineAmountKrw": null,
+      "baselineStatus": "ADMINISTRATIVE_FINE_TRACK",
+      "case": {
+        "alienRegistered": true,
+        "assessmentDate": "2026-11-04",
+        "durationDays": 40,
+        "meetsNewWorkplaceQualifications": true,
+        "occupationCode": "1234",
+        "previousEmploymentEndReason": "CONTRACT_EXPIRED",
+        "procedureStatus": "NONE",
+        "statusOfStay": "E-2",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "workplaceChangeDate": "2026-09-25",
+        "workplaceChangeType": "CHANGE"
+      },
+      "description": "Contract-expiry move for an E-2 teacher meeting all notice requirements.",
+      "dutyBreach": "ESTABLISHED",
+      "id": "contract-expiry-report",
+      "regime": "REPORT"
+    },
+    {
+      "baselineAmountKrw": 1000000,
+      "baselineStatus": "AVAILABLE",
+      "case": {
+        "alienRegistered": true,
+        "assessmentDate": "2026-11-04",
+        "durationDays": 63,
+        "employerConsent": false,
+        "meetsNewWorkplaceQualifications": true,
+        "occupationCode": "1234",
+        "previousEmploymentEndReason": "RESIGNED_MID_CONTRACT",
+        "procedureStatus": "NONE",
+        "statusOfStay": "E-7-4",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "workplaceChangeType": "CHANGE"
+      },
+      "description": "Mid-contract resignation without former employer consent is notice-excluded.",
+      "dutyBreach": "ESTABLISHED",
+      "id": "resignation-no-consent-permit",
+      "regime": "PERMIT"
+    },
+    {
+      "baselineAmountKrw": null,
+      "baselineStatus": "MISSING_FACTS",
+      "case": {
+        "alienRegistered": true,
+        "assessmentDate": "2026-11-04",
+        "durationDays": 63,
+        "meetsNewWorkplaceQualifications": true,
+        "occupationCode": "1234",
+        "previousEmploymentEndReason": "RESIGNED_MID_CONTRACT",
+        "statusOfStay": "E-7-4",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "workplaceChangeType": "CHANGE"
+      },
+      "description": "Mid-contract resignation with unknown consent cannot be classified.",
+      "id": "resignation-consent-unknown",
+      "regime": "UNRESOLVED"
+    },
+    {
+      "baselineAmountKrw": null,
+      "baselineStatus": "ADMINISTRATIVE_FINE_TRACK",
+      "case": {
+        "alienRegistered": true,
+        "assessmentDate": "2026-11-04",
+        "durationDays": 30,
+        "meetsNewWorkplaceQualifications": true,
+        "occupationCode": "1234",
+        "procedureStatus": "NONE",
+        "statusOfStay": "E-3",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "workplaceChangeDate": "2026-09-01",
+        "workplaceChangeType": "ADDITION"
+      },
+      "description": "Workplace addition while still employed: own-fault exclusion does not apply.",
+      "dutyBreach": "ESTABLISHED",
+      "id": "workplace-addition-report",
+      "regime": "REPORT"
+    },
+    {
+      "baselineAmountKrw": null,
+      "baselineStatus": "NOT_APPLICABLE",
+      "case": {
+        "actuallyStartedWork": false,
+        "assessmentDate": "2026-11-04",
+        "durationDays": 0,
+        "statusOfStay": "E-7-4",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+      },
+      "description": "Never actually started work at the new workplace.",
+      "dutyBreach": "NOT_ESTABLISHED",
+      "id": "never-started-work",
+      "regime": "NOT_APPLICABLE"
+    },
+    {
+      "baselineAmountKrw": null,
+      "baselineStatus": "NOT_APPLICABLE",
+      "case": {
+        "assessmentDate": "2026-11-04",
+        "durationDays": 63,
+        "occupationCode": "441",
+        "procedureStatus": "PERMIT_GRANTED",
+        "statusOfStay": "E-7-4",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "workplaceChangeAuthorized": true
+      },
+      "description": "Permit-track case where permission was actually obtained first.",
+      "dutyBreach": "NOT_ESTABLISHED",
+      "id": "permit-granted-no-breach",
+      "regime": "PERMIT"
+    },
+    {
+      "baselineAmountKrw": null,
+      "baselineStatus": "NOT_APPLICABLE",
+      "case": {
+        "alienRegistered": true,
+        "applicationOrReportDate": "2026-09-10",
+        "assessmentDate": "2026-11-04",
+        "durationDays": 63,
+        "meetsNewWorkplaceQualifications": true,
+        "occupationCode": "1234",
+        "previousEmploymentEndReason": "CONTRACT_EXPIRED",
+        "procedureStatus": "REPORT_FILED",
+        "statusOfStay": "E-7-4",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "workplaceChangeDate": "2026-09-01",
+        "workplaceChangeType": "CHANGE"
+      },
+      "description": "Reported 9 days after the change, inside the 15-day deadline.",
+      "dutyBreach": "NOT_ESTABLISHED",
+      "id": "reported-within-deadline",
+      "regime": "REPORT",
+      "reportTimeliness": "WITHIN_DEADLINE"
+    },
+    {
+      "baselineAmountKrw": null,
+      "baselineStatus": "ADMINISTRATIVE_FINE_TRACK",
+      "case": {
+        "alienRegistered": true,
+        "applicationOrReportDate": "2026-10-10",
+        "assessmentDate": "2026-11-04",
+        "durationDays": 63,
+        "meetsNewWorkplaceQualifications": true,
+        "occupationCode": "1234",
+        "previousEmploymentEndReason": "CONTRACT_EXPIRED",
+        "procedureStatus": "REPORT_FILED",
+        "statusOfStay": "E-7-4",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "workplaceChangeDate": "2026-09-01",
+        "workplaceChangeType": "CHANGE"
+      },
+      "description": "Reported 39 days after the change, past the 15-day deadline.",
+      "dutyBreach": "ESTABLISHED",
+      "id": "reported-late",
+      "regime": "REPORT",
+      "reportTimeliness": "LATE"
+    },
+    {
+      "baselineAmountKrw": null,
+      "baselineStatus": "ADMINISTRATIVE_FINE_TRACK",
+      "case": {
+        "alienRegistered": true,
+        "assessmentDate": "2026-11-04",
+        "durationDays": 63,
+        "meetsNewWorkplaceQualifications": true,
+        "occupationCode": "1234",
+        "previousEmploymentEndReason": "CONTRACT_EXPIRED",
+        "procedureStatus": "REPORT_FILED",
+        "statusOfStay": "E-7-4",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "workplaceChangeType": "CHANGE"
+      },
+      "description": "Report filed but neither the change date nor the report date is known.",
+      "dutyBreach": "UNRESOLVED",
+      "id": "report-date-unclear",
+      "regime": "REPORT",
+      "reportTimeliness": "UNKNOWN"
+    },
+    {
+      "baselineAmountKrw": null,
+      "baselineStatus": "MISSING_FACTS",
+      "case": {
+        "assessmentDate": "2026-11-04",
+        "durationDays": 63,
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+      },
+      "description": "User answered 'do not know' to everything, including the status of stay.",
+      "id": "all-unknown",
+      "regime": "UNRESOLVED"
+    },
+    {
+      "baselineAmountKrw": null,
+      "baselineStatus": "HISTORICAL_RULE_UNAVAILABLE",
+      "case": {
+        "assessmentDate": "2026-11-04",
+        "occupationCode": "441",
+        "procedureStatus": "NONE",
+        "statusOfStay": "E-7-4",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "violationEndDate": "2026-03-01",
+        "violationStartDate": "2025-12-01",
+        "workplaceChangeDate": "2026-02-01"
+      },
+      "description": "Violation period crosses the verified fine-snapshot boundary; no retroactive amount.",
+      "id": "law-amended-during-period",
+      "regime": "PERMIT"
+    },
+    {
+      "baselineAmountKrw": null,
+      "baselineStatus": "HISTORICAL_RULE_UNAVAILABLE",
+      "case": {
+        "assessmentDate": "2020-03-01",
+        "durationDays": 63,
+        "statusOfStay": "E-7-4",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "workplaceChangeDate": "2020-01-15"
+      },
+      "description": "Change predates Notice 2020-212 (effective 2020-06-22); historical version unverified.",
+      "id": "before-notice-effective",
+      "regime": "UNRESOLVED"
+    },
+    {
+      "baselineAmountKrw": null,
+      "baselineStatus": "MISSING_FACTS",
+      "case": {
+        "assessmentDate": "2026-11-04",
+        "durationDays": 30,
+        "statusOfStay": "E-7-4",
+        "violationCandidates": [
+          "UNAUTHORIZED_EMPLOYMENT_ART18_2",
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": null
+      },
+      "description": "Two suspected workplace provisions, regime facts unknown: nothing is double-counted or guessed.",
+      "id": "two-suspected-unconfirmed",
+      "regime": "UNRESOLVED"
+    },
+    {
+      "baselineAmountKrw": 1000000,
+      "baselineStatus": "AVAILABLE",
+      "case": {
+        "assessmentDate": "2026-11-04",
+        "durationDays": 63,
+        "statusOfStay": "E-2",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "workplaceRegime": "PERMIT"
+      },
+      "description": "Legacy path: user confirmed PERMIT with the competent office; conditional calculation.",
+      "dutyBreach": "UNRESOLVED",
+      "id": "user-confirmed-permit",
+      "regime": "PERMIT"
+    },
+    {
+      "baselineAmountKrw": null,
+      "baselineStatus": "ADMINISTRATIVE_FINE_TRACK",
+      "case": {
+        "assessmentDate": "2026-11-04",
+        "durationDays": 63,
+        "statusOfStay": "E-2",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "workplaceRegime": "REPORT"
+      },
+      "description": "Legacy path: user confirmed REPORT; administrative-fine track, no fine-table amount.",
+      "id": "user-confirmed-report",
+      "regime": "REPORT"
+    }
+  ],
+  "schemaVersion": "1.0.0"
+}

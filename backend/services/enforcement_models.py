@@ -46,8 +46,43 @@ class StructuredCase(EnforcementModel):
     workplace_type: Optional[str] = None
     authorization_obtained: Optional[bool] = None
     workplace_change_authorized: Optional[bool] = None
-    # Explicit user-confirmed permit/report regime, never inferred from E-2 status.
-    workplace_regime: Optional[Literal["PERMIT", "REPORT"]] = None
+    # Regime claimed/confirmed for a workplace change/addition case. PERMIT and
+    # REPORT keep their #761 meaning; NOT_APPLICABLE and UNRESOLVED are produced
+    # by the deterministic determination engine (enforcement_workplace.py) or
+    # left unset. A regime value alone never proves a duty was breached: the
+    # breach conditions live in WorkplaceDetermination / the baseline guards.
+    workplace_regime: Optional[Literal["PERMIT", "REPORT", "NOT_APPLICABLE", "UNRESOLVED"]] = None
+    # Who produced workplace_regime: the user confirming with the competent
+    # office, or the deterministic engine. AI extraction must never set this.
+    workplace_regime_source: Optional[Literal["USER_CONFIRMED", "ENGINE"]] = None
+    # --- Workplace-change facts (P0/P1). All optional; unknown stays None and
+    # is never coerced to False. Facts, legal duty and duty breach stay separate.
+    occupation_code: Optional[str] = None
+    workplace_change_type: Optional[
+        Literal["CHANGE", "ADDITION", "SAME_EMPLOYER_SITE_ONLY", "UNKNOWN"]
+    ] = None
+    previous_employment_end_reason: Optional[
+        Literal[
+            "CONTRACT_EXPIRED",
+            "RESIGNED_MID_CONTRACT",
+            "DISMISSED_OWN_FAULT",
+            "DISMISSED_NO_OWN_FAULT",
+            "EMPLOYER_CLOSED",
+            "NOT_ENDED",
+            "OTHER",
+            "UNKNOWN",
+        ]
+    ] = None
+    employer_consent: Optional[bool] = None
+    alien_registered: Optional[bool] = None
+    meets_new_workplace_qualifications: Optional[bool] = None
+    actually_started_work: Optional[bool] = None
+    new_workplace_start_date: Optional[date] = None
+    workplace_change_date: Optional[date] = None
+    application_or_report_date: Optional[date] = None
+    procedure_status: Optional[
+        Literal["PERMIT_GRANTED", "REPORT_FILED", "APPLIED_PENDING", "NONE", "UNKNOWN"]
+    ] = None
     duration_days: Optional[int] = Field(default=None, ge=0, le=36500)
     violation_start_date: Optional[date] = None
     violation_end_date: Optional[date] = None
@@ -96,8 +131,52 @@ class MoneyRange(EnforcementModel):
         return self
 
 
+WorkplaceRegime = Literal["PERMIT", "REPORT", "NOT_APPLICABLE", "UNRESOLVED"]
+
+
+class WorkplaceDetermination(EnforcementModel):
+    """Deterministic permit/report determination for a workplace change case.
+
+    Produced only by enforcement_workplace.determine_workplace_regime (or its
+    JS mirror). Separates three questions the old UI collapsed into one:
+    what happened (facts), which duty applied (regime), and whether that duty
+    was breached (duty_breach / report_timeliness).
+    """
+
+    regime: WorkplaceRegime = "UNRESOLVED"
+    determination_status: Literal["CONFIRMED", "USER_CONFIRMED", "UNRESOLVED", "NOT_APPLICABLE"] = "UNRESOLVED"
+    determination_source: Literal["ENGINE", "USER_CONFIRMED", "NONE"] = "NONE"
+    verified_facts: List[str] = Field(default_factory=list)
+    missing_facts: List[str] = Field(default_factory=list)
+    applicable_rules: List[str] = Field(default_factory=list)
+    exceptions_checked: List[str] = Field(default_factory=list)
+    effective_law_version: Optional[str] = None
+    evidence: List[SourceReference] = Field(default_factory=list)
+    warnings: List[str] = Field(default_factory=list)
+    next_questions: List[str] = Field(default_factory=list)
+    human_review_reason: Optional[str] = None
+    penalty_track: Literal["CRIMINAL_FINE", "ADMINISTRATIVE_FINE", "NONE", "UNRESOLVED"] = "UNRESOLVED"
+    # Duty-breach assessment, independent of the regime classification.
+    duty_breach: Literal["ESTABLISHED", "NOT_ESTABLISHED", "UNRESOLVED"] = "UNRESOLVED"
+    report_deadline_date: Optional[date] = None
+    report_timeliness: Optional[
+        Literal["WITHIN_DEADLINE", "LATE", "NOT_REPORTED_DEADLINE_PASSED", "UNKNOWN"]
+    ] = None
+    # For the administrative-fine track this is the statutory maximum only
+    # (Act Art.100(1): up to KRW 2,000,000). It is NOT a computed amount; no
+    # verified administrative-fine schedule exists in the rule store.
+    administrative_fine_statutory_maximum_krw: Optional[int] = Field(default=None, ge=0)
+
+
 class LegalBaseline(EnforcementModel):
-    status: Literal["AVAILABLE", "MISSING_FACTS", "UNSUPPORTED", "HISTORICAL_RULE_UNAVAILABLE"]
+    status: Literal[
+        "AVAILABLE",
+        "MISSING_FACTS",
+        "UNSUPPORTED",
+        "HISTORICAL_RULE_UNAVAILABLE",
+        "ADMINISTRATIVE_FINE_TRACK",
+        "NOT_APPLICABLE",
+    ]
     violation_code: Optional[str] = None
     violation_label: Optional[str] = None
     baseline_amount_krw: Optional[int] = Field(default=None, ge=0)
@@ -112,6 +191,7 @@ class LegalBaseline(EnforcementModel):
     missing_facts: List[str] = Field(default_factory=list)
     sources: List[SourceReference] = Field(default_factory=list)
     confidence: Confidence = "INSUFFICIENT"
+    workplace_determination: Optional[WorkplaceDetermination] = None
 
 
 class PredictionFactor(EnforcementModel):
@@ -238,6 +318,7 @@ class EnforcementAnalysis(EnforcementModel):
     case: StructuredCase
     legal_baseline: LegalBaseline
     prediction: EnforcementPrediction
+    workplace_determination: Optional[WorkplaceDetermination] = None
     generated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     disclaimer: str = "이 결과는 공개 법령과 제한된 공개 근거에 기반한 정보 제공용 예상이며, 출입국 당국의 최종 처분이나 법률 자문이 아닙니다."
     privacy_notice: str = "원문 사례 서술은 응답·저장·일반 로그에 남기지 않습니다."

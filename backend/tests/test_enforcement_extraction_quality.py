@@ -211,8 +211,12 @@ class WorkplaceOverlapBaselineTests(unittest.IsolatedAsyncioTestCase):
 
         case.workplace_regime = "REPORT"
         reported = calculate_legal_baseline(case)
-        self.assertEqual(reported.status, "UNSUPPORTED")
+        # Since the workplace-determination upgrade, a confirmed REPORT case
+        # gets its own administrative-fine track instead of UNSUPPORTED: still
+        # no criminal-fine amount, only the verified statutory maximum.
+        self.assertEqual(reported.status, "ADMINISTRATIVE_FINE_TRACK")
         self.assertIsNone(reported.baseline_amount_krw)
+        self.assertEqual(reported.statutory_maximum_krw, 2_000_000)
 
         case.workplace_regime = "PERMIT"
         permitted = calculate_legal_baseline(case)

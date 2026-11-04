@@ -18,9 +18,13 @@ from .enforcement_rules import calculate_legal_baseline
 MAX_CASE_TEXT = 3000
 
 _PII_PATTERNS = [
-    re.compile(r"\b[A-Z]\d{8}\b", re.I),
-    re.compile(r"\b\d{6}[- ]?[1-8]\d{6}\b"),
-    re.compile(r"\b01[016789][- ]?\d{3,4}[- ]?\d{4}\b"),
+    # Korean particles attach directly to identifiers ("M12345678입니다",
+    # "010-1234-5678이고"), where \b never fires because Hangul syllables are
+    # word characters. Use digit/letter lookarounds instead of \b so an
+    # identifier followed by a particle is still detected (brief case 22).
+    re.compile(r"(?<![A-Z0-9])[A-Z]\d{8}(?!\d)", re.I),
+    re.compile(r"(?<!\d)\d{6}[- ]?[1-8]\d{6}(?!\d)"),
+    re.compile(r"(?<!\d)01[016789][- ]?\d{3,4}[- ]?\d{4}(?!\d)"),
     re.compile(r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}"),
 ]
 
@@ -206,6 +210,8 @@ def _classify_violation(clean: str, status: Optional[str], include_overstay: boo
             r"허가(?:를)?\s*(?:안\s*받|받지\s*않|없이|없|미취득|미허가)"
             r"|무허가|불법\s*(?:취업|근무|알바)"
             r"|시간제\s*취업(?:허가)?\s*(?:안\s*받|미허가|없이)"
+            r"|(?:신고|등록)(?:를|도)?\s*(?:안\s*했|하지\s*않았|못\s*했)"
+            r"|(?:변경|추가)\s*신고\s*없이"
             r"|취업\s*(?:불가|금지)",
             clean,
             re.I,
@@ -300,6 +306,102 @@ def _unknown_facts_for(case: StructuredCase) -> list[str]:
     return list(dict.fromkeys(unknown))
 
 
+def _extract_workplace_facts(clean: str, *, work: bool) -> dict:
+    """Conservative narrative extraction of workplace-change facts.
+
+    Only explicit statements are mapped. Anything ambiguous (e.g. a bare
+    "해고됐다" without a stated fault) stays None so the UI can ask instead
+    of the pipeline guessing a legally decisive fact.
+    """
+    facts: dict = {}
+
+    occupation = None
+    code_match = re.search(r"직종\s*코드?\s*[:：]?\s*\(?\s*(S?\d{3,5})\s*\)?", clean, re.I)
+    if code_match:
+        occupation = code_match.group(1).upper()
+    else:
+        for pattern, code in (
+            (r"주방장|조리사", "441"),
+            (r"조선\s*용접|용접공", "7430"),
+            (r"기계공학\s*기술자", "2351"),
+            (r"제도사", "2395"),
+            (r"의료\s*코디네이터", "S3922"),
+            (r"호텔\s*접수\s*사무원", "3922"),
+            (r"고객\s*상담\s*사무원", "3991"),
+            (r"판매\s*사무원", "31215"),
+            (r"양식\s*기술자", "6301"),
+        ):
+            if re.search(pattern, clean):
+                occupation = code
+                break
+    facts["occupation_code"] = occupation
+
+    if re.search(r"(?:같은|동일한)\s*(?:회사|고용주|업체).{0,12}(?:장소|지점|사업장)만", clean):
+        facts["workplace_change_type"] = "SAME_EMPLOYER_SITE_ONLY"
+    elif re.search(r"(?:근무처|사업장|회사|업체)(?:를|을)?\s*추가|추가로\s*(?:일|근무)|겸업|투잡", clean):
+        facts["workplace_change_type"] = "ADDITION"
+    elif re.search(r"옮겼|옮긴|이직|그만두고.{0,10}(?:다른|새)", clean):
+        facts["workplace_change_type"] = "CHANGE"
+    else:
+        facts["workplace_change_type"] = None
+
+    end_reason = None
+    if re.search(r"계약\s*(?:이|기간)?\s*(?:만료|끝나|종료돼|종료되)", clean):
+        end_reason = "CONTRACT_EXPIRED"
+    elif re.search(r"폐업|회사가\s*문을\s*닫|사업장\s*폐쇄", clean):
+        end_reason = "EMPLOYER_CLOSED"
+    elif re.search(r"(?:본인|자신)\s*(?:잘못|귀책)|징계\s*해고|귀책\s*사유", clean):
+        end_reason = "DISMISSED_OWN_FAULT"
+    elif re.search(r"회사\s*사정으로\s*(?:해고|그만)|회사\s*사정으로\s*나오|권고사직", clean):
+        end_reason = "DISMISSED_NO_OWN_FAULT"
+    elif re.search(r"본인이\s*(?:그만|사직|퇴사)|스스로\s*(?:그만|사직|퇴사)|중도에\s*(?:그만|퇴사)", clean):
+        end_reason = "RESIGNED_MID_CONTRACT"
+    elif facts["workplace_change_type"] == "ADDITION":
+        end_reason = "NOT_ENDED"
+    facts["previous_employment_end_reason"] = end_reason
+
+    if re.search(r"(?:이적|옮기[는니])\s*(?:것)?(?:에)?\s*동의(?:를|도)?\s*(?:받았|받음|했|해\s*줬)", clean):
+        facts["employer_consent"] = True
+    elif re.search(r"동의(?:를|도)?\s*(?:안\s*받|못\s*받|받지\s*못|없(?:이|었))", clean):
+        facts["employer_consent"] = False
+    else:
+        facts["employer_consent"] = None
+
+    if re.search(r"외국인\s*등록(?:을|도)?\s*(?:했|하고|한\s*상태)|등록증(?:이|을)\s*(?:있|발급받)", clean):
+        facts["alien_registered"] = True
+    elif re.search(r"외국인\s*등록(?:을|도)?\s*(?:안\s*했|못\s*했|하지\s*않)|등록\s*전(?:이|에)", clean):
+        facts["alien_registered"] = False
+    else:
+        facts["alien_registered"] = None
+
+    if re.search(r"자격\s*요건(?:을|도)?\s*(?:갖추|충족)", clean):
+        facts["meets_new_workplace_qualifications"] = True
+    elif re.search(r"자격\s*요건(?:에)?\s*(?:미달|안\s*돼|못\s*미치)", clean):
+        facts["meets_new_workplace_qualifications"] = False
+    else:
+        facts["meets_new_workplace_qualifications"] = None
+
+    if re.search(r"(?:아직|아닌)\s*(?:일|근무)(?:을|를)?\s*시작하지\s*않|근무\s*시작\s*전(?:이|이라)", clean):
+        facts["actually_started_work"] = False
+    elif work and re.search(r"일했|근무했|일하기\s*시작|근무를\s*시작|근무\s*중", clean):
+        facts["actually_started_work"] = True
+    else:
+        facts["actually_started_work"] = None
+
+    if re.search(r"(?:변경|추가)\s*허가(?:를|도)?\s*(?:받았|받음|취득)", clean):
+        facts["procedure_status"] = "PERMIT_GRANTED"
+    elif re.search(r"(?:변경|추가)?\s*신고(?:를|도)?\s*(?:했|완료|마쳤)", clean):
+        facts["procedure_status"] = "REPORT_FILED"
+    elif re.search(r"(?:허가|신고)\s*신청(?:을|도)?\s*(?:했|넣었).{0,12}(?:대기|처리\s*중|심사\s*중)|심사\s*중", clean):
+        facts["procedure_status"] = "APPLIED_PENDING"
+    elif re.search(r"(?:허가|신고)(?:를|도)?\s*(?:안\s*했|하지\s*않았|못\s*했)|아무것도\s*안\s*했|신고도\s*안\s*했", clean):
+        facts["procedure_status"] = "NONE"
+    else:
+        facts["procedure_status"] = None
+
+    return facts
+
+
 def _heuristic_extract(text: str, *, assessment_date: Optional[date] = None) -> StructuredCase:
     clean = " ".join((text or "").strip()[:MAX_CASE_TEXT].split())
     warnings: list[str] = []
@@ -347,6 +449,8 @@ def _heuristic_extract(text: str, *, assessment_date: Optional[date] = None) -> 
         elif unauthorized:
             workplace_change_authorized = False
 
+    workplace_facts = _extract_workplace_facts(clean, work=work)
+
     if len(violation_candidates) > 1 and "OVERSTAY_ART25" in violation_candidates:
         warnings.append("초과체류와 취업 관련 사실이 함께 있어 위반별 기간과 적용 관계를 각각 확인해야 합니다.")
     if len(list(_STATUS_RE.finditer(facts))) > 1 and status is None:
@@ -360,6 +464,14 @@ def _heuristic_extract(text: str, *, assessment_date: Optional[date] = None) -> 
         workplace_type="음식점" if "음식점" in clean else None,
         authorization_obtained=authorization_obtained,
         workplace_change_authorized=workplace_change_authorized,
+        occupation_code=workplace_facts["occupation_code"],
+        workplace_change_type=workplace_facts["workplace_change_type"],
+        previous_employment_end_reason=workplace_facts["previous_employment_end_reason"],
+        employer_consent=workplace_facts["employer_consent"],
+        alien_registered=workplace_facts["alien_registered"],
+        meets_new_workplace_qualifications=workplace_facts["meets_new_workplace_qualifications"],
+        actually_started_work=workplace_facts["actually_started_work"],
+        procedure_status=workplace_facts["procedure_status"],
         duration_days=duration_days,
         violation_start_date=start,
         violation_end_date=end,
@@ -392,6 +504,16 @@ Return ONE JSON object only. Use these exact camelCase keys and no others:
   "workplaceType": string|null,
   "authorizationObtained": boolean|null,
   "workplaceChangeAuthorized": boolean|null,
+  "occupationCode": string|null,
+  "workplaceChangeType": "CHANGE"|"ADDITION"|"SAME_EMPLOYER_SITE_ONLY"|"UNKNOWN"|null,
+  "previousEmploymentEndReason": "CONTRACT_EXPIRED"|"RESIGNED_MID_CONTRACT"|"DISMISSED_OWN_FAULT"|"DISMISSED_NO_OWN_FAULT"|"EMPLOYER_CLOSED"|"NOT_ENDED"|"OTHER"|"UNKNOWN"|null,
+  "employerConsent": boolean|null,
+  "alienRegistered": boolean|null,
+  "meetsNewWorkplaceQualifications": boolean|null,
+  "actuallyStartedWork": boolean|null,
+  "workplaceChangeDate": "YYYY-MM-DD"|null,
+  "applicationOrReportDate": "YYYY-MM-DD"|null,
+  "procedureStatus": "PERMIT_GRANTED"|"REPORT_FILED"|"APPLIED_PENDING"|"NONE"|"UNKNOWN"|null,
   "durationDays": integer|null,
   "violationStartDate": "YYYY-MM-DD"|null,
   "violationEndDate": "YYYY-MM-DD"|null,
@@ -418,6 +540,10 @@ Normalization rules:
 - Never sum residence history, age, or separate violation periods into durationDays.
 - Multiple statuses require the status at the time of the violation; ask if it is unclear.
 - Never copy names, passport numbers, registration numbers, phone numbers, email addresses, or exact employer names.
+- Workplace facts: extract only what is stated. A workplace move alone does NOT prove a
+  permit or report was missing; never set procedureStatus or workplaceChangeAuthorized from
+  the move itself. Never output a workplaceRegime field: the permit/report classification is
+  made by a deterministic legal engine from these facts, never by you.
 
 Allowed violationCode values only:
 - OVERSTAY_ART25: authorized period of stay expired / overstay.
@@ -450,6 +576,12 @@ def _parse_ai_case(raw: Any) -> StructuredCase:
         raise ValueError("extractor returned a non-object")
 
     sanitized: dict[str, Any] = {}
+    # The AI extractor may never classify the permit/report regime; that is
+    # reserved for the deterministic engine or an explicit user confirmation.
+    raw.pop("workplaceRegime", None)
+    raw.pop("workplace_regime", None)
+    raw.pop("workplaceRegimeSource", None)
+    raw.pop("workplace_regime_source", None)
     for field_name, field in StructuredCase.model_fields.items():
         alias = field.alias or field_name
         if alias in raw:
@@ -467,6 +599,16 @@ def _merge_extracted_facts(extracted: StructuredCase, fallback: StructuredCase) 
         "workplace_type",
         "authorization_obtained",
         "workplace_change_authorized",
+        "occupation_code",
+        "workplace_change_type",
+        "previous_employment_end_reason",
+        "employer_consent",
+        "alien_registered",
+        "meets_new_workplace_qualifications",
+        "actually_started_work",
+        "workplace_change_date",
+        "application_or_report_date",
+        "procedure_status",
         "duration_days",
         "violation_start_date",
         "violation_end_date",
@@ -477,7 +619,7 @@ def _merge_extracted_facts(extracted: StructuredCase, fallback: StructuredCase) 
         "false_representation",
         "ability_to_pay",
     )
-    anchored_fields = {"status_of_stay", "authorization_obtained", "workplace_change_authorized", "duration_days", "prior_violations", "voluntary_disclosure", "investigation_started", "false_representation"}
+    anchored_fields = {"status_of_stay", "authorization_obtained", "workplace_change_authorized", "duration_days", "prior_violations", "voluntary_disclosure", "investigation_started", "false_representation", "occupation_code", "workplace_change_type", "previous_employment_end_reason", "employer_consent", "alien_registered", "actually_started_work", "procedure_status"}
     for field_name in factual_fields:
         if (getattr(extracted, field_name) is None or field_name in anchored_fields) and getattr(fallback, field_name) is not None:
             setattr(extracted, field_name, getattr(fallback, field_name))
@@ -576,4 +718,9 @@ async def analyze_enforcement_case(
         precedent_adapter=precedent_adapter,
     )
     prediction = await predict_enforcement_outcome(case, baseline, evidence, provider=prediction_provider)
-    return EnforcementAnalysis(case=case, legal_baseline=baseline, prediction=prediction)
+    return EnforcementAnalysis(
+        case=case,
+        legal_baseline=baseline,
+        prediction=prediction,
+        workplace_determination=baseline.workplace_determination,
+    )
