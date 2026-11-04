@@ -90,22 +90,22 @@ export const JUR_DB = {
     "군위군": "대구출입국·외국인사무소"
   },
   "부산광역시": {
-    "중구": "부산출입국·외국인청 별관",
-    "서구": "부산출입국·외국인청 별관",
-    "동구": "부산출입국·외국인청 별관",
-    "영도구": "부산출입국·외국인청 별관",
-    "부산진구": "부산출입국·외국인청 별관",
-    "동래구": "부산출입국·외국인청 별관",
-    "남구": "부산출입국·외국인청 별관",
-    "북구": "부산출입국·외국인청 별관",
-    "해운대구": "부산출입국·외국인청 별관",
-    "사하구": "부산출입국·외국인청 별관",
-    "금정구": "부산출입국·외국인청 별관",
-    "강서구": "부산출입국·외국인청 별관",
-    "연제구": "부산출입국·외국인청 별관",
-    "수영구": "부산출입국·외국인청 별관",
-    "사상구": "부산출입국·외국인청 별관",
-    "기장군": "부산출입국·외국인청 별관"
+    "중구": "부산출입국·외국인청",
+    "서구": "부산출입국·외국인청",
+    "동구": "부산출입국·외국인청",
+    "영도구": "부산출입국·외국인청",
+    "부산진구": "부산출입국·외국인청",
+    "동래구": "부산출입국·외국인청",
+    "남구": "부산출입국·외국인청",
+    "북구": "부산출입국·외국인청",
+    "해운대구": "부산출입국·외국인청",
+    "사하구": "부산출입국·외국인청",
+    "금정구": "부산출입국·외국인청",
+    "강서구": "부산출입국·외국인청",
+    "연제구": "부산출입국·외국인청",
+    "수영구": "부산출입국·외국인청",
+    "사상구": "부산출입국·외국인청",
+    "기장군": "부산출입국·외국인청"
   },
   "울산광역시": {
     "중구": "울산출입국·외국인사무소",
@@ -222,7 +222,7 @@ export const JUR_DB = {
     "김해시": "부산출입국·외국인청 김해출장소",
     "밀양시": "부산출입국·외국인청 김해출장소",
     "거제시": "창원출입국·외국인사무소 거제출장소",
-    "양산시": "부산출입국·외국인청 별관",
+    "양산시": "부산출입국·외국인청",
     "의령군": "창원출입국·외국인사무소",
     "함안군": "창원출입국·외국인사무소",
     "창녕군": "창원출입국·외국인사무소",
@@ -315,10 +315,32 @@ export const OFFICE_INFO = {
     naver: "https://map.naver.com/v5/search/양주출입국외국인사무소고양출장소",
     kakao: "https://map.kakao.com/link/search/양주출입국외국인사무소고양출장소"
   },
-  "부산출입국·외국인청 별관": {
+  "부산출입국·외국인청": {
+    // The legal office is one agency; its physical counters depend on the purpose of the visit.
+    // Source: https://www.immigration.go.kr/immigration/2058/subview.do (2026-11-04)
     addr: "부산광역시 중구 충장대로 7, 교보생명 중앙동사옥",
-    naver: "https://map.naver.com/v5/search/부산출입국외국인청",
-    kakao: "https://map.kakao.com/link/search/부산출입국외국인청"
+    naver: "https://map.naver.com/v5/search/부산출입국외국인청별관",
+    kakao: "https://map.kakao.com/link/search/부산출입국외국인청별관",
+    serviceLocations: [
+      {
+        name: "별관",
+        name_en: "Annex",
+        services: "체류·사증·유학·송무·국적·난민·이민통합·총무",
+        services_en: "Residence, visas, study, litigation, nationality, refugees, integration and administration",
+        addr: "부산광역시 중구 충장대로 7, 교보생명 중앙동사옥",
+        naver: "https://map.naver.com/v5/search/부산출입국외국인청별관",
+        kakao: "https://map.kakao.com/link/search/부산출입국외국인청별관"
+      },
+      {
+        name: "본관",
+        name_en: "Main building",
+        services: "선박·조사·사범·보호",
+        services_en: "Vessel services, investigations, immigration violations and detention",
+        addr: "부산광역시 중구 충장대로 22-1",
+        naver: "https://map.naver.com/v5/search/부산출입국외국인청본관",
+        kakao: "https://map.kakao.com/link/search/부산출입국외국인청본관"
+      }
+    ]
   },
   "울산출입국·외국인사무소": {
     addr: "울산광역시 중구 종가로 405-1",
