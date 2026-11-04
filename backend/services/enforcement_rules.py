@@ -198,7 +198,9 @@ def calculate_legal_baseline(case: StructuredCase, *, database: Optional[Dict[st
     # Act Art.100(1)(3), not the Art.21 permit-violation criminal fine table.
     # Never display the latter merely because the user said "without permission".
     workplace_codes = [case.violation_code] if case.violation_code else case.violation_candidates
-    if _report_proviso_applies(case.status_of_stay, workplace_codes):
+    if _report_proviso_applies(case.status_of_stay, workplace_codes) and (
+        case.violation_code or set(workplace_codes).issubset(_WORKPLACE_CODES)
+    ):
         common = dict(
             violation_code=case.violation_code,
             legal_snapshot_id=snapshot["id"],
