@@ -137,6 +137,55 @@ class WorkplaceFlowTests(unittest.IsolatedAsyncioTestCase):
         )
         self.assertEqual(case.procedure_status, "REPORT_FILED")
 
+    def test_out_of_scope_status_guides_via_missing_facts_not_review_jargon(self):
+        """Statuses outside the verified E-1~E-7 scope: the user-facing
+        missing_facts must say what this calculator covers and where to
+        check (관할 출입국·외국인관서 ☎1345). Internal review wording must
+        never be the only guidance — it is metadata, never rendered."""
+        det = determine_workplace_regime(
+            StructuredCase.model_validate(
+                {
+                    "statusOfStay": "F-5",
+                    "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+                    "workplaceChangeType": "CHANGE",
+                    "assessmentDate": "2026-11-04",
+                }
+            )
+        )
+        self.assertEqual(det.regime, "UNRESOLVED")
+        guidance = [f for f in det.missing_facts if "E-1~E-7" in f]
+        self.assertTrue(guidance, det.missing_facts)
+        self.assertTrue(any("1345" in q for q in det.next_questions), det.next_questions)
+        rendered = "\n".join(
+            det.verified_facts + det.missing_facts + det.warnings + det.next_questions
+        )
+        for banned in ("사람의 검토", "사람 검토", "결정론적", "운영자", "API 키", "스냅샷", "엔진"):
+            self.assertNotIn(banned, rendered)
+
+    def test_conflict_warning_is_plain_language(self):
+        """User confirmation vs notice-based determination: the rendered
+        warning explains the notice-based result was applied, in plain
+        language with no internal terminology."""
+        case = StructuredCase.model_validate(
+            {
+                "statusOfStay": "E-7-4",
+                "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+                "occupationCode": "441",
+                "previousEmploymentEndReason": "CONTRACT_EXPIRED",
+                "procedureStatus": "NONE",
+                "workplaceChangeType": "CHANGE",
+                "workplaceRegime": "REPORT",
+                "workplaceRegimeSource": "USER_CONFIRMED",
+                "assessmentDate": "2026-11-04",
+            }
+        )
+        det = determine_workplace_regime(case)
+        self.assertEqual(det.regime, "PERMIT")
+        self.assertTrue(any("고시 규칙 판별을 우선 표시" in w for w in det.warnings), det.warnings)
+        rendered = "\n".join(det.verified_facts + det.missing_facts + det.warnings + det.next_questions)
+        for banned in ("사람의 검토", "사람 검토", "결정론적", "운영자", "API 키", "스냅샷", "엔진"):
+            self.assertNotIn(banned, rendered)
+
     async def test_unknown_is_never_coerced_to_false(self):
         """Brief case 15: 'do not know' answers stay None end to end."""
         case = StructuredCase.model_validate(

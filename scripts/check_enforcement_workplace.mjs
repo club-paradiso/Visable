@@ -48,4 +48,51 @@ assert.ok(pii.extractionWarnings.some((item) => item.includes('개인식별정�
 const reported = extractStructuredCase('E-2인데 근무처를 옮기고 10일 안에 출입국에 신고했어요.', '2026-11-04');
 assert.equal(reported.procedureStatus, 'REPORT_FILED');
 
+// No-distrust-grounds rule: fields the determination card renders to end
+// users (verifiedFacts, missingFacts, exceptionsChecked, warnings,
+// nextQuestions, applicableRules, effectiveLawVersion) must never contain
+// internal review/engine/ops terminology. The internal humanReviewReason
+// metadata field is deliberately excluded — it is never rendered.
+const BANNED_USER_TERMS = ['사람의 검토', '사람 검토', '결정론적', '운영자', 'API 키', '스냅샷', '엔진'];
+function assertUserFieldsClean(det, label) {
+  const rendered = [
+    ...(det.verifiedFacts || []), ...(det.missingFacts || []),
+    ...(det.exceptionsChecked || []), ...(det.warnings || []),
+    ...(det.nextQuestions || []), ...(det.applicableRules || []),
+    det.effectiveLawVersion || '',
+  ].join('\n');
+  for (const term of BANNED_USER_TERMS) {
+    assert.ok(!rendered.includes(term), `${label}: user-facing determination fields must not contain "${term}"`);
+  }
+}
+// UNRESOLVED (brief case 15: everything unknown).
+assertUserFieldsClean(determineWorkplaceRegime({ violationCode: 'UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1', assessmentDate: '2026-11-04' }), 'all-unknown');
+// UNRESOLVED via unresolved notice requirements.
+assertUserFieldsClean(determineWorkplaceRegime(fixtures.cases.find((entry) => entry.id === 'e7-occupation-unknown').case), 'occupation-unknown');
+// Out-of-scope status: guidance must arrive as a missing fact + check method,
+// not as an internal review reason.
+const outOfScope = determineWorkplaceRegime({
+  statusOfStay: 'F-5', violationCode: 'UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1',
+  workplaceChangeType: 'CHANGE', assessmentDate: '2026-11-04',
+});
+assert.equal(outOfScope.regime, 'UNRESOLVED');
+assert.ok(outOfScope.missingFacts.some((fact) => fact.includes('E-1~E-7') && fact.includes('근무처 변경·추가 절차')),
+  'out-of-scope status must add a user-facing missing fact');
+assert.ok(outOfScope.nextQuestions.some((q) => q.includes('1345')),
+  'out-of-scope guidance must say where to check (관할 출입국·외국인관서 ☎1345)');
+assertUserFieldsClean(outOfScope, 'out-of-scope status');
+// Conflict: user-confirmed regime vs notice-based determination. The card
+// must explain in plain language that the notice-based result was applied.
+const conflictCase = {
+  ...fixtures.cases.find((entry) => entry.id === 'e7-permit-excluded-occupation').case,
+  workplaceRegime: 'REPORT', workplaceRegimeSource: 'USER_CONFIRMED',
+};
+const conflict = determineWorkplaceRegime(conflictCase);
+assert.equal(conflict.regime, 'PERMIT');
+assert.ok(conflict.warnings.some((w) => w.includes('고시 규칙 판별을 우선 표시')),
+  'conflict case must carry the plain-language notice-priority warning');
+assertUserFieldsClean(conflict, 'user-confirmation conflict');
+// Before-notice-effective-date case stays clean as well.
+assertUserFieldsClean(determineWorkplaceRegime(fixtures.cases.find((entry) => entry.id === 'before-notice-effective').case), 'before-notice-effective');
+
 console.log(`Enforcement workplace parity passed (${fixtures.cases.length} shared fixtures + narrative checks).`);
