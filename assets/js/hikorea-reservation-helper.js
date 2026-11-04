@@ -221,9 +221,30 @@
   }
 
   var STR_KO = {
+    uxHeroTitle: '하이코리아 방문예약, 필요한 것부터 바로',
+    uxHeroLead: '회원가입 없이 비회원 인증으로도 방문예약할 수 있어요. 예약을 시작하거나 내 상황에 맞는 목적을 먼저 확인해 보세요.',
+    uxBookingLink: '공식 방문예약 신청하기',
+    uxManageLink: '비회원 예약 확인하기',
+    uxNoAccount: '회원가입은 필수가 아니에요. 하이코리아에서 비회원 인증을 선택할 수 있습니다.',
+    uxFinderStart: '내 예약 목적 찾기',
+    uxFlow1: '방문 목적 확인',
+    uxFlow2: '관서·날짜 선택',
+    uxFlow3: '접수증 저장',
+    uxSignupHelp: '계정 만들기',
+    uxSignupHelpSub: '가입이 필요한 경우에만',
+    uxLoginHelp: '로그인·인증 안내',
+    uxLoginHelpSub: '회원 및 비회원 인증',
+    uxOptionalAccount: '선택 · 계정 준비 도구 펼치기',
+    uxResultDetail: '예약 순서·준비사항 자세히',
+    uxManageHint: '비회원 예약은 공식 예약조회 화면에서 본인 인증 후 확인하세요. 회원 예약은 하이코리아 로그인 후 조회합니다.',
+    uxGuideHint: '스크린샷 대신 핵심 단계만 보여줍니다. 실제 버튼 이름은 하이코리아에서 확인하세요.',
+    uxBackToBooking: '방문예약 안내로 돌아가기',
+    uxReservationIntro: '예약 목적을 잘 모르겠다면 먼저 찾고, 알고 있다면 바로 공식 사이트에서 신청하세요.',
+    uxFastLinks: '빠른 시작',
+    uxOverviewTitle: '무엇을 도와드릴까요?',
     modalAria: '하이코리아 방문예약 도우미',
     headerTitle: '하이코리아 예약 도우미',
-    headerSub: '하이코리아 회원가입부터 방문예약 확인까지, 화면을 보며 순서대로 따라 하는 안내입니다.',
+    headerSub: '방문예약 신청, 예약 목적 확인, 예약 조회까지 필요한 안내를 빠르게 확인하세요.',
     notOfficialChip: '공식 서비스 아님',
     progressAria: '진행 단계',
     next: '다음',
@@ -337,10 +358,10 @@
 
     /* ---- tabbed photo guide chrome (added 2026-06) ---- */
     tablistAria: '하이코리아 안내 단계',
-    tabOverview: '처음 이용하기',
+    tabOverview: '시작',
     tabSignup: '회원가입',
     tabLogin: '로그인',
-    tabReservation: '방문예약 잡기',
+    tabReservation: '방문예약',
     tabManage: '예약 확인·변경',
     tabTrouble: '문제 해결',
 
@@ -351,8 +372,8 @@
     quickTitle: '어떤 도움이 필요하세요?',
     qp1Title: '회원가입부터 필요해요',
     qp1Sub: '하이코리아 계정 만들기부터 시작합니다.',
-    qp2Title: '이미 계정이 있어요',
-    qp2Sub: '로그인하고 바로 방문예약을 잡습니다.',
+    qp2Title: '방문예약 신청 안내',
+    qp2Sub: '예약 목적, 관서, 날짜를 확인하세요.',
     qp3Title: '예약만 확인하고 싶어요',
     qp3Sub: '잡아둔 예약을 확인하거나 변경합니다.',
     qp4Title: '문제가 생겼어요',
@@ -496,9 +517,30 @@
   };
 
   var STR_EN = {
+    uxHeroTitle: 'Book your HiKorea visit without the clutter',
+    uxHeroLead: 'You can book without an account using non-member verification. Go straight to booking or check your visit purpose first.',
+    uxBookingLink: 'Open official visit reservation',
+    uxManageLink: 'Check non-member reservation',
+    uxNoAccount: 'An account is optional. HiKorea supports non-member identity verification.',
+    uxFinderStart: 'Find my visit purpose',
+    uxFlow1: 'Confirm visit purpose',
+    uxFlow2: 'Select office and date',
+    uxFlow3: 'Save confirmation',
+    uxSignupHelp: 'Create an account',
+    uxSignupHelpSub: 'Only if you want to sign up',
+    uxLoginHelp: 'Login and verification',
+    uxLoginHelpSub: 'Member or non-member options',
+    uxOptionalAccount: 'Optional: account preparation tools',
+    uxResultDetail: 'Show booking steps and checklist',
+    uxManageHint: 'For non-member bookings, verify your identity on the official lookup page. Members should sign in to view reservations.',
+    uxGuideHint: 'Follow the key steps below; the live HiKorea screen may look different.',
+    uxBackToBooking: 'Back to booking guide',
+    uxReservationIntro: 'Not sure which purpose to choose? Check first. Otherwise, open official booking now.',
+    uxFastLinks: 'Quick start',
+    uxOverviewTitle: 'What do you need help with?',
     modalAria: 'HiKorea Visit Reservation Helper',
     headerTitle: 'HiKorea Reservation Helper',
-    headerSub: 'From signing up to checking your reservation — a screen-by-screen HiKorea guide.',
+    headerSub: 'Book a visit, check your visit purpose, or look up an existing reservation.',
     notOfficialChip: 'Not an official service',
     progressAria: 'Progress',
     next: 'Next',
@@ -612,7 +654,7 @@
 
     /* ---- tabbed photo guide chrome (added 2026-06) ---- */
     tablistAria: 'HiKorea guide sections',
-    tabOverview: 'Getting started',
+    tabOverview: 'Start',
     tabSignup: 'Sign up',
     tabLogin: 'Log in',
     tabReservation: 'Book a visit',
@@ -626,8 +668,8 @@
     quickTitle: 'What do you need help with?',
     qp1Title: 'I need to sign up first',
     qp1Sub: 'Start by creating a HiKorea account.',
-    qp2Title: 'I already have an account',
-    qp2Sub: 'Log in and book a visit reservation.',
+    qp2Title: 'How to book a visit',
+    qp2Sub: 'Check the visit purpose, office and date.',
     qp3Title: 'I just want to check a reservation',
     qp3Sub: 'View or change a reservation you already made.',
     qp4Title: 'Something went wrong',
@@ -771,9 +813,30 @@
   };
 
   var STR_ZH = {
+    uxHeroTitle: 'HiKorea 访问预约，直接从需要的步骤开始',
+    uxHeroLead: '无需注册账号，也可使用非会员认证预约。可直接申请，或先查看适合的预约事项。',
+    uxBookingLink: '打开官方访问预约',
+    uxManageLink: '查询非会员预约',
+    uxNoAccount: '无需注册账号，HiKorea 支持非会员身份认证。',
+    uxFinderStart: '查找预约事项',
+    uxFlow1: '确认访问事项',
+    uxFlow2: '选择机构和日期',
+    uxFlow3: '保存预约凭证',
+    uxSignupHelp: '创建账号',
+    uxSignupHelpSub: '仅在需要注册时',
+    uxLoginHelp: '登录与身份认证',
+    uxLoginHelpSub: '会员与非会员认证',
+    uxOptionalAccount: '可选：展开账号准备工具',
+    uxResultDetail: '查看预约步骤与准备事项',
+    uxManageHint: '非会员预约请在官方查询页认证身份；会员预约请登录查看。',
+    uxGuideHint: '请参考文字步骤，以 HiKorea 当前页面为准。',
+    uxBackToBooking: '返回预约指南',
+    uxReservationIntro: '不确定预约事项时先查看，否则直接进入官方预约。',
+    uxFastLinks: '快速开始',
+    uxOverviewTitle: '需要什么帮助？',
     modalAria: 'HiKorea 访问预约助手',
     headerTitle: 'HiKorea 预约助手',
-    headerSub: '从 HiKorea 注册到确认访问预约，看着屏幕按顺序跟着做的指引。',
+    headerSub: '快速查找访问预约申请、访问事项和已有预约的查询方法。',
     notOfficialChip: '非官方服务',
     progressAria: '进行步骤',
     next: '下一步',
@@ -886,7 +949,7 @@
     disclaimer: '本助手用于在预约前整理所需信息。实际能否申请及处理标准，请在 HiKorea、1345 或管辖出入境最终确认。',
 
     tablistAria: 'HiKorea 指引步骤',
-    tabOverview: '初次使用',
+    tabOverview: '开始',
     tabSignup: '注册',
     tabLogin: '登录',
     tabReservation: '预约访问',
@@ -900,8 +963,8 @@
     quickTitle: '您需要哪方面的帮助？',
     qp1Title: '需要从注册开始',
     qp1Sub: '从创建 HiKorea 账户开始。',
-    qp2Title: '我已有账户',
-    qp2Sub: '登录后直接预约访问。',
+    qp2Title: '预约访问指南',
+    qp2Sub: '确认预约事项、机构和日期。',
     qp3Title: '只想确认预约',
     qp3Sub: '确认或变更已预约的内容。',
     qp4Title: '我遇到了问题',
@@ -1156,7 +1219,9 @@
   ];
 
   // Tab order drives both the tablist and the prev/next tab navigation.
-  var TAB_ORDER = ['overview', 'signup', 'login', 'reservation', 'manage', 'trouble'];
+  // Keep optional account tools reachable without forcing them into primary navigation.
+  var TAB_ORDER = ['overview', 'reservation', 'manage', 'trouble'];
+  var UTILITY_TABS = ['signup', 'login'];
   var TAB_ICON = {
     overview: 'compass', signup: 'user', login: 'lock',
     reservation: 'calendar-check', manage: 'clipboard', trouble: 'life-buoy'
@@ -1172,6 +1237,26 @@
   function ensureStyles() {
     if (document.getElementById(STYLE_ID)) return;
     var css = [
+      '#hikoreaGuideBody .prh-hero{background:var(--bg1);border-color:var(--bd2);padding:clamp(1rem,3vw,1.5rem);gap:.8rem;}',
+      '#hikoreaGuideBody .prh-hero-title{font-size:clamp(1.4rem,2.5vw,2rem);line-height:1.2;letter-spacing:-.03em;}',
+      '#hikoreaGuideBody .prh-flow-preview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem;list-style:none;margin:.3rem 0;padding:0;}',
+      '#hikoreaGuideBody .prh-flow-preview li{padding:.7rem;display:flex;align-items:center;gap:.45rem;border-radius:10px;background:var(--bg2);font-size:.85rem;line-height:1.4;font-weight:750;}',
+      '#hikoreaGuideBody .prh-flow-preview b{color:var(--ac2,var(--ac));font-size:.75rem;}',
+      '#hikoreaGuideBody .prh-hero-actions .prh-btn{display:inline-flex;align-items:center;justify-content:center;flex:1 1 200px;min-width:0;text-decoration:none;margin:0;text-align:center;}',
+      '#hikoreaGuideBody .prh-small-note{margin:.15rem 0;font-size:.84rem;line-height:1.55;color:var(--t2);}',
+      '#hikoreaGuideBody .prh-account-disclosure,#hikoreaGuideBody .prh-result-details{border:1px solid var(--bd2);border-radius:10px;background:var(--bg1);padding:0 .75rem;}',
+      '#hikoreaGuideBody .prh-account-disclosure>summary,#hikoreaGuideBody .prh-result-details>summary{cursor:pointer;list-style:none;min-height:48px;padding:.75rem .25rem;font-weight:800;}',
+      '#hikoreaGuideBody .prh-account-disclosure>summary::-webkit-details-marker,#hikoreaGuideBody .prh-result-details>summary::-webkit-details-marker{display:none;}',
+      '#hikoreaGuideBody .prh-account-disclosure>summary::after,#hikoreaGuideBody .prh-result-details>summary::after{content:"+";float:right;}',
+      '#hikoreaGuideBody .prh-account-disclosure[open]>summary::after,#hikoreaGuideBody .prh-result-details[open]>summary::after{content:"−";}',
+      '#hikoreaGuideBody .prh-account-disclosure>.prh-account-prep,#hikoreaGuideBody .prh-result-details>.prh-sections{margin:0 0 .8rem;}',
+      '#hikoreaGuideBody .prh-account-disclosure>summary:focus-visible,#hikoreaGuideBody .prh-result-details>summary:focus-visible{outline:3px solid var(--ac);outline-offset:2px;}',
+      '#hikoreaGuideBody .prh-optional-shortcuts{display:flex;flex-wrap:wrap;gap:.5rem;}',
+      '#hikoreaGuideBody .prh-optional-shortcuts .prh-btn{font-size:.84rem;min-height:44px;padding:.55rem .75rem;}',
+      '#hikoreaGuideBody .prh-steps{gap:.55rem;}',
+      '#hikoreaGuideBody .prh-step{padding:.85rem .95rem;gap:.45rem;}',
+      '#hikoreaGuideBody .prh-result-primary .prh-cta-secondary{flex:1;}',
+      '@media (max-width:560px){#hikoreaGuideBody .prh-flow-preview{grid-template-columns:1fr;}#hikoreaGuideBody .prh-hero-actions{flex-direction:column;}#hikoreaGuideBody .prh-hero-actions .prh-btn{flex:0 0 auto;width:100%;}}',
       // Spacious, mobile-first panel (avoid the tiny-modal feel). Override the
       // shell's 760px cap from here so index.html stays untouched.
       '#hikoreaGuideOverlay .hikorea-modal{width:min(96vw,1040px);max-width:1040px;max-height:92vh;}',
@@ -1372,7 +1457,8 @@
     done: {},
     zoom: '',
     idCandidate: '',
-    generatedPassword: ''
+    generatedPassword: '',
+    accountToolsOpen: false
   };
 
   function loadDone() {
@@ -1418,7 +1504,7 @@
     opts = opts || {};
     var back = state.step > 1
       ? '<button type="button" class="prh-btn" data-prh-action="back">' + esc(STR.back) + '</button>'
-      : '<button type="button" class="prh-btn" data-prh-action="back-to-photos">' + esc(STR.backToPhotos) + '</button>';
+      : '<button type="button" class="prh-btn" data-prh-action="back-to-photos">' + esc(STR.uxBackToBooking) + '</button>';
     var nextLabel = opts.last ? STR.findPath : STR.next;
     var nextDisabled = opts.nextDisabled ? ' disabled' : '';
     var next = '<button type="button" class="prh-btn prh-primary" data-prh-action="next"' + nextDisabled + '>' + esc(nextLabel) + '</button>';
@@ -1445,29 +1531,25 @@
   }
 
   /* ----------------------------------------------------------- tab chrome */
+
+  function visibleTabs() { return UTILITY_TABS.indexOf(state.tab) >= 0 ? TAB_ORDER.concat(state.tab) : TAB_ORDER; }
   function tabBarHtml() {
     return '<div class="prh-tabs" role="tablist" aria-label="' + esc(STR.tablistAria) + '">' +
-      TAB_ORDER.map(function (id) {
+      visibleTabs().map(function (id) {
         var sel = state.tab === id;
-        return '<button type="button" role="tab" id="prhtab-' + id + '" aria-selected="' + (sel ? 'true' : 'false') +
+        return '<button type="button" role="tab" id="prhtab-' + id + '" aria-controls="prhTabPanel" aria-selected="' + (sel ? 'true' : 'false') +
           '" tabindex="' + (sel ? '0' : '-1') + '" class="prh-tab' + (sel ? ' is-active' : '') +
           '" data-pg="' + TAB_ICON[id] + '" data-prh-action="go-tab" data-prh-tab="' + id + '">' + esc(STR[TAB_LABEL_KEY[id]]) + '</button>';
       }).join('') + '</div>';
   }
-
   function tabNavHtml(tabId) {
     var idx = TAB_ORDER.indexOf(tabId);
-    var prev = idx > 0 ? TAB_ORDER[idx - 1] : null;
-    var next = idx < TAB_ORDER.length - 1 ? TAB_ORDER[idx + 1] : null;
-    var html = '<div class="prh-tabnav">';
-    html += prev
-      ? '<button type="button" class="prh-btn" data-prh-action="go-tab" data-prh-tab="' + prev + '">‹ ' + esc(STR.prevTab) + '</button>'
-      : '<span class="prh-spacer"></span>';
-    html += next
-      ? '<button type="button" class="prh-btn prh-primary" data-prh-action="go-tab" data-prh-tab="' + next + '">' + esc(STR.nextTab) + ' ›</button>'
-      : '<span class="prh-spacer"></span>';
-    html += '</div>';
-    return html;
+    var prev = idx > 0 ? TAB_ORDER[idx - 1] : 'overview';
+    var next = idx >= 0 && idx < TAB_ORDER.length - 1 ? TAB_ORDER[idx + 1] : null;
+    if (tabId === 'signup') next = 'login';
+    if (tabId === 'login') next = 'reservation';
+    return '<div class="prh-tabnav"><button type="button" class="prh-btn" data-prh-action="go-tab" data-prh-tab="' + prev + '">‹ ' + esc(STR.prevTab) + '</button>' +
+      (next ? '<button type="button" class="prh-btn prh-primary" data-prh-action="go-tab" data-prh-tab="' + next + '">' + esc(STR.nextTab) + ' ›</button>' : '<span class="prh-spacer"></span>') + '</div>';
   }
 
   /* ------------------------------------------------------ overview (tab 1) */
@@ -1476,30 +1558,31 @@
       '<strong data-pg="' + (TAB_ICON[tab] || 'compass') + '">' + esc(STR[titleKey]) + '</strong><small>' + esc(STR[subKey]) + '</small></button>';
   }
 
+
   function overviewHtml() {
-    var html = '<section class="prh-hero">' +
-      '<span class="prh-hero-kicker">' + esc(STR.notOfficialChip) + '</span>' +
-      '<h3 class="prh-hero-title"><svg class="vs-pictogram" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 11h18m-13 5 3 3 5-5"/></svg> ' + esc(STR.ovTitle) + '</h3>' +
-      '<p class="prh-hero-lead">' + esc(STR.ovLead) + '</p>' +
-      '<div class="prh-hero-actions"><button type="button" class="prh-btn prh-primary" data-prh-action="go-tab" data-prh-tab="signup">' + esc(STR.ovStart) + '</button>' +
-      '<a class="prh-cta" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">' + esc(STR.goHikorea) + '</a></div>' +
-      '<p class="prh-hero-warn">' + esc(STR.ovScreensWarn) + '</p>' +
-      '</section>';
-    html += '<h4 class="prh-section-h">' + esc(STR.quickTitle) + '</h4>';
+    var html = '<section class="prh-hero"><span class="prh-hero-kicker">' + esc(STR.uxFastLinks) + '</span>' +
+      '<h3 class="prh-hero-title">' + esc(STR.uxHeroTitle) + '</h3>' +
+      '<p class="prh-hero-lead">' + esc(STR.uxHeroLead) + '</p>' +
+      '<ol class="prh-flow-preview"><li><b>01</b>' + esc(STR.uxFlow1) + '</li><li><b>02</b>' + esc(STR.uxFlow2) +
+      '</li><li><b>03</b>' + esc(STR.uxFlow3) + '</li></ol>' +
+      '<div class="prh-hero-actions"><a class="prh-btn prh-primary" href="https://www.hikorea.go.kr/resv/ResvIntroR.pt" target="_blank" rel="noopener noreferrer">' + esc(STR.uxBookingLink) + ' ↗</a>' +
+      '<button type="button" class="prh-btn" data-prh-action="start-finder">' + esc(STR.uxFinderStart) + '</button></div>' +
+      '<p class="prh-small-note">' + esc(STR.uxNoAccount) + '</p></section>';
+    html += '<h4 class="prh-section-h">' + esc(STR.uxOverviewTitle) + '</h4>';
     html += '<div class="prh-quick">' +
-      quickCard('signup', 'qp1Title', 'qp1Sub') +
       quickCard('reservation', 'qp2Title', 'qp2Sub') +
       quickCard('manage', 'qp3Title', 'qp3Sub') +
       quickCard('trouble', 'qp4Title', 'qp4Sub') +
+      quickCard('signup', 'uxSignupHelp', 'uxSignupHelpSub') +
+      quickCard('login', 'uxLoginHelp', 'uxLoginHelpSub') +
       '</div>';
-    html += '<p class="prh-affiliation">' + esc(STR.affiliation) + '</p>';
-    html += hotlineHtml();
-    html += disclaimerHtml();
+    html += '<p class="prh-affiliation">' + esc(STR.affiliation) + '</p>' + hotlineHtml() + disclaimerHtml();
     return html;
   }
 
   /* -------------------------------------------------- photo step guide tab */
   function shotFigureHtml(shot) {
+    if (!shot.available) return ''; // No empty screenshot placeholders.
     var alt = STR[shot.titleKey];
     if (shot.available) {
       return '<figure class="prh-shot"><img class="prh-shot-img" loading="lazy" decoding="async" src="' +
@@ -1614,17 +1697,25 @@
     html += '</div>';
 
     if (tabId === 'signup') {
-      html += accountPrepHtml();
+      html += '<p class="prh-small-note">' + esc(STR.uxNoAccount) + '</p><details class="prh-account-disclosure"' + (state.accountToolsOpen ? ' open' : '') + '><summary data-prh-action="toggle-account">' +
+        esc(STR.uxOptionalAccount) + '</summary>' + accountPrepHtml() + '</details>';
     }
 
     if (tabId === 'reservation') {
-      html += '<div class="prh-finder">' +
-        '<p class="prh-finder-title">' + esc(STR.openFinder) + '</p>' +
-        '<p class="prh-finder-sub">' + esc(STR.openFinderSub) + '</p>' +
-        '<button type="button" class="prh-btn prh-primary" data-prh-action="start-finder">' + esc(STR.findPath) + '</button>' +
-        '</div>';
+      html += '<div class="prh-finder"><p class="prh-finder-title">' + esc(STR.uxFinderStart) + '</p>' +
+        '<p class="prh-finder-sub">' + esc(STR.uxReservationIntro) + '</p>' +
+        '<div class="prh-hero-actions"><button type="button" class="prh-btn prh-primary" data-prh-action="start-finder">' + esc(STR.findPath) + '</button>' +
+        '<a class="prh-btn" href="https://www.hikorea.go.kr/resv/ResvIntroR.pt" target="_blank" rel="noopener noreferrer">' + esc(STR.uxBookingLink) + ' ↗</a></div>' +
+        '<p class="prh-small-note">' + esc(STR.uxNoAccount) + '</p>' +
+        '<div class="prh-optional-shortcuts"><button type="button" class="prh-btn" data-prh-action="go-tab" data-prh-tab="signup">' + esc(STR.uxSignupHelp) + '</button>' +
+        '<button type="button" class="prh-btn" data-prh-action="go-tab" data-prh-tab="login">' + esc(STR.uxLoginHelp) + '</button></div></div>';
     }
-
+    if (tabId === 'manage') {
+      html += '<div class="prh-finder"><p class="prh-finder-title">' + esc(STR.uxManageLink) + '</p>' +
+        '<p class="prh-finder-sub">' + esc(STR.uxManageHint) + '</p>' +
+        '<a class="prh-cta prh-cta-secondary" href="https://www.hikorea.go.kr/mypage/MypgNonRegResvPageR.pt" target="_blank" rel="noopener noreferrer">' + esc(STR.uxManageLink) + ' ↗</a></div>';
+    }
+    html += '<p class="prh-small-note">' + esc(STR.uxGuideHint) + '</p>';
     html += '<div class="prh-steps">' + steps.map(function (s, i) {
       return stepCardHtml(s, i, steps.length, steps[i + 1]);
     }).join('') + '</div>';
@@ -1658,7 +1749,7 @@
   /* ----------------------------------------------- reservation purpose wizard */
   // The interactive one-question-per-step finder (preserved). Returns HTML.
   function wizardStepHtml() {
-    var html = '<div class="prh-nav" style="margin-top:0"><button type="button" class="prh-btn" data-prh-action="back-to-photos">‹ ' + esc(STR.backToPhotos) + '</button></div>';
+    var html = '<div class="prh-nav" style="margin-top:0"><button type="button" class="prh-btn" data-prh-action="back-to-photos">‹ ' + esc(STR.uxBackToBooking) + '</button></div>';
     html += progressHtml();
 
     if (state.step === 1) {
@@ -1723,7 +1814,7 @@
     var confKey = model.confidence === 'high' ? 'confHigh' : (model.confidence === 'low' ? 'confLow' : 'confMedium');
     var confCls = model.confidence === 'high' ? ' is-high' : (model.confidence === 'low' ? ' is-low' : '');
 
-    var html = '<div class="prh-nav" style="margin-top:0"><button type="button" class="prh-btn" data-prh-action="back-to-photos">‹ ' + esc(STR.backToPhotos) + '</button></div>';
+    var html = '<div class="prh-nav" style="margin-top:0"><button type="button" class="prh-btn" data-prh-action="back-to-photos">‹ ' + esc(STR.uxBackToBooking) + '</button></div>';
 
     // Result card
     html += '<div class="prh-result-card">';
@@ -1732,6 +1823,8 @@
     html += '<p class="prh-result-lead">' + esc(isLow ? STR.resultLeadLow : STR.resultLead) + '</p>';
     html += '<span class="prh-conf' + confCls + '">' + esc(STR.confLabel) + ': ' + esc(STR[confKey]) + '</span>';
     html += '</div>';
+
+    html += '<div class="prh-ctas prh-result-primary"><a class="prh-cta prh-cta-secondary" href="https://www.hikorea.go.kr/resv/ResvIntroR.pt" target="_blank" rel="noopener noreferrer">' + esc(STR.uxBookingLink) + ' ↗</a></div>';
 
     // Cautions (always carry same-day + real-name)
     var cautionLis = model.warnings.map(function (w) {
@@ -1742,7 +1835,8 @@
       html += '<div class="prh-cautions"><h4>' + esc(STR.cautionsTitle) + '</h4><ul>' + cautionLis + '</ul></div>';
     }
 
-    // Four compact sections
+    // Secondary details are disclosed on demand; the next action stays at the top.
+    html += '<details class="prh-result-details"><summary>' + esc(STR.uxResultDetail) + '</summary>';
     html += '<div class="prh-sections">';
 
     // 1. What to click
@@ -1780,9 +1874,10 @@
     }).join('');
     html += '<div class="prh-section prh-blocked prh-section-full"><h4 data-pg="life-buoy">' + esc(STR.secBlocked) + '</h4>' + blkHtml + '</div>';
 
+    html += '</details>';
+
     // CTAs (hierarchy: Go to HiKorea · View docs (if code) · Save result · Start over)
     html += '<div class="prh-ctas">';
-    html += '<a class="prh-cta prh-cta-secondary" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">' + esc(STR.goHikorea) + '</a>';
     var docCode = (state.code && state.code !== '__skip__') ? state.code : (state.visaCode || '');
     if (docCode) {
       var docType = (model.recommendedPurpose === 'extension') ? 'ext' : ((model.recommendedPurpose === 'change_status') ? 'change' : 'new');
@@ -1826,7 +1921,7 @@
     header();
     var body = getBody();
     if (!body) return;
-    var inner = tabBarHtml() + '<div class="prh-tabpanel" id="prhTabPanel">' + tabPanelHtml() + '</div>' + lightboxHtml();
+    var inner = tabBarHtml() + '<div class="prh-tabpanel" id="prhTabPanel" role="tabpanel" aria-labelledby="prhtab-' + esc(state.tab) + '">' + tabPanelHtml() + '</div>' + lightboxHtml();
     body.innerHTML = '<div class="prh-root" data-prh-root>' + inner + '</div>';
     centerActiveTab(body);
   }
@@ -1852,6 +1947,13 @@
     if (expInput && state.step === 5 && expInput.value) state.expiry = expInput.value;
   }
 
+  function focusWizardHeading() {
+    var heading = document.querySelector('#prhTabPanel .prh-q');
+    if (heading && typeof heading.focus === 'function') {
+      heading.setAttribute('tabindex', '-1');
+      heading.focus({ preventScroll: true });
+    }
+  }
   function goNext() {
     captureInputs();
     if (state.step === 1 && !state.purpose) return;
@@ -1865,6 +1967,7 @@
     }
     state.step += 1;
     render();
+    focusWizardHeading();
   }
 
   function goBack() {
@@ -1986,7 +2089,7 @@
       goBack();
     } else if (action === 'go-tab') {
       var tab = actionEl.getAttribute('data-prh-tab');
-      if (tab && TAB_ORDER.indexOf(tab) !== -1) {
+      if (tab && (TAB_ORDER.indexOf(tab) !== -1 || UTILITY_TABS.indexOf(tab) !== -1)) {
         state.tab = tab;
         state.view = 'guide';
         render();
@@ -2025,6 +2128,13 @@
       render();
     } else if (action === 'save-result') {
       saveResult(actionEl);
+    } else if (action === 'toggle-account') {
+      // Native details state must survive rerenders triggered by the account tools.
+      e.preventDefault();
+      state.accountToolsOpen = !state.accountToolsOpen;
+      render();
+      var summary = document.querySelector('#hikoreaGuideBody .prh-account-disclosure > summary');
+      if (summary && typeof summary.focus === 'function') summary.focus({ preventScroll: true });
     } else if (action === 'generate-password') {
       try {
         state.generatedPassword = generateHikoreaPassword();
@@ -2061,13 +2171,14 @@
     var key = e.key;
     if (key !== 'ArrowLeft' && key !== 'ArrowRight' && key !== 'Home' && key !== 'End') return;
     e.preventDefault();
-    var idx = TAB_ORDER.indexOf(state.tab);
+    var tabs = visibleTabs();
+    var idx = tabs.indexOf(state.tab);
     var nextIdx = idx;
-    if (key === 'ArrowLeft') nextIdx = (idx - 1 + TAB_ORDER.length) % TAB_ORDER.length;
-    else if (key === 'ArrowRight') nextIdx = (idx + 1) % TAB_ORDER.length;
+    if (key === 'ArrowLeft') nextIdx = (idx - 1 + tabs.length) % tabs.length;
+    else if (key === 'ArrowRight') nextIdx = (idx + 1) % tabs.length;
     else if (key === 'Home') nextIdx = 0;
-    else if (key === 'End') nextIdx = TAB_ORDER.length - 1;
-    state.tab = TAB_ORDER[nextIdx];
+    else if (key === 'End') nextIdx = tabs.length - 1;
+    state.tab = tabs[nextIdx];
     state.view = 'guide';
     render();
     var el = document.getElementById('prhtab-' + state.tab);
@@ -2102,6 +2213,7 @@
     state.zoom = '';
     state.idCandidate = '';
     state.generatedPassword = '';
+    state.accountToolsOpen = false;
     // Opened from a specific visa → jump straight to the reservation finder,
     // prefilled. Opened from the gateway card → start on the overview.
     if (opts.visaCode) {
