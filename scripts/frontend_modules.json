@@ -36,6 +36,9 @@
       "assets/js/pages/ai-main.js",
       "assets/js/pages/ai-navigator-handoff.js",
       "assets/js/pages/ai-surface-switcher.js"
+    ],
+    "new-home.html": [
+      "assets/js/pages/new-home-main.js"
     ]
   }
 }
