@@ -34,7 +34,7 @@ const RG = require('../assets/js/visa-route-guide.js');
 const visas = JSON.parse(read('visa_data.json'));
 // Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): the procedure-tab and
 // procedure-panel markup moved to src/render/cards/procedure-panels.js in Phase 3 of the rebuild.
-const indexHtml = JSON.parse(read('scripts/frontend_modules.json')).modules.filter((rel) => existsSync(join(ROOT, rel))).map((rel) => read(rel)).concat(read('index.html')).join('\n');
+const indexHtml = JSON.parse(read('scripts/frontend_modules.json')).sources.filter((rel) => existsSync(join(ROOT, rel))).map((rel) => read(rel)).concat(read('index.html')).join('\n');
 const byCode = (c) => visas.find((v) => v.code === c);
 const subsOf = (v) => (Array.isArray(v.subcodes) ? v.subcodes : (Array.isArray(v.subCodes) ? v.subCodes : []));
 

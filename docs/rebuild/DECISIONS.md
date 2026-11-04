@@ -272,3 +272,15 @@ the options considered, the evidence, and the reason.
   the parse-time initialisers; and 193 one-line stubs. Retiring the stubs means every caller imports the
   module (and the e2e/assets/js callers get a stable surface); moving the state owners means a data-flow
   redesign. Both are behaviour-affecting and belong to a later phase, not to this behaviour-preserving one.
+
+## ADR-011 — Phase 4 CSS: verbatim extraction first, local visual baselines per step
+- Each inline `<style>` block becomes a stylesheet linked at the same position, so the cascade is
+  unchanged; relative `url()`s are rewritten for the new directory; the critical first-paint block
+  stays inline. Only after that do tokens, dead rules and `!important` get touched, one step each.
+- CI generates visual baselines on its own runner (ADR-005) and cannot compare across commits until
+  the owner commits baselines (owner decision 3). Phase 4 therefore compares each step locally against
+  baselines generated on the same Chromium immediately before the step, fonts blocked, 14 states × 2
+  viewports. Those files are excluded via `.git/info/exclude`, never committed by this session.
+- Legacy checks that regex CSS from index.html read the shared source list
+  (`scripts/frontend_modules.json`, key renamed to `sources`, now modules + stylesheets, then
+  index.html). Checks about document order (tab order, skip link) keep reading the raw document.

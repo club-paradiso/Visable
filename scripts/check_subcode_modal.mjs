@@ -14,7 +14,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
 // Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): Phase 3 of the rebuild
 // moves inline index.html code into ES modules; a brace-matching slice must find the real definition, not the stub.
-const html = [...JSON.parse(fs.readFileSync(path.join(repoRoot, 'scripts', 'frontend_modules.json'), 'utf8')).modules.map((rel) => fs.readFileSync(path.join(repoRoot, rel), 'utf8')), fs.readFileSync(path.join(repoRoot, 'index.html'), 'utf8')].join('\n');
+const html = [...JSON.parse(fs.readFileSync(path.join(repoRoot, 'scripts', 'frontend_modules.json'), 'utf8')).sources.map((rel) => fs.readFileSync(path.join(repoRoot, rel), 'utf8')), fs.readFileSync(path.join(repoRoot, 'index.html'), 'utf8')].join('\n');
 const visas = JSON.parse(fs.readFileSync(path.join(repoRoot, 'visa_data.json'), 'utf8'));
 const ko = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data', 'i18n', 'ko.json'), 'utf8'));
 

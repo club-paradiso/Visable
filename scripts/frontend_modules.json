@@ -1,6 +1,6 @@
 {
-  "_comment": "ES modules that Phase 3 of the frontend rebuild moved out of the inline script of index.html, in the inline code's former document order. Legacy source-slicing checks (scripts/, backend/tests) read these BEFORE index.html so a brace-matching extractor finds the real definition rather than the one-line delegating stub index.html keeps. Maintained by hand with every move (docs/rebuild/STATUS.md).",
-  "modules": [
+  "_comment": "Sources that Phase 3/4 of the frontend rebuild moved out of index.html: ES modules (former inline script) and stylesheets (former inline <style> blocks), in the order they appeared. Legacy source-slicing checks (scripts/, backend/tests) read these BEFORE index.html so a brace-matching extractor finds the real definition rather than the one-line delegating stub index.html keeps, and so CSS-rule assertions still see the rules. Maintained by hand with every move (docs/rebuild/STATUS.md).",
+  "sources": [
     "src/core/helpers.js",
     "src/features/jobcode.js",
     "src/features/jurisdiction-data.js",
@@ -21,6 +21,11 @@
     "src/shims/detail-code-resolver.js",
     "src/shims/doc-section-unification.js",
     "src/shims/doc-term-fee-ui.js",
-    "src/shims/global-settings.js"
+    "src/shims/global-settings.js",
+    "assets/css/index-base.css",
+    "assets/css/index-gateway-ratio-polish.css",
+    "assets/css/index-task-pass-20260612.css",
+    "assets/css/index-mobile-interface-polish-20260628.css",
+    "assets/css/index-brand-intro-2026.css"
   ]
 }

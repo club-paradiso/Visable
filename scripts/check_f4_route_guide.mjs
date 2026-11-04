@@ -35,7 +35,7 @@ const sourcesDoc = readJson('data/f4/sources.json');
 const guideJs = read('assets/js/f4-route-guide.js');
 // Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): Phase 3 of the rebuild
 // moves inline index.html code into ES modules; a brace-matching slice must find the real definition, not the stub.
-const indexHtml = [...JSON.parse(read('scripts/frontend_modules.json')).modules.map((rel) => read(rel)), read('index.html')].join('\n');
+const indexHtml = [...JSON.parse(read('scripts/frontend_modules.json')).sources.map((rel) => read(rel)), read('index.html')].join('\n');
 
 const srcIds = new Set(sourcesDoc.sources.map((s) => s.id));
 const overlays = overlaysDoc.overlays || {};

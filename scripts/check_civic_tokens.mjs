@@ -30,7 +30,9 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const indexHtml = readFileSync(join(REPO_ROOT, 'index.html'), 'utf8');
+// Frontend source corpus (scripts/frontend_modules.json sources — the modules and stylesheets Phase 3/4 of the
+// rebuild moved out of index.html — then index.html itself).
+const indexHtml = [...JSON.parse(readFileSync(join(REPO_ROOT, 'scripts', 'frontend_modules.json'), 'utf8')).sources.map((rel) => readFileSync(join(REPO_ROOT, rel), 'utf8')), readFileSync(join(REPO_ROOT, 'index.html'), 'utf8')].join('\n');
 
 let passed = 0;
 const failures = [];

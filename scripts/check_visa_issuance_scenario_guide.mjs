@@ -87,7 +87,7 @@ ok(!e9Issuance.includes(STUDENT_DOC_TEXT) && !e9Issuance.includes('재학증명'
 // --- D. index.html wiring + i18n ------------------------------------------
 // Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): Phase 3 of the rebuild
 // moves inline index.html code into ES modules; a brace-matching slice must find the real definition, not the stub.
-const indexHtml = [...JSON.parse(readText('scripts/frontend_modules.json')).modules.map((rel) => readText(rel)), readText('index.html')].join('\n');
+const indexHtml = [...JSON.parse(readText('scripts/frontend_modules.json')).sources.map((rel) => readText(rel)), readText('index.html')].join('\n');
 for (const fn of ['renderIssuanceScenarioPicker', 'openIssuanceGuide', 'chooseIssuanceMode', 'applyIssuanceModeSelection', 'clearIssuanceGuide']) {
   ok(indexHtml.includes(`function ${fn}`), `index.html defines ${fn}`);
 }

@@ -1,0 +1,132 @@
+/* Moved verbatim from the inline <style id="paradiso-task-pass-20260612"> block of index.html (Phase 4 of the frontend rebuild, 2026-11-04). Same cascade position: index.html links this file where the
+   block used to be. Relative url("assets/…") references were rewritten to "../…" because this file lives in assets/css/. */
+/* ── 1 · Manual/source cards are now real links (HiKorea manuals · LawLink · portal) ── */
+a.p-manual-card { text-decoration: none; color: inherit; cursor: pointer; grid-template-columns: auto 1fr auto; }
+.p-manual-ext {
+  align-self: start; font-size: 1rem; font-weight: 800; line-height: 1;
+  color: var(--p-green, #1F4F3D); opacity: 0.5;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+a.p-manual-card:hover .p-manual-ext,
+a.p-manual-card:focus-visible .p-manual-ext { opacity: 1; transform: translate(2px, -2px); }
+a.p-manual-card:focus-visible { outline: 2px solid var(--p-green, #1F4F3D); outline-offset: 3px; }
+.p-manual-kind { display: inline-flex; width: fit-content; margin-bottom: 0.28rem; padding: 0.1rem 0.48rem; border: 1px solid var(--bd); border-radius: 999px; color: var(--t3); font-size: 0.67rem; font-weight: 800; letter-spacing: 0.02em; }
+[data-theme="dark"] .p-manual-ext { color: var(--ac, #6ee7b7); }
+:root[data-theme="archive_diary"] .p-manual-ext { color: var(--k-blue, #2B50C8); }
+
+/* ── 2 · Essential form composer (필수 서류 작성기) ─────────────────────────
+   Civic: a tidy paper-form desk — dashed “fill me in” frames on warm paper.
+   Kitsch: sticker-sheet pop — ink borders, offset shadows, a tilted badge. */
+.p-doc-composer { scroll-margin-top: 5rem; }
+.doc-composer-grid {
+  display: grid; grid-template-columns: 1.25fr 1fr 1fr;
+  gap: clamp(0.8rem, 1.8vw, 1.2rem); align-items: stretch;
+}
+.doc-composer-card {
+  position: relative; display: flex; flex-direction: column; gap: 0.55rem;
+  padding: clamp(1.15rem, 2.4vw, 1.6rem);
+  border: 1px solid color-mix(in srgb, var(--p-green, #1F4F3D) 16%, var(--p-line, #C9BFA5));
+  border-radius: var(--p-r-lg, 16px);
+  background:
+    repeating-linear-gradient(0deg, transparent 0 26px, color-mix(in srgb, var(--p-line, #C9BFA5) 26%, transparent) 26px 27px),
+    linear-gradient(150deg, rgba(255, 252, 246, 0.97), rgba(238, 243, 235, 0.9));
+  box-shadow: var(--p-shadow-1, 0 1px 2px rgba(14,31,26,0.05));
+  color: inherit; text-decoration: none;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+.doc-composer-card::after {
+  /* the “fill me in” dashed inner frame, like a blank form field */
+  content: ""; position: absolute; inset: 7px; pointer-events: none;
+  border: 1.5px dashed color-mix(in srgb, var(--p-green, #1F4F3D) 26%, transparent);
+  border-radius: calc(var(--p-r-lg, 16px) - 6px);
+}
+a.doc-composer-card:hover, a.doc-composer-card:focus-visible {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--p-green, #1F4F3D) 42%, var(--p-line, #C9BFA5));
+  box-shadow: var(--p-shadow-2, 0 4px 12px rgba(14,31,26,0.08));
+}
+a.doc-composer-card:focus-visible { outline: 2px solid var(--p-green, #1F4F3D); outline-offset: 3px; }
+.doc-composer-badge {
+  position: absolute; top: -0.7rem; left: 1.1rem; z-index: 1;
+  padding: 0.22rem 0.7rem; border-radius: 999px;
+  font-size: 0.72rem; font-weight: 800; letter-spacing: 0.04em;
+  background: var(--bg1, #fcfaf5); color: var(--t2, #4f5552);
+  border: 1px solid var(--p-line, #C9BFA5);
+}
+.doc-composer-badge.live { background: var(--p-green, #1F4F3D); color: #fff; border-color: var(--p-green, #1F4F3D); }
+.doc-composer-icon { font-size: 1.7rem; line-height: 1; margin-top: 0.3rem; }
+.doc-composer-card h3 { margin: 0; font-size: clamp(1.02rem, 1.6vw, 1.18rem); font-weight: 800; line-height: 1.35; color: var(--t1, #202221); word-break: keep-all; }
+.doc-composer-card p { margin: 0; font-size: 0.92rem; line-height: 1.62; color: var(--t2, #4f5552); word-break: keep-all; }
+.doc-composer-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.2rem; }
+.doc-composer-tag {
+  font-size: 0.74rem; font-weight: 650; padding: 0.18rem 0.55rem; border-radius: 6px;
+  background: color-mix(in srgb, var(--p-mint, #B7D9C8) 38%, transparent);
+  border: 1px solid color-mix(in srgb, var(--p-green, #1F4F3D) 18%, transparent);
+  color: var(--t2, #4f5552); white-space: nowrap;
+}
+.doc-composer-tag.more { background: transparent; border-style: dashed; }
+.doc-composer-cta {
+  margin-top: auto; padding-top: 0.6rem; align-self: flex-start;
+  font-size: 0.94rem; font-weight: 800; color: var(--p-green, #1F4F3D);
+}
+a.doc-composer-card:hover .doc-composer-cta { text-decoration: underline; text-underline-offset: 3px; }
+.doc-composer-note { margin-top: 1.1rem; }
+@media (max-width: 900px) { .doc-composer-grid { grid-template-columns: 1fr; gap: 1.1rem; } }
+/* dark brightness */
+[data-theme="dark"] .doc-composer-card {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 26px, rgba(255,255,255,0.045) 26px 27px),
+    linear-gradient(150deg, var(--bg1, #113B32), var(--bg0, #0B2A24));
+  border-color: var(--bd, #2D5A50);
+}
+[data-theme="dark"] .doc-composer-card h3 { color: var(--t1, #F3EEDF); }
+[data-theme="dark"] .doc-composer-card p { color: var(--t2, #C7BFA8); }
+[data-theme="dark"] .doc-composer-badge { background: var(--bg1, #113B32); color: var(--t2, #C7BFA8); border-color: var(--bd, #2D5A50); }
+[data-theme="dark"] .doc-composer-cta { color: var(--ac, #6ee7b7); }
+[data-theme="dark"] .doc-composer-tag { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.16); color: var(--t2, #C7BFA8); }
+/* kitsch (archive_diary) flourish: sticker sheet */
+:root[data-theme="archive_diary"] body:not(.searched) .doc-composer-card {
+  background: linear-gradient(173deg, #FFFEFA 0%, #FFFAF0 78%, #FDF6EA 100%) !important;
+  border: 2px solid var(--k-ink, #14143C) !important;
+  border-radius: 24px 24px 24px 8px !important;
+  box-shadow: 4px 4px 0 var(--k-blue-2, #9DB8F2) !important;
+  transition: transform 0.38s var(--k-spring, ease), box-shadow 0.38s var(--k-spring, ease);
+}
+:root[data-theme="archive_diary"] body:not(.searched) a.doc-composer-card:hover {
+  transform: translateY(-5px) rotate(-0.6deg); box-shadow: 7px 7px 0 var(--k-blue, #2B50C8) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .doc-composer-card::after { border-color: color-mix(in srgb, var(--k-blue, #2B50C8) 38%, transparent); }
+:root[data-theme="archive_diary"] body:not(.searched) .doc-composer-badge {
+  transform: rotate(-3deg); border: 2px solid var(--k-ink, #14143C);
+  background: var(--k-butter, #FFE48A); color: var(--k-ink, #14143C); font-weight: 800;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .doc-composer-badge.live { background: var(--k-blue, #2B50C8); color: #fff; }
+:root[data-theme="archive_diary"] body:not(.searched) .doc-composer-cta { color: var(--k-blue-deep, #1A2F86); }
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .doc-composer-card {
+  background: linear-gradient(173deg, #1B2541, #141B30 70%) !important;
+  border-color: #44558A !important; box-shadow: 4px 4px 0 #0B1020 !important;
+}
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .doc-composer-card :is(h3) { color: #EEF2FF !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .doc-composer-card :is(p, .doc-composer-tag) { color: #BAC5E4 !important; }
+
+/* ── 3 · Button text readability pass (color · ratio · size, both themes) ──
+   Raises undersized type and washed-out contrast on interactive labels without
+   reshaping any layout. */
+.cb { font-size: 0.84rem; font-weight: 700; color: var(--t1, #202221); }
+.qb { font-size: 0.84rem; font-weight: 650; color: var(--t2, #4f5552); }
+.btn-en { font-size: 0.8rem; opacity: 0.85; }
+.p-gw-card-label { font-size: clamp(1rem, 1.5vw, 1.1rem); font-weight: 800; line-height: 1.3; }
+.p-gw-card-sub { font-size: 0.85rem; color: var(--t2, #4f5552); line-height: 1.5; }
+.p-gw-util-label { font-size: 0.92rem; font-weight: 700; }
+.p-gw-search-title { font-size: 1.05rem; font-weight: 800; }
+.p-gw-search-sub { font-size: 0.85rem; }
+button.stat-code-chip { font-family: inherit; cursor: pointer; font-size: 0.78rem; line-height: 1.4; }
+button.stat-code-chip:focus-visible { outline: 2px solid var(--ac, #0EA37B); outline-offset: 2px; }
+.next-action-btn strong { font-size: 0.98rem; }
+.next-action-btn small { font-size: 0.8rem; opacity: 0.92; }
+.doc-trigger-btn { font-size: 0.95rem; }
+body:not(.searched) .brand-hero-buttons .btn-secondary {
+  border-color: rgba(255,255,255,0.85); text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+}
+[data-theme="dark"] .cb { color: var(--t1, #F3EEDF); }
+[data-theme="dark"] .qb { color: var(--t2, #C7BFA8); }

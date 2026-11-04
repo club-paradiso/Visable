@@ -175,3 +175,5 @@ With the i18n move: `scripts/check_index_hardcoded_text.mjs` scans `src/i18n/run
 With the boot move: `check_index_hardcoded_text.mjs` region end marker `function toggleTheme(`; `check_employment_reporting_helper.mjs` and `check_live_feature_surface.mjs` read the corpus (the data-action dispatcher lives in `src/boot.js`).
 
 With the shim move: `scripts/smoke_static_i18n.mjs` parses inline `<script>` blocks from index.html alone (string literals in the corpus modules can contain `<script`).
+
+**Phase 4:** `scripts/frontend_modules.json` key renamed to `sources` and extended with the stylesheets extracted from index.html, so CSS-rule assertions in the corpus-reading checks keep seeing the rules. `check_unified_search.mjs` and `check_civic_tokens.mjs` switched to the corpus; `check_unified_search` keeps its tab-order and skip-link checks on the raw document (`indexHtmlRaw`).

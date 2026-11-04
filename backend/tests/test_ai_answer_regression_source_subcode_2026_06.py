@@ -398,7 +398,7 @@ class FrontendPublicSafeDiagnosticsTests(unittest.TestCase):
         # The /api/ask call moved to src/features/modals-ai.js in Phase 3 of the frontend rebuild; read the
         # frontend corpus (scripts/frontend_modules.json modules first, then index.html).
         import json as _json
-        modules = _json.loads((REPO_ROOT / "scripts" / "frontend_modules.json").read_text(encoding="utf-8"))["modules"]
+        modules = _json.loads((REPO_ROOT / "scripts" / "frontend_modules.json").read_text(encoding="utf-8"))["sources"]
         src = "\n".join([self._read(REPO_ROOT / rel) for rel in modules] + [self._read(INDEX_HTML)])
         self.assertIn("devDiagnosticsEnabled", src)
         self.assertIn("devDiagnosticsEnabled && (lawWarnings.length", src)

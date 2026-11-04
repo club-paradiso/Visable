@@ -16,7 +16,7 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const INDEX = path.join(ROOT, 'index.html');
 // Phase 3 of the frontend rebuild moved getProcedure() and the source-confirmed helpers here.
-const FRONTEND_MODULES = JSON.parse(read(path.join(ROOT, 'scripts', 'frontend_modules.json'))).modules; // see that file
+const FRONTEND_MODULES = JSON.parse(read(path.join(ROOT, 'scripts', 'frontend_modules.json'))).sources; // see that file
 const VISA_DATA = path.join(ROOT, 'visa_data.json');
 const BACKEND_VISAS = path.join(ROOT, 'backend', 'data', 'visas.json');
 const STRUCTURED = path.join(ROOT, 'backend', 'data', 'manual_grounding', 'structured_requirements_2026_06_01.json');

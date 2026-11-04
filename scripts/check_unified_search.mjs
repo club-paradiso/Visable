@@ -713,7 +713,11 @@ check('the composed layer prefers typed rows over the string list', () => {
  * Three rules the spec names that this layer did not satisfy. They are checked
  * against the shipped files, not against a description of them.
  */
-const indexHtml = readFileSync(join(REPO_ROOT, 'index.html'), 'utf8');
+// Frontend source corpus (scripts/frontend_modules.json sources — the modules and stylesheets Phase 3/4 of the
+// rebuild moved out of index.html — then index.html itself).
+const indexHtml = [...JSON.parse(readFileSync(join(REPO_ROOT, 'scripts', 'frontend_modules.json'), 'utf8')).sources.map((rel) => readFileSync(join(REPO_ROOT, rel), 'utf8')), readFileSync(join(REPO_ROOT, 'index.html'), 'utf8')].join('\n');
+// Markup-order checks (tab order, skip link target) must look at the real document only.
+const indexHtmlRaw = readFileSync(join(REPO_ROOT, 'index.html'), 'utf8');
 
 check('the results layer reports busy while a search is in flight', () => {
   const fn = source.slice(source.indexOf('function setSearchBarState'));
@@ -745,11 +749,11 @@ check('the layer\'s Korean prose does not break mid-word', () => {
 });
 
 check('the first tab stop skips to the main content', () => {
-  const body = indexHtml.slice(indexHtml.indexOf('<body'));
+  const body = indexHtmlRaw.slice(indexHtmlRaw.indexOf('<body'));
   const link = body.match(/<a class="skip-link"[^>]*>/);
   assert(link, 'no skip link');
   assert(/href="#mainContent"/.test(link[0]), 'skip link does not point at #mainContent');
-  assert(indexHtml.includes('id="mainContent"'), 'skip-link target does not exist');
+  assert(indexHtmlRaw.includes('id="mainContent"'), 'skip-link target does not exist');
   assert(/data-i18n="skipToContent"/.test(link[0]), 'skip link is not translated');
   // It has to be genuinely first: anything focusable before it makes it useless.
   const before = body.slice(0, body.indexOf('<a class="skip-link"'));

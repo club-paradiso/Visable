@@ -14,7 +14,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (path) => readFileSync(join(ROOT, path), 'utf8');
 // Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): the data-action dispatcher
 // (implementation hooks) lives in src/boot.js since Phase 3 of the rebuild; the entry markup stays in index.html.
-const index = [...JSON.parse(read('scripts/frontend_modules.json')).modules.map((rel) => read(rel)), read('index.html')].join('\n');
+const index = [...JSON.parse(read('scripts/frontend_modules.json')).sources.map((rel) => read(rel)), read('index.html')].join('\n');
 const packageJson = JSON.parse(read('package.json'));
 const backendOrigin = read('assets/js/backend-origin.js');
 const utilityRestoration = read('assets/css/landing-utility-restoration-20260908.css');

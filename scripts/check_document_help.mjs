@@ -7,7 +7,7 @@ const helper = require('../assets/js/document-help.js');
 const records = JSON.parse(fs.readFileSync(new URL('../data/document_help.json', import.meta.url), 'utf8'));
 // Frontend source corpus (scripts/frontend_modules.json modules first, then index.html): Phase 3 of the rebuild
 // moves inline index.html code into ES modules (document help now lives in src/features/modals-ai.js).
-const indexHtml = [...JSON.parse(fs.readFileSync(new URL('./frontend_modules.json', import.meta.url), 'utf8')).modules.map((rel) => fs.readFileSync(new URL('../' + rel, import.meta.url), 'utf8')), fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8')].join('\n');
+const indexHtml = [...JSON.parse(fs.readFileSync(new URL('./frontend_modules.json', import.meta.url), 'utf8')).sources.map((rel) => fs.readFileSync(new URL('../' + rel, import.meta.url), 'utf8')), fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8')].join('\n');
 
 const requiredIds = [
   'integrated_application_form',

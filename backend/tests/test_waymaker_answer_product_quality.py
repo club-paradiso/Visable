@@ -453,7 +453,7 @@ class FrontendContractTests(unittest.TestCase):
         # Phase 3 of the frontend rebuild moves inline index.html code into ES modules (scripts/frontend_modules.json);
         # the static guards below read those modules too, modules first.
         with open(os.path.join(REPO_ROOT, "scripts", "frontend_modules.json"), encoding="utf-8") as fh:
-            modules = json.load(fh)["modules"]
+            modules = json.load(fh)["sources"]
         parts = []
         for rel in modules:
             with open(os.path.join(REPO_ROOT, rel), encoding="utf-8") as fh:
