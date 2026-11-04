@@ -116,3 +116,46 @@ test('ai.html shell', async ({ page }) => {
   await page.waitForTimeout(800);
   await expect(page).toHaveScreenshot('ai-shell.png', { fullPage: false });
 });
+
+// Modals of the legacy card and the landing tools (their width/layout rules are the inline style attributes Phase 4 moves).
+async function openLegacyCard(page) {
+  await boot(page, { routes: blockFonts });
+  await search(page, 'D-2 체류기간 연장');
+  await page.locator('[data-sg-action="legacy-card"]').first().click();
+  const card = page.locator('#rlist article.vc[data-code="D-2"]');
+  await expect(card).toBeVisible();
+  return card;
+}
+for (const [name, action, overlay] of [
+  ['ai modal', 'open-ai-modal', '#aiModalOverlay'],
+  ['document modal', 'open-doc-modal', '#docModalOverlay'],
+  ['faq modal', 'open-faq-modal', '#faqModalOverlay'],
+  // (the HiKorea guide overlay is not baselined: it did not render pixel-stable across two runs)
+]) {
+  test(`legacy card: ${name} (ko)`, async ({ page }) => {
+    const card = await openLegacyCard(page);
+    await card.locator(`[data-action="${action}"]`).first().click();
+    await expect(page.locator(overlay)).toBeVisible();
+    await page.waitForTimeout(1500); // modal bodies load their data (document help, registries) after opening
+    // Element screenshot: the page behind the backdrop is still smooth-scrolling the legacy card into view,
+    // which made full-viewport shots differ by 4–7% between runs; the modal box itself is what Phase 4 touches.
+    await expect(page.locator(`${overlay} .modal-box`)).toHaveScreenshot(`modal-${action}.png`);
+  });
+}
+for (const [name, action, overlay] of [
+  ['agent finder', 'open-agent-finder', '#agentFinderModalOverlay'],
+  ['hospital finder', 'open-med-finder', '#medFinderModalOverlay'],
+  ['jurisdiction finder', 'open-jurisdiction-modal', '#jurisdictionModalOverlay'],
+]) {
+  test(`landing tool: ${name} (ko)`, async ({ page }) => {
+    await boot(page, { routes: blockFonts });
+    const btn = page.locator(`[data-action="${action}"]:visible`).first();
+    if (!(await btn.isVisible().catch(() => false))) await page.locator('#csTools summary').click();
+    await page.locator(`[data-action="${action}"]:visible`).first().click();
+    await expect(page.locator(overlay)).toBeVisible();
+    await page.waitForTimeout(1500); // modal bodies load their data (document help, registries) after opening
+    // Element screenshot: the page behind the backdrop is still smooth-scrolling the legacy card into view,
+    // which made full-viewport shots differ by 4–7% between runs; the modal box itself is what Phase 4 touches.
+    await expect(page.locator(`${overlay} .modal-box`)).toHaveScreenshot(`modal-${action}.png`);
+  });
+}
