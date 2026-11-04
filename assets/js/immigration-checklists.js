@@ -2167,6 +2167,26 @@ function handleUrlParams() {
     }
   }
 
+  // Search-result handoff: jump directly to the matching procedure and its
+  // status/scenario choices. Never auto-pick an ambiguous checklist scenario.
+  if (!scenarioId && proc && ['extension', 'change', 'registration'].includes(proc)) {
+    var selectedCode = String(code || '').trim().toUpperCase();
+    var validCode = /^[A-H]-\\d{1,2}(?:-[0-9A-Z]{1,8})?$/.test(selectedCode);
+    var dataset = state.datasets[proc];
+    if (validCode && dataset && Array.isArray(dataset.items)) {
+      var matchingItems = dataset.items.filter(function (item) { return item.status_code === selectedCode; });
+      if (!matchingItems.length) matchingItems = dataset.items.filter(function (item) { return item.status_code.indexOf(selectedCode + '-') === 0; });
+      if (matchingItems.length) selectStatusCode(selectedCode, matchingItems);
+      else {
+        setStep(2);
+        $('status-picker-input').value = selectedCode;
+        renderStatusCandidates();
+      }
+    } else {
+      setStep(2);
+    }
+  }
+
   if (window.location.hash === '#operator') {
     toggleOperatorMode(true);
   }
