@@ -82,8 +82,9 @@ for (const [query, expected] of [['D-4', GENERIC], ['F-1', GENERIC], ['F-4', F4]
 test('procedure-first guidance shows exact form names but keeps other official forms', async ({ page }) => {
   await boot(page);
   for (const [query, expected] of [['D-2 연장', '통합신청서'], ['F-4 연장', '재외동포 통합신청서']]) {
-    await page.fill('#civicQuery', query);
-    await page.press('#civicQuery', 'Enter');
+    const field = (await page.evaluate(() => document.body.classList.contains('searched'))) ? '#q' : '#civicQuery';
+    await page.fill(field, query);
+    await page.press(field, 'Enter');
     const docs = page.locator('#statusGuidance .sg-doc-name');
     await expect(docs.first()).toBeAttached({ timeout: 20_000 });
     const labels = await docs.allTextContents();
