@@ -251,7 +251,10 @@ test.describe('Waymaker and New Home entries', () => {
     await expect(page.locator('.vf-product-wordmark.product-wordmark-light')).toBeVisible();
     await expect(page.locator('.wm-brand-wordmark .product-wordmark-light')).toBeVisible();
     await expect(page.locator('.vf-product-wordmark.product-wordmark-light')).toHaveAttribute('src', /waymaker-wordmark\.svg$/);
-    expect(await page.locator('.wm-brand-wordmark .product-wordmark-light').evaluate((img) => img.complete && img.naturalWidth > 0)).toBe(true);
+    // Poll the loaded check: a one-shot evaluate races the wordmark fetch
+    // under full-suite parallel load (the brand tests in
+    // ui-consistency.spec.mjs poll the same property for this reason).
+    await expect.poll(() => page.locator('.wm-brand-wordmark .product-wordmark-light').evaluate((img) => img.complete && img.naturalWidth > 0)).toBe(true);
     await page.goBack();
     await expect(page).toHaveURL(/index\.html/);
     await expect(page.locator('#civicQuery')).toBeVisible();
