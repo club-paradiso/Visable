@@ -1077,7 +1077,7 @@
     // not another competing primary entry on the homepage. Only link supported procedures.
     var detailProc = { extension: 'extension', status_change: 'change', registration: 'registration' }[model.procedure];
     var detailCode = model.procedure === 'status_change' ? (model.target || model.status) : (model.status || model.target);
-    if (detailProc && /^[A-H]-\\d{1,2}(?:-[0-9A-Za-z]{1,8})?$/.test(String(detailCode || ''))) {
+    if (detailProc && /^[A-H]-\d{1,2}(?:-[0-9A-Za-z]{1,8})?$/.test(String(detailCode || ''))) {
       var checklistHref = 'immigration-checklists.html?procedure=' + encodeURIComponent(detailProc) + '&code=' + encodeURIComponent(detailCode);
       if (lang === 'en') checklistHref += '&lang=en';
       html += '<p class="sg-doc-deep-link"><a href="' + esc(checklistHref) + '">' + (lang === 'en' ? 'Explore detailed documents by scenario' : '상황별 상세 서류 목록 살펴보기') + '</a></p>';
