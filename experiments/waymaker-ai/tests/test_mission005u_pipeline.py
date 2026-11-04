@@ -41,7 +41,7 @@ def test_records_that_differ_in_more_than_numbers_are_not(text):
 
 
 def test_v15_adds_only_the_input_name_and_the_conflict_records_line():
-    assert CONTRACT_VERSIONS[-1] == "v15" and guard.CONTRACT_VERSION == "v15"
+    assert "v15" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v15", "v16")   # 005-V: v16
     v14, v15 = SYSTEM_PROMPTS["v14"].splitlines(), SYSTEM_PROMPTS["v15"].splitlines()
     assert len(v15) == len(v14) + 1
     added = [line for line in v15 if line not in v14]
@@ -55,7 +55,7 @@ def test_conflict_records_is_an_allowlisted_v15_input_of_this_item_only():
     assert project_inference_item(item)["system"]["conflict_records"] == [["N-1", "M-1"]]
     assert list(json.loads(build_messages(item, "v15")[1]["content"])) == [
         "question", "reply_language", "uncovered_items", "conflict_records", "evidence"]
-    with pytest.raises(ValueError, match="v15 input"):
+    with pytest.raises(ValueError, match=r"v15\+? input"):
         build_messages(item, "v14")
     for bad in ([["N-1", "Z-9"]], [["N-1", "N-1"]], [["N-1"]], [], "N-1, M-1"):
         with pytest.raises(ValueError, match="conflict_records"):

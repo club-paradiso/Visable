@@ -90,30 +90,32 @@ def probe() -> dict:
 def build_messages(item: dict, version: str = DEFAULT_CONTRACT_VERSION) -> list[dict]:
     projected = project_inference_item(item)
     system = projected.pop("system", None)
-    if version in ("v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15"):
-        # v4-v15 only: the pipeline's reply language and uncovered items (v7+: the sub-code asked;
+    if version in ("v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "v16"):
+        # v4-v16 only: the pipeline's reply language and uncovered items (v7+: the sub-code asked;
         # v8+: the situation asked and the question's date; v10+: the sentence naming uncovered items; v12+: the language retry note;
-        # v13+: the branch retry note; v14+: the status retry note; v15: the records in conflict), ahead of the evidence.
+        # v13+: the branch retry note; v14+: the status retry note; v15+: the records in conflict; v16: the choice retry note), ahead of the evidence.
         if system is None:
             raise ValueError(f"Contract {version} needs the pipeline's system fields")
-        if "scope_status_code" in system and version not in ("v7", "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15"):
+        if "scope_status_code" in system and version not in ("v7", "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "v16"):
             raise ValueError("scope_status_code is a v7+ input")
-        if ("scope_location" in system or "as_of" in system) and version not in ("v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15"):
+        if ("scope_location" in system or "as_of" in system) and version not in ("v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "v16"):
             raise ValueError("scope_location and as_of are v8+ inputs")
-        if "uncovered_sentence" in system and version not in ("v10", "v11", "v12", "v13", "v14", "v15"):
+        if "uncovered_sentence" in system and version not in ("v10", "v11", "v12", "v13", "v14", "v15", "v16"):
             raise ValueError("uncovered_sentence is a v10+ input")
-        if "language_retry" in system and version not in ("v12", "v13", "v14", "v15"):
+        if "language_retry" in system and version not in ("v12", "v13", "v14", "v15", "v16"):
             raise ValueError("language_retry is a v12+ input")
-        if "branch_retry" in system and version not in ("v13", "v14", "v15"):
+        if "branch_retry" in system and version not in ("v13", "v14", "v15", "v16"):
             raise ValueError("branch_retry is a v13+ input")
-        if "status_retry" in system and version not in ("v14", "v15"):
+        if "status_retry" in system and version not in ("v14", "v15", "v16"):
             raise ValueError("status_retry is a v14+ input")
-        if "conflict_records" in system and version != "v15":
-            raise ValueError("conflict_records is a v15 input")
+        if "conflict_records" in system and version not in ("v15", "v16"):
+            raise ValueError("conflict_records is a v15+ input")
+        if "choice_retry" in system and version != "v16":
+            raise ValueError("choice_retry is a v16 input")
         projected = {"question": projected["question"], "reply_language": system["reply_language"],
                      "uncovered_items": system["uncovered_items"],
                      **{k: system[k] for k in ("uncovered_sentence", "scope_status_code", "scope_location", "as_of", "conflict_records",
-                                           "language_retry", "branch_retry", "status_retry")
+                                           "language_retry", "branch_retry", "choice_retry", "status_retry")
                         if k in system},
                      "evidence": projected["evidence"]}
     return [

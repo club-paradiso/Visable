@@ -213,6 +213,14 @@ conflict cases answered conflict on the first call, so the status retry never fi
 (A05U-48) left out the uncovered item and the notice repaired it. DEV-20 v2 14/20: item 004 got the same
 input as in 005-S under the longer v15 instructions and dropped its E-7-1 sentence. See the
 [Mission 005-U report](runs/mission005u/MISSION-005-U-REPORT.ko.md).
+Mission 005-V (frozen 2026-11-04, not run yet): a question that asks which of two sibling status codes
+applies, answered with only one of them though the cited evidence names both, is asked once more with
+`choice_retry` (contract v16; `choice_coverage.py`); a code still left out is quoted in a system notice.
+Across 2,034 recorded questions it applies only to DEV-20 v2 items 003 and 004 (all six recorded runs of 003,
+three of 004); a code and its own parent (A05N-01) is not a choice. Gate v17 = gate v16 with the 005-V manifest;
+thresholds unchanged. New locked 81-case suite (X-4 family) with six choice cases and three near-misses, re-derived
+blind (81/81). Of the review's edits, the cap and polarity fixes were applied; its value-to-code swap patterns
+were not, because they fired on correct answers that put the value before the code.
 Free T4 run (commit 83f5f27): gate v15 **failed** on raw true_conflict 0/3 alone; end to end was 81/81
 for the first time, with no critical, no unsafe release and no trust bypass. In five conflict cases
 asking what each record says the first answer was status answered; the status retry turned all five

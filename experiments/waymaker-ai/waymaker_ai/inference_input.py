@@ -25,9 +25,10 @@ SOURCE_PROVENANCE_VALUES = frozenset({"official_manual", "official_notice", "com
 # adds language_retry (the system's note that the previous answer was not in the reply language); v13 (005-R)
 # adds branch_retry (the system's note quoting a case of the cited evidence the previous answer left out); v14
 # (005-T) adds status_retry (the system's note naming a status or form problem of the previous answer); v15
-# (005-U) adds conflict_records (pairs of evidence IDs whose texts differ only in their numbers).
+# (005-U) adds conflict_records (pairs of evidence IDs whose texts differ only in their numbers); v16 (005-V) adds
+# choice_retry (the system's note that a choice question was answered with only one of its codes).
 SYSTEM_FIELDS = ("reply_language", "uncovered_items", "scope_status_code", "scope_location", "as_of", "uncovered_sentence",
-                 "language_retry", "branch_retry", "status_retry", "conflict_records")
+                 "language_retry", "branch_retry", "status_retry", "conflict_records", "choice_retry")
 REPLY_LANGUAGES = frozenset({"ko", "en", "vi"})
 
 
@@ -102,6 +103,11 @@ def project_inference_item(item: Mapping) -> dict:
             if not isinstance(text, str) or not text.strip() or len(text) > 600 or "\n" in text:
                 raise ValueError("System status_retry must be one line of at most 600 characters")
             projected["system"]["status_retry"] = text
+        if "choice_retry" in system:
+            text = system["choice_retry"]
+            if not isinstance(text, str) or not text.strip() or len(text) > 600 or "\n" in text:
+                raise ValueError("System choice_retry must be one line of at most 600 characters")
+            projected["system"]["choice_retry"] = text
         if "conflict_records" in system:
             pairs = system["conflict_records"]
             ids = {e["id"] for e in projected["evidence"]}

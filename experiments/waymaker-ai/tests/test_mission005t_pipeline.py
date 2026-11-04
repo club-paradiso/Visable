@@ -76,7 +76,7 @@ def test_recorded_answers_of_earlier_runs_fire_only_on_the_known_habits():
 
 
 def test_v14_adds_only_the_input_name_and_the_retry_line():
-    assert "v14" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v14", "v15")   # 005-U: v15
+    assert "v14" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v14", "v15", "v16")   # 005-U: v15, 005-V: v16
     v13, v14 = SYSTEM_PROMPTS["v13"].splitlines(), SYSTEM_PROMPTS["v14"].splitlines()
     assert len(v14) == len(v13) + 1
     added = [line for line in v14 if line not in v13]

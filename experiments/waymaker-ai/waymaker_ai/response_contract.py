@@ -39,7 +39,9 @@ note, in the reply language, quoting a case of the cited evidence that the previ
 status_retry: the system's note, in the reply language, naming a status or form problem of the previous
 answer (an unlabelled conflict, partial with nothing uncovered, an input field name). v15 (Mission 005-U) is
 v14 with one more input on the first call, conflict_records: pairs of evidence IDs whose texts differ only in
-their numbers, which the model states as a conflict. See artemis_bootstrap/response_contract_v2_spec.md,
+their numbers, which the model states as a conflict. v16 (Mission 005-V) is v15 with one more input,
+choice_retry: the system's note, in the reply language, that the question asks which of two codes applies
+and the previous answer named only one (the system asks once more only then). See artemis_bootstrap/response_contract_v2_spec.md,
 response_contract_v3_spec.md and trusted_evidence_spec.md.
 """
 from __future__ import annotations
@@ -47,7 +49,7 @@ from __future__ import annotations
 import hashlib
 import json
 
-CONTRACT_VERSIONS = ("v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15")
+CONTRACT_VERSIONS = ("v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "v16")
 DEFAULT_CONTRACT_VERSION = "v1"
 
 SYSTEM_PROMPTS = {
@@ -305,6 +307,16 @@ SYSTEM_PROMPTS["v15"] = (SYSTEM_PROMPTS["v14"]
                                   "different values for the same case: state both values, each with its evidence ID, cite both, "
                                   "and use status conflict.\n", 1))
 assert _V14_INPUTS in SYSTEM_PROMPTS["v14"] and _V14_AS_OF in SYSTEM_PROMPTS["v14"]
+#: Mission 005-V: v15 with choice_retry (DEV-20 v2 003 and 004 named only one of the two codes they ask between).
+_V15_INPUTS = "uncovered_sentence, conflict_records, language_retry, branch_retry or status_retry. These are inputs. "
+_V15_BRANCH = "each with the people it applies to.\n"
+SYSTEM_PROMPTS["v16"] = (SYSTEM_PROMPTS["v15"]
+                         .replace(_V15_INPUTS, "uncovered_sentence, conflict_records, language_retry, branch_retry, "
+                                  "choice_retry or status_retry. These are inputs. ", 1)
+                         .replace(_V15_BRANCH, _V15_BRANCH + "If choice_retry is given, the question asks which of "
+                                  "the codes it names applies and your previous answer named only one: answer again "
+                                  "and also state what the evidence says about the code quoted in choice_retry.\n", 1))
+assert _V15_INPUTS in SYSTEM_PROMPTS["v15"] and _V15_BRANCH in SYSTEM_PROMPTS["v15"]
 
 
 def prompt_sha256(version: str) -> str:
@@ -342,7 +354,7 @@ def parse_response(raw: str, evidence_ids: set[str], version: str = DEFAULT_CONT
         raise ValueError(f"Status {data['status']} requires at least one listed citation")
     if data["status"] in {"answered", "partial"} and not data["answer"].strip():
         raise ValueError(f"Status {data['status']} requires a non-empty answer")
-    if version in ("v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15"):
+    if version in ("v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "v16"):
         # Deterministic only: whether a partial answer names its unanswered part, or a
         # clarify answer asks the right question, is a meaning judgement left to review.
         if data["status"] == "conflict" and len(data["citations"]) < 2:
