@@ -284,3 +284,15 @@ the options considered, the evidence, and the reason.
 - Legacy checks that regex CSS from index.html read the shared source list
   (`scripts/frontend_modules.json`, key renamed to `sources`, now modules + stylesheets, then
   index.html). Checks about document order (tab order, skip link) keep reading the raw document.
+
+### ADR-011 addendum 1 — inline style attributes and deterministic visual runs
+- Static `style="…"` attributes become id-scoped rules in one stylesheet linked last; the selector
+  specificity is lower than the attribute's, but nothing else targets those ids with the same
+  properties (checked by grep before the move), and the visual comparison is the proof. Attributes a
+  script toggles through `element.style` stay inline: moving them would change what the script's
+  first toggle does (an inline `display:none` removed by `style.display=''` reveals the element; a
+  stylesheet rule would not), which is behaviour.
+- The golden harness pins `Math.random` to a seeded generator. The alternative — waiting for the chips —
+  does not help because the content itself is random; pinning it keeps the product code untouched and
+  makes every golden run render the same chips. Documented in tests/golden/README.md.
+

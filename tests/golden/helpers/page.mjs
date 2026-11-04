@@ -21,6 +21,10 @@ export async function boot(page, { path = '/index.html', query = {}, routes = []
   // The home re-renders its search form on the first one, after the i18n packs load; typing before
   // that can land on the element that is about to be replaced (seen under CI load, see waitForSearchReady).
   await page.addInitScript(() => { window.addEventListener('paradiso-language-applied', () => { window.__goldenLanguageApplied = (window.__goldenLanguageApplied || 0) + 1; }); });
+  // Pin Math.random (mulberry32, fixed seed) so randomised UI is identical run to run. The home's
+  // "이렇게 검색해 보세요" chips are 4 random picks from a pool (assets/js/civic-search.js selectExamples);
+  // different picks wrap differently and shifted the full-page visual baselines.
+  await page.addInitScript(() => { let s = 0x9e3779b9; Math.random = () => { s = (s + 0x6d2b79f5) | 0; let t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; });
   for (const [pattern, handler] of routes) await page.route(pattern, handler);
   const errors = trackErrors(page);
   const qs = new URLSearchParams(query).toString();

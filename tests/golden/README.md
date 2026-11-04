@@ -60,3 +60,5 @@ local static server, against the Vercel preview when a deployment becomes ready
 
 ## Readiness
 `boot()` waits for the search field, for `#civicLanding[data-cs-hydrated]` to leave `static`, and for the first `paradiso-language-applied` event (the bootstrap fires it after the i18n packs load; civic-search re-renders the landing in its handler). Typing before that event can hit the element being replaced — this was the only flake the suite has shown.
+
+`boot()` also pins `Math.random` to a seeded generator (mulberry32) before any page script runs. The home's example chips are four random picks from a pool (`selectExamples` in `assets/js/civic-search.js`); different picks wrap onto a different number of rows in some themes and shifted the full-page visual baselines. Element and viewport shots did not need this; it is applied uniformly so every run renders the same chips.

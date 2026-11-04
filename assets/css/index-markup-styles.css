@@ -1,0 +1,19 @@
+/* Phase 4 of the frontend rebuild (2026-11-04): the style="…" attributes that index.html's static markup carried,
+   moved here as id-scoped rules. Linked LAST so, like the attributes they replace, nothing later in the cascade
+   overrides them; id scoping keeps the specificity above the per-overlay width rules in index-base.css. The
+   seven remaining style attributes are JavaScript state hooks (display:none that the inline code toggles via
+   element.style) and stay in the markup on purpose. */
+#cityWrap { position: relative; }
+#cityBtnFlag { font-size: 0.95rem; }
+#cityBtnTime { font-family: var(--ff-display); font-variant-numeric: tabular-nums; color: var(--accent-strong); font-weight: 700; letter-spacing: 0.02em; }
+#aiModalOverlay .ai-modal-intro-note { font-size: 0.85rem; color: var(--t3); line-height: 1.5; }
+#shortStayModalOverlay .modal-box { max-width: 720px; }
+#jobCodeModalOverlay .modal-box { max-width: 860px; }
+#jurisdictionModalOverlay .modal-box { max-width: 560px; }
+#agentFinderModalOverlay .modal-box { max-width: 760px; }
+#medFinderModalOverlay .modal-box { max-width: 760px; }
+#docModalOverlay .modal-box { max-width: 640px; }
+#scenarioPickerOverlay .modal-box { max-width: 560px; }
+#routePickerOverlay .modal-box { max-width: 560px; }
+#issuanceGuideOverlay .modal-box { max-width: 560px; }
+#faqModalOverlay .modal-box { max-width: 600px; }
