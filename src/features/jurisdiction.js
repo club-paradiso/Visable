@@ -5,7 +5,7 @@
  * window.Visable.features.jurisdiction; the inline stubs with the same names delegate here.
  * Covered by tests/golden/specs/jurisdiction.spec.mjs.
  */
-import { JUR_DB, OFFICE_INFO } from './jurisdiction-data.js';
+import { JUR_DB, OFFICE_INFO, JUR_SOURCE_URL } from './jurisdiction-data.js';
 
 function initJurisdictionSelects() {
     const sidoSel = document.getElementById('jurSido');
@@ -29,6 +29,8 @@ function showJurisdiction() {
     document.getElementById('jurOfficeName').textContent = officeName;
     document.getElementById('jurOfficeAddr').textContent = officeInfo.addr;
     document.getElementById('jurNaver').href = officeInfo.naver; document.getElementById('jurKakao').href = officeInfo.kakao;
+    const officialLink = document.getElementById('jurOfficialSource');
+    if (officialLink) officialLink.href = JUR_SOURCE_URL[sido] || 'https://www.immigration.go.kr/immigration/index.do';
     card.classList.add('active');
 }
 function openJurisdictionModal() { openModal('jurisdictionModalOverlay'); initJurisdictionSelects(); }
