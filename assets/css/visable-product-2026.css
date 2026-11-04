@@ -773,11 +773,17 @@ body.product-visable #hikoreaGuideBody :is(.prh-hero, .prh-step, .prh-section, .
 }
 body.product-visable #hikoreaGuideBody .prh-tabs {
   display: grid !important;
-  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   gap: 6px !important;
   position: static !important;
 }
 body.product-visable #hikoreaGuideBody .prh-tab { white-space: normal !important; }
+body.product-visable #hikoreaGuideBody .prh-tab { min-width: 0 !important; justify-content: center; text-align: center; }
+@media (max-width: 680px) {
+  body.product-visable #hikoreaGuideBody .prh-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  body.product-visable #hikoreaGuideBody .prh-tab { font-size: .82rem; min-height: 48px; }
+}
+
 
 /* --------------------------------------------------------------------------
    Form Helper
