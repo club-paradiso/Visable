@@ -136,7 +136,14 @@ test('pictograms survive utility opens, language rerenders and a search round tr
   for (const action of ['open-jobcode-modal', 'open-jurisdiction-modal', 'open-hikorea-guide']) {
     await page.locator('.cs-tools-core [data-action="' + action + '"]').click();
     await expect(page.locator('.modal-overlay.active')).toBeVisible();
-    await expect.poll(() => page.locator('.modal-overlay.active svg').count()).toBeGreaterThan(0);
+    // Pictograms ship in two forms (pictograms.css): inline <svg> — the
+    // job-code/jurisdiction modals and emoji converted by ui-pictograms.js —
+    // and CSS-mask hosts ([data-pg] / .pg), which carry no <svg> element.
+    // The HiKorea guide has used only the mask form since its text-first
+    // redesign (#767) removed the hero's last inline <svg>, so an svg-only
+    // count reads 0 there even though its icons render. Either form proves
+    // pictograms rendered; raw-emoji leakage is asserted separately below.
+    await expect.poll(() => page.locator('.modal-overlay.active svg, .modal-overlay.active [data-pg], .modal-overlay.active .pg').count()).toBeGreaterThan(0);
     expect(await page.evaluate(() => {
       const walker = document.createTreeWalker(document.querySelector('.modal-overlay.active'), NodeFilter.SHOW_TEXT);
       let node;
