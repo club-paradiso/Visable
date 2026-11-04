@@ -2,7 +2,7 @@
 
 Branch `claude/visable-frontend-rebuild-0289z4`, PR #758 (draft): https://github.com/club-paradiso/Visable/pull/758
 Resume point and per-step evidence: `docs/rebuild/STATUS.md`. Decisions: `docs/rebuild/DECISIONS.md` (ADR-001 … ADR-013).
-Base: `main` at 5082d9d (merge of PR #757). 58 commits on the branch.
+Base: `main` at 5082d9d (merge of PR #757). 58 commits on the branch, including the two final documentation commits.
 
 Every number below was measured in this session with the command noted in STATUS.md; "verified" means the
 command was run here and its output seen. Nothing in this report is a prediction.
