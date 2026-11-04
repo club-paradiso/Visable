@@ -268,6 +268,23 @@ ok(/@media \(max-width:560px\)/.test(src), 'mobile-first responsive CSS present'
 ok(/color-mix\(in srgb,var\(--ac\)/.test(src) && /var\(--bg1\)/.test(src) && /var\(--t1\)/.test(src),
   'uses theme tokens (readable in both civic_editorial + archive_diary)');
 
+/* ----------------------------------------- task-first navigation regression */
+section('Task-first reservation experience');
+ok(src.includes("var TAB_ORDER = ['overview', 'reservation', 'manage', 'trouble']"),
+  'four primary tabs keep account steps optional');
+ok(src.includes("if (!shot.available) return ''"),
+  'missing screenshots do not render empty boxes');
+ok(src.includes('https://www.hikorea.go.kr/resv/ResvIntroR.pt'),
+  'booking links go to the verified official visit-reservation page');
+ok(src.includes('https://www.hikorea.go.kr/mypage/MypgNonRegResvPageR.pt'),
+  'non-member booking lookup links to the verified official lookup page');
+ok(src.includes('state.accountToolsOpen') && src.includes('data-prh-action="toggle-account"'),
+  'optional account tools preserve their expanded state');
+ok(src.includes('prh-result-details') && src.includes('prh-result-primary'),
+  'the result puts the main action before expandable details');
+ok(src.includes('회원가입은 필수가 아니에요.') && src.includes('An account is optional.'),
+  'official non-member booking route is explained in Korean and English');
+
 /* ----------------------------------------------------------- index wiring */
 section('index.html wiring');
 ok(indexHtml.includes('assets/js/hikorea-reservation-helper.js'), 'index.html loads the deferred helper module');
