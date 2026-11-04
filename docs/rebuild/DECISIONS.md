@@ -306,3 +306,14 @@ the options considered, the evidence, and the reason.
   split, because splitting a block is not a verbatim move and the visual baseline cannot prove the two halves
   equivalent under every theme/skin combination.
 
+### ADR-011 addendum 3 — `!important` reduction is limited to removals that are sound without a full-site visual oracle
+- Dropping an `!important` changes the winner wherever another rule sets the same property on the same
+  element with higher specificity or later order. Which elements carry which classes is partly decided at
+  runtime (civic-search, the renderers, skins), so no static analysis can prove a removal harmless, and the
+  38-state visual baseline covers the default skin only. A broad `!important` sweep would therefore be a
+  behaviour change verified by sampling, which this phase does not do.
+- What is sound: removing the earlier copy of an exact duplicate rule (same at-rule context, selector text,
+  declarations). The later copy wins in every situation the earlier one did, so the cascade is unchanged
+  for every element, theme and skin. That is the reduction applied (27 `!important`); the rest is counted
+  and left for a later, design-led pass with per-skin baselines (listed under Owner decisions needed).
+

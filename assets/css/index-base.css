@@ -996,7 +996,6 @@ body.searched .ft { opacity: 1; }
    "candidates come after this question" while they rendered right below it. */
 .jc2-results[hidden], .jc2-income-card[hidden], .jc2-stepper-wrap[hidden] { display: none; }
 /* only the step that needs the person's attention explains itself */
-.jc2-cl-plain { display: none; }
 .jc2-cl-item:not(.is-warn):not(.is-blocked) .jc2-cl-reason { display: none; }
 .jc2-cl-reason { font-size: 0.8rem; }
 /* headings that carry a pictogram */
@@ -1652,7 +1651,6 @@ body:not(.searched) .sbar-go { border-radius: 9999px; }
 
     /* Searched-state header — keep row layout but prevent overflow */
     body.searched .header-inner { padding: 0.5rem 0.8rem; gap: 0.6rem; min-width: 0; }
-    body.searched .search-wrap { min-width: 0; }
 }
 
 @media (max-width: 640px) {
@@ -7287,11 +7285,6 @@ body.searched .sbar {
   font-weight: 700;
   opacity: 0.9;
 }
-.manual-result .next-action-btn.primary.hikorea-guide-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--p-emerald-glow-hover);
-  background: linear-gradient(135deg, #11b187 0%, #0a6f55 100%);
-}
 .manual-result .next-action-btn.primary.hikorea-guide-btn:active {
   transform: translateY(0);
   box-shadow: var(--p-emerald-glow);
@@ -7556,9 +7549,6 @@ body.searched .qb:hover {
   .manual-result .next-action-btn.primary.hikorea-guide-btn {
     grid-column: 1 / -1;
     min-height: 58px;
-  }
-  .manual-result .next-action-btn.primary.hikorea-guide-btn::after {
-    right: 1rem;
   }
   .manual-result .manual-name-ko {
     font-size: 1.12rem;

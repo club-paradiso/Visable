@@ -728,45 +728,6 @@ body.searched .hero-container::before {
 :root[data-theme="archive_diary"] .landing-hints-title { color: var(--t3) !important; }
 
 /* Hero action buttons + AI link → ink on light background (not glass) */
-:root[data-theme="archive_diary"] body:not(.searched) .hero-action-btn {
-  background: var(--k-white) !important;
-  backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
-  border: 2px solid var(--k-ink) !important;
-  color: var(--k-ink) !important;
-  box-shadow: var(--k-pop-1) !important;
-}
-:root[data-theme="archive_diary"] body:not(.searched) .hero-action-btn:hover {
-  background: var(--k-blue-1) !important;
-  border-color: var(--k-ink) !important;
-  color: var(--k-ink) !important;
-  box-shadow: var(--k-pop-2) !important;
-  transform: translate(-2px,-3px) !important;
-}
-:root[data-theme="archive_diary"] body:not(.searched) .search-toggle-btn {
-  border-color: var(--k-ink) !important;
-  color: var(--k-ink) !important;
-}
-:root[data-theme="archive_diary"] body:not(.searched) .search-toggle-btn:hover {
-  background: var(--k-blue-1) !important;
-  border-color: var(--k-blue) !important;
-  border-style: solid !important;
-  color: var(--k-blue-deep) !important;
-}
-:root[data-theme="archive_diary"] body:not(.searched) .search-toggle-btn.active {
-  background: var(--k-blue-1) !important;
-  border-color: var(--k-blue) !important;
-  color: var(--k-blue-deep) !important;
-}
-:root[data-theme="archive_diary"] body:not(.searched) .hero-ai-link {
-  background: rgba(47,94,252,0.08) !important;
-  border: 1px solid rgba(47,94,252,0.28) !important;
-  color: var(--k-blue-deep) !important;
-}
-:root[data-theme="archive_diary"] body:not(.searched) .hero-ai-link:hover {
-  background: rgba(47,94,252,0.16) !important;
-  border-color: var(--k-blue) !important;
-  color: var(--k-blue) !important;
-}
 
 /* Hero action buttons + AI link → ink on light background (not glass) */
 :root[data-theme="archive_diary"] body:not(.searched) .hero-action-btn {

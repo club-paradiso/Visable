@@ -863,7 +863,6 @@ body.product-nationality-hub .ni-btn-primary { background: var(--vp-green-2) !im
 @media (max-width: 900px) {
   body.product-visable:not(.searched) .hero-container { min-height: auto !important; padding-top: 92px !important; }
   body.product-visable:not(.searched) .header-inner { padding-top: 24px !important; }
-  body.product-visable .p-gateway { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
   body.product-visable .p-gw-search { grid-column: 1 / -1 !important; }
   body.product-visable .p-gw-card-visa,
   body.product-visable .p-gw-primary > :nth-child(1),
