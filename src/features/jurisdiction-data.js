@@ -346,17 +346,17 @@ export const OFFICE_INFO = {
     kakao: "https://map.kakao.com/link/search/창원출입국외국인사무소"
   },
   "광주출입국·외국인사무소": {
-    addr: "광주광역시 서구 상무대로911번길 22",
+    addr: "전남광주통합특별시 서구 상무대로911번길 22",
     naver: "https://map.naver.com/v5/search/광주출입국외국인사무소",
     kakao: "https://map.kakao.com/link/search/광주출입국외국인사무소"
   },
   "광주출입국·외국인사무소 목포출장소": {
-    addr: "전라남도 목포시 백년대로412번길 26",
+    addr: "전남광주통합특별시 목포시 백년대로412번길 26",
     naver: "https://map.naver.com/v5/search/광주출입국외국인사무소목포출장소",
     kakao: "https://map.kakao.com/link/search/광주출입국외국인사무소목포출장소"
   },
   "여수출입국·외국인사무소": {
-    addr: "전라남도 여수시 무선로 265",
+    addr: "전남광주통합특별시 여수시 무선로 265",
     naver: "https://map.naver.com/v5/search/여수출입국외국인사무소",
     kakao: "https://map.kakao.com/link/search/여수출입국외국인사무소"
   },
@@ -426,7 +426,7 @@ export const OFFICE_INFO = {
     kakao: "https://map.kakao.com/link/search/대전출입국·외국인사무소당진출장소"
   },
   "여수출입국·외국인사무소 광양출장소": {
-    addr: "전라남도 광양시 중동2길 23",
+    addr: "전남광주통합특별시 광양시 중동2길 23",
     naver: "https://map.naver.com/v5/search/여수출입국·외국인사무소광양출장소",
     kakao: "https://map.kakao.com/link/search/여수출입국·외국인사무소광양출장소"
   },
