@@ -10,10 +10,13 @@ be used as Paradiso branding. Do not add HiKorea logos or marks.
 
 ## Status
 
-> **No screenshots are bundled yet.** Every step currently renders an accessible
-> "스크린샷 준비 중 / Screenshot coming soon" placeholder. The placeholder shows
-> the exact filename to drop in, so there are **no broken image paths and no
-> 404s** until a real, sanitized capture is added.
+> **No screenshots are bundled yet.** The refreshed task-first helper shows
+> concise text instructions and **does not render empty screenshot placeholders**.
+> Verified, sanitized captures can be added later; until then there are no blank
+> media panels or broken image requests. Booking and lookup always happen on the
+> [official HiKorea visit-reservation page](https://www.hikorea.go.kr/resv/ResvIntroR.pt)
+> or the [non-member reservation lookup page](https://www.hikorea.go.kr/mypage/MypgNonRegResvPageR.pt).
+> An account is optional for visit reservations.
 
 ## File naming convention
 
