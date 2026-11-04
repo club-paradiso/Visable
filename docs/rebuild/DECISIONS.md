@@ -296,3 +296,13 @@ the options considered, the evidence, and the reason.
   does not help because the content itself is random; pinning it keeps the product code untouched and
   makes every golden run render the same chips. Documented in tests/golden/README.md.
 
+### ADR-011 addendum 2 — tokens.css is a verbatim move, not a DESIGN.md re-derivation
+- The brief asks for design tokens from DESIGN.md. DESIGN.md itself states that its colour values are a
+  transcription of the civic token layer in the shipped CSS and that the CSS wins on any difference. So
+  the tokens file is that layer moved verbatim, with the DESIGN.md name → CSS variable mapping written in
+  the file header; no value changes, and the WCAG floor check (`check_civic_tokens.mjs`) keeps reading the
+  same declarations through the shared source list.
+- Blocks that mix custom properties with ordinary declarations stay in index-base.css rather than being
+  split, because splitting a block is not a verbatim move and the visual baseline cannot prove the two halves
+  equivalent under every theme/skin combination.
+

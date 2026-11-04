@@ -1,0 +1,335 @@
+/* Visable design tokens — moved verbatim from the top of assets/css/index-base.css (Phase 4 of the frontend
+   rebuild, 2026-11-04); that file was itself the inline <style> of index.html. Linked immediately before
+   index-base.css, so the cascade order is unchanged. Every declaration here is a custom property; the values
+   are the ones DESIGN.md transcribes (DESIGN.md "colors" → the civic layer `:root:not([data-theme="archive_diary"])`
+   below: primary = --ac, primary-deep = --cta/--ac2, accent = --cy, amber = --cWk, neutral/surface-2 = --bg0,
+   surface = --bg1, text = --t1, text-muted = --t2, border = --bd). The body.product-visable and
+   body[data-theme="dark"] token overrides stay at the top of index-base.css because the first of them also
+   sets background/color. scripts/check_civic_tokens.mjs computes the WCAG floors from the frontend source list
+   (scripts/frontend_modules.json), which includes this file. */
+/* paradiso-design-tokens — additive, prefixed, no overrides */
+:root {
+  /* palette */
+  --p-ink:        #0E1F1A;
+  --p-ink-2:      #233530;
+  --p-ink-3:      #4A5852;
+  --p-ink-mute:   #5E6961;
+  --p-paper:      #F4EEE0;
+  --p-paper-2:    #EAE2D0;
+  --p-paper-3:    #DDD4BD;
+  --p-green:      #1F4F3D;
+  --p-green-deep: #143329;
+  --p-green-soft: #2E6B53;
+  --p-mint:       #B7D9C8;
+  --p-mint-soft:  #DCE9DD;
+  --p-coral:      #C95440;
+  --p-coral-deep: #9F3A28;
+  --p-coral-soft: #F2C9BD;
+  --p-line:       #C9BFA5;
+  --p-line-2:     #DCD3BC;
+  --p-accent:        var(--p-green);
+  --p-accent-deep:   var(--p-green-deep);
+  --p-accent-soft:   var(--p-mint-soft);
+  --p-accent-on:     #ffffff;
+
+  /* type scale */
+  --p-fs-xs:   0.75rem;
+  --p-fs-sm:   0.8125rem;
+  --p-fs-base: 0.9375rem;
+  --p-fs-md:   1.0625rem;
+  --p-fs-lg:   1.25rem;
+  --p-fs-xl:   1.5rem;
+  --p-fs-2xl:  2rem;
+
+  /* spacing (4pt) */
+  --p-s-1: 0.25rem; --p-s-2: 0.5rem; --p-s-3: 0.75rem; --p-s-4: 1rem;
+  --p-s-5: 1.5rem;  --p-s-6: 2rem;   --p-s-7: 3rem;    --p-s-8: 4rem;
+
+  /* radius / shadow */
+  --p-r-sm: 6px; --p-r-md: 10px; --p-r-lg: 16px; --p-r-xl: 24px;
+  --p-shadow-1: 0 1px 0 rgba(14,31,26,0.04), 0 1px 2px rgba(14,31,26,0.05);
+  --p-shadow-2: 0 4px 12px rgba(14,31,26,0.06), 0 1px 2px rgba(14,31,26,0.04);
+  --p-shadow-3: 0 12px 32px rgba(14,31,26,0.10), 0 2px 6px rgba(14,31,26,0.05);
+
+  /* motion */
+  --p-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --p-dur-1: 180ms;
+  --p-dur-2: 320ms;
+}
+
+:root {
+  /* Font-stack tokens (--ff, --ff-logo, --ff-display, --font-body/-display/-logo)
+     are declared once, in the "Phase 10F" :root block further down. */
+  --fs: clamp(14px, 1.35vw, 16px);
+
+  /* Visable theme palette (Figma design tokens): Ink #073B32, Mint #3BE4B8,
+     Lavender #7485FF, Cream #F4EFE4, Paper #FFFCF5, Coral #FF6B5E. On the light
+     (cream) surface, raw Mint fails text contrast, so --color-primary stays an
+     accessible mint-green; raw Mint (--color-mint) is for bright accents only. */
+  --color-primary: #0B7357;
+  --color-primary-ink: #073B32;
+  --color-primary-soft: #B8F2E0;
+  --color-mint: #3BE4B8;
+  --color-mint-soft: #B8F2E0;
+  --color-lavender: #7485FF;
+  --color-lavender-deep: #5867E0;
+  --color-lavender-soft: #D6DBFF;
+  --color-accent:  #FF6B5E;
+  --color-accent-deep: #E85446;
+  --color-accent-soft: #FFC4B8;
+  /* Accessible accent tone for SMALL accent-coloured text (labels, time,
+     language codes). Raw --color-accent fails contrast at body sizes. */
+  --accent-strong: #B23A2E;
+  --color-surface: #FFFCF5;
+  --color-surface-2: #F4EFE4;
+  --color-surface-dark: #073B32;
+  --color-text: #073B32;
+  --color-text-muted: #3A544C;
+  --color-border: #998058;
+  --color-success: #0B7357;
+  --color-warning: #E68A3A;
+  --color-error:   #E05B4A;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 16px; --radius-full: 9999px;
+  --shadow-card: 0 2px 12px rgba(31,107,94,0.10);
+
+  /* Legacy Mapped Vars */
+  --bg0: #F4EFE4; --bg1: #FFFCF5; --bg2: #ECE5D6; --bg3: #E0D8C6;
+  --bgI: #FFFCF5; --bd: #998058; --bd2: #998058; --bd3: #A6906A;
+  --t1: #073B32; --t2: #3A544C; --t3: #5A655D;
+  --ac: #0B7357; --ac2: #073B32;
+  --acG: rgba(47,94,103,0.10); --acL: #e1eaec;
+  --cy: #FF6B5B; --cyL: #FFE2DB;
+  --hlB: #FFE2DB; --hlT: #8A3426;
+  --cSh: #8FA69E; --cSt: #0B7357; --cWk: #E68A3A;
+  --cIn: #0B7357; --cFm: #A84A6B; --cOt: #6d28d9;
+  --cDp: #4A5954; --cNh: #0B7357; --cFq: #E05B4A; --cSc: #7c3aed;
+  --sh1: 0 1px 2px rgba(24,28,26,0.04);
+  --sh2: 0 8px 20px rgba(24,28,26,0.10);
+  --shG: 0 0 0 3px rgba(255,107,91,0.25);
+  --shD: 0 10px 26px rgba(24,28,26,0.12);
+
+  /* ── Design Tokens (8pt grid + button system) ── */
+  --sp-1: 0.25rem; --sp-2: 0.5rem; --sp-3: 0.75rem; --sp-4: 1rem;
+  --sp-5: 1.5rem;  --sp-6: 2rem;   --sp-7: 3rem;    --sp-8: 4rem;
+  --btn-r-sm: 8px;
+  --btn-r-md: 10px;
+  --btn-r-lg: 14px;
+  --btn-h-sm: 32px;
+  --btn-h-md: 40px;
+  --btn-h-lg: 48px;
+  --btn-h-xl: 56px;
+  --btn-pad-sm: 0 var(--sp-3);
+  --btn-pad-md: 0 var(--sp-4);
+  --btn-pad-lg: 0 var(--sp-5);
+  --btn-fw: 700;
+  --btn-tr: all 0.18s cubic-bezier(0.4,0,0.2,1);
+
+}
+[data-theme="dark"] {
+  --bg0: #062A22; --bg1: #0C3A30; --bg2: #184B40; --bg3: #205A4E;
+  --bgI: #062A22; --bd: #2D5A50; --bd2: #224A41; --bd3: #2D5A50;
+  --t1: #F4EFE4; --t2: #C7BFA8; --t3: #8C8572;
+  --ac: #3BE4B8; --ac2: #22C9A0;
+  --acG: rgba(52,212,168,0.14); --acL: #163E36;
+  --cy: #FF8B7A; --cyL: #3A1E1A;
+  --accent-strong: #FF8B7A;
+  --hlB: #3A1E1A; --hlT: #FFB5A5;
+  --cNh: #34D4A8; --cFq: #FF8B7A; --cSc: #c084fc;
+  --sh1: 0 1px 4px rgba(0,0,0,0.35);
+  --sh2: 0 8px 24px rgba(0,0,0,0.5);
+  --shG: 0 0 0 3px rgba(255,139,122,0.28);
+  --shD: 0 12px 32px rgba(0,0,0,0.55);
+}
+
+/* ── 랜딩 --p-* 팔레트의 다크 대응 (Figma 13 · P1-3) ──────────────────────
+   이 계열은 :root 와 archive_diary 테마에만 정의돼 있었고 기본 테마의
+   [data-theme="dark"] 에는 없었다. 그래서 다크 모드에서 .p-section-title /
+   .p-section-copy / .p-manual-* 이 어두운 잉크색 그대로 남아 어두운 배경 위에
+   거의 보이지 않았다.
+   규칙마다 색을 덮어쓰지 않고 토큰 값만 뒤집는다 — 이 계열을 통해 해석되는
+   모든 규칙이 한 번에 따라온다. */
+[data-theme="dark"] {
+  --p-ink:        #F4EFE4;
+  --p-ink-2:      #DCD5C4;
+  --p-ink-3:      #C7BFA8;
+  --p-ink-mute:   #B3AB96;
+  --p-paper:      #062A22;
+  --p-paper-2:    #0C3A30;
+  --p-paper-3:    #184B40;
+  --p-green:      #0B7357;
+  --p-green-deep: #073B32;
+  --p-green-soft: #22C9A0;
+  --p-mint:       #2A6B57;
+  --p-mint-soft:  #143C33;
+  --p-coral:      #FF8B7A;
+  --p-coral-deep: #FF6B5B;
+  --p-coral-soft: #3A1E1A;
+  --p-line:       #2D5A50;
+  --p-line-2:     #224A41;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   PARADISO EDITORIAL THEME SYSTEM
+   ────────────────────────────────────────────────────────────────────────
+   Two style themes, selected on the ROOT element via data-theme:
+     • civic_editorial — DEFAULT. Warm civic-editorial paper interface. It IS
+       the canonical :root palette above, so it carries no token overrides
+       (guarantees the default appearance never regresses).
+     • archive_diary   — Optional alternate. A soft civic-paperwork "archive
+       diary" palette (cream paper, ivory cards, warm gray-brown borders,
+       brown-black ink, restrained blue links, muted green for verified
+       sources, muted red for cautions, soft yellow highlights).
+
+   Both themes are pure token re-maps onto the SAME variable names the
+   components already consume — no component is forked or duplicated. Most
+   derived tokens (color-mix on --bg0/--ac/--bd2 …) recompute automatically,
+   so only the foundational tokens need overriding.
+
+   Brightness (light/dark) is an INDEPENDENT concern on <body data-theme>.
+   In dark mode, body-level dark tokens intentionally win for content; the
+   editorial theme primarily shapes the light/paper experience.
+   See docs/design/PARADISO_THEME_SYSTEM.md.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* civic_editorial = canonical default. Marker only; inherits the base :root
+   tokens so the shipped default look is preserved exactly. */
+:root[data-theme="civic_editorial"] { --paradiso-theme: "civic_editorial"; }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   DESIGN 02 · KITSCH EDITORIAL  (shipped in the archive_diary theme slot)
+   Korean Y2K editorial-pop palette: cloud + white surfaces, ink text,
+   cyber-blue / lime / pink / violet / butter poster accents.
+   Internal theme id stays "archive_diary" to preserve persistence & JS.
+   ════════════════════════════════════════════════════════════════════════ */
+:root[data-theme="archive_diary"] {
+  --paradiso-theme: "archive_diary";
+
+  /* ── Kitsch (BOLD Y2K editorial-pop) palette helpers ───────────────────── */
+  --k-cream: #FFF7E8;  --k-cloud: #EAF1FF;  --k-white: #FFFFFF;
+  --k-sky: #6EC6FF;    --k-blue: #2F5EFC;   --k-blue-deep: #1B36C9; --k-blue-ink: #11227A;
+  --k-lime: #C2FF44;   --k-lime-deep: #93D400;
+  --k-pink: #FF8ED1;   --k-pink-deep: #F451B0;
+  --k-violet: #8A74FF; --k-violet-deep: #6A50F0;
+  --k-butter: #FFE45E;
+  --k-ink: #141414;
+  /* Poster offset shadows (hard, Y2K print look) */
+  --k-pop-1: 3px 3px 0 var(--k-ink);
+  --k-pop-2: 5px 5px 0 var(--k-ink);
+  --k-pop-3: 8px 8px 0 var(--k-ink);
+  --k-soft: 0 14px 34px rgba(20,20,40,0.12);
+
+  /* Foundational surfaces / ink / borders */
+  --bg0: #EEF3FF;  --bg1: #FFFFFF;  --bg2: #F4F7FF;  --bg3: #E6EDFF;
+  --bgI: #FFFFFF;  --bd: #C2D2EE;   --bd2: #DCE5F8;  --bd3: #AEC2E6;
+  --t1: #141414;   --t2: #353A45;   --t3: #606A7A;
+
+  /* Links / active states — cyber blue */
+  --ac: #2F5EFC;   --ac2: #1B36C9;
+  --acG: rgba(47,94,252,0.12); --acL: #E3EAFF;
+  /* Accessible accent tone for SMALL accent-coloured text — raw pink
+     (--color-accent #FF8ED1) drops to ~2:1 on the light pop surfaces. */
+  --accent-strong: #C81E8A;
+
+  /* Secondary accent (violet) + lime highlight */
+  --cy: #8A74FF;   --cyL: #ECE7FF;
+  --hlB: #C2FF44;  --hlT: #1B2B00;
+
+  /* Verified / source = readable green; info = blue; cautions = red */
+  --cSt: #1F8A5B;  --cNh: #1F8A5B;  --cIn: #2F5EFC;  --cFq: #E03B57;
+  --cWk: #EF8A2C;
+
+  /* Semantic colour tokens */
+  --color-primary: #2F5EFC;       --color-primary-ink: #1B36C9;  --color-primary-soft: #BFD9FF;
+  --color-accent: #FF8ED1;        --color-accent-deep: #F451B0;  --color-accent-soft: #FFD9F0;
+  --color-surface: #EEF3FF;       --color-surface-2: #E6EDFF;
+  --color-text: #141414;          --color-text-muted: #353A45;   --color-border: #C2D2EE;
+  --color-success: #1F8A5B;       --color-warning: #EF8A2C;      --color-error: #E03B57;
+
+  /* Searched / result-page surfaces */
+  --result-page-bg: #EEF3FF;
+  --p-paper-surface: #FFFFFF;     --p-paper-surface-2: #EEF3FF;
+
+  /* UI utility tokens */
+  --ui-primary: #2F5EFC;   --ui-primary-deep: #1B36C9;
+  --ui-surface: #FFFFFF;   --ui-surface-2: #EEF3FF;  --ui-border: #C2D2EE;
+  --ui-text: #141414;      --ui-text-muted: #353A45; --ui-focus: #2F5EFC;
+
+  /* Primary action buttons — cyber blue with hard poster offset */
+  --color-primary-green: #2F5EFC;
+  --color-primary-green-hover: #1B36C9;
+  --color-primary-green-deep: #11227A;
+  --shadow-cta: 4px 4px 0 #141414;
+  --shadow-cta-hover: 6px 6px 0 #141414;
+  --p-emerald: #2F5EFC;          --p-emerald-deep: #1B36C9;
+  --p-emerald-glow: 4px 4px 0 #141414;
+  --p-emerald-glow-hover: 6px 6px 0 #141414;
+
+  /* Paper surfaces / lines */
+  --p-paper: #EEF3FF; --p-paper-2: #E6EDFF; --p-paper-3: #D8E2F5;
+  --p-line: #C2D2EE;  --p-line-2: #DCE5F8;
+  --p-ink: #141414;   --p-ink-2: #353A45;  --p-ink-3: #4A5560; --p-ink-mute: #6B7280;
+
+  /* Shadows */
+  --sh1: 0 1px 2px rgba(20,20,40,0.06);
+  --sh2: 0 10px 28px rgba(20,20,40,0.10);
+  --shG: 0 0 0 3px rgba(47,94,252,0.26);
+  --shD: 0 16px 38px rgba(20,20,40,0.14);
+  --shadow-card: 5px 5px 0 #141414;
+}
+
+/* Civic design-token reconciliation (UX-10 Foundations).
+   Keep archive_diary isolated: this layer intentionally does not match it. */
+:root:not([data-theme="archive_diary"]) {
+  --bg0: #F7F4EF;
+  --bg1: #FFFCF5;
+  --bd: #E6E6EE;
+  --t1: #1C1F29;
+  --t2: #4D5261;
+  --ac: #177366;
+  --ac2: #0B4F44;
+  --cta: #0B4F44;
+  --cWk: #F2C879;
+  --cy: #D95C47;
+
+  --color-primary: var(--ac);
+  --color-primary-ink: var(--cta);
+  --color-accent: var(--cy);
+  --color-surface: var(--bg1);
+  --color-surface-2: var(--bg0);
+  --color-text: var(--t1);
+  --color-text-muted: var(--t2);
+  --color-border: var(--bd);
+  --color-success: var(--ac);
+  --color-warning: color-mix(in srgb, var(--cWk) 38%, var(--t1));
+  --color-error: color-mix(in srgb, var(--cy) 62%, var(--t1));
+
+  --result-page-bg: var(--bg0);
+  --p-paper-surface: var(--bg0);
+  --p-paper-surface-2: var(--bg1);
+  --p-paper: var(--bg0);
+  --p-paper-2: var(--bg1);
+  --p-paper-3: color-mix(in srgb, var(--bg0) 82%, var(--bd));
+  --p-line: var(--bd);
+  --p-line-2: var(--bd);
+  --p-ink: var(--t1);
+  --p-ink-2: var(--t1);
+  --p-ink-3: var(--t2);
+  --p-ink-mute: var(--t2);
+  --p-green: var(--ac);
+  --p-green-deep: var(--cta);
+  --p-emerald: var(--cta);
+  --p-emerald-deep: var(--cta);
+
+  --color-primary-green: var(--cta);
+  --color-primary-green-hover: var(--ac2);
+  --color-primary-green-deep: var(--cta);
+  --ui-primary: var(--ac);
+  --ui-primary-deep: var(--cta);
+  --ui-surface: var(--bg1);
+  --ui-surface-2: var(--bg0);
+  --ui-border: var(--bd);
+  --ui-text: var(--t1);
+  --ui-text-muted: var(--t2);
+  --ui-focus: var(--ac);
+}
