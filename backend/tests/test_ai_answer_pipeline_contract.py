@@ -36,6 +36,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 BACKEND_DIR = REPO_ROOT / "backend"
 AI_HTML = REPO_ROOT / "ai.html"
 CHECKER = REPO_ROOT / "scripts" / "check_ai_shell_semantics.js"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _i18n_pack_support import page_source  # noqa: E402  # page + the scripts Phase 5 moved its inline code into
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
@@ -65,7 +67,7 @@ def _extract_js_function(src: str, name: str) -> str:
 class FrontendContractStaticTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.html = AI_HTML.read_text(encoding="utf-8")
+        cls.html = page_source("ai.html")
         cls.render_fn = _extract_js_function(cls.html, "renderGroundingSourcePanel")
         cls.normalize_fn = _extract_js_function(cls.html, "normalizeAnswerMetadata")
 

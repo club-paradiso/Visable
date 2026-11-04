@@ -478,6 +478,10 @@ echo "[10/14] Scanning key user-facing files for forbidden branding strings..."
 KEY_FILES=(
   "index.html"
   "ai.html"
+  "assets/js/pages/ai-main.js"
+  "assets/js/pages/ai-navigator-handoff.js"
+  "assets/js/pages/ai-surface-switcher.js"
+  "assets/js/pages/ai-theme-button.js"
   "visa_data.json"
   "moonshot_backend_fastapi.py"
 )

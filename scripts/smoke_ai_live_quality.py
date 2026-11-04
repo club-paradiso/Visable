@@ -198,10 +198,20 @@ def _ai_shell_static_signals():
     import re
 
     here = os.path.dirname(os.path.abspath(__file__))
-    ai_html = os.path.join(os.path.dirname(here), "ai.html")
+    repo_root = os.path.dirname(here)
+    ai_html = os.path.join(repo_root, "ai.html")
     try:
+        # ai.html plus the external classic scripts Phase 5 moved its inline logic into (scripts first).
+        import json as _json
+        with open(os.path.join(here, "frontend_modules.json"), encoding="utf-8") as fh:
+            page_scripts = (_json.load(fh).get("pages") or {}).get("ai.html", [])
+        parts = []
+        for rel in page_scripts:
+            with open(os.path.join(repo_root, rel), encoding="utf-8") as fh:
+                parts.append(fh.read())
         with open(ai_html, encoding="utf-8") as fh:
-            html = fh.read()
+            parts.append(fh.read())
+        html = "\n".join(parts)
     except OSError:
         return None
 

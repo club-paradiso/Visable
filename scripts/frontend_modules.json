@@ -1,5 +1,5 @@
 {
-  "_comment": "Sources that Phase 3/4 of the frontend rebuild moved out of index.html: ES modules (former inline script) and stylesheets (former inline <style> blocks), in the order they appeared. Legacy source-slicing checks (scripts/, backend/tests) read these BEFORE index.html so a brace-matching extractor finds the real definition rather than the one-line delegating stub index.html keeps, and so CSS-rule assertions still see the rules. Maintained by hand with every move (docs/rebuild/STATUS.md).",
+  "_comment": "Sources that Phase 3/4 of the frontend rebuild moved out of index.html: ES modules (former inline script) and stylesheets (former inline <style> blocks), in the order they appeared. Legacy source-slicing checks (scripts/, backend/tests) read these BEFORE index.html so a brace-matching extractor finds the real definition rather than the one-line delegating stub index.html keeps, and so CSS-rule assertions still see the rules. Maintained by hand with every move (docs/rebuild/STATUS.md). `pages` (Phase 5): for each other root page, the external classic scripts its inline logic moved into, in document order; checks that slice that page read them first, then the page.",
   "sources": [
     "src/core/helpers.js",
     "src/features/jobcode.js",
@@ -29,5 +29,13 @@
     "assets/css/index-mobile-interface-polish-20260628.css",
     "assets/css/index-brand-intro-2026.css",
     "assets/css/index-markup-styles.css"
-  ]
+  ],
+  "pages": {
+    "ai.html": [
+      "assets/js/pages/ai-theme-button.js",
+      "assets/js/pages/ai-main.js",
+      "assets/js/pages/ai-navigator-handoff.js",
+      "assets/js/pages/ai-surface-switcher.js"
+    ]
+  }
 }

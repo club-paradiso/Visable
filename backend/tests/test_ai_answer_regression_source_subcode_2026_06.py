@@ -41,6 +41,8 @@ CANDS = ["qwen/qwen3-next-80b-a3b-instruct:free", "google/gemma-4-31b-it:free"]
 
 AI_HTML = REPO_ROOT / "ai.html"
 INDEX_HTML = REPO_ROOT / "index.html"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _i18n_pack_support import page_source  # noqa: E402  # page + the scripts Phase 5 moved its inline code into
 
 # Raw internal diagnostic tokens that must never reach the default public UI.
 RAW_DIAGNOSTIC_TOKENS = (
@@ -386,7 +388,7 @@ class FrontendPublicSafeDiagnosticsTests(unittest.TestCase):
         return path.read_text(encoding="utf-8")
 
     def test_ai_html_gates_dev_diagnostics_and_fixes_newline(self):
-        src = self._read(AI_HTML)
+        src = page_source("ai.html")
         self.assertIn("devDiagnosticsEnabled", src)
         # The developer block must only render when dev mode is enabled.
         self.assertIn("devDiagnosticsEnabled && (lawWarnings.length", src)
@@ -406,7 +408,7 @@ class FrontendPublicSafeDiagnosticsTests(unittest.TestCase):
         self.assertIn("escapeHtml(diagLines.join('\\n'))", src)
 
     def test_context_chip_prefers_subcode(self):
-        src = self._read(AI_HTML)
+        src = page_source("ai.html")
         self.assertIn("visa_sub_code_detected || result.visa_code_detected", src)
 
 

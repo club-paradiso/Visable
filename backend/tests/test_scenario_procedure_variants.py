@@ -19,7 +19,7 @@ for path in (str(BACKEND_DIR), str(SCRIPTS_DIR)):
         sys.path.insert(0, path)
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _i18n_pack_support import frontend_source, load_packs, localized, pack_blobs  # noqa: E402
+from _i18n_pack_support import frontend_source, load_packs, localized, pack_blobs, page_source  # noqa: E402
 from check_required_documents_coverage import validate_procedure_variants  # noqa: E402
 import audit_manual_ref_editions_2026_11 as manual_ref_audit  # noqa: E402
 
@@ -282,7 +282,7 @@ class SelectedScenarioAiHandoffHardeningTests(unittest.TestCase):
         cls.html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
         # Renderers moved out of index.html in Phase 3 of the frontend rebuild (ends with its `export {` block).
         cls.docs_js = (REPO_ROOT / "src" / "docs" / "normalize.js").read_text(encoding="utf-8")
-        cls.ai = (REPO_ROOT / "ai.html").read_text(encoding="utf-8")
+        cls.ai = page_source("ai.html")
         cls.route = (REPO_ROOT / "assets" / "js" / "visa-route-guide.js").read_text(encoding="utf-8")
         cls.blobs = pack_blobs()
 
