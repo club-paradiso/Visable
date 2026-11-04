@@ -1055,7 +1055,7 @@
     var label = /^F-4(?:-|$)/i.test(String(code || '')) ? '재외동포 통합신청서' : '통합신청서';
     // Only standalone generic form references, not words such as 사증발급신청서,
     // 신원보증신청서, or the verb 신청. Keep surrounding grammatical particles.
-    return text.replace(/(^|[\s·,;([{])(?:통합)?신청서(?=$|[\s·,;.)\]}]|와|과|를|은|는|도|에)/g,
+    return text.replace(/(^|[\s·,;([{])(?:재외동포(?:\s*\(F-4\))?\s+)?(?:통합)?신청서(?=$|[\s·,;.)\]}]|와|과|를|은|는|도|에)/g,
       function (_m, prefix) { return prefix + label; });
   }
 
