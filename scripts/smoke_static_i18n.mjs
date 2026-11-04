@@ -43,7 +43,10 @@ const hardcodedCheck = fs.readFileSync(path.join(repoRoot, 'scripts/check_index_
 assert(hardcodedCheck.includes('blockEnd <= i18nStart'), 'hardcoded-text scanner must not skip a script just because it starts before the i18n runtime');
 assert(hardcodedCheck.includes('scanStringLiterals'), 'hardcoded-text scanner should parse JS literals without broad template-regex spans');
 
-const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map((match) => match[1]);
+// Inline classic scripts are parsed from index.html alone (the module sources in the corpus above are ES modules
+// and may contain '<script' inside string literals).
+const indexOnly = fs.readFileSync(path.join(repoRoot, 'index.html'), 'utf8');
+const scripts = [...indexOnly.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map((match) => match[1]);
 for (const script of scripts) new Function(script);
 
 const visaData = JSON.parse(fs.readFileSync(path.join(repoRoot, 'visa_data.json'), 'utf8'));

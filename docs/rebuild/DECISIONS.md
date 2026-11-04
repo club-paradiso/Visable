@@ -262,3 +262,13 @@ the options considered, the evidence, and the reason.
   is also what happened before the move (at parse time `tx()` returned the key). Rule: a module that
   runs at import time must not depend on a stub, and the test for it is the golden suite's page-error
   assertion plus the reminders spec. The clean fix (bridge before side-effect imports) is a Phase 7 item.
+
+### ADR-009 addendum 6 (2026-11-04, shims and the end of Phase 3)
+- The three DOM-patching shims keep a parse-time `DOMContentLoaded` registration in index.html (same
+  mechanism as the main bootstrap, addendum 4); their bodies are modules exporting the install function.
+  The global-settings block has no first-paint effect and runs at module evaluation instead of parse time.
+- What stays inline, and why it is not "logic": the state owners and data tables that assets/js, the e2e
+  specs and legacy scripts read by bare name or regex-parse from index.html; the four first-paint scripts;
+  the parse-time initialisers; and 193 one-line stubs. Retiring the stubs means every caller imports the
+  module (and the e2e/assets/js callers get a stable surface); moving the state owners means a data-flow
+  redesign. Both are behaviour-affecting and belong to a later phase, not to this behaviour-preserving one.

@@ -637,3 +637,6 @@ The four id'd shims are last. They need the absorbed globals named above. Retire
 - Today those are only covered by e2e: easy-mode, bilingual-doc-names, ui-consistency, search-smoke, complex-status-guide, restore-trust.
 - Add golden cases, or promote those e2e specs, before modules 11 and 13.
 - Also uncovered by golden: city clock, jurisdiction, agent and medical finders, reminders, global-settings brightness.
+
+### Shims (2026-11-04)
+The four `<script id>` blocks moved to `src/shims/`; index.html keeps a one-line DOMContentLoaded registration for each of the three DOM-patching shims and imports the global-settings module for its side effects. See docs/rebuild/STATUS.md "Phase 3 end state" for what remains inline and why.

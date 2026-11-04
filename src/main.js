@@ -14,6 +14,10 @@ import * as docs from './docs/normalize.js';
 import * as procedurePanels from './render/cards/procedure-panels.js';
 import * as boot from './boot.js';
 import * as core from './core/helpers.js';
+import * as detailResolver from './shims/detail-code-resolver.js';
+import * as docSectionUnifier from './shims/doc-section-unification.js';
+import * as docTermFeeUi from './shims/doc-term-fee-ui.js';
+import './shims/global-settings.js';
 import * as runtime from './i18n/runtime.js';
 import * as modalsAi from './features/modals-ai.js';
 import * as results from './search/results.js';
@@ -41,6 +45,8 @@ const bridge = Object.freeze({
   i18n: Object.freeze({ ...runtime }),
   boot: Object.freeze({ ...boot }),
   core: Object.freeze({ ...core }),
+  // The three DOM-patching shims; index.html registers their install functions for DOMContentLoaded.
+  shims: Object.freeze({ ...detailResolver, ...docSectionUnifier, ...docTermFeeUi }),
   features: Object.freeze({ jurisdiction: Object.freeze({ ...jurisdiction }), jobcode: Object.freeze({ ...jobcode }), deadline: Object.freeze({ ...deadline }) })
 });
 

@@ -173,3 +173,5 @@ Switched with the modals/AI move: `scripts/check_document_help.mjs` (corpus); ba
 With the i18n move: `scripts/check_index_hardcoded_text.mjs` scans `src/i18n/runtime.js` in addition to the index.html region; `scripts/smoke_static_i18n.mjs` reads the corpus.
 
 With the boot move: `check_index_hardcoded_text.mjs` region end marker `function toggleTheme(`; `check_employment_reporting_helper.mjs` and `check_live_feature_surface.mjs` read the corpus (the data-action dispatcher lives in `src/boot.js`).
+
+With the shim move: `scripts/smoke_static_i18n.mjs` parses inline `<script>` blocks from index.html alone (string literals in the corpus modules can contain `<script`).

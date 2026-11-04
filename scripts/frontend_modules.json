@@ -17,6 +17,10 @@
     "src/features/deadline.js",
     "src/features/landing-animation.js",
     "src/features/finders.js",
-    "src/features/reminders.js"
+    "src/features/reminders.js",
+    "src/shims/detail-code-resolver.js",
+    "src/shims/doc-section-unification.js",
+    "src/shims/doc-term-fee-ui.js",
+    "src/shims/global-settings.js"
   ]
 }
