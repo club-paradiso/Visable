@@ -185,23 +185,13 @@ def _available_dispositions(violation_code: str) -> list[str]:
 
 def calculate_legal_baseline(case: StructuredCase, *, database: Optional[Dict[str, Any]] = None) -> LegalBaseline:
     database = database or load_rule_database()
-    snapshot = _resolve_snapshot(case, database)
-    if snapshot is None:
-        return LegalBaseline(
-            status="HISTORICAL_RULE_UNAVAILABLE",
-            violation_code=case.violation_code,
-            missing_facts=["해당 위반기간 전체에 적용되는 검증된 법령 스냅샷"],
-            confidence="INSUFFICIENT",
-        )
 
-    # Workplace change/addition cases go through the deterministic regime
-    # determination (enforcement_workplace.py, MOJ Notice 2020-212) before any
-    # amount is considered. Three outcomes can end the calculation here:
-    # NOT_APPLICABLE (no work performed / duty complied with), the separate
-    # administrative-fine track for REPORT-duty breaches (never the 범칙금
-    # table), and UNRESOLVED (missing facts listed, no guessed amount).
-    # Legacy behaviour is preserved outside the engine's verified scope:
-    # a non-E-1~E-7 status with no determination falls through as before.
+    # Workplace determination runs BEFORE the fine-snapshot resolution: its
+    # terminal outcomes (no breach, administrative-fine track, unresolved
+    # regime) do not depend on the 범칙금 snapshot at all, and must not be
+    # masked by HISTORICAL_RULE_UNAVAILABLE for incidents that predate the
+    # verified fine snapshot (e.g. a report filed in time in 2025). Only the
+    # PERMIT fine calculation itself needs the snapshot.
     determination = None
     workplace_codes = [case.violation_code] if case.violation_code else case.violation_candidates
     workplace_gate = bool(set(workplace_codes) & WORKPLACE_VIOLATION_CODES) and (
@@ -209,15 +199,26 @@ def calculate_legal_baseline(case: StructuredCase, *, database: Optional[Dict[st
     )
     if workplace_gate:
         determination = determine_workplace_regime(case)
-        common = dict(
-            violation_code=case.violation_code,
-            legal_snapshot_id=snapshot["id"],
-            effective_from=date.fromisoformat(snapshot["effectiveFrom"]),
-            sources=_source_refs(snapshot),
-            workplace_determination=determination,
-        )
+
+    snapshot = _resolve_snapshot(case, database)
+
+    if determination is not None:
         in_engine_scope = not case.status_of_stay or bool(
             _REPORT_PROVISO_STATUS_RE.match(case.status_of_stay)
+        )
+        if determination.regime == "UNRESOLVED" and not in_engine_scope:
+            # Outside the verified notice scope (e.g. E-9): keep the legacy
+            # path, but never let the old status-only proviso note imply a
+            # classification this engine did not make.
+            determination = None
+
+    if determination is not None:
+        common = dict(
+            violation_code=case.violation_code,
+            legal_snapshot_id=snapshot["id"] if snapshot else None,
+            effective_from=date.fromisoformat(snapshot["effectiveFrom"]) if snapshot else None,
+            sources=_source_refs(snapshot) if snapshot else list(determination.evidence),
+            workplace_determination=determination,
         )
         if determination.regime == "NOT_APPLICABLE" or (
             determination.determination_status in {"CONFIRMED", "USER_CONFIRMED"}
@@ -252,7 +253,7 @@ def calculate_legal_baseline(case: StructuredCase, *, database: Optional[Dict[st
                 confidence="HIGH" if determination.duty_breach == "ESTABLISHED" else "INSUFFICIENT",
                 **common,
             )
-        if determination.regime == "UNRESOLVED" and in_engine_scope:
+        if determination.regime == "UNRESOLVED" and "사건 당시 고시 버전" not in determination.missing_facts:
             return LegalBaseline(
                 status="MISSING_FACTS",
                 missing_facts=[
@@ -262,11 +263,29 @@ def calculate_legal_baseline(case: StructuredCase, *, database: Optional[Dict[st
                 confidence="INSUFFICIENT",
                 **common,
             )
-        if determination.regime == "UNRESOLVED" and not in_engine_scope:
-            # Outside the verified notice scope (e.g. E-9): keep the legacy
-            # path, but never let the old status-only proviso note imply a
-            # classification this engine did not make.
-            determination = None
+        if not case.violation_code and determination.determination_status == "USER_CONFIRMED":
+            # Shared-candidate pricing must not bypass the gate: with no
+            # resolved provision, a user-confirmed regime alone does not
+            # price the case through the identical-tier shortcut. The
+            # engine-confirmed and single-provision paths are unaffected.
+            return LegalBaseline(
+                status="MISSING_FACTS",
+                missing_facts=[
+                    "적용 조문이 확정되지 않아, 사용자 확인만으로는 조건부 계산을 하지 않습니다.",
+                    *determination.missing_facts,
+                ],
+                confidence="INSUFFICIENT",
+                **common,
+            )
+
+    if snapshot is None:
+        return LegalBaseline(
+            status="HISTORICAL_RULE_UNAVAILABLE",
+            violation_code=case.violation_code,
+            missing_facts=["해당 위반기간 전체에 적용되는 검증된 법령 스냅샷"],
+            confidence="INSUFFICIENT",
+            workplace_determination=determination,
+        )
 
     shared_rules = None if case.violation_code else _shared_candidate_rule(case, snapshot)
     if not case.violation_code and not shared_rules:

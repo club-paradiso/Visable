@@ -410,6 +410,51 @@
       "description": "Legacy path: user confirmed REPORT; administrative-fine track, no fine-table amount.",
       "id": "user-confirmed-report",
       "regime": "REPORT"
+    },
+    {
+      "id": "reported-within-deadline-2025-presnapshot",
+      "description": "Report filed in time in 2025, before the verified fine snapshot: determination outcome must not be masked by HISTORICAL_RULE_UNAVAILABLE.",
+      "case": {
+        "statusOfStay": "E-7-4",
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "occupationCode": "1234",
+        "alienRegistered": true,
+        "meetsNewWorkplaceQualifications": true,
+        "previousEmploymentEndReason": "CONTRACT_EXPIRED",
+        "procedureStatus": "REPORT_FILED",
+        "workplaceChangeDate": "2025-05-02",
+        "applicationOrReportDate": "2025-05-10",
+        "violationStartDate": "2025-05-02",
+        "violationEndDate": "2025-05-10",
+        "assessmentDate": "2026-11-04",
+        "workplaceChangeType": "CHANGE"
+      },
+      "regime": "REPORT",
+      "dutyBreach": "NOT_ESTABLISHED",
+      "reportTimeliness": "WITHIN_DEADLINE",
+      "baselineStatus": "NOT_APPLICABLE",
+      "baselineAmountKrw": null
+    },
+    {
+      "id": "shared-candidates-user-confirmed-permit",
+      "description": "Two candidate provisions plus a user-confirmed PERMIT regime: the identical-tier shortcut must not price the case without an engine-confirmed regime.",
+      "case": {
+        "statusOfStay": "E-7-4",
+        "violationCode": null,
+        "violationCandidates": [
+          "UNAUTHORIZED_EMPLOYMENT_ART18_2",
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "durationDays": 30,
+        "assessmentDate": "2026-11-04",
+        "workplaceRegime": "PERMIT"
+      },
+      "regime": "PERMIT",
+      "baselineStatus": "MISSING_FACTS",
+      "baselineAmountKrw": null
     }
   ],
   "schemaVersion": "1.0.0"

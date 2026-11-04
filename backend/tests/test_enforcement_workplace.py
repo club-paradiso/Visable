@@ -1,6 +1,6 @@
 """Regression tests for the deterministic workplace regime determination.
 
-The 20 shared cases in fixtures/workplace_regime_cases.json are the standard
+The 22 shared cases in fixtures/workplace_regime_cases.json are the standard
 case library: the same file is replayed against the JS mirror
 (lib/enforcement-workplace.js) by scripts/check_enforcement_workplace.mjs,
 which is what keeps the frontend fallback and the backend from diverging
@@ -128,6 +128,14 @@ class WorkplaceFlowTests(unittest.IsolatedAsyncioTestCase):
         )
         self.assertEqual(det.regime, "PERMIT")
         self.assertEqual(det.evidence[0].url, "https://www.law.go.kr/LSW/admRulLsInfoP.do?admRulSeq=2100000190656")
+
+    async def test_report_statement_variants_extract_procedure(self):
+        """'신고했어요' without an object particle still records REPORT_FILED."""
+        case = await extract_structured_case(
+            "E-2인데 근무처를 옮기고 10일 안에 출입국에 신고했어요.",
+            assessment_date=date(2026, 11, 4),
+        )
+        self.assertEqual(case.procedure_status, "REPORT_FILED")
 
     async def test_unknown_is_never_coerced_to_false(self):
         """Brief case 15: 'do not know' answers stay None end to end."""

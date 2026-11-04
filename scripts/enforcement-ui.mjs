@@ -501,10 +501,11 @@ function applyClarification(kind, rawValue) {
   } else if (kind === 'procedureStatus') {
     if (!['PERMIT_GRANTED', 'REPORT_FILED', 'APPLIED_PENDING', 'NONE'].includes(value)) return setError($('#confirm-error'), '해당하는 항목을 선택해 주세요.');
     structuredCase.procedureStatus = value;
-    // Keep the legacy authorization facts consistent with the stated
-    // procedure, without inventing anything the user did not say.
-    if (value === 'PERMIT_GRANTED') structuredCase.workplaceChangeAuthorized = true;
-    if (value === 'NONE') structuredCase.workplaceChangeAuthorized = false;
+    // The stated procedure is recorded as itself only. It is NOT translated
+    // into workplaceChangeAuthorized here: the determination engine reads
+    // procedureStatus directly when assessing breach, and deriving a
+    // second authorization fact from the same answer would double-count
+    // one statement as two independent facts.
   } else if (kind === 'durationDays') {
     const days = Number(value);
     if (!Number.isInteger(days) || days < 0 || days > 36500) return setError($('#confirm-error'), '기간을 일수로 입력해 주세요.');

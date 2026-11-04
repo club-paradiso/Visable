@@ -44,4 +44,8 @@ const pii = extractStructuredCase(
 );
 assert.ok(pii.extractionWarnings.some((item) => item.includes('개인식별정보')));
 
+// '신고했어요' (no object particle) must extract the same procedure fact.
+const reported = extractStructuredCase('E-2인데 근무처를 옮기고 10일 안에 출입국에 신고했어요.', '2026-11-04');
+assert.equal(reported.procedureStatus, 'REPORT_FILED');
+
 console.log(`Enforcement workplace parity passed (${fixtures.cases.length} shared fixtures + narrative checks).`);
