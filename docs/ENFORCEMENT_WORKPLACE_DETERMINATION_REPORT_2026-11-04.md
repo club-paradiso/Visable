@@ -189,7 +189,7 @@ CI(PR #768, 최종 헤드 261ae3a): validate ×2, golden-local, golden-visual, m
 - 브랜치: `feat/enforcement-workplace-determination-20261104`, base main `dce3dc0`
 - 구성 커밋: `275571e`(P1 엔진), `e455bda`(P0/P2 UI), `0ec252c`(REPORT 기대값 정합 테스트), `261ae3a`(리뷰 블로커 수정)
 - 의존성: PR #763(법령 코퍼스)은 본 작업 시작 전에 이미 main에 머지되어 있었음을 확인하고 그 위에서 작업했다(별도 머지 불필요).
-- 배포/라이브: 머지 후 https://visable-mu.vercel.app 에서 확인(§4 말미의 라이브 검증 결과 참조).
+- 배포/라이브: 머지 후 라이브 검증 완료 — https://visable-mu.vercel.app/enforcement.html HTTP 200, 프로덕션 JS 번들(`/assets/enforcement-ui-*.js`)에 신규 판별 UI("판별 결과", "법무부고시 제2020-212호", 과태료 트랙 문구)가 포함된 것을 확인.
 
 ## 5. 남은 위험
 
