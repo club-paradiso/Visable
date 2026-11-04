@@ -149,6 +149,28 @@ test.describe('status-independent procedures answer without a status', () => {
   });
 });
 
+test.describe('detail checklist handoff is contextual, not a competing homepage tool', () => {
+  test('D-2 extension offers a status-aware deep link into scenario selection', async ({ page }) => {
+    await boot(page);
+    const sg = await search(page, 'D-2 연장');
+    const detail = sg.locator('.sg-doc-deep-link a');
+    await expect(detail).toBeVisible();
+    await expect(detail).toHaveAttribute('href', 'immigration-checklists.html?procedure=extension&code=D-2');
+    await detail.click();
+    await expect(page).toHaveURL(/immigration-checklists\.html\?procedure=extension&code=D-2/);
+    await expect(page.locator('#guided-step-3.active, #guided-step-4.active')).toBeVisible({ timeout: 30_000 });
+    const current = await page.evaluate(() => window.__VISABLE_INTERNALS && window.__VISABLE_INTERNALS.state);
+    expect(current.procedure).toBe('extension');
+    expect(current.status_code).toBe('D-2');
+  });
+
+  test('card reissue does not link to unsupported detailed checklist procedures', async ({ page }) => {
+    await boot(page);
+    const sg = await search(page, '외국인등록증 재발급');
+    await expect(sg.locator('.sg-doc-deep-link')).toHaveCount(0);
+  });
+});
+
 test.describe('status-required procedures ask a plain-language status question', () => {
   test('체류기간 연장 asks the status in plain language, then resolves the picked code', async ({ page }) => {
     await boot(page);
