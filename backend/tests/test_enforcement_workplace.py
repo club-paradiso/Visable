@@ -1,6 +1,6 @@
 """Regression tests for the deterministic workplace regime determination.
 
-The 22 shared cases in fixtures/workplace_regime_cases.json are the standard
+The 30 shared cases in fixtures/workplace_regime_cases.json are the standard
 case library: the same file is replayed against the JS mirror
 (lib/enforcement-workplace.js) by scripts/check_enforcement_workplace.mjs,
 which is what keeps the frontend fallback and the backend from diverging

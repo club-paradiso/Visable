@@ -75,6 +75,13 @@ class StructuredCase(EnforcementModel):
     ] = None
     employer_consent: Optional[bool] = None
     alien_registered: Optional[bool] = None
+    # MOJ Notice 2020-212: the pre-registration report exception (no-fault
+    # termination) may be used only once; whether it was already used is a
+    # fact of its own and is never assumed.
+    registration_exception_used: Optional[bool] = None
+    # E-7 occupation 2742 is excluded only for overseas online product
+    # sellers; this fact decides that conditional exclusion.
+    overseas_online_seller: Optional[bool] = None
     meets_new_workplace_qualifications: Optional[bool] = None
     actually_started_work: Optional[bool] = None
     new_workplace_start_date: Optional[date] = None

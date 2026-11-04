@@ -338,6 +338,16 @@ function clarificationFor(caseData) {
         question: '새 근무처에서 실제로 어떤 일을 하나요? 직종코드를 알면 적어 주세요.',
         hint: '예: 441 (주방장·조리사), 모르면 잘 모르겠어요',
       },
+      String(caseData.occupationCode || '').replace(/[\s.\-]+/g, '').toUpperCase() === '2742'
+        && caseData.overseasOnlineSeller == null && !skippedClarifications.has('overseasOnlineSeller') && {
+        kind: 'overseasOnlineSeller', type: 'choice',
+        question: '새 근무처에서 하는 일이 해외 온라인 상품 판매 업무인가요?',
+        hint: '직종코드 2742는 이 업무에 해당하는지에 따라 사전허가/사후신고가 달라져요.',
+        options: [
+          { value: 'true', label: '네, 해외 온라인 상품 판매 업무예요' },
+          { value: 'false', label: '아니요, 다른 업무예요' },
+        ],
+      },
       caseData.workplaceChangeType !== 'ADDITION' && caseData.previousEmploymentEndReason == null && !skippedClarifications.has('previousEmploymentEndReason') && {
         kind: 'previousEmploymentEndReason', type: 'choice',
         question: '이전 회사는 왜 그만두게 됐나요?',
@@ -365,6 +375,17 @@ function clarificationFor(caseData) {
         options: [
           { value: 'true', label: '네, 외국인등록을 했어요' },
           { value: 'false', label: '아니요, 아직 등록 전이었어요' },
+        ],
+      },
+      caseData.alienRegistered === false
+        && ['DISMISSED_NO_OWN_FAULT', 'EMPLOYER_CLOSED', 'CONTRACT_EXPIRED'].includes(caseData.previousEmploymentEndReason)
+        && caseData.registrationExceptionUsed == null && !skippedClarifications.has('registrationExceptionUsed') && {
+        kind: 'registrationExceptionUsed', type: 'choice',
+        question: '외국인등록 전에 신고할 수 있는 예외(1회만 가능)를 이전에 사용한 적이 있나요?',
+        hint: '본인 잘못 없이 계약이 끝난 경우에 한해, 등록 전이라도 1회만 신고가 허용돼요.',
+        options: [
+          { value: 'true', label: '네, 이전에 사용한 적이 있어요' },
+          { value: 'false', label: '아니요, 사용한 적이 없어요' },
         ],
       },
       caseData.meetsNewWorkplaceQualifications == null && !skippedClarifications.has('meetsNewWorkplaceQualifications') && {
@@ -495,7 +516,7 @@ function applyClarification(kind, rawValue) {
     const allowed = ['CONTRACT_EXPIRED', 'RESIGNED_MID_CONTRACT', 'DISMISSED_OWN_FAULT', 'DISMISSED_NO_OWN_FAULT', 'EMPLOYER_CLOSED', 'OTHER'];
     if (!allowed.includes(value)) return setError($('#confirm-error'), '실제 상황과 가장 가까운 항목을 선택해 주세요.');
     structuredCase.previousEmploymentEndReason = value;
-  } else if (['employerConsent', 'alienRegistered', 'meetsNewWorkplaceQualifications', 'actuallyStartedWork'].includes(kind)) {
+  } else if (['employerConsent', 'alienRegistered', 'meetsNewWorkplaceQualifications', 'actuallyStartedWork', 'overseasOnlineSeller', 'registrationExceptionUsed'].includes(kind)) {
     if (!['true', 'false'].includes(value)) return setError($('#confirm-error'), '해당하는 항목을 선택해 주세요.');
     structuredCase[kind] = value === 'true';
   } else if (kind === 'procedureStatus') {
@@ -595,7 +616,7 @@ function analysisFingerprint(caseData) {
     'statusOfStay', 'violationCode', 'durationDays', 'priorViolations',
     'authorizationObtained', 'workplaceChangeAuthorized', 'workplaceRegime', 'workplaceRegimeSource',
     'occupationCode', 'workplaceChangeType', 'previousEmploymentEndReason', 'employerConsent',
-    'alienRegistered', 'meetsNewWorkplaceQualifications', 'actuallyStartedWork',
+    'alienRegistered', 'registrationExceptionUsed', 'overseasOnlineSeller', 'meetsNewWorkplaceQualifications', 'actuallyStartedWork',
     'workplaceChangeDate', 'applicationOrReportDate', 'procedureStatus',
     'voluntaryDisclosure',
     'investigationStarted', 'falseRepresentation', 'violationStartDate',
@@ -766,7 +787,7 @@ function wireNextStep() {
     skippedClarifications.delete('violationCode');
     // Re-open every workplace fact question so an edited answer immediately
     // re-runs the determination (the analysis fingerprint also changes).
-    for (const kind of ['workplaceRegime', 'workplaceChangeType', 'occupationCode', 'previousEmploymentEndReason', 'employerConsent', 'alienRegistered', 'meetsNewWorkplaceQualifications', 'actuallyStartedWork', 'procedureStatus']) {
+    for (const kind of ['workplaceRegime', 'workplaceChangeType', 'occupationCode', 'overseasOnlineSeller', 'previousEmploymentEndReason', 'employerConsent', 'alienRegistered', 'registrationExceptionUsed', 'meetsNewWorkplaceQualifications', 'actuallyStartedWork', 'procedureStatus']) {
       skippedClarifications.delete(kind);
     }
     renderConfirmation(structuredCase);
