@@ -11,6 +11,14 @@ const extFee = fee('extension_general');
 const reissue = commonProcedure('card_reissue');
 const reissueFee = fee('card_reissue');
 
+// Golden assertions track the *display* vocabulary, not the immutable manual
+// source's legacy generic title. The original document ref and evidence stay intact.
+function displayedStayFormName(d, lang) {
+  if (d.ref === 'app_form' || d.ref === 'app_form_34')
+    return lang === 'ko' ? '통합신청서 (별지 제34호 서식)' : 'Integrated Application Form (Form 34)';
+  return lang === 'ko' ? d.name_ko : d.name_en;
+}
+
 test.describe('D-2 → 체류기간 연장 (status-specific procedure)', () => {
   test('ko: period, every required document, conditional document, fee and notices', async ({ page }) => {
     const errors = await boot(page);
@@ -25,8 +33,8 @@ test.describe('D-2 → 체류기간 연장 (status-specific procedure)', () => {
     expect(required.length).toBeGreaterThan(0);
     expect(text).toContain(STR.ko.docsTitle);
     expect(text).toContain(`${fill(STR.ko.docsCount, { n: required.length })} · ${fill(STR.ko.docsCountCond, { n: conditional.length })}`);
-    for (const d of required) expect(text, d.ref).toContain(normalize(d.name_ko));
-    for (const d of conditional) expect(text, d.ref).toContain(normalize(d.name_ko));
+    for (const d of required) expect(text, d.ref).toContain(normalize(displayedStayFormName(d, 'ko')));
+    for (const d of conditional) expect(text, d.ref).toContain(normalize(displayedStayFormName(d, 'ko')));
     // Fee: exact amount, label and review state from the fee registry.
     expect(text).toContain(STR.ko.feeTitle);
     expect(text).toContain(won(extFee.amount));
@@ -49,7 +57,7 @@ test.describe('D-2 → 체류기간 연장 (status-specific procedure)', () => {
     const text = normalize(await mainText(page));
     expect(text).toContain(normalize(ext.summary_en));
     expect(text).toContain(normalize(ext.period_en));
-    for (const d of docsByLevel(ext, 'REQUIRED_BASELINE')) expect(text, d.ref).toContain(normalize(d.name_en));
+    for (const d of docsByLevel(ext, 'REQUIRED_BASELINE')) expect(text, d.ref).toContain(normalize(displayedStayFormName(d, 'en')));
     expect(text).toContain(won(extFee.amount));
     expect(text).toContain(extFee.label_en);
     expect(text).toContain(STR.en.disclaimer);

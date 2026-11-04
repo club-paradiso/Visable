@@ -275,3 +275,38 @@ test('office selection transparency and live editor diff preview behave accurate
   await expect(page.locator('#edit-dialog')).toBeHidden();
 });
 
+
+test('stay application-form wording is contextual while raw checklist evidence is unchanged', async ({ page }) => {
+  await boot(page);
+  const cases = await page.evaluate(() => {
+    const { parseRequiredDocsStructured, canonicalChecklistApplicationFormText } = window.__VISABLE_INTERNALS;
+    const plain = '신청서(별지 제34호), 여권, 재학증명서';
+    const f4 = '여권 및 사본; 통합신청서; 직업·연간소득 신고서';
+    const ordinary = parseRequiredDocsStructured(plain, { id: 'sample-d2', status_code: 'D-2' });
+    const overseas = parseRequiredDocsStructured(f4, { id: 'sample-f4', status_code: 'F-4-41' });
+    return {
+      ordinaryRaw: ordinary.items[0].label, ordinaryDisplay: ordinary.items[0].displayLabel,
+      overseasRaw: overseas.items[1].label, overseasDisplay: overseas.items[1].displayLabel,
+      overseasHelper: overseas.items[1].isFormHelper,
+      independent: canonicalChecklistApplicationFormText('사증발급신청서, 여권, 면제신청서', 'D-2'),
+      repeat: canonicalChecklistApplicationFormText('재외동포 통합신청서, 여권', 'F-4-R')
+    };
+  });
+  expect(cases.ordinaryRaw).toBe('신청서(별지 제34호)');
+  expect(cases.ordinaryDisplay).toBe('통합신청서');
+  expect(cases.overseasRaw).toBe('통합신청서');
+  expect(cases.overseasDisplay).toBe('재외동포 통합신청서');
+  expect(cases.overseasHelper).toBe(false);
+  expect(cases.independent).toBe('사증발급신청서, 여권, 면제신청서');
+  expect(cases.repeat).toBe('재외동포 통합신청서, 여권');
+});
+
+test('F-4 subtype guided checklist uses the overseas Korean application-form label', async ({ page }) => {
+  await boot(page);
+  await page.locator('#query').fill('F-4-41');
+  await expect(page.locator('.doc-card').first()).toBeVisible();
+  await page.locator('.doc-card').first().locator('.card-quick-cta').click();
+  await expect(page.locator('#guided-step-4')).toBeVisible();
+  await expect(page.locator('#baseline-docs-list .checklist-doc-name').first()).toContainText('재외동포 통합신청서');
+  await expect(page.locator('#baseline-docs-list .checklist-form-helper-link')).toHaveCount(0);
+});

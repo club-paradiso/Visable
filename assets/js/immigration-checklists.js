@@ -490,6 +490,17 @@ function getVisaInfo(rawCode, optLang) {
   };
 }
 
+// Normalize display labels only; the compiled 647-row dataset, editor text,
+// provenance and persisted checkbox keys stay untouched.
+function canonicalChecklistApplicationFormText(text, statusCode) {
+  var label = /^F-4(?:-|$)/i.test(String(statusCode || ''))
+    ? '재외동포 통합신청서' : '통합신청서';
+  return String(text || '').replace(
+    /(^|[,;]\s*)(?:재외동포(?:\s*\(\s*F-4\s*\))?\s*)?(?:통합\s*)?신청서(?:\s*\(\s*(?:별지\s*제?\s*)?(?:34|1)\s*호\s*(?:서식)?\s*\))?(?=$|[\s,;、(])/g,
+    function (_m, prefix) { return prefix + label; }
+  );
+}
+
 function splitParenSafe(text) {
   if (!text) return [];
   var chunks = [];
@@ -561,8 +572,11 @@ function parseRequiredDocsStructured(text, item) {
     docs.push({
       id: (item ? item.id : 'doc') + '-' + idx,
       label: trimmed,
+      displayLabel: canonicalChecklistApplicationFormText(trimmed, item && item.status_code),
       type: reqType,
-      isFormHelper: /통합신청서|신청서/i.test(trimmed)
+      // Generic Form Helper must not send F-4 visitors to the Form 34 flow.
+      isFormHelper: !/^F-4(?:-|$)/i.test(String(item && item.status_code || ''))
+        && /^(?:통합\s*)?신청서(?=$|[\s,(])/i.test(trimmed)
     });
   });
 
@@ -626,7 +640,7 @@ function card(original) {
   cardEl.appendChild(head);
 
   var body = element('div', 'card-body');
-  note(body, getNoteTitle('required'), item.required_text);
+  note(body, getNoteTitle('required'), canonicalChecklistApplicationFormText(item.required_text, item.status_code));
   note(body, getNoteTitle('conditional'), item.conditional_text, 'conditional');
   var defaultAppText = state.procedure === 'registration'
     ? (lang === 'en'
@@ -969,8 +983,9 @@ function renderGuidedStep3() {
     body.appendChild(element('h4', '', item.scenario));
 
     var basicLabel = t('basicDocsPreviewLabel', null, '기본 서류: ');
-    var docsPreview = item.required_text
-      ? (basicLabel + item.required_text.slice(0, 95) + (item.required_text.length > 95 ? '...' : ''))
+    var visibleRequiredText = canonicalChecklistApplicationFormText(item.required_text, item.status_code);
+    var docsPreview = visibleRequiredText
+      ? (basicLabel + visibleRequiredText.slice(0, 95) + (visibleRequiredText.length > 95 ? '...' : ''))
       : (state.lang === 'en' ? 'Basic documents check needed' : '기본 서류 확인 필요');
     body.appendChild(element('p', '', docsPreview));
 
@@ -1092,14 +1107,14 @@ function renderBaselineChecklist(item) {
     input.type = 'checkbox';
     input.id = itemId;
     input.checked = isChecked;
-    input.setAttribute('aria-label', docItem.label + (state.lang === 'en' ? ' marked ready' : ' 준비 완료'));
+    input.setAttribute('aria-label', docItem.displayLabel + (state.lang === 'en' ? ' marked ready' : ' 준비 완료'));
     chkWrap.appendChild(input);
 
     var textWrap = element('div', 'checklist-text-wrap');
     var label = document.createElement('label');
     label.htmlFor = itemId;
     label.className = 'checklist-doc-name';
-    label.textContent = docItem.label;
+    label.textContent = docItem.displayLabel;
 
     if (docItem.type === 'alternative') {
       var altBadge = element('span', 'item-badge alternative-badge', altBadgeText);
@@ -2433,6 +2448,7 @@ if (typeof globalThis !== 'undefined') {
 window.__VISABLE_INTERNALS = {
   splitParenSafe: splitParenSafe,
   parseRequiredDocsStructured: parseRequiredDocsStructured,
+  canonicalChecklistApplicationFormText: canonicalChecklistApplicationFormText,
   getVisaInfo: getVisaInfo,
   updateLanguage: updateLanguage,
   findDocumentAliases: findDocumentAliases,
