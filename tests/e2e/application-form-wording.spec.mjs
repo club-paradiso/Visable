@@ -26,6 +26,8 @@ test('rule: exact, spaced, F-4 and comma-joined rows', async ({ page }) => {
       f4Spaced: f('통합신청서(별지 제1호 서식)', 'registration', 'F-4'),
       f4Prefixed: f('재외동포(F-4) 통합신청서(별지 제1호 서식)', 'statusChange', 'F-4'),
       f4Bare: f('신청서', 'extension', 'F-4'),
+      f4Subcode: f('신청서', 'extension', 'F-4-41'),
+      f4Regional: f('통합신청서', 'registration', 'F-4-R'),
       idempotent: f('통합신청서 (신고서) [별지 제34호서식]', 'extension', 'D-2'),
       visaIssuance: f('신청서', 'visaIssuance', 'D-2'),
       otherForm: f('한글병기 신청서(희망자만)', 'statusChange', 'F-4'),
@@ -40,6 +42,8 @@ test('rule: exact, spaced, F-4 and comma-joined rows', async ({ page }) => {
   expect(r.f4Spaced).toBe(F4);
   expect(r.f4Prefixed).toBe(F4);
   expect(r.f4Bare).toBe(F4);
+  expect(r.f4Subcode).toBe(F4);
+  expect(r.f4Regional).toBe(F4);
   expect(r.idempotent).toBe(GENERIC);
   expect(r.visaIssuance).toBe('신청서');
   expect(r.otherForm).toBe('한글병기 신청서(희망자만)');
@@ -74,3 +78,16 @@ for (const [query, expected] of [['D-4', GENERIC], ['F-1', GENERIC], ['F-4', F4]
     }
   });
 }
+
+test('procedure-first guidance shows exact form names but keeps other official forms', async ({ page }) => {
+  await boot(page);
+  for (const [query, expected] of [['D-2 연장', '통합신청서'], ['F-4 연장', '재외동포 통합신청서']]) {
+    await page.fill('#civicQuery', query);
+    await page.press('#civicQuery', 'Enter');
+    const docs = page.locator('#statusGuidance .sg-doc-name');
+    await expect(docs.first()).toBeAttached({ timeout: 20_000 });
+    const labels = await docs.allTextContents();
+    expect(labels.some(name => name.includes(expected)), query).toBe(true);
+    expect(labels.some(name => name.trim() === '신청서'), query).toBe(false);
+  }
+});
