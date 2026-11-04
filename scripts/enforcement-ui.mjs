@@ -293,8 +293,9 @@ function clarificationFor(caseData) {
     const candidates = new Set(caseData.violationCandidates || []);
     const options = [];
     const add = (value, label) => { if (!candidates.size || candidates.has(value)) options.push({ value, label }); };
-    add('STATUS_OUTSIDE_ACTIVITY_ART20', '학생 등의 체류자격으로, 필요한 활동 허가 없이 일을 했어요');
-    add('UNAUTHORIZED_STAY_OR_WORK_ART18_1', '애초에 취업할 수 없는 체류자격인데 일을 했어요');
+    const professionalStatus = /^E-[1-7](?:-|$)/i.test(caseData.statusOfStay || '');
+    add('STATUS_OUTSIDE_ACTIVITY_ART20', professionalStatus ? '현재 체류자격에서 허용하는 활동과 다른 종류의 일을 했어요' : '학생 등의 체류자격으로, 필요한 활동 허가 없이 일을 했어요');
+    if (!professionalStatus) add('UNAUTHORIZED_STAY_OR_WORK_ART18_1', '애초에 취업할 수 없는 체류자격인데 일을 했어요');
     add('UNAUTHORIZED_EMPLOYMENT_ART18_2', '허가된 회사는 그대로이고, 지정된 근무처가 아닌 곳에서도 일했어요');
     add('UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1', '다른 회사·사업장으로 옮기거나 추가했어요 (허가·신고 구분은 별도로 확인)');
     add('OVERSTAY_ART25', '체류기간이 지난 뒤에도 계속 체류했어요');
