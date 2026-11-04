@@ -263,6 +263,25 @@ def calculate_legal_baseline(case: StructuredCase, *, database: Optional[Dict[st
                 confidence="INSUFFICIENT",
                 **common,
             )
+        if (
+            determination.regime == "PERMIT"
+            and determination.determination_status == "CONFIRMED"
+            and determination.duty_breach == "UNRESOLVED"
+        ):
+            # An engine-confirmed permission duty with an unproven breach
+            # must not reach the fine table: whether a permit was obtained
+            # is the very fact that decides liability, so no amount — not
+            # even a "conditional" one — is shown. (A user-confirmed regime
+            # keeps the legacy conditional-calculation contract below.)
+            return LegalBaseline(
+                status="MISSING_FACTS",
+                missing_facts=[
+                    "근무처 변경·추가 허가를 받았는지 확인되지 않았습니다.",
+                    *determination.missing_facts,
+                ],
+                confidence="INSUFFICIENT",
+                **common,
+            )
         if not case.violation_code and determination.determination_status == "USER_CONFIRMED":
             # Shared-candidate pricing must not bypass the gate: with no
             # resolved provision, a user-confirmed regime alone does not

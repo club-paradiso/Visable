@@ -61,6 +61,7 @@ NEXT_QUESTIONS = {
     "E-6 세부 유형": "E-6 중 호텔·유흥시설 공연(E-6-2)에 해당하나요?",
     "해외 온라인상품판매원 해당 여부": "해외 온라인상품 판매 업무를 하나요?",
     "외국인등록 여부": "당시 외국인등록을 하고 체류 중이었나요?",
+    "외국인등록 전 신고 예외(1회) 사용 여부": "외국인등록 전에 신고할 수 있는 예외(1회)를 이전에 사용한 적이 있나요?",
     "새 근무처 자격요건 충족 여부": "새 근무처에서 일하는 데 필요한 자격요건(학위·자격 등)을 갖추었나요?",
     "이전 고용 종료 사유": "이전 회사는 왜 그만두게 됐나요? (계약 만료, 본인이 중도에 그만둠, 해고, 회사 폐업 등)",
     "원 고용주 이적 동의 여부": "이전 회사에서 다른 회사로 옮기는 것에 동의받았나요?",
@@ -115,7 +116,10 @@ def _evidence(rules: Dict[str, Any]) -> list[SourceReference]:
 def _normalize_occupation(value: Optional[str]) -> Optional[str]:
     if not value:
         return None
-    return re.sub(r"\s+", "", str(value)).upper() or None
+    # Users type codes with separators ("S-740", "s 740"); the notice lists
+    # them without. Strip separators so a formatting variant can never
+    # escape the exclusion list.
+    return re.sub(r"[\s.\-]+", "", str(value)).upper() or None
 
 
 def _assess_breach(case: StructuredCase, regime: str, det: WorkplaceDetermination, rules: Dict[str, Any]) -> None:
@@ -123,13 +127,21 @@ def _assess_breach(case: StructuredCase, regime: str, det: WorkplaceDeterminatio
     procedure = case.procedure_status
     if regime == "PERMIT":
         det.penalty_track = "CRIMINAL_FINE"
-        if procedure == "PERMIT_GRANTED" or case.workplace_change_authorized is True:
+        # An explicitly stated procedure always outranks the legacy
+        # authorized flag. In particular a REPORT filing is not a permit:
+        # it can never satisfy the prior-permission duty (a narrative like
+        # "신고했어요" also sets the legacy flag, which used to mask this).
+        if procedure == "PERMIT_GRANTED":
             det.duty_breach = "NOT_ESTABLISHED"
-        elif procedure == "NONE" or case.workplace_change_authorized is False:
-            det.duty_breach = "ESTABLISHED"
         elif procedure == "APPLIED_PENDING":
             det.duty_breach = "UNRESOLVED"
             det.warnings.append("허가 신청만으로는 허가를 받은 것이 아닙니다. 처리 결과가 확인되어야 합니다.")
+        elif procedure in {"REPORT_FILED", "NONE"}:
+            det.duty_breach = "ESTABLISHED"
+        elif case.workplace_change_authorized is True:
+            det.duty_breach = "NOT_ESTABLISHED"
+        elif case.workplace_change_authorized is False:
+            det.duty_breach = "ESTABLISHED"
         else:
             det.duty_breach = "UNRESOLVED"
             if "허가 취득 여부" not in det.missing_facts:
@@ -254,8 +266,23 @@ def _engine_determine(case: StructuredCase, rules: Dict[str, Any]) -> WorkplaceD
             det.missing_facts.append("실제 직종(직종코드)")
             unresolved = True
         elif occupation in eligibility["conditionalOccupationCodesE7"]:
-            det.missing_facts.append("해외 온라인상품판매원 해당 여부")
-            unresolved = True
+            # Code 2742 is excluded only for overseas online product
+            # sellers. That fact has its own field; unknown stays unknown.
+            if case.overseas_online_seller is True:
+                det.regime = "PERMIT"
+                det.determination_status = "CONFIRMED"
+                det.exceptions_checked.append(
+                    "고시 적용제외: E-7 직종코드 2742 중 해외 온라인상품판매원은 신고 대상에서 제외"
+                )
+                det.verified_facts.append("직종코드 2742 · 해외 온라인상품판매원")
+                _assess_breach(case, "PERMIT", det, rules)
+                return _finish(det)
+            elif case.overseas_online_seller is False:
+                det.exceptions_checked.append("직종코드 2742이나 해외 온라인상품판매원이 아니어서 조건부 적용제외에 해당하지 않음")
+                det.verified_facts.append(f"직종코드 {occupation}")
+            else:
+                det.missing_facts.append("해외 온라인상품판매원 해당 여부")
+                unresolved = True
         elif occupation in eligibility["excludedOccupationCodesE7"]:
             det.regime = "PERMIT"
             det.determination_status = "CONFIRMED"
@@ -269,8 +296,9 @@ def _engine_determine(case: StructuredCase, rules: Dict[str, Any]) -> WorkplaceD
             det.exceptions_checked.append(f"E-7 직종코드 {occupation}는 고시 적용제외 목록에 없음")
             det.verified_facts.append(f"직종코드 {occupation}")
     elif status.startswith("E-6"):
-        # Only E-6-2 is excluded; a bare "E-6" does not prove the subtype.
-        if status == "E-6":
+        # Only E-6-2 is excluded; a bare "E-6" does not prove the subtype,
+        # and neither does an unlisted subtype code.
+        if status == "E-6" or status not in {"E-6-1", "E-6-3"}:
             det.missing_facts.append("E-6 세부 유형")
             unresolved = True
         else:
@@ -282,20 +310,38 @@ def _engine_determine(case: StructuredCase, rules: Dict[str, Any]) -> WorkplaceD
         det.missing_facts.append("외국인등록 여부")
         unresolved = True
     elif case.alien_registered is False:
-        if end_reason in {"DISMISSED_NO_OWN_FAULT", "EMPLOYER_CLOSED"}:
-            det.exceptions_checked.append(
-                "고시 단서: 본인 귀책사유 없이 고용계약이 해지된 경우 외국인등록 전이라도 1회에 한해 신고 허용"
-            )
-            det.warnings.append("외국인등록 전 신고 허용은 1회에 한한다는 고시 단서가 있어, 과거 사용 여부는 별도 확인이 필요합니다.")
-        elif end_reason is None or end_reason == "UNKNOWN":
-            det.missing_facts.append("이전 고용 종료 사유")
-            unresolved = True
-        else:
+        # Notice proviso: where the contract ended without the person's own
+        # fault (no-fault dismissal, closure, or expiry of the contract
+        # term), a report is allowed once even before alien registration.
+        # "Once" is a real condition: prior use must be asked, never assumed.
+        if end_reason in {"DISMISSED_NO_OWN_FAULT", "EMPLOYER_CLOSED", "CONTRACT_EXPIRED"}:
+            if case.registration_exception_used is True:
+                det.regime = "PERMIT"
+                det.determination_status = "CONFIRMED"
+                det.exceptions_checked.append(
+                    "고시 단서: 외국인등록 전 신고 허용(1회)을 이미 사용해, 등록 전 신고 대상에 해당하지 않음"
+                )
+                _assess_breach(case, "PERMIT", det, rules)
+                return _finish(det)
+            elif case.registration_exception_used is False:
+                det.exceptions_checked.append(
+                    "고시 단서: 본인 귀책사유 없이 고용계약이 종료된 경우 외국인등록 전이라도 1회에 한해 신고 허용"
+                )
+                det.verified_facts.append("외국인등록 전 신고 예외(1회) 미사용")
+            else:
+                det.missing_facts.append("외국인등록 전 신고 예외(1회) 사용 여부")
+                unresolved = True
+        elif end_reason in {"DISMISSED_OWN_FAULT", "RESIGNED_MID_CONTRACT"}:
             det.regime = "PERMIT"
             det.determination_status = "CONFIRMED"
             det.exceptions_checked.append("고시 자격요건: 외국인등록을 하고 체류 중이어야 한다는 요건 미충족")
             _assess_breach(case, "PERMIT", det, rules)
             return _finish(det)
+        else:
+            # None / UNKNOWN / OTHER: the end reason decides whether the
+            # no-fault exception can apply, so nothing is concluded yet.
+            det.missing_facts.append("이전 고용 종료 사유")
+            unresolved = True
     else:
         det.verified_facts.append("외국인등록 후 체류 중")
 
@@ -377,6 +423,11 @@ def determine_workplace_regime(
     engine = _engine_determine(case, rules)
 
     user_regime = case.workplace_regime if case.workplace_regime in {"PERMIT", "REPORT"} else None
+    # Legacy contract (documented): a regime value with source None predates
+    # the provenance field and is treated as user-confirmed. The pydantic
+    # Literal on workplace_regime_source constrains the value space to
+    # USER_CONFIRMED / ENGINE / None, so no other provenance can reach here;
+    # the JS mirror cannot rely on schema validation and checks explicitly.
     user_confirmed = user_regime is not None and case.workplace_regime_source != "ENGINE"
     if user_confirmed:
         if engine.determination_status == "CONFIRMED" and engine.regime != user_regime:

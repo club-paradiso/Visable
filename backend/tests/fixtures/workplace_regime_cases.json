@@ -455,6 +455,177 @@
       "regime": "PERMIT",
       "baselineStatus": "MISSING_FACTS",
       "baselineAmountKrw": null
+    },
+    {
+      "id": "permit-confirmed-breach-unknown",
+      "description": "Review B1: engine-confirmed PERMIT (E-6-2) with the permit fact unknown must not price a criminal fine.",
+      "case": {
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "assessmentDate": "2026-11-04",
+        "statusOfStay": "E-6-2",
+        "durationDays": 63
+      },
+      "regime": "PERMIT",
+      "dutyBreach": "UNRESOLVED",
+      "baselineStatus": "MISSING_FACTS",
+      "baselineAmountKrw": null
+    },
+    {
+      "id": "report-filed-does-not-satisfy-permit",
+      "description": "Review B2: for an excluded occupation (441) a report filing is not a permit; the legacy authorized flag must not mask it.",
+      "case": {
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "assessmentDate": "2026-11-04",
+        "statusOfStay": "E-7-4",
+        "occupationCode": "441",
+        "procedureStatus": "REPORT_FILED",
+        "workplaceChangeAuthorized": true,
+        "violationStartDate": "2026-08-01",
+        "violationEndDate": "2026-10-02"
+      },
+      "regime": "PERMIT",
+      "dutyBreach": "ESTABLISHED",
+      "baselineStatus": "AVAILABLE",
+      "baselineAmountKrw": 1000000
+    },
+    {
+      "id": "hyphenated-excluded-occupation",
+      "description": "Review M4: 'S-740' typed with a hyphen is still the excluded code S740.",
+      "case": {
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "assessmentDate": "2026-11-04",
+        "statusOfStay": "E-7-4",
+        "occupationCode": "S-740",
+        "alienRegistered": true,
+        "meetsNewWorkplaceQualifications": true,
+        "previousEmploymentEndReason": "CONTRACT_EXPIRED",
+        "procedureStatus": "NONE",
+        "violationStartDate": "2026-08-01",
+        "violationEndDate": "2026-10-02"
+      },
+      "regime": "PERMIT",
+      "dutyBreach": "ESTABLISHED",
+      "baselineStatus": "AVAILABLE",
+      "baselineAmountKrw": 1000000
+    },
+    {
+      "id": "occupation-2742-overseas-seller",
+      "description": "Review M1: 2742 + overseas online seller is notice-excluded (PERMIT).",
+      "case": {
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "assessmentDate": "2026-11-04",
+        "statusOfStay": "E-7-4",
+        "occupationCode": "2742",
+        "overseasOnlineSeller": true,
+        "procedureStatus": "NONE",
+        "durationDays": 63
+      },
+      "regime": "PERMIT",
+      "dutyBreach": "ESTABLISHED",
+      "baselineStatus": "AVAILABLE",
+      "baselineAmountKrw": 1000000
+    },
+    {
+      "id": "occupation-2742-non-seller",
+      "description": "Review M1: 2742 + not an overseas online seller proceeds as a report case.",
+      "case": {
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "assessmentDate": "2026-11-04",
+        "statusOfStay": "E-7-4",
+        "occupationCode": "2742",
+        "overseasOnlineSeller": false,
+        "alienRegistered": true,
+        "meetsNewWorkplaceQualifications": true,
+        "previousEmploymentEndReason": "CONTRACT_EXPIRED",
+        "procedureStatus": "REPORT_FILED",
+        "workplaceChangeDate": "2026-09-05",
+        "applicationOrReportDate": "2026-09-10"
+      },
+      "regime": "REPORT",
+      "dutyBreach": "NOT_ESTABLISHED",
+      "reportTimeliness": "WITHIN_DEADLINE",
+      "baselineStatus": "NOT_APPLICABLE",
+      "baselineAmountKrw": null
+    },
+    {
+      "id": "registration-exception-already-used",
+      "description": "Review M2: the one-time pre-registration report exception was already used, so the case is a permit case.",
+      "case": {
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "assessmentDate": "2026-11-04",
+        "statusOfStay": "E-7-4",
+        "occupationCode": "1234",
+        "alienRegistered": false,
+        "registrationExceptionUsed": true,
+        "previousEmploymentEndReason": "DISMISSED_NO_OWN_FAULT",
+        "procedureStatus": "NONE",
+        "durationDays": 63
+      },
+      "regime": "PERMIT",
+      "dutyBreach": "ESTABLISHED",
+      "baselineStatus": "AVAILABLE",
+      "baselineAmountKrw": 1000000
+    },
+    {
+      "id": "registration-exception-available-expiry",
+      "description": "Review M2/M3: contract expiry is a no-fault end; with the one-time exception unused, a pre-registration report is allowed.",
+      "case": {
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "assessmentDate": "2026-11-04",
+        "statusOfStay": "E-7-4",
+        "occupationCode": "1234",
+        "alienRegistered": false,
+        "registrationExceptionUsed": false,
+        "meetsNewWorkplaceQualifications": true,
+        "previousEmploymentEndReason": "CONTRACT_EXPIRED",
+        "procedureStatus": "REPORT_FILED",
+        "workplaceChangeDate": "2026-09-05",
+        "applicationOrReportDate": "2026-09-10"
+      },
+      "regime": "REPORT",
+      "dutyBreach": "NOT_ESTABLISHED",
+      "reportTimeliness": "WITHIN_DEADLINE",
+      "baselineStatus": "NOT_APPLICABLE",
+      "baselineAmountKrw": null
+    },
+    {
+      "id": "registration-exception-use-unknown",
+      "description": "Review M2: one-time exception use unknown -> UNRESOLVED, never assumed unused.",
+      "case": {
+        "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
+        "violationCandidates": [
+          "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1"
+        ],
+        "assessmentDate": "2026-11-04",
+        "statusOfStay": "E-7-4",
+        "occupationCode": "1234",
+        "alienRegistered": false,
+        "previousEmploymentEndReason": "DISMISSED_NO_OWN_FAULT"
+      },
+      "regime": "UNRESOLVED",
+      "baselineStatus": "MISSING_FACTS",
+      "baselineAmountKrw": null
     }
   ],
   "schemaVersion": "1.0.0"

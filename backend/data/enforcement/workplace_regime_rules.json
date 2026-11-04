@@ -1,1 +1,111 @@
-{"notes":["이 규칙 저장소는 backend/data/legal-corpus 의 공식 스냅샷(국가법령정보센터)에서 확인된 문언만을 구조화한 것이다. 해석은 rules 의 각 항목에 분리해 적는다.","고시 본문은 2020-06-22 시행본(일부개정) 스냅샷이다. 그 이전 사건이나, 스냅샷 이후 개정 여부가 확인되지 않은 사건에 이 규칙을 소급·확정 적용하지 않는다.","과태료는 출입국관리법 제100조제1항제3호의 법정 상한(200만원 이하)만 원문으로 확인됐다. 과태료의 구체적 양정표는 검증된 공식 자료가 없어 금액을 산정하지 않는다."],"permitDuty":{"penaltyStatute":"출입국관리법 제21조제1항 본문 위반 — 범칙금 양정기준은 backend/data/enforcement/legal_rules.json (시행규칙 별표 7) 참조","penaltyTrack":"CRIMINAL_FINE","requiresPriorPermission":true},"reportDuty":{"amountComputation":"NOT_VERIFIED","amountComputationNote":"과태료 구체 양정기준은 검증된 공식 자료가 없어 산정액을 제시하지 않는다. 법정 상한과 산정액을 혼동하지 않는다.","deadlineBasis":"출입국관리법 제21조제1항 단서: 근무처를 변경하거나 추가한 날부터 15일 이내 신고","deadlineDays":15,"penaltyStatute":"출입국관리법 제100조제1항제3호","penaltyTrack":"ADMINISTRATIVE_FINE","statutoryMaximumKrw":2000000},"reportEligibility":{"conditionalOccupationCodesE7":{"2742":"해외 온라인상품판매원인 경우에만 적용제외. 같은 코드의 다른 업무는 고시 문언상 제외로 확정할 수 없다."},"eligibleStatusPrefixes":["E-1","E-2","E-3","E-4","E-5","E-6","E-7"],"excludedOccupationCodesE7":["2351","2395","285","31215","441","3991","3922","S3922","6301","7430","S740","S610","S700"],"excludedStatuses":["E-6-2"],"ownFaultExclusion":{"consentFact":"employerConsent","endReasons":["DISMISSED_OWN_FAULT","RESIGNED_MID_CONTRACT"],"rule":"자격요건을 갖추었더라도 본인 귀책사유로 해고 또는 중도 퇴직한 자로서 원 고용주의 이적 동의를 받지 못한 자는 신고 대상에서 제외된다."},"registrationException":"본인 귀책사유 없이 부득이하게 고용계약이 해지된 경우에는 외국인등록 전이라도 1회에 한하여 근무처변경 신고 허용","requiresAlienRegistration":true,"requiresNewWorkplaceQualifications":true},"retrievedAt":"2026-11-04T14:46:50+09:00","schemaVersion":"1.0.0","sources":[{"article":"자격 요건 및 적용제외 대상","authority":"법무부","contentSha256":"a0d716bc6bb0682139d96de9fa2797dc7d07a737dd1f5c15e031dfaed729c848","corpusPath":"backend/data/legal-corpus/notices/moj-notice-2020-212-workplace-report-eligibility/ko.md","effectiveFrom":"2020-06-22","id":"moj-notice-2020-212","lawName":"출입국관리법시행령 제26조의2제1항에 따라 신고만으로 근무처 변경·추가를 할 수 있는 외국인의 요건","noticeNo":"법무부고시 제2020-212호","url":"https://www.law.go.kr/LSW/admRulLsInfoP.do?admRulSeq=2100000190656"},{"article":"제21조(근무처의 변경ㆍ추가): 본문은 사전허가, 단서는 대통령령으로 정하는 사람의 15일 이내 사후신고, 제3항은 단서 해당자에 대한 제18조제2항 적용 배제","authority":"국가법령정보센터","corpusPath":"backend/data/legal-corpus/laws/immigration-act/versions/2026-01-23/ko.md","effectiveFrom":"2026-01-23","id":"immigration-act-21","lawName":"출입국관리법","url":"https://www.law.go.kr/법령/출입국관리법"},{"article":"제26조의2제1항: 법 제21조제1항 단서의 사람은 별표 1의2 중 교수(E-1)부터 특정활동(E-7)까지의 체류자격 소지자 중 법무부장관이 고시하는 요건을 갖춘 사람","authority":"국가법령정보센터","corpusPath":"backend/data/legal-corpus/laws/immigration-decree/versions/2025-06-01/ko.md","effectiveFrom":"2025-06-01","id":"immigration-decree-26-2","lawName":"출입국관리법 시행령","url":"https://www.law.go.kr/법령/출입국관리법시행령"},{"article":"제100조제1항제3호: 제21조제1항 단서의 신고의무를 위반한 사람에게 200만원 이하의 과태료","authority":"국가법령정보센터","corpusPath":"backend/data/legal-corpus/laws/immigration-act/versions/2026-01-23/ko.md","effectiveFrom":"2026-01-23","id":"immigration-act-100","lawName":"출입국관리법","url":"https://www.law.go.kr/법령/출입국관리법"}],"storeId":"kr-workplace-regime-notice-2020-212","titleKo":"근무처 변경·추가 사전허가/사후신고 판별 규칙 (법무부고시 제2020-212호 기반)","verificationStatus":"VERIFIED_OFFICIAL_SNAPSHOT","verifiedAt":"2026-11-04"}
+{
+  "notes": [
+    "이 규칙 저장소는 backend/data/legal-corpus 의 공식 스냅샷(국가법령정보센터)에서 확인된 문언만을 구조화한 것이다. 해석은 rules 의 각 항목에 분리해 적는다.",
+    "고시 본문은 2020-06-22 시행본(일부개정) 스냅샷이다. 그 이전 사건이나, 스냅샷 이후 개정 여부가 확인되지 않은 사건에 이 규칙을 소급·확정 적용하지 않는다.",
+    "과태료는 출입국관리법 제100조제1항제3호의 법정 상한(200만원 이하)만 원문으로 확인됐다. 과태료의 구체적 양정표는 검증된 공식 자료가 없어 금액을 산정하지 않는다.",
+    "해석 명시(2026-11-04 리뷰 반영): registrationException 의 '본인 귀책사유 없이 고용계약이 해지된 경우'에는 계약기간 만료(CONTRACT_EXPIRED)도 본인 귀책 없는 종료로 보아 포함한다. 이 해석이 다를 수 있는 경계 사례는 단정하지 않고 사람 검토로 남긴다. 또한 '1회에 한하여'는 실제 조건이므로, 과거 사용 여부가 확인되지 않으면 신고 대상 확정을 보류한다."
+  ],
+  "permitDuty": {
+    "penaltyStatute": "출입국관리법 제21조제1항 본문 위반 — 범칙금 양정기준은 backend/data/enforcement/legal_rules.json (시행규칙 별표 7) 참조",
+    "penaltyTrack": "CRIMINAL_FINE",
+    "requiresPriorPermission": true
+  },
+  "reportDuty": {
+    "amountComputation": "NOT_VERIFIED",
+    "amountComputationNote": "과태료 구체 양정기준은 검증된 공식 자료가 없어 산정액을 제시하지 않는다. 법정 상한과 산정액을 혼동하지 않는다.",
+    "deadlineBasis": "출입국관리법 제21조제1항 단서: 근무처를 변경하거나 추가한 날부터 15일 이내 신고",
+    "deadlineDays": 15,
+    "penaltyStatute": "출입국관리법 제100조제1항제3호",
+    "penaltyTrack": "ADMINISTRATIVE_FINE",
+    "statutoryMaximumKrw": 2000000
+  },
+  "reportEligibility": {
+    "conditionalOccupationCodesE7": {
+      "2742": "해외 온라인상품판매원인 경우에만 적용제외. 같은 코드의 다른 업무는 고시 문언상 제외로 확정할 수 없다."
+    },
+    "eligibleStatusPrefixes": [
+      "E-1",
+      "E-2",
+      "E-3",
+      "E-4",
+      "E-5",
+      "E-6",
+      "E-7"
+    ],
+    "excludedOccupationCodesE7": [
+      "2351",
+      "2395",
+      "285",
+      "31215",
+      "441",
+      "3991",
+      "3922",
+      "S3922",
+      "6301",
+      "7430",
+      "S740",
+      "S610",
+      "S700"
+    ],
+    "excludedStatuses": [
+      "E-6-2"
+    ],
+    "ownFaultExclusion": {
+      "consentFact": "employerConsent",
+      "endReasons": [
+        "DISMISSED_OWN_FAULT",
+        "RESIGNED_MID_CONTRACT"
+      ],
+      "rule": "자격요건을 갖추었더라도 본인 귀책사유로 해고 또는 중도 퇴직한 자로서 원 고용주의 이적 동의를 받지 못한 자는 신고 대상에서 제외된다."
+    },
+    "registrationException": "본인 귀책사유 없이 부득이하게 고용계약이 해지된 경우에는 외국인등록 전이라도 1회에 한하여 근무처변경 신고 허용",
+    "requiresAlienRegistration": true,
+    "requiresNewWorkplaceQualifications": true
+  },
+  "retrievedAt": "2026-11-04T14:46:50+09:00",
+  "schemaVersion": "1.0.0",
+  "sources": [
+    {
+      "article": "자격 요건 및 적용제외 대상",
+      "authority": "법무부",
+      "contentSha256": "a0d716bc6bb0682139d96de9fa2797dc7d07a737dd1f5c15e031dfaed729c848",
+      "corpusPath": "backend/data/legal-corpus/notices/moj-notice-2020-212-workplace-report-eligibility/ko.md",
+      "effectiveFrom": "2020-06-22",
+      "id": "moj-notice-2020-212",
+      "lawName": "출입국관리법시행령 제26조의2제1항에 따라 신고만으로 근무처 변경·추가를 할 수 있는 외국인의 요건",
+      "noticeNo": "법무부고시 제2020-212호",
+      "url": "https://www.law.go.kr/LSW/admRulLsInfoP.do?admRulSeq=2100000190656"
+    },
+    {
+      "article": "제21조(근무처의 변경ㆍ추가): 본문은 사전허가, 단서는 대통령령으로 정하는 사람의 15일 이내 사후신고, 제3항은 단서 해당자에 대한 제18조제2항 적용 배제",
+      "authority": "국가법령정보센터",
+      "corpusPath": "backend/data/legal-corpus/laws/immigration-act/versions/2026-01-23/ko.md",
+      "effectiveFrom": "2026-01-23",
+      "id": "immigration-act-21",
+      "lawName": "출입국관리법",
+      "url": "https://www.law.go.kr/법령/출입국관리법"
+    },
+    {
+      "article": "제26조의2제1항: 법 제21조제1항 단서의 사람은 별표 1의2 중 교수(E-1)부터 특정활동(E-7)까지의 체류자격 소지자 중 법무부장관이 고시하는 요건을 갖춘 사람",
+      "authority": "국가법령정보센터",
+      "corpusPath": "backend/data/legal-corpus/laws/immigration-decree/versions/2025-06-01/ko.md",
+      "effectiveFrom": "2025-06-01",
+      "id": "immigration-decree-26-2",
+      "lawName": "출입국관리법 시행령",
+      "url": "https://www.law.go.kr/법령/출입국관리법시행령"
+    },
+    {
+      "article": "제100조제1항제3호: 제21조제1항 단서의 신고의무를 위반한 사람에게 200만원 이하의 과태료",
+      "authority": "국가법령정보센터",
+      "corpusPath": "backend/data/legal-corpus/laws/immigration-act/versions/2026-01-23/ko.md",
+      "effectiveFrom": "2026-01-23",
+      "id": "immigration-act-100",
+      "lawName": "출입국관리법",
+      "url": "https://www.law.go.kr/법령/출입국관리법"
+    }
+  ],
+  "storeId": "kr-workplace-regime-notice-2020-212",
+  "titleKo": "근무처 변경·추가 사전허가/사후신고 판별 규칙 (법무부고시 제2020-212호 기반)",
+  "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+  "verifiedAt": "2026-11-04"
+}
