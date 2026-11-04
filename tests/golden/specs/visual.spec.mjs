@@ -111,6 +111,13 @@ test('new home (nationality landing)', async ({ page }) => {
   await expect(page).toHaveScreenshot('new-home-full.png', shot());
 });
 
+test('nationality interview hub', async ({ page }) => {
+  await boot(page, { path: '/nationality-interview-hub.html', waitForSearch: false, routes: blockFonts });
+  await expect(page.getByText('국적민원 알아보기', { exact: false }).first()).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(500);
+  await expect(page).toHaveScreenshot('nationality-hub-full.png', shot());
+});
+
 test('ai.html shell', async ({ page }) => {
   await boot(page, { path: '/ai.html', waitForSearch: false, routes: blockFonts });
   await page.waitForTimeout(800);

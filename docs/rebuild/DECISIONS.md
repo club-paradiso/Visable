@@ -317,3 +317,19 @@ the options considered, the evidence, and the reason.
   for every element, theme and skin. That is the reduction applied (27 `!important`); the rest is counted
   and left for a later, design-led pass with per-skin baselines (listed under Owner decisions needed).
 
+## ADR-012 — Phase 5: other pages move inline scripts to external classic scripts, not modules
+- The brief prefers ES modules, and index.html got them (ADR-009) because its bootstrap already ran on
+  DOMContentLoaded and the parse-time pieces could stay inline. The other pages are different: ai.html's
+  2,714-line block runs synchronously at parse time, computes constants from globals that later classic
+  scripts define (`API_BASE` reads `window.VisableBackend`, loaded 2,700 lines later), and precedes
+  deferred scripts (ui-pictograms, legal-source-search) that post-process what it renders; new-home.html's
+  IIFE runs at the end of the body before its deferred scripts. A module script is deferred, so moving
+  either block into one reorders execution relative to those scripts and changes the values of
+  parse-time constants. That is behaviour, not structure.
+- An external classic `<script src>` at the same position executes synchronously at parse time in the
+  same order, with the same global scope semantics (top-level `const`/`function` of a classic script are
+  global either way). So Phase 5 moves each block verbatim to `assets/js/pages/<page>-<part>.js`, keeps
+  the first-paint restores inline (same rule as index.html), and leaves module conversion for a phase
+  that may change boot order under its own tests. Legacy checks that slice a page's source read a page
+  corpus (`scripts/frontend_modules.json` → `pages`), modules first, like the index.html corpus.
+
