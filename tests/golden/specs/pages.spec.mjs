@@ -2,7 +2,7 @@
 // files; features that need live keys or a backend are marked BLOCKED with
 // test.fixme and only their offline fail-closed path is checked.
 import { test, expect } from '@playwright/test';
-import { pack, FORMS, MANUAL_CATALOG, CHECKLIST_EXTENSION, NATIONALITY_CONTENT } from '../helpers/data.mjs';
+import { pack, FORMS, MANUAL_CATALOG, CHECKLIST_EXTENSION, NATIONALITY_CONTENT, readJson } from '../helpers/data.mjs';
 import { boot, bodyText, normalize, noHorizontalScroll } from '../helpers/page.mjs';
 
 const abort = (route) => route.abort();
@@ -62,7 +62,11 @@ test.describe('immigration-checklists.html — checklists by situation', () => {
     const errors = await boot(page, { path: '/immigration-checklists.html', waitForSearch: false, query: { procedure: 'extension', code: 'D-2' } });
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible({ timeout: 30_000 });
     const text = normalize(await bodyText(page));
-    expect(text).toContain(`${CHECKLIST_EXTENSION.row_count}개 상황`);
+    const totalScenarios = CHECKLIST_EXTENSION.row_count
+      + readJson('data/immigration-checklists/change-202609.json').row_count
+      + readJson('data/immigration-checklists/registration-202609.json').row_count;
+    // The header shows the total for all three procedures, not the extension-only 224.
+    expect(text).toContain(`${totalScenarios}개 세부 상황`);
     expect(text).toContain('체류기간 연장');
     expect(text).toContain('체류자격 변경');
     expect(text).toContain('외국인등록');
