@@ -1,0 +1,49 @@
+{
+  "type": "VERSION_DIFF",
+  "previousVersion": "2026-01-23",
+  "addedArticles": [],
+  "removedArticles": [],
+  "modifiedArticles": [
+    {
+      "articleId": "29-2",
+      "titleKo": "외국인 긴급출국정지",
+      "oldSha256": "7f70b31e5a73e71a57b3572f4ee18b43dd836402c82a256cae09ab7d11d608c2",
+      "newSha256": "9c5049065c6e0b0acb4e9765d26f89c2a472e0410e903d0d931255cd492f4dfd",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "4",
+      "titleKo": "출국의 금지",
+      "oldSha256": "a084e2ea1ce7efc2aa25308cfa2d8b8c84bdd70007fd6fe7c3a2eca2cce17963",
+      "newSha256": "1ba5a5d35005b7f59df427e7fd3308ce16716aa8e98b2752a40373cede94df1b",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "4-4",
+      "titleKo": "출국금지결정 등의 통지",
+      "oldSha256": "1cb94f1f6d309a7343e2f26096dd536d0d1947ff8028bed939f7a2d5689ba4e3",
+      "newSha256": "69e9173cb1831489c9db7a2ae0d65c0e68127bff6579ae0ec439ea038b8745d6",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "4-6",
+      "titleKo": "긴급출국금지",
+      "oldSha256": "73f3b9c1605b8522ec08ab0620258d993ab057042aa9705cce040f9826cd47ff",
+      "newSha256": "88e011d06b4d17bcfb1ba9f7ad6dc227a505a94557c8c3d73961998a3e09159c",
+      "oldDeleted": false,
+      "newDeleted": false
+    },
+    {
+      "articleId": "85",
+      "titleKo": "형사절차와의 관계",
+      "oldSha256": "33e4e8bf2dc549bac1757e465b6a3e08058b42c7e37ecf43b61fbc5d045ff31f",
+      "newSha256": "c6bb573b1c910b317f5a59feb5d83a8ac5263151f7538e3b2f5ec72ed38a7424",
+      "oldDeleted": false,
+      "newDeleted": false
+    }
+  ],
+  "unchangedCount": 183
+}

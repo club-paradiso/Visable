@@ -1,0 +1,122 @@
+{
+  "corpus": "Visable Legal Corpus — Korean immigration law (official sources only)",
+  "corpusVersion": "1.0.0",
+  "jurisdiction": "KR",
+  "languages": [
+    "ko",
+    "en (metadata only — redistribution restricted)"
+  ],
+  "laws": [
+    {
+      "slug": "immigration-act",
+      "lawId": "001707",
+      "titleKo": "출입국관리법",
+      "titleEn": "IMMIGRATION ACT",
+      "lawType": "ACT",
+      "priority": "P0",
+      "versions": [
+        {
+          "effectiveFrom": "2026-01-23",
+          "promulgationNo": "20992",
+          "promulgationDate": "2025-07-22",
+          "revisionTypeKo": "일부개정",
+          "sourceIdentifier": "272921",
+          "path": "laws/immigration-act/versions/2026-01-23",
+          "articleCount": 188,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "ALIGNED"
+        },
+        {
+          "effectiveFrom": "2026-10-02",
+          "promulgationNo": "21857",
+          "promulgationDate": "2026-08-04",
+          "revisionTypeKo": "타법개정",
+          "sourceIdentifier": "290729",
+          "path": "laws/immigration-act/versions/2026-10-02",
+          "articleCount": 188,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "OLDER_TRANSLATION"
+        }
+      ]
+    },
+    {
+      "slug": "immigration-decree",
+      "lawId": "005256",
+      "titleKo": "출입국관리법 시행령",
+      "titleEn": "ENFORCEMENT DECREE OF THE IMMIGRATION ACT",
+      "lawType": "ENFORCEMENT_DECREE",
+      "priority": "P0",
+      "versions": [
+        {
+          "effectiveFrom": "2025-06-01",
+          "promulgationNo": "35540",
+          "promulgationDate": "2025-05-27",
+          "revisionTypeKo": "일부개정",
+          "sourceIdentifier": "271319",
+          "path": "laws/immigration-decree/versions/2025-06-01",
+          "articleCount": 185,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "ALIGNED"
+        },
+        {
+          "effectiveFrom": "2026-10-02",
+          "promulgationNo": "36728",
+          "promulgationDate": "2026-09-29",
+          "revisionTypeKo": "타법개정",
+          "sourceIdentifier": "290501",
+          "path": "laws/immigration-decree/versions/2026-10-02",
+          "articleCount": 185,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "OLDER_TRANSLATION"
+        }
+      ]
+    },
+    {
+      "slug": "immigration-rule",
+      "lawId": "008494",
+      "titleKo": "출입국관리법 시행규칙",
+      "titleEn": "ENFORCEMENT RULE OF THE IMMIGRATION ACT",
+      "lawType": "ENFORCEMENT_RULE",
+      "priority": "P0",
+      "versions": [
+        {
+          "effectiveFrom": "2026-01-23",
+          "promulgationNo": "1106",
+          "promulgationDate": "2026-01-23",
+          "revisionTypeKo": "일부개정",
+          "sourceIdentifier": "283059",
+          "path": "laws/immigration-rule/versions/2026-01-23",
+          "articleCount": 191,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "NOT_AVAILABLE"
+        },
+        {
+          "effectiveFrom": "2026-10-23",
+          "promulgationNo": "1172",
+          "promulgationDate": "2026-10-23",
+          "revisionTypeKo": "일부개정",
+          "sourceIdentifier": "291289",
+          "path": "laws/immigration-rule/versions/2026-10-23",
+          "articleCount": 192,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "NOT_AVAILABLE"
+        }
+      ]
+    }
+  ],
+  "notices": [
+    {
+      "slug": "moj-notice-2020-212-workplace-report-eligibility",
+      "path": "notices/moj-notice-2020-212-workplace-report-eligibility",
+      "effectiveFrom": "2020-06-22",
+      "noticeNo": "법무부고시 제2020-212호"
+    }
+  ],
+  "annexes": [
+    {
+      "slug": "immigration-rule-annex-7",
+      "path": "annexes/immigration-rule-annex-7/versions/2026-01-23",
+      "revisedDate": "2026-01-23"
+    }
+  ]
+}
