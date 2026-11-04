@@ -61,6 +61,45 @@ try {
   }, baseline);
   assert.equal(missingDates.temporalVerification.code, 'violation_dates_required');
   assert.equal(missingDates.status, 'LIMITED');
+
+  // API query hits can include <b> highlighting and contain multiple historical
+  // versions. Only a version active at the start can verify the incident.
+  const calls = [];
+  globalThis.fetch = async (url) => {
+    const u = new URL(url);
+    calls.push({ target: u.searchParams.get('target'), query: u.searchParams.get('query') });
+    const isAct = u.searchParams.get('query') === '출입국관리법'
+      || /^ACT-/.test(u.searchParams.get('MST') || '');
+    const payload = u.pathname.includes('lawSearch')
+      ? { LawSearch: { totalCnt: '2', law: [
+          { 법령명한글: isAct ? '<b>출입국</b>관리법' : '출입국관리법 <b>시행규칙</b>',
+            법령일련번호: isAct ? 'ACT-LATE' : 'RULE-LATE', 시행일자: '20260210' },
+          { 법령명한글: isAct ? '<b>출입국</b>관리법' : '출입국관리법 <b>시행규칙</b>',
+            법령일련번호: isAct ? 'ACT-OLD' : 'RULE-OLD', 시행일자: '20260101' },
+        ] } }
+      : isAct
+        ? { 조문: [{ 조문번호: '20', 조문제목: '체류자격 외 활동', 조문내용: '공식 원문 모의자료' }] }
+        : { 조문: [{ 조문번호: '86', 조문제목: '범칙금', 조문내용: '공식 원문 모의자료' }],
+            별표: [{ 별표번호: '0007', 별표제목: '범칙금 양정기준', 별표내용: '범칙금 모의자료' }] };
+    return { ok: true, text: async () => JSON.stringify(payload) };
+  };
+  const changedDuringViolation = await source.groundOfficialLaw({
+    violationCode: 'STATUS_OUTSIDE_ACTIVITY_ART20',
+    violationStartDate: '2026-02-01', violationEndDate: '2026-02-20',
+  }, baseline);
+  assert.equal(changedDuringViolation.status, 'LIMITED');
+  assert.equal(changedDuringViolation.temporalVerification.code, 'version_changed_during_violation');
+  assert.ok(calls.some((row) => row.target === 'eflaw'), 'dated cases should use official effective-date search');
+
+  // An HTTP 200 application error must never be mislabeled as "no law exists".
+  globalThis.fetch = async () => ({ ok: true, text: async () =>
+    JSON.stringify({ errorMessage: 'API 인증값이 등록되지 않았습니다' }) });
+  const apiRejected = await source.groundOfficialLaw({
+    violationCode: 'STATUS_OUTSIDE_ACTIVITY_ART20',
+    violationStartDate: '2026-02-01', violationEndDate: '2026-02-20',
+  }, baseline);
+  assert.ok(apiRejected.limitations.some((item) => item.includes('upstream_authorization_or_registration_error')));
+  assert.notEqual(apiRejected.status, 'VERIFIED');
 } finally {
   globalThis.fetch = savedFetch;
   for (const [key, value] of Object.entries(savedEnv)) {
