@@ -8,6 +8,7 @@ const SAFE_FIELDS = [
   'workplaceType',
   'authorizationObtained',
   'workplaceChangeAuthorized',
+  'workplaceRegime',
   'durationDays',
   'violationStartDate',
   'violationEndDate',
