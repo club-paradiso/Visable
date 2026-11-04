@@ -281,7 +281,7 @@ test('stay application-form wording is contextual while raw checklist evidence i
   const cases = await page.evaluate(() => {
     const { parseRequiredDocsStructured, canonicalChecklistApplicationFormText } = window.__VISABLE_INTERNALS;
     const plain = '신청서(별지 제34호), 여권, 재학증명서';
-    const f4 = '여권 및 사본, 통합신청서, 직업·연간소득 신고서';
+    const f4 = '여권 및 사본; 통합신청서; 직업·연간소득 신고서';
     const ordinary = parseRequiredDocsStructured(plain, { id: 'sample-d2', status_code: 'D-2' });
     const overseas = parseRequiredDocsStructured(f4, { id: 'sample-f4', status_code: 'F-4-41' });
     return {
