@@ -29,6 +29,10 @@ REPORT_PROVISO_NOTE = (
     "'신고' 대상자라면 제18조제2항은 적용되지 않고(출입국관리법 제21조제3항, 시행령 제26조의2), "
     "신고의무 위반은 범칙금이 아니라 과태료(같은 법 제100조제1항제3호, 200만원 이하) 대상입니다."
 )
+PERMIT_CONFIRMATION_NOTE = (
+    "근무처 변경·추가가 사전허가 대상이라는 사용자의 확인을 전제로 한 조건부 계산입니다. "
+    "출입국관서의 최종 법적 분류를 의미하지 않습니다."
+)
 SHARED_TIER_NOTE = (
     "제18조제2항과 제21조제1항 중 어느 조문이 적용되는지는 정해지지 않았지만, 두 조문의 범칙금 "
     "양정기준(출입국관리법 시행규칙 별표 7 더목·저목)이 같아 기준 금액은 같습니다."
@@ -189,6 +193,34 @@ def calculate_legal_baseline(case: StructuredCase, *, database: Optional[Dict[st
             confidence="INSUFFICIENT",
         )
 
+    # E-1~E-7 may be subject to the 15-day report proviso (Act Art.21(1),
+    # Enforcement Decree Art.26-2), whose breach is an administrative fine under
+    # Act Art.100(1)(3), not the Art.21 permit-violation criminal fine table.
+    # Never display the latter merely because the user said "without permission".
+    workplace_codes = [case.violation_code] if case.violation_code else case.violation_candidates
+    if _report_proviso_applies(case.status_of_stay, workplace_codes) and (
+        case.violation_code or set(workplace_codes).issubset(_WORKPLACE_CODES)
+    ):
+        common = dict(
+            violation_code=case.violation_code,
+            legal_snapshot_id=snapshot["id"],
+            effective_from=date.fromisoformat(snapshot["effectiveFrom"]),
+            sources=_source_refs(snapshot),
+            confidence="INSUFFICIENT",
+        )
+        if case.workplace_regime == "REPORT":
+            return LegalBaseline(
+                status="UNSUPPORTED",
+                missing_facts=["사후신고 대상의 신고의무 위반은 범칙금이 아니라 과태료 검토 대상입니다(출입국관리법 제100조제1항제3호)."],
+                **common,
+            )
+        if case.workplace_regime != "PERMIT" or not case.status_of_stay:
+            return LegalBaseline(
+                status="MISSING_FACTS",
+                missing_facts=["근무처 변경·추가가 사전허가 대상인지 사후신고 대상인지 확인이 필요합니다."],
+                **common,
+            )
+
     shared_rules = None if case.violation_code else _shared_candidate_rule(case, snapshot)
     if not case.violation_code and not shared_rules:
         return LegalBaseline(
@@ -249,7 +281,7 @@ def calculate_legal_baseline(case: StructuredCase, *, database: Optional[Dict[st
     if shared_rules:
         assumptions.append(SHARED_TIER_NOTE)
     if _report_proviso_applies(case.status_of_stay, codes):
-        assumptions.append(REPORT_PROVISO_NOTE)
+        assumptions.append(PERMIT_CONFIRMATION_NOTE)
     applied = (
         [row["statuteArticle"] for row in shared_rules] if shared_rules else [rule["statuteArticle"]]
     ) + [rule["penaltyArticle"], "출입국관리법 시행규칙 제86조(가중·감경 범위)"]

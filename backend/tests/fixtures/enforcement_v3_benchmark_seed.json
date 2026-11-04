@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "datasetVersion": "2026-09-10-seed",
+  "datasetVersion": "2026-11-04-permit-report-safety",
   "source": "Promoted from the already-tested enforcement_extraction_parity.json fixture. No new legal outcomes are invented here.",
   "assessmentDate": "2026-08-28",
   "cases": [
@@ -21,7 +21,7 @@
         "statusOfStay": "E-7-4",
         "violationCode": "UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1",
         "durationDays": 63,
-        "baselineAmountKrw": 1000000
+        "deterministicBaselineStatus": "MISSING_FACTS"
       }
     },
     {
@@ -77,7 +77,7 @@
       "expected": {
         "violationCode": "UNAUTHORIZED_EMPLOYMENT_ART18_2",
         "durationDays": 20,
-        "baselineAmountKrw": 1000000
+        "deterministicBaselineStatus": "MISSING_FACTS"
       }
     },
     {
@@ -87,8 +87,7 @@
         "violationCode": null,
         "classificationState": "AMBIGUOUS",
         "durationDays": 30,
-        "deterministicBaselineStatus": "AVAILABLE",
-        "baselineAmountKrw": 1000000
+        "deterministicBaselineStatus": "MISSING_FACTS"
       }
     },
     {

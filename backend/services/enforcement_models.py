@@ -46,6 +46,8 @@ class StructuredCase(EnforcementModel):
     workplace_type: Optional[str] = None
     authorization_obtained: Optional[bool] = None
     workplace_change_authorized: Optional[bool] = None
+    # Explicit user-confirmed permit/report regime, never inferred from E-2 status.
+    workplace_regime: Optional[Literal["PERMIT", "REPORT"]] = None
     duration_days: Optional[int] = Field(default=None, ge=0, le=36500)
     violation_start_date: Optional[date] = None
     violation_end_date: Optional[date] = None

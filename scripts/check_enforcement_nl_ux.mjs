@@ -21,6 +21,14 @@ assert.ok(
   'extract and analyze paths must both normalize the assessment date',
 );
 assert.ok(js.includes('input.max = localTodayIso();'), 'assessment date must be bounded to today');
+assert.ok(
+  js.includes('function optionalLawDateCard(') && js.includes('위반 날짜를 입력하고 당시 적용 법령도 확인하기'),
+  'when only day count is known, users should be able to supply dates for temporal law verification',
+);
+assert.ok(
+  js.includes('const displayLimitations = [...new Set(limitations.map(plainLimitation).filter(Boolean))]'),
+  'operator caveats must be deduplicated and mapped to user-facing language',
+);
 assert.ok(html.includes('id="assessment-date-today"'), 'a reset-to-today control must exist');
 assert.ok(
   html.includes('기본값은 오늘') || html.includes('오늘 날짜가 기본값으로 채워집니다'),

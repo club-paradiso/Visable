@@ -224,7 +224,7 @@ function deterministicSummary(caseData) {
       : `${subject}허가된 체류기간이 지난 뒤에도 계속 머문 상황이에요.`);
   } else if (activity || workplace || caseData.authorizationObtained === false) {
     const place = workplace ? `${workplace}에서 ` : '';
-    const permission = caseData.authorizationObtained === false ? '필요한 허가 없이 ' : '';
+    const permission = caseData.authorizationObtained === false ? (/^E-[1-7](?:-|$)/i.test(status || '') ? '사전허가를 받지 않고 ' : '필요한 허가 없이 ') : '';
     const period = days != null ? `${days}일 동안 ` : '';
     sentences.push(`${subject}${place}${permission}${period}일한 상황이에요.`);
   } else if (caseData.violationCode) {
@@ -254,7 +254,8 @@ function renderFactList(caseData) {
     ['체류자격', displayValue(caseData.statusOfStay)],
     ['상황', caseData.violationCode ? (violationLabels[caseData.violationCode] || caseData.violationCode) : '정확한 유형을 더 확인해야 함'],
     ['기간', caseData.durationDays == null ? '확인되지 않음' : `${Number(caseData.durationDays)}일`],
-    ['허가 여부', caseData.authorizationObtained == null ? '확인되지 않음' : (caseData.authorizationObtained ? '필요한 허가를 받은 것으로 입력됨' : '필요한 허가를 받지 않은 것으로 입력됨')],
+    ['허가 여부', /^E-[1-7](?:-|$)/i.test(caseData.statusOfStay || '') && ['UNAUTHORIZED_EMPLOYMENT_ART18_2', 'UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1'].includes(caseData.violationCode) && caseData.workplaceRegime !== 'PERMIT' ? '사전허가 의무가 적용되는지 추가 확인 필요' : caseData.authorizationObtained == null ? '확인되지 않음' : (caseData.authorizationObtained ? '허가를 받았다고 입력함' : '허가를 받지 않았다고 입력함')],
+    ...(caseData.workplaceRegime ? [['근무처 절차', caseData.workplaceRegime === 'PERMIT' ? '사전허가 대상(사용자 확인)' : '사후신고 대상(사용자 확인)']] : []),
     ['과거 위반', caseData.priorViolations == null ? '확인되지 않음' : (Number(caseData.priorViolations) === 0 ? '첫 위반으로 입력됨' : `${Number(caseData.priorViolations)}회${Number(caseData.priorViolations) >= 2 ? ' 이상' : ''}`)],
     ['자진신고·자진방문', caseData.voluntaryDisclosure == null ? '확인되지 않음' : (caseData.voluntaryDisclosure ? '예' : '아니요')],
     ['적발·사범조사 시작', caseData.investigationStarted == null ? '확인되지 않음' : (caseData.investigationStarted ? '예' : '아니요')],
@@ -292,10 +293,11 @@ function clarificationFor(caseData) {
     const candidates = new Set(caseData.violationCandidates || []);
     const options = [];
     const add = (value, label) => { if (!candidates.size || candidates.has(value)) options.push({ value, label }); };
-    add('STATUS_OUTSIDE_ACTIVITY_ART20', '학생 등의 체류자격으로, 필요한 활동 허가 없이 일을 했어요');
-    add('UNAUTHORIZED_STAY_OR_WORK_ART18_1', '애초에 취업할 수 없는 체류자격인데 일을 했어요');
+    const professionalStatus = /^E-[1-7](?:-|$)/i.test(caseData.statusOfStay || '');
+    add('STATUS_OUTSIDE_ACTIVITY_ART20', professionalStatus ? '현재 체류자격에서 허용하는 활동과 다른 종류의 일을 했어요' : '학생 등의 체류자격으로, 필요한 활동 허가 없이 일을 했어요');
+    if (!professionalStatus) add('UNAUTHORIZED_STAY_OR_WORK_ART18_1', '애초에 취업할 수 없는 체류자격인데 일을 했어요');
     add('UNAUTHORIZED_EMPLOYMENT_ART18_2', '허가된 회사는 그대로이고, 지정된 근무처가 아닌 곳에서도 일했어요');
-    add('UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1', '다른 회사·사업장으로 옮기거나 추가했는데 필요한 변경·추가 허가를 받지 않았어요');
+    add('UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1', '다른 회사·사업장으로 옮기거나 추가했어요 (허가·신고 구분은 별도로 확인)');
     add('OVERSTAY_ART25', '체류기간이 지난 뒤에도 계속 체류했어요');
     return {
       kind: 'violationCode',
@@ -304,6 +306,24 @@ function clarificationFor(caseData) {
         ? '다른 곳에서 일했다는 게 정확히 어떤 상황이었나요?'
         : '아래 중 실제 상황에 가장 가까운 것은 무엇인가요?',
       options,
+    };
+  }
+
+  // E-1~E-7 can fall under a 15-day report obligation rather than a
+  // prior-permission obligation. Only the user can confirm the applicable
+  // regime; we must not infer it from the E visa code or from "no permit".
+  const workplaceCodes = ['UNAUTHORIZED_EMPLOYMENT_ART18_2', 'UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1'];
+  if (/^E-[1-7](?:-|$)/i.test(caseData.statusOfStay || '')
+      && workplaceCodes.includes(caseData.violationCode)
+      && !caseData.workplaceRegime && !skippedClarifications.has('workplaceRegime')) {
+    return {
+      kind: 'workplaceRegime',
+      type: 'choice',
+      question: '근무처 변경·추가가 사전허가 대상인지 사후신고 대상인지 확인하셨나요?',
+      options: [
+        { value: 'PERMIT', label: '관할 출입국관서에서 사전허가 대상이라고 확인했어요' },
+        { value: 'REPORT', label: '관할 출입국관서에서 사후신고 대상이라고 확인했어요' },
+      ],
     };
   }
 
@@ -375,6 +395,9 @@ function applyClarification(kind, rawValue) {
     structuredCase.statusOfStay = normalizeStatus(value);
     removeUnknownFacts(structuredCase, ['체류자격']);
     deriveViolationAfterStatus(structuredCase);
+  } else if (kind === 'workplaceRegime') {
+    if (!['PERMIT', 'REPORT'].includes(value)) return setError($('#confirm-error'), '해당하는 확인 결과를 선택해 주세요.');
+    structuredCase.workplaceRegime = value;
   } else if (kind === 'durationDays') {
     const days = Number(value);
     if (!Number.isInteger(days) || days < 0 || days > 36500) return setError($('#confirm-error'), '기간을 일수로 입력해 주세요.');
@@ -458,7 +481,7 @@ function renderConfirmation(caseData) {
 function analysisFingerprint(caseData) {
   const keys = [
     'statusOfStay', 'violationCode', 'durationDays', 'priorViolations',
-    'authorizationObtained', 'workplaceChangeAuthorized', 'voluntaryDisclosure',
+    'authorizationObtained', 'workplaceChangeAuthorized', 'workplaceRegime', 'voluntaryDisclosure',
     'investigationStarted', 'falseRepresentation', 'violationStartDate',
     'violationEndDate', 'assessmentDate'
   ];
@@ -492,7 +515,23 @@ const providerReasonLabels = {
   empty_response: 'AI가 빈 응답을 보냄', openrouter_not_configured: 'AI 서버 설정 필요', provider_auth_error: 'AI 서버 인증 오류',
 };
 function plainLimitation(text) {
-  const value = String(text || '');
+  const value = String(text || '').trim();
+  if (/법령.*API 조회 실패|no_exact_law_match|실시간 법령 API에서 인용 가능한 조문|law_api|LAW_API_OC|historical_version_unavailable|upstream_authorization_or_registration_error/i.test(value)) {
+    return '실시간 법령 원문 대조가 완료되지 않았습니다. 저장된 기준과 최신 공식 법령을 비교해 주세요.';
+  }
+  if (/정확한 위반 시작일·종료일|사건 당시 법령과 현재/.test(value)) {
+    return '정확한 위반 날짜가 없어 사건 당시 적용 법령을 확정하지 못했습니다.';
+  }
+  if (/직접 인용 가능한 공개 판례|유사사례가 충분하지|유사 공개사례가 충분하지/.test(value)) {
+    return '직접 비교할 수 있는 공개 사례가 충분하지 않아 개별 처분을 단정할 수 없습니다.';
+  }
+  if (/본 분석은 현재 제공된 법령 및 사례에 한정/.test(value)) {
+    // This caveat already appears as the persistent result disclaimer.
+    return '';
+  }
+  if (/공개 유사사례가 충분하지 않으면/.test(value)) {
+    return '비교할 공개 사례가 부족하면 처분 전망의 신뢰도가 낮아집니다.';
+  }
   const provider = value.match(/^OpenRouter prediction unavailable:\s*(\S+)/i);
   if (provider) return `AI 예상을 받지 못했습니다 (${providerReasonLabels[provider[1]] || '일시적 오류'}). 법령 기준은 그대로 유효합니다.`;
   if (/^OpenRouter prediction rejected/i.test(value)) return 'AI 응답이 근거·형식 검증을 통과하지 못해 표시하지 않았습니다.';
@@ -501,12 +540,47 @@ function plainLimitation(text) {
   return value;
 }
 
+// A duration such as "63 days" is enough for many tier calculations but not
+// to verify the law version that was in force at the time. Offer a nonblocking
+// date check instead of repeatedly telling users what is missing.
+function optionalLawDateCard(caseData, baseline, grounding) {
+  if (baseline.status !== 'AVAILABLE' || grounding.status === 'VERIFIED') return '';
+  if (caseData?.violationStartDate && caseData?.violationEndDate) return '';
+  const today = localTodayIso();
+  return `<details class="next-step-card law-date-check">
+    <summary>위반 날짜를 입력하고 당시 적용 법령도 확인하기</summary>
+    <p class="subtle">지금 입력한 일수만으로도 기준 계산은 가능할 수 있지만, 발생 날짜가 없어 사건 당시 시행 법령까지 확인할 수는 없어요. 날짜를 모르면 입력하지 않아도 됩니다.</p>
+    <form class="date-range-form" id="date-range-form" novalidate>
+      <label>시작한 날<input type="date" id="violation-start" max="${today}" value="${escapeHtml(caseData?.violationStartDate || '')}" required></label>
+      <label>끝난 날<input type="date" id="violation-end" max="${today}" value="${escapeHtml(caseData?.violationEndDate || '')}" required></label>
+      <button type="submit" class="primary-button">해당 날짜의 법령으로 다시 확인</button>
+    </form>
+    <p class="form-error" id="date-range-error" role="alert" hidden></p>
+  </details>`;
+}
+
 function needsExactDates(baseline) {
   return (baseline.missingFacts || []).some((item) => /시작일|종료일|위반기간/.test(item));
 }
 
 function nextStepCard(baseline) {
   if (baseline.status === 'AVAILABLE') return '';
+  if ((baseline.missingFacts || []).some((item) => /사전허가 대상인지 사후신고 대상인지/.test(item))) {
+    return `<section class="next-step-card" aria-labelledby="next-step-title">
+      <p class="card-kicker">추가 확인 필요 · 처분 전망 보류</p>
+      <h3 id="next-step-title">근무처 변경·추가가 허가 대상인지 신고 대상인지 먼저 확인해야 해요.</h3>
+      <p>E-1~E-7 체류자격에서는 요건에 따라 사후신고가 적용될 수 있어요. 이 구분에 따라 범칙금과 과태료가 달라지므로 금액을 추측하지 않습니다.</p>
+      <button type="button" class="primary-button" data-next-step-back>허가·신고 구분 확인하기</button>
+    </section>`;
+  }
+  if (structuredCase?.workplaceRegime === 'REPORT' && baseline.status === 'UNSUPPORTED') {
+    return `<section class="next-step-card next-step-card--stop" aria-labelledby="next-step-title">
+      <p class="card-kicker">범칙금 계산 대상 아님</p>
+      <h3 id="next-step-title">사후신고 대상이라면 별도의 과태료 기준을 확인해야 해요.</h3>
+      <p>신고 의무 위반은 출입국관리법 제100조제1항제3호에 따라 과태료 검토 대상입니다. 범칙금 계산식을 대신 적용하지 않으며, 실제 신고의무 위반 여부는 별도 확인이 필요합니다.</p>
+      <button type="button" class="primary-button" data-next-step-back data-reset-workplace-regime>허가·신고 구분 수정하기</button>
+    </section>`;
+  }
   if (needsExactDates(baseline)) {
     const today = localTodayIso();
     const start = structuredCase?.violationStartDate || '';
@@ -556,9 +630,11 @@ function wireNextStep() {
       analyzeCase(next);
     });
   }
-  $('[data-next-step-back]')?.addEventListener('click', () => {
+  $('[data-next-step-back]')?.addEventListener('click', (event) => {
+    if (event.currentTarget.hasAttribute('data-reset-workplace-regime') && structuredCase) structuredCase.workplaceRegime = null;
     analysisSequence++;
     skippedClarifications.delete('violationCode');
+    skippedClarifications.delete('workplaceRegime');
     renderConfirmation(structuredCase);
     showStep(2);
   });
@@ -610,13 +686,16 @@ function dispositionHtml(item, primary = false) {
 }
 
 // One plain-language paragraph built only from validated values. Nothing new is inferred here.
-function verdictSentence(baseline, prediction) {
+function verdictSentence(baseline, prediction, grounding) {
   const parts = [];
-  if (baseline.status === 'AVAILABLE') parts.push(`법령상 기준 범칙금은 <strong>${won(baseline.baselineAmountKrw)}</strong>이에요.`);
+  if (baseline.status === 'AVAILABLE') {
+    const label = grounding?.status === 'VERIFIED' ? '조회한 법령 기준 범칙금' : '저장된 법령 자료상 기준 범칙금';
+    parts.push(`${label}은 <strong>${won(baseline.baselineAmountKrw)}</strong>이에요.`);
+  }
   const money = prediction.monetaryPrediction;
   if (money) {
     const direction = directionLabels[money.predictedDirection];
-    parts.push(`Visable AI는 <strong>${range(money.predictedLikelyRange)}</strong>${direction && money.predictedDirection !== 'UNCERTAIN' ? `(${direction})` : ''} 정도로 예상해요.`);
+    parts.push(`AI 보조 분석에서는 <strong>${range(money.predictedLikelyRange)}</strong>${direction && money.predictedDirection !== 'UNCERTAIN' ? `(${direction})` : ''} 정도로 예상해요.`);
   }
   const primary = prediction.primaryDisposition;
   if (primary) parts.push(`가장 유력한 처분은 <strong>${escapeHtml(dispositionLabels[primary.type] || primary.type)}</strong>(가능성 ${escapeHtml(likelihoodLabels[primary.likelihood] || '특정 어려움')})이에요.`);
@@ -661,6 +740,7 @@ function renderResult(data) {
   const sources = prediction.evidence || [];
   const similar = prediction.similarCases || [];
   const limitations = prediction.limitations || [];
+  const displayLimitations = [...new Set(limitations.map(plainLimitation).filter(Boolean))];
   const groundingLabel = groundingLabels[grounding.status] || '실시간 검증 없음 · 저장된 법령 기준';
   const baselineReady = baseline.status === 'AVAILABLE';
   const failureMessages = {
@@ -676,7 +756,7 @@ function renderResult(data) {
   };
   const failureNotice = failureMessages[prediction.failureCategory]
     || ['AI 추정 근거 부족', '안전하게 표시할 수 있는 검증된 AI 예측이 없습니다.'];
-  const modelLabel = data.analysisPending ? 'AI 예상 확인 중' : prediction.modelId ? '검증된 AI 예상' : '검증된 AI 결과 없음';
+  const modelLabel = data.analysisPending ? '처분 전망 분석 중' : prediction.status === 'UNAVAILABLE' ? '처분 전망 보류' : 'AI 보조 분석 · 최종 처분 아님';
   const durationDays = Number(data.case?.durationDays ?? structuredCase?.durationDays);
   // When the next-step card asks for dates, it already carries this explanation.
   const datesRequested = !data.analysisPending && !baselineReady && needsExactDates(baseline);
@@ -705,9 +785,10 @@ function renderResult(data) {
     ${data.analysisPending ? '' : nextStepCard(baseline)}
     ${showVerdict ? `<section class="verdict-card" aria-labelledby="verdict-title">
       <p class="card-kicker" id="verdict-title">한눈에 보기</p>
-      <p class="verdict-text">${verdictSentence(baseline, prediction)}</p>
+      <p class="verdict-text">${verdictSentence(baseline, prediction, grounding)}</p>
       <p class="verdict-confidence">예측 신뢰도 <strong>${escapeHtml(confidenceLabels[confidence.level] || confidence.level)}</strong>${(prediction.unresolvedFactors || []).length ? ` · 확인 안 된 사실 ${(prediction.unresolvedFactors || []).length}개` : ''}</p>
     </section>` : ''}
+    ${!data.analysisPending ? optionalLawDateCard(data.case || structuredCase, baseline, grounding) : ''}
     <div class="result-summary${baselineReady ? '' : ' result-summary--blocked'}">
       <article class="result-card baseline">
         <p class="card-kicker">법령 기준 · 계산식으로 산출</p>
@@ -722,9 +803,9 @@ function renderResult(data) {
         ${boundaryNotice}
       </article>
       <article class="result-card prediction">
-        <p class="card-kicker">AI 예상 · 법정 범위 안에서만</p>
-        <h3>Visable AI 예상</h3>
-        <p class="subtle">예상 범칙금</p>
+        <p class="card-kicker">AI 보조 분석 · 법정 범위 안에서만</p>
+        <h3>처분 전망</h3>
+        <p class="subtle">예상 범칙금 범위</p>
         <p class="amount">${data.analysisPending ? '확인 중' : monetary ? range(monetary.predictedLikelyRange) : aiBody ? '대기 중' : 'AI 추정 보류'}</p>
         <p>${aiBody ? aiBody : data.analysisPending ? '법령 기준은 먼저 확인할 수 있어요. AI 예상은 검증 후 표시해요.' : monetary?.pointEstimateKrw != null ? `대표 추정액: <strong>${won(monetary.pointEstimateKrw)}</strong>` : monetary ? '근거가 충분하지 않아 대표 추정액을 표시하지 않습니다.' : '유효성 검증을 통과한 구조화 예측이 없어 금액을 임의로 만들지 않았습니다.'}</p>
         ${monetary && directionLabels[monetary.predictedDirection] ? `<p><span class="tag tag--direction" data-direction="${escapeHtml(monetary.predictedDirection)}">${escapeHtml(directionLabels[monetary.predictedDirection])}</span></p>` : ''}
@@ -737,8 +818,8 @@ function renderResult(data) {
     ${showVerdict ? accuracyBoostCard(caseForQuestions) : ''}
 
     <article class="result-lead">
-      <p class="card-kicker">처분 예상</p>
-      <h3>예상 행정처분</h3>
+      <p class="card-kicker">가능한 결과</p>
+      <h3>행정처분 전망</h3>
       ${data.analysisPending ? '<p class="subtle">AI 예상 결과를 확인하고 있어요.</p>' : prediction.primaryDisposition ? disposition(prediction.primaryDisposition, true) : emptyDispositionHtml(baseline, prediction)}
       ${(prediction.alternativeDispositions || []).map((item) => disposition(item)).join('')}
     </article>
@@ -760,36 +841,36 @@ function renderResult(data) {
       </details>
 
       <details${showVerdict ? ' open' : ''}>
-        <summary>왜 이런 예상이 나왔나요?</summary>
+        <summary>예상 근거</summary>
         <div class="detail-body">
-          <p class="card-kicker">왜 이런 예상인가요?</p>
+          <p class="card-kicker">처분 전망</p>
           <h3>예상 근거</h3>
           <div class="result-grid">
-            <div><strong>가중 방향 요인</strong>${factors(prediction.aggravatingFactors)}</div>
-            <div><strong>감경 방향 요인</strong>${factors(prediction.mitigatingFactors)}</div>
-            <div><strong>미확인 요인</strong>${factors(prediction.unresolvedFactors)}</div>
-            <div><strong>한계</strong>${limitations.length ? `<ul>${[...new Set(limitations.map(plainLimitation))].map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : '<p class="subtle">추가 한계 없음</p>'}</div>
+            ${(prediction.aggravatingFactors || []).length ? `<div><strong>가중 방향 요인</strong>${factors(prediction.aggravatingFactors)}</div>` : ''}
+            ${(prediction.mitigatingFactors || []).length ? `<div><strong>감경 방향 요인</strong>${factors(prediction.mitigatingFactors)}</div>` : ''}
+            ${(prediction.unresolvedFactors || []).length ? `<div><strong>추가 확인이 필요한 정보</strong>${factors(prediction.unresolvedFactors)}</div>` : ''}
+            ${displayLimitations.length ? `<div><strong>분석 시 참고할 사항</strong><ul>${displayLimitations.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div>` : ''}
           </div>
         </div>
       </details>
 
-      <details>
-        <summary>유사사례 ${similar.length ? `(${similar.length})` : ''}</summary>
+      ${similar.length ? `<details>
+        <summary>공개된 관련 사례 (${similar.length})</summary>
         <div class="detail-body">
           <h3>유사사례</h3>
           ${similar.length
             ? `<div class="evidence-list">${similar.map((item) => `<a class="evidence-item" href="${escapeHtml(item.sourceUrl)}" target="_blank" rel="noopener noreferrer"><strong>${escapeHtml(item.sourceTitle || item.id)}</strong><br><span class="subtle">${escapeHtml(item.outcomeSummary)}</span></a>`).join('')}</div>`
             : '<p class="subtle">현재 확인 가능한 유사 공개사례가 충분하지 않습니다.</p>'}
         </div>
-      </details>
+      </details>` : ''}
 
       <details>
         <summary>법적 근거와 공식 출처</summary>
         <div class="detail-body">
           <p class="card-kicker">공식 출처</p>
           <h3>법적 근거</h3>
-          <p class="subtle">${escapeHtml(groundingLabel)}${grounding.credentialSource ? ` · ${escapeHtml(grounding.credentialSource)}` : ''}</p>
-          <p class="subtle">적용 규칙: ${escapeHtml((baseline.appliedRules || []).join(' · ') || '표시할 규칙 없음')}</p>
+          <p class="subtle">${escapeHtml(groundingLabel)}</p>
+          ${(baseline.appliedRules || []).length ? `<p class="subtle">적용 규칙: ${escapeHtml(baseline.appliedRules.join(' · '))}</p>` : ''}
           <p class="subtle">분석 기준일: <strong>${escapeHtml(data.case?.assessmentDate || resolveAssessmentDate())}</strong></p>
           <div class="evidence-list">${sources.length
             ? sources.map((source) => `<a class="evidence-item" href="${escapeHtml(source.sourceUrl)}" target="_blank" rel="noopener noreferrer"><strong>${escapeHtml(source.title)}</strong><br><span class="subtle">${escapeHtml(source.authority)} · ${escapeHtml(source.excerpt || '')}</span></a>`).join('')

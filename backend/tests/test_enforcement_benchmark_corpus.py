@@ -34,15 +34,15 @@ class EnforcementBenchmarkCorpusTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(report["violationCodeAccuracy"], 1.0)
         self.assertEqual(report["deterministicBaselineAccuracy"], 1.0)
         self.assertEqual(report["securityInvariantAccuracy"], 1.0)
-        # nl-008 abstains between 18(2) and 21(1) (issue #587).
+        # nl-008 abstains between Art.18(2)/21(1); unknown permit/report regime also withholds the amount.
         self.assertEqual(report["abstention"]["evaluated"], 7)
         self.assertEqual(report["abstention"]["precision"], 1.0)
         self.assertEqual(report["abstention"]["recall"], 1.0)
         self.assertEqual(report["coverage"]["provenanceCoverage"], 1.0)
         self.assertEqual(report["coverage"]["kindCounts"], {"narrative": 28, "structured": 8})
         self.assertEqual(report["latencyMs"]["samples"], 28)
-        # nl-008 abstains on the provision but still has a baseline: 18(2) and
-        # 21(1) share one 별표 7 tier table, so the amount does not depend on it.
+        # Shared permit-violation tiers do not authorize a fine when the case may
+        # instead fall under the administrative report regime.
         self.assertGreaterEqual(report["coverage"]["deterministicBaselineCases"], 19)
         self.assertGreater(report["coverage"]["securityInvariantChecks"], 0)
         self.assertEqual(report["failures"], [])
