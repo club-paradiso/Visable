@@ -526,7 +526,8 @@ function plainLimitation(text) {
     return '직접 비교할 수 있는 공개 사례가 충분하지 않아 개별 처분을 단정할 수 없습니다.';
   }
   if (/본 분석은 현재 제공된 법령 및 사례에 한정/.test(value)) {
-    return '공개된 법령과 사례로 분석했으며, 실제 처분에는 개별 사정과 추가 기준이 반영될 수 있습니다.';
+    // This caveat already appears as the persistent result disclaimer.
+    return '';
   }
   if (/공개 유사사례가 충분하지 않으면/.test(value)) {
     return '비교할 공개 사례가 부족하면 처분 전망의 신뢰도가 낮아집니다.';
@@ -685,9 +686,12 @@ function dispositionHtml(item, primary = false) {
 }
 
 // One plain-language paragraph built only from validated values. Nothing new is inferred here.
-function verdictSentence(baseline, prediction) {
+function verdictSentence(baseline, prediction, grounding) {
   const parts = [];
-  if (baseline.status === 'AVAILABLE') parts.push(`법령상 기준 범칙금은 <strong>${won(baseline.baselineAmountKrw)}</strong>이에요.`);
+  if (baseline.status === 'AVAILABLE') {
+    const label = grounding?.status === 'VERIFIED' ? '조회한 법령 기준 범칙금' : '저장된 법령 자료상 기준 범칙금';
+    parts.push(`${label}은 <strong>${won(baseline.baselineAmountKrw)}</strong>이에요.`);
+  }
   const money = prediction.monetaryPrediction;
   if (money) {
     const direction = directionLabels[money.predictedDirection];
@@ -736,6 +740,7 @@ function renderResult(data) {
   const sources = prediction.evidence || [];
   const similar = prediction.similarCases || [];
   const limitations = prediction.limitations || [];
+  const displayLimitations = [...new Set(limitations.map(plainLimitation).filter(Boolean))];
   const groundingLabel = groundingLabels[grounding.status] || '실시간 검증 없음 · 저장된 법령 기준';
   const baselineReady = baseline.status === 'AVAILABLE';
   const failureMessages = {
@@ -780,7 +785,7 @@ function renderResult(data) {
     ${data.analysisPending ? '' : nextStepCard(baseline)}
     ${showVerdict ? `<section class="verdict-card" aria-labelledby="verdict-title">
       <p class="card-kicker" id="verdict-title">한눈에 보기</p>
-      <p class="verdict-text">${verdictSentence(baseline, prediction)}</p>
+      <p class="verdict-text">${verdictSentence(baseline, prediction, grounding)}</p>
       <p class="verdict-confidence">예측 신뢰도 <strong>${escapeHtml(confidenceLabels[confidence.level] || confidence.level)}</strong>${(prediction.unresolvedFactors || []).length ? ` · 확인 안 된 사실 ${(prediction.unresolvedFactors || []).length}개` : ''}</p>
     </section>` : ''}
     ${!data.analysisPending ? optionalLawDateCard(data.case || structuredCase, baseline, grounding) : ''}
@@ -844,7 +849,7 @@ function renderResult(data) {
             ${(prediction.aggravatingFactors || []).length ? `<div><strong>가중 방향 요인</strong>${factors(prediction.aggravatingFactors)}</div>` : ''}
             ${(prediction.mitigatingFactors || []).length ? `<div><strong>감경 방향 요인</strong>${factors(prediction.mitigatingFactors)}</div>` : ''}
             ${(prediction.unresolvedFactors || []).length ? `<div><strong>추가 확인이 필요한 정보</strong>${factors(prediction.unresolvedFactors)}</div>` : ''}
-            ${limitations.length ? `<div><strong>분석 시 참고할 사항</strong><ul>${[...new Set(limitations.map(plainLimitation).filter(Boolean))].map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div>` : ''}
+            ${displayLimitations.length ? `<div><strong>분석 시 참고할 사항</strong><ul>${displayLimitations.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div>` : ''}
           </div>
         </div>
       </details>
