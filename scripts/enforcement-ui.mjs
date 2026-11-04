@@ -255,7 +255,11 @@ function renderFactList(caseData) {
     ['상황', caseData.violationCode ? (violationLabels[caseData.violationCode] || caseData.violationCode) : '정확한 유형을 더 확인해야 함'],
     ['기간', caseData.durationDays == null ? '확인되지 않음' : `${Number(caseData.durationDays)}일`],
     ['허가 여부', /^E-[1-7](?:-|$)/i.test(caseData.statusOfStay || '') && ['UNAUTHORIZED_EMPLOYMENT_ART18_2', 'UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1'].includes(caseData.violationCode) && caseData.workplaceRegime !== 'PERMIT' ? '사전허가 의무가 적용되는지 추가 확인 필요' : caseData.authorizationObtained == null ? '확인되지 않음' : (caseData.authorizationObtained ? '허가를 받았다고 입력함' : '허가를 받지 않았다고 입력함')],
-    ...(caseData.workplaceRegime ? [['근무처 절차', caseData.workplaceRegime === 'PERMIT' ? '사전허가 대상(사용자 확인)' : '사후신고 대상(사용자 확인)']] : []),
+    ...(caseData.workplaceRegime ? [['근무처 절차', caseData.workplaceRegime === 'PERMIT' ? '사전허가 대상(사용자 확인)' : caseData.workplaceRegime === 'REPORT' ? '사후신고 대상(사용자 확인)' : caseData.workplaceRegime]] : []),
+    ...(caseData.workplaceChangeType ? [['근무처 변경 방식', { CHANGE: '이전 회사를 그만두고 옮김', ADDITION: '다니면서 추가', SAME_EMPLOYER_SITE_ONLY: '같은 회사에서 장소만 바뀜' }[caseData.workplaceChangeType] || caseData.workplaceChangeType]] : []),
+    ...(caseData.occupationCode ? [['직종코드', caseData.occupationCode]] : []),
+    ...(caseData.previousEmploymentEndReason && caseData.previousEmploymentEndReason !== 'NOT_ENDED' ? [['이전 고용 종료', { CONTRACT_EXPIRED: '계약 만료', RESIGNED_MID_CONTRACT: '본인이 중도 퇴사', DISMISSED_OWN_FAULT: '본인 귀책 해고', DISMISSED_NO_OWN_FAULT: '회사 사정', EMPLOYER_CLOSED: '회사 폐업', OTHER: '기타', UNKNOWN: '확인되지 않음' }[caseData.previousEmploymentEndReason] || caseData.previousEmploymentEndReason]] : []),
+    ...(caseData.procedureStatus ? [['출입국 절차', { PERMIT_GRANTED: '허가를 받음', REPORT_FILED: '신고함', APPLIED_PENDING: '신청·신고 후 대기 중', NONE: '아무것도 하지 않음', UNKNOWN: '확인되지 않음' }[caseData.procedureStatus] || caseData.procedureStatus]] : []),
     ['과거 위반', caseData.priorViolations == null ? '확인되지 않음' : (Number(caseData.priorViolations) === 0 ? '첫 위반으로 입력됨' : `${Number(caseData.priorViolations)}회${Number(caseData.priorViolations) >= 2 ? ' 이상' : ''}`)],
     ['자진신고·자진방문', caseData.voluntaryDisclosure == null ? '확인되지 않음' : (caseData.voluntaryDisclosure ? '예' : '아니요')],
     ['적발·사범조사 시작', caseData.investigationStarted == null ? '확인되지 않음' : (caseData.investigationStarted ? '예' : '아니요')],
@@ -309,22 +313,100 @@ function clarificationFor(caseData) {
     };
   }
 
-  // E-1~E-7 can fall under a 15-day report obligation rather than a
-  // prior-permission obligation. Only the user can confirm the applicable
-  // regime; we must not infer it from the E visa code or from "no permit".
+  // Workplace change/addition: never ask lay users to classify the legal
+  // regime directly. Ask plain-language facts instead; the deterministic
+  // engine (backend / JS mirror, MOJ Notice 2020-212) classifies from them.
+  // Every question can be skipped with "잘 모르겠어요" and a skipped fact
+  // stays unknown — it is never converted to "no".
   const workplaceCodes = ['UNAUTHORIZED_EMPLOYMENT_ART18_2', 'UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1'];
-  if (/^E-[1-7](?:-|$)/i.test(caseData.statusOfStay || '')
-      && workplaceCodes.includes(caseData.violationCode)
-      && !caseData.workplaceRegime && !skippedClarifications.has('workplaceRegime')) {
-    return {
-      kind: 'workplaceRegime',
-      type: 'choice',
-      question: '근무처 변경·추가가 사전허가 대상인지 사후신고 대상인지 확인하셨나요?',
-      options: [
-        { value: 'PERMIT', label: '관할 출입국관서에서 사전허가 대상이라고 확인했어요' },
-        { value: 'REPORT', label: '관할 출입국관서에서 사후신고 대상이라고 확인했어요' },
-      ],
-    };
+  const isWorkplaceCase = workplaceCodes.includes(caseData.violationCode)
+    || (caseData.violationCandidates || []).length > 0
+      && (caseData.violationCandidates || []).every((code) => workplaceCodes.includes(code));
+  if (isWorkplaceCase) {
+    const factQuestions = [
+      caseData.workplaceChangeType == null && !skippedClarifications.has('workplaceChangeType') && {
+        kind: 'workplaceChangeType', type: 'choice',
+        question: '근무처가 어떻게 바뀐 건가요?',
+        options: [
+          { value: 'CHANGE', label: '이전 회사를 그만두고 다른 회사로 옮겼어요' },
+          { value: 'ADDITION', label: '이전 회사를 다니면서 다른 근무처를 추가했어요' },
+          { value: 'SAME_EMPLOYER_SITE_ONLY', label: '같은 회사 안에서 근무 장소만 바뀌었어요' },
+        ],
+      },
+      /^E-7(?:-|$)/i.test(caseData.statusOfStay || '') && caseData.occupationCode == null && !skippedClarifications.has('occupationCode') && {
+        kind: 'occupationCode', type: 'text',
+        question: '새 근무처에서 실제로 어떤 일을 하나요? 직종코드를 알면 적어 주세요.',
+        hint: '예: 441 (주방장·조리사), 모르면 잘 모르겠어요',
+      },
+      caseData.workplaceChangeType !== 'ADDITION' && caseData.previousEmploymentEndReason == null && !skippedClarifications.has('previousEmploymentEndReason') && {
+        kind: 'previousEmploymentEndReason', type: 'choice',
+        question: '이전 회사는 왜 그만두게 됐나요?',
+        options: [
+          { value: 'CONTRACT_EXPIRED', label: '계약 기간이 끝나서 그만뒀어요' },
+          { value: 'RESIGNED_MID_CONTRACT', label: '계약 중간에 본인이 그만뒀어요' },
+          { value: 'DISMISSED_OWN_FAULT', label: '본인 잘못으로 해고됐어요' },
+          { value: 'DISMISSED_NO_OWN_FAULT', label: '회사 사정으로 그만두게 됐어요' },
+          { value: 'EMPLOYER_CLOSED', label: '회사가 문을 닫았어요' },
+          { value: 'OTHER', label: '다른 이유예요' },
+        ],
+      },
+      ['RESIGNED_MID_CONTRACT', 'DISMISSED_OWN_FAULT'].includes(caseData.previousEmploymentEndReason)
+        && caseData.employerConsent == null && !skippedClarifications.has('employerConsent') && {
+        kind: 'employerConsent', type: 'choice',
+        question: '이전 회사에서 다른 회사로 옮기는 것에 동의받았나요?',
+        options: [
+          { value: 'true', label: '네, 동의받았어요' },
+          { value: 'false', label: '아니요, 동의받지 못했어요' },
+        ],
+      },
+      caseData.alienRegistered == null && !skippedClarifications.has('alienRegistered') && {
+        kind: 'alienRegistered', type: 'choice',
+        question: '당시 외국인등록을 하고 체류 중이었나요?',
+        options: [
+          { value: 'true', label: '네, 외국인등록을 했어요' },
+          { value: 'false', label: '아니요, 아직 등록 전이었어요' },
+        ],
+      },
+      caseData.meetsNewWorkplaceQualifications == null && !skippedClarifications.has('meetsNewWorkplaceQualifications') && {
+        kind: 'meetsNewWorkplaceQualifications', type: 'choice',
+        question: '새 근무처에서 일하는 데 필요한 자격요건(학위·자격·경력 등)을 갖추었나요?',
+        options: [
+          { value: 'true', label: '네, 갖추었어요' },
+          { value: 'false', label: '아니요, 갖추지 못했어요' },
+        ],
+      },
+      caseData.actuallyStartedWork == null && !skippedClarifications.has('actuallyStartedWork') && {
+        kind: 'actuallyStartedWork', type: 'choice',
+        question: '새 근무처에서 실제로 일하기 시작했나요?',
+        options: [
+          { value: 'true', label: '네, 실제로 일했어요' },
+          { value: 'false', label: '아니요, 아직 시작하지 않았어요' },
+        ],
+      },
+      caseData.procedureStatus == null && !skippedClarifications.has('procedureStatus') && {
+        kind: 'procedureStatus', type: 'choice',
+        question: '출입국관서에 허가 신청이나 신고를 한 적이 있나요?',
+        options: [
+          { value: 'PERMIT_GRANTED', label: '시작 전에 근무처 변경·추가 허가를 받았어요' },
+          { value: 'REPORT_FILED', label: '바꾸거나 추가한 뒤에 신고했어요' },
+          { value: 'APPLIED_PENDING', label: '신청·신고는 했고 결과를 기다리고 있어요' },
+          { value: 'NONE', label: '아무것도 하지 않았어요' },
+        ],
+      },
+      // Last resort, not the default question: only users who already got an
+      // answer from the competent office use this. It records a user
+      // confirmation, never an engine determination.
+      !caseData.workplaceRegime && !skippedClarifications.has('workplaceRegime') && {
+        kind: 'workplaceRegime', type: 'choice',
+        question: '이미 관할 출입국관서에서 허가 대상인지 신고 대상인지 확인받은 적이 있나요? (없으면 잘 모르겠어요를 눌러 주세요)',
+        options: [
+          { value: 'PERMIT', label: '관할 출입국관서에서 사전허가 대상이라고 확인했어요' },
+          { value: 'REPORT', label: '관할 출입국관서에서 사후신고 대상이라고 확인했어요' },
+        ],
+      },
+    ];
+    const nextFactQuestion = factQuestions.find(Boolean);
+    if (nextFactQuestion) return nextFactQuestion;
   }
 
   if (caseData.durationDays == null && !skippedClarifications.has('durationDays')) {
@@ -398,6 +480,31 @@ function applyClarification(kind, rawValue) {
   } else if (kind === 'workplaceRegime') {
     if (!['PERMIT', 'REPORT'].includes(value)) return setError($('#confirm-error'), '해당하는 확인 결과를 선택해 주세요.');
     structuredCase.workplaceRegime = value;
+    // Provenance matters: this is the user's office confirmation, not a
+    // Visable determination. The engine may still override it with a
+    // verified-rules determination and flag the conflict.
+    structuredCase.workplaceRegimeSource = 'USER_CONFIRMED';
+  } else if (kind === 'workplaceChangeType') {
+    if (!['CHANGE', 'ADDITION', 'SAME_EMPLOYER_SITE_ONLY'].includes(value)) return setError($('#confirm-error'), '실제 상황과 가장 가까운 항목을 선택해 주세요.');
+    structuredCase.workplaceChangeType = value;
+    if (value === 'ADDITION') structuredCase.previousEmploymentEndReason = 'NOT_ENDED';
+  } else if (kind === 'occupationCode') {
+    if (!value) return setError($('#confirm-error'), '직종코드를 입력하거나 잘 모르겠어요를 선택해 주세요.');
+    structuredCase.occupationCode = value.replace(/\s+/g, '').toUpperCase().slice(0, 12);
+  } else if (kind === 'previousEmploymentEndReason') {
+    const allowed = ['CONTRACT_EXPIRED', 'RESIGNED_MID_CONTRACT', 'DISMISSED_OWN_FAULT', 'DISMISSED_NO_OWN_FAULT', 'EMPLOYER_CLOSED', 'OTHER'];
+    if (!allowed.includes(value)) return setError($('#confirm-error'), '실제 상황과 가장 가까운 항목을 선택해 주세요.');
+    structuredCase.previousEmploymentEndReason = value;
+  } else if (['employerConsent', 'alienRegistered', 'meetsNewWorkplaceQualifications', 'actuallyStartedWork'].includes(kind)) {
+    if (!['true', 'false'].includes(value)) return setError($('#confirm-error'), '해당하는 항목을 선택해 주세요.');
+    structuredCase[kind] = value === 'true';
+  } else if (kind === 'procedureStatus') {
+    if (!['PERMIT_GRANTED', 'REPORT_FILED', 'APPLIED_PENDING', 'NONE'].includes(value)) return setError($('#confirm-error'), '해당하는 항목을 선택해 주세요.');
+    structuredCase.procedureStatus = value;
+    // Keep the legacy authorization facts consistent with the stated
+    // procedure, without inventing anything the user did not say.
+    if (value === 'PERMIT_GRANTED') structuredCase.workplaceChangeAuthorized = true;
+    if (value === 'NONE') structuredCase.workplaceChangeAuthorized = false;
   } else if (kind === 'durationDays') {
     const days = Number(value);
     if (!Number.isInteger(days) || days < 0 || days > 36500) return setError($('#confirm-error'), '기간을 일수로 입력해 주세요.');
@@ -408,12 +515,16 @@ function applyClarification(kind, rawValue) {
     structuredCase.violationCode = value;
     structuredCase.violationCandidates = [value];
     if (value === 'STATUS_OUTSIDE_ACTIVITY_ART20' || value === 'UNAUTHORIZED_STAY_OR_WORK_ART18_1') {
+      // These two option labels themselves state that no permission was
+      // obtained, so recording that stated fact is consistent.
       if (structuredCase.authorizationObtained == null) structuredCase.authorizationObtained = false;
     }
-    if (value === 'UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1') {
-      structuredCase.workplaceChangeAuthorized = false;
-      if (structuredCase.authorizationObtained == null) structuredCase.authorizationObtained = false;
-    }
+    // UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1 deliberately sets NOTHING here:
+    // its label only says the user changed/added a workplace. A move alone
+    // does not prove the change was unpermitted or unreported — that is
+    // what the workplace fact questions and the determination engine are
+    // for. (Previously this branch forced workplaceChangeAuthorized=false
+    // and authorizationObtained=false from the selection alone.)
     removeUnknownFacts(structuredCase, ['구체적인 위반 유형', '취업 가능 체류자격인지 및 지정 근무처·근무처 변경 관계']);
   }
 
@@ -481,7 +592,11 @@ function renderConfirmation(caseData) {
 function analysisFingerprint(caseData) {
   const keys = [
     'statusOfStay', 'violationCode', 'durationDays', 'priorViolations',
-    'authorizationObtained', 'workplaceChangeAuthorized', 'workplaceRegime', 'voluntaryDisclosure',
+    'authorizationObtained', 'workplaceChangeAuthorized', 'workplaceRegime', 'workplaceRegimeSource',
+    'occupationCode', 'workplaceChangeType', 'previousEmploymentEndReason', 'employerConsent',
+    'alienRegistered', 'meetsNewWorkplaceQualifications', 'actuallyStartedWork',
+    'workplaceChangeDate', 'applicationOrReportDate', 'procedureStatus',
+    'voluntaryDisclosure',
     'investigationStarted', 'falseRepresentation', 'violationStartDate',
     'violationEndDate', 'assessmentDate'
   ];
@@ -565,20 +680,34 @@ function needsExactDates(baseline) {
 
 function nextStepCard(baseline) {
   if (baseline.status === 'AVAILABLE') return '';
+  if (baseline.status === 'NOT_APPLICABLE') {
+    return `<section class="next-step-card" aria-labelledby="next-step-title">
+      <p class="card-kicker">계산 대상 아님</p>
+      <h3 id="next-step-title">확인된 사실만으로는 근무처 변경·추가 의무를 어겼다고 볼 수 없어요.</h3>
+      <p>실제로 근무를 시작하지 않았거나, 필요한 허가를 받았거나, 신고기한 안에 신고한 경우에는 범칙금·과태료를 계산하지 않습니다. 사실이 달라지면 아래 판별 근거에서 어떤 사실이 쓰였는지 확인하고 내용을 수정해 주세요.</p>
+      <button type="button" class="primary-button" data-next-step-back>사실 내용 다시 보기</button>
+    </section>`;
+  }
+  if (baseline.status === 'ADMINISTRATIVE_FINE_TRACK') {
+    const det = baseline.workplaceDetermination || {};
+    const timeliness = {
+      LATE: '신고는 했지만 변경일부터 15일이 지난 뒤였습니다.',
+      NOT_REPORTED_DEADLINE_PASSED: '변경일부터 15일이 지났는데 신고가 확인되지 않습니다.',
+      UNKNOWN: '신고 날짜가 확인되지 않아 기한을 지켰는지는 아직 확정할 수 없습니다.',
+    }[det.reportTimeliness] || '신고의무 위반 여부는 아래 판별 근거를 확인해 주세요.';
+    return `<section class="next-step-card next-step-card--stop" aria-labelledby="next-step-title">
+      <p class="card-kicker">범칙금 계산 대상 아님 · 과태료 검토 대상</p>
+      <h3 id="next-step-title">사후신고 대상이라 범칙금이 아니라 과태료 기준을 확인해야 해요.</h3>
+      <p>신고 의무 위반은 출입국관리법 제100조제1항제3호에 따라 <strong>200만원 이하</strong>의 과태료 대상입니다. 이 금액은 법정 상한일 뿐이며, 검증된 과태료 양정기준이 없어 구체적인 금액을 추측해 제시하지 않습니다. ${escapeHtml(timeliness)}</p>
+      <button type="button" class="primary-button" data-next-step-back>사실 내용 수정하기</button>
+    </section>`;
+  }
   if ((baseline.missingFacts || []).some((item) => /사전허가 대상인지 사후신고 대상인지/.test(item))) {
     return `<section class="next-step-card" aria-labelledby="next-step-title">
       <p class="card-kicker">추가 확인 필요 · 처분 전망 보류</p>
-      <h3 id="next-step-title">근무처 변경·추가가 허가 대상인지 신고 대상인지 먼저 확인해야 해요.</h3>
-      <p>E-1~E-7 체류자격에서는 요건에 따라 사후신고가 적용될 수 있어요. 이 구분에 따라 범칙금과 과태료가 달라지므로 금액을 추측하지 않습니다.</p>
-      <button type="button" class="primary-button" data-next-step-back>허가·신고 구분 확인하기</button>
-    </section>`;
-  }
-  if (structuredCase?.workplaceRegime === 'REPORT' && baseline.status === 'UNSUPPORTED') {
-    return `<section class="next-step-card next-step-card--stop" aria-labelledby="next-step-title">
-      <p class="card-kicker">범칙금 계산 대상 아님</p>
-      <h3 id="next-step-title">사후신고 대상이라면 별도의 과태료 기준을 확인해야 해요.</h3>
-      <p>신고 의무 위반은 출입국관리법 제100조제1항제3호에 따라 과태료 검토 대상입니다. 범칙금 계산식을 대신 적용하지 않으며, 실제 신고의무 위반 여부는 별도 확인이 필요합니다.</p>
-      <button type="button" class="primary-button" data-next-step-back data-reset-workplace-regime>허가·신고 구분 수정하기</button>
+      <h3 id="next-step-title">실제 상황을 조금만 더 알려 주시면 허가 대상인지 신고 대상인지 판별할 수 있어요.</h3>
+      <p>사전허가인지 사후신고인지 몰라도 괜찮습니다. 직종, 이전 회사를 그만둔 이유, 출입국에 한 절차 같은 사실만 답해 주시면 법무부고시 기준으로 확인합니다. 이 구분에 따라 범칙금과 과태료가 달라지므로 금액을 추측하지 않습니다.</p>
+      <button type="button" class="primary-button" data-next-step-back>사실 질문에 답하기</button>
     </section>`;
   }
   if (needsExactDates(baseline)) {
@@ -634,7 +763,11 @@ function wireNextStep() {
     if (event.currentTarget.hasAttribute('data-reset-workplace-regime') && structuredCase) structuredCase.workplaceRegime = null;
     analysisSequence++;
     skippedClarifications.delete('violationCode');
-    skippedClarifications.delete('workplaceRegime');
+    // Re-open every workplace fact question so an edited answer immediately
+    // re-runs the determination (the analysis fingerprint also changes).
+    for (const kind of ['workplaceRegime', 'workplaceChangeType', 'occupationCode', 'previousEmploymentEndReason', 'employerConsent', 'alienRegistered', 'meetsNewWorkplaceQualifications', 'actuallyStartedWork', 'procedureStatus']) {
+      skippedClarifications.delete(kind);
+    }
     renderConfirmation(structuredCase);
     showStep(2);
   });
@@ -730,6 +863,42 @@ function renderAnalysisLoading() {
     </div>`;
 }
 
+const regimeLabels = {
+  PERMIT: '사전허가 대상',
+  REPORT: '사후신고 대상',
+  NOT_APPLICABLE: '근무처 변경·추가 규율 비대상/위반 아님',
+  UNRESOLVED: '아직 확정할 수 없음',
+};
+const determinationStatusLabels = {
+  CONFIRMED: '법무부고시 요건으로 판별됨',
+  USER_CONFIRMED: '관할관서 확인(사용자 입력) 전제',
+  UNRESOLVED: '판별에 필요한 사실 부족',
+  NOT_APPLICABLE: '위반이 성립하지 않음',
+};
+
+// Explainable workplace determination: what was decided, from which facts,
+// under which verified law, and what is still missing. Rendered only from
+// the server/fallback determination object — the UI never classifies itself.
+function determinationCard(data) {
+  const det = data.workplaceDetermination || data.legalBaseline?.workplaceDetermination;
+  if (!det) return '';
+  const list = (items) => (items || []).length
+    ? `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : '';
+  const evidence = (det.evidence || []).map((source) => `<a class="evidence-item" href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer"><strong>${escapeHtml(source.title)}</strong><br><span class="subtle">${escapeHtml(source.authority)} · 시행 ${escapeHtml(source.effectiveDate || '')}</span></a>`).join('');
+  return `<article class="result-lead determination-card">
+    <p class="card-kicker">근무처 변경·추가 판별 · 참고 분석이며 공식 처분 확정은 아닙니다</p>
+    <h3>판별 결과: ${escapeHtml(regimeLabels[det.regime] || det.regime)} <span class="tag">${escapeHtml(determinationStatusLabels[det.determinationStatus] || det.determinationStatus)}</span></h3>
+    ${det.regime === 'UNRESOLVED' ? `<p>지금까지 확인된 사실만으로는 사전허가 대상인지 사후신고 대상인지 확정할 수 없습니다. 가능한 경로는 두 가지입니다. <strong>사전허가 대상이면</strong> 근무 기간에 따른 범칙금 기준이 적용될 수 있고, <strong>사후신고 대상이면</strong> 범칙금이 아니라 과태료(법정 상한 200만원) 검토 대상입니다. 어느 쪽인지 확정되기 전에는 금액을 하나로 제시하지 않습니다.</p>` : ''}
+    ${det.verifiedFacts?.length ? `<div><strong>판별에 쓰인 사실</strong>${list(det.verifiedFacts)}</div>` : ''}
+    ${det.exceptionsChecked?.length ? `<div><strong>확인한 고시 요건·적용제외</strong>${list(det.exceptionsChecked)}</div>` : ''}
+    ${det.missingFacts?.length ? `<div><strong>아직 확인할 사항</strong>${list(det.missingFacts)}${det.nextQuestions?.length ? `<p class="subtle">확인 방법: 외국인등록증(체류자격·직종), 고용계약서와 계약종료 확인 자료, 허가서·신고 접수증을 보거나 관할 출입국·외국인관서(☎1345)에 문의해 주세요.</p>` : ''}</div>` : ''}
+    ${det.warnings?.length ? `<div><strong>주의</strong>${list(det.warnings)}</div>` : ''}
+    ${det.humanReviewReason ? `<p class="subtle">사람의 검토가 필요한 이유: ${escapeHtml(det.humanReviewReason)}</p>` : ''}
+    ${det.effectiveLawVersion ? `<p class="subtle">적용 법령 버전: ${escapeHtml(det.effectiveLawVersion)}</p>` : ''}
+    ${evidence ? `<div class="evidence-list">${evidence}</div>` : ''}
+  </article>`;
+}
+
 function renderResult(data) {
   $('#result-root').setAttribute('aria-busy', String(Boolean(data.analysisPending)));
   const baseline = data.legalBaseline || {};
@@ -783,6 +952,7 @@ function renderResult(data) {
 
   $('#result-root').innerHTML = `
     ${data.analysisPending ? '' : nextStepCard(baseline)}
+    ${data.analysisPending ? '' : determinationCard(data)}
     ${showVerdict ? `<section class="verdict-card" aria-labelledby="verdict-title">
       <p class="card-kicker" id="verdict-title">한눈에 보기</p>
       <p class="verdict-text">${verdictSentence(baseline, prediction, grounding)}</p>
