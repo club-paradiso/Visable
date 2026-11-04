@@ -11,6 +11,7 @@ from typing import Any, Dict, Iterable, Optional
 
 from .enforcement_models import LegalBaseline, MoneyRange, SourceReference, StructuredCase
 from .enforcement_ontology import EnforcementOntologyError, validate_legal_rule_database
+from .enforcement_workplace import WORKPLACE_VIOLATION_CODES, determine_workplace_regime
 
 RULES_PATH = Path(__file__).resolve().parents[1] / "data" / "enforcement" / "legal_rules.json"
 
@@ -184,42 +185,107 @@ def _available_dispositions(violation_code: str) -> list[str]:
 
 def calculate_legal_baseline(case: StructuredCase, *, database: Optional[Dict[str, Any]] = None) -> LegalBaseline:
     database = database or load_rule_database()
+
+    # Workplace determination runs BEFORE the fine-snapshot resolution: its
+    # terminal outcomes (no breach, administrative-fine track, unresolved
+    # regime) do not depend on the 범칙금 snapshot at all, and must not be
+    # masked by HISTORICAL_RULE_UNAVAILABLE for incidents that predate the
+    # verified fine snapshot (e.g. a report filed in time in 2025). Only the
+    # PERMIT fine calculation itself needs the snapshot.
+    determination = None
+    workplace_codes = [case.violation_code] if case.violation_code else case.violation_candidates
+    workplace_gate = bool(set(workplace_codes) & WORKPLACE_VIOLATION_CODES) and (
+        bool(case.violation_code) or set(workplace_codes).issubset(WORKPLACE_VIOLATION_CODES)
+    )
+    if workplace_gate:
+        determination = determine_workplace_regime(case)
+
     snapshot = _resolve_snapshot(case, database)
+
+    if determination is not None:
+        in_engine_scope = not case.status_of_stay or bool(
+            _REPORT_PROVISO_STATUS_RE.match(case.status_of_stay)
+        )
+        if determination.regime == "UNRESOLVED" and not in_engine_scope:
+            # Outside the verified notice scope (e.g. E-9): keep the legacy
+            # path, but never let the old status-only proviso note imply a
+            # classification this engine did not make.
+            determination = None
+
+    if determination is not None:
+        common = dict(
+            violation_code=case.violation_code,
+            legal_snapshot_id=snapshot["id"] if snapshot else None,
+            effective_from=date.fromisoformat(snapshot["effectiveFrom"]) if snapshot else None,
+            sources=_source_refs(snapshot) if snapshot else list(determination.evidence),
+            workplace_determination=determination,
+        )
+        if determination.regime == "NOT_APPLICABLE" or (
+            determination.determination_status in {"CONFIRMED", "USER_CONFIRMED"}
+            and determination.duty_breach == "NOT_ESTABLISHED"
+        ):
+            return LegalBaseline(
+                status="NOT_APPLICABLE",
+                assumptions=[
+                    "확인된 사실만으로는 근무처 변경·추가 의무 위반이 성립하지 않아 범칙금·과태료를 계산하지 않습니다."
+                ],
+                confidence="HIGH",
+                **common,
+            )
+        if determination.regime == "REPORT" and determination.determination_status in {
+            "CONFIRMED",
+            "USER_CONFIRMED",
+        }:
+            return LegalBaseline(
+                status="ADMINISTRATIVE_FINE_TRACK",
+                statutory_maximum_krw=determination.administrative_fine_statutory_maximum_krw,
+                applied_rules=[
+                    "출입국관리법 제21조제1항 단서(사후신고 의무)",
+                    "출입국관리법 시행령 제26조의2",
+                    "법무부고시 제2020-212호(신고 대상 요건)",
+                    "출입국관리법 제100조제1항제3호(과태료, 200만원 이하)",
+                ],
+                missing_facts=list(determination.missing_facts),
+                assumptions=[
+                    "사후신고 의무 위반은 범칙금이 아니라 과태료 검토 대상입니다. "
+                    "위 금액은 법정 상한이며, 검증된 과태료 양정기준이 없어 구체적인 산정액은 제시하지 않습니다."
+                ],
+                confidence="HIGH" if determination.duty_breach == "ESTABLISHED" else "INSUFFICIENT",
+                **common,
+            )
+        if determination.regime == "UNRESOLVED" and "사건 당시 고시 버전" not in determination.missing_facts:
+            return LegalBaseline(
+                status="MISSING_FACTS",
+                missing_facts=[
+                    "근무처 변경·추가가 사전허가 대상인지 사후신고 대상인지 확정할 수 없습니다.",
+                    *determination.missing_facts,
+                ],
+                confidence="INSUFFICIENT",
+                **common,
+            )
+        if not case.violation_code and determination.determination_status == "USER_CONFIRMED":
+            # Shared-candidate pricing must not bypass the gate: with no
+            # resolved provision, a user-confirmed regime alone does not
+            # price the case through the identical-tier shortcut. The
+            # engine-confirmed and single-provision paths are unaffected.
+            return LegalBaseline(
+                status="MISSING_FACTS",
+                missing_facts=[
+                    "적용 조문이 확정되지 않아, 사용자 확인만으로는 조건부 계산을 하지 않습니다.",
+                    *determination.missing_facts,
+                ],
+                confidence="INSUFFICIENT",
+                **common,
+            )
+
     if snapshot is None:
         return LegalBaseline(
             status="HISTORICAL_RULE_UNAVAILABLE",
             violation_code=case.violation_code,
             missing_facts=["해당 위반기간 전체에 적용되는 검증된 법령 스냅샷"],
             confidence="INSUFFICIENT",
+            workplace_determination=determination,
         )
-
-    # E-1~E-7 may be subject to the 15-day report proviso (Act Art.21(1),
-    # Enforcement Decree Art.26-2), whose breach is an administrative fine under
-    # Act Art.100(1)(3), not the Art.21 permit-violation criminal fine table.
-    # Never display the latter merely because the user said "without permission".
-    workplace_codes = [case.violation_code] if case.violation_code else case.violation_candidates
-    if _report_proviso_applies(case.status_of_stay, workplace_codes) and (
-        case.violation_code or set(workplace_codes).issubset(_WORKPLACE_CODES)
-    ):
-        common = dict(
-            violation_code=case.violation_code,
-            legal_snapshot_id=snapshot["id"],
-            effective_from=date.fromisoformat(snapshot["effectiveFrom"]),
-            sources=_source_refs(snapshot),
-            confidence="INSUFFICIENT",
-        )
-        if case.workplace_regime == "REPORT":
-            return LegalBaseline(
-                status="UNSUPPORTED",
-                missing_facts=["사후신고 대상의 신고의무 위반은 범칙금이 아니라 과태료 검토 대상입니다(출입국관리법 제100조제1항제3호)."],
-                **common,
-            )
-        if case.workplace_regime != "PERMIT" or not case.status_of_stay:
-            return LegalBaseline(
-                status="MISSING_FACTS",
-                missing_facts=["근무처 변경·추가가 사전허가 대상인지 사후신고 대상인지 확인이 필요합니다."],
-                **common,
-            )
 
     shared_rules = None if case.violation_code else _shared_candidate_rule(case, snapshot)
     if not case.violation_code and not shared_rules:
@@ -280,7 +346,14 @@ def calculate_legal_baseline(case: StructuredCase, *, database: Optional[Dict[st
     codes = [row["violationCode"] for row in shared_rules] if shared_rules else [case.violation_code]
     if shared_rules:
         assumptions.append(SHARED_TIER_NOTE)
-    if _report_proviso_applies(case.status_of_stay, codes):
+    if determination is not None and determination.regime == "PERMIT":
+        if determination.determination_status == "USER_CONFIRMED":
+            assumptions.append(PERMIT_CONFIRMATION_NOTE)
+        elif determination.determination_status == "CONFIRMED":
+            assumptions.append(
+                "법무부고시 제2020-212호 요건·적용제외를 확인한 결과 사전허가 대상으로 판별되어 범칙금 기준으로 계산했습니다."
+            )
+    elif _report_proviso_applies(case.status_of_stay, codes):
         assumptions.append(PERMIT_CONFIRMATION_NOTE)
     applied = (
         [row["statuteArticle"] for row in shared_rules] if shared_rules else [rule["statuteArticle"]]
@@ -302,4 +375,5 @@ def calculate_legal_baseline(case: StructuredCase, *, database: Optional[Dict[st
         assumptions=assumptions,
         sources=_source_refs(snapshot),
         confidence="HIGH" if assumptions else "VERY_HIGH",
+        workplace_determination=determination,
     )
