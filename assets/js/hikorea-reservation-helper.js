@@ -1457,7 +1457,8 @@
     done: {},
     zoom: '',
     idCandidate: '',
-    generatedPassword: ''
+    generatedPassword: '',
+    accountToolsOpen: false
   };
 
   function loadDone() {
@@ -1696,7 +1697,7 @@
     html += '</div>';
 
     if (tabId === 'signup') {
-      html += '<p class="prh-small-note">' + esc(STR.uxNoAccount) + '</p><details class="prh-account-disclosure"><summary>' +
+      html += '<p class="prh-small-note">' + esc(STR.uxNoAccount) + '</p><details class="prh-account-disclosure"' + (state.accountToolsOpen ? ' open' : '') + '><summary data-prh-action="toggle-account">' +
         esc(STR.uxOptionalAccount) + '</summary>' + accountPrepHtml() + '</details>';
     }
 
@@ -2127,6 +2128,13 @@
       render();
     } else if (action === 'save-result') {
       saveResult(actionEl);
+    } else if (action === 'toggle-account') {
+      // Native details state must survive rerenders triggered by the account tools.
+      e.preventDefault();
+      state.accountToolsOpen = !state.accountToolsOpen;
+      render();
+      var summary = document.querySelector('#hikoreaGuideBody .prh-account-disclosure > summary');
+      if (summary && typeof summary.focus === 'function') summary.focus({ preventScroll: true });
     } else if (action === 'generate-password') {
       try {
         state.generatedPassword = generateHikoreaPassword();
@@ -2205,6 +2213,7 @@
     state.zoom = '';
     state.idCandidate = '';
     state.generatedPassword = '';
+    state.accountToolsOpen = false;
     // Opened from a specific visa → jump straight to the reservation finder,
     // prefilled. Opened from the gateway card → start on the overview.
     if (opts.visaCode) {
