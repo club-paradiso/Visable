@@ -293,7 +293,7 @@ function paradisoCanonicalAppFormPiece(piece, procedureKey, statusCode) {
     const m = value.match(PARADISO_APP_FORM_PIECE_RE);
     if (!m) return value;
     const formNo = m[2] || '';
-    const isF4 = statusCode === 'F-4';
+    const isF4 = /^F-4(?:-|$)/.test(String(statusCode || '').trim().toUpperCase());
     const f4Stay = isF4 && (F4_OVERSEAS_KOREANS_FORM_PROCEDURES.has(procedureKey) || (!procedureKey && (formNo === '1' || m[1])));
     if (f4Stay) return tx('f4ApplicationForm');
     // 별지 제1호 / 재외동포 접두어는 F-4 문맥이 아니면 임의로 바꾸지 않는다.
