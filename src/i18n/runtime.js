@@ -676,10 +676,8 @@ function applyLanguage(code, options = {}) {
     setText('label[for="jcSearchInput"]', tx('jobCodeSearchLabel'));
     setAttr('#jcSearchInput', 'placeholder', tx('jobCodePlaceholder'));
     setText('#jcAskHeading', tx('jobCodeAskHeading'));
-    setText('#jcAskHelper', tx('jobCodeAskHelper'));
     setText('#jcConceptExplain', tx('jobCodeConceptExplain'));
     setText('#jcConceptExpand', tx('jobCodeConceptExpand'));
-    setText('#jcExamplesLabel', tx('jobCodeExamplesLabel'));
     setText('#jcStepperH', tx('jobCodeStepperTitle'));
     setText('#jcFinalCheckH', tx('jobCodeFinalCheckTitle'));
     setText('#jcFinalOcc', tx('jobCodeFinalOcc'));
