@@ -1165,7 +1165,6 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
             <!-- 1 · Ask + search first: the one action everyone needs -->
             <div class="jc2-hero">
                 <h3 class="jc2-ask" id="jcAskHeading">어떤 일을 하나요?</h3>
-                <p class="jc2-ask-help" id="jcAskHelper">예시처럼 편하게 적어주세요. Visable이 직종과 업종 후보로 나눠서 찾아드릴게요.</p>
                 <p class="jc2-anylang"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-languages"/></svg><span id="jcAnyLanguage" data-i18n="jobCodeAnyLanguage">한국어가 아니어도 괜찮아요. 편한 언어로 적으면 알아듣고 찾아드려요.</span></p>
                 <p class="jc2-hero-sub" id="jcHeroSub" data-i18n="jobCodeHeroSub" hidden>HiKorea 신고 전에 내 일과 사업장 분야를 미리 정리해보세요.</p>
             </div>
@@ -1174,7 +1173,7 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                 <div class="jc2-search-wrap">
                     <svg class="jc2-search-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-search"/></svg>
                     <label for="jcSearchInput" class="sr-only">직종 또는 업종 검색</label>
-                    <input type="search" id="jcSearchInput" class="jc2-search-input" placeholder="예: 골프장 청소해요 / 한치잡이 배에서 일해요 / English teacher at a hagwon" autocomplete="off" enterkeyhint="search" aria-describedby="jcCountBadge">
+                    <input type="search" id="jcSearchInput" class="jc2-search-input" placeholder="직종명, 업종명 또는 하는 일을 검색하세요" autocomplete="off" enterkeyhint="search" aria-describedby="jcCountBadge">
                 </div>
                 <button type="button" class="jc2-ai-btn" data-action="search-jobcode-ai">
                     <svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-search"/></svg>
@@ -1182,19 +1181,6 @@ html:root body.civic-refresh[data-theme="dark"] { background: #10221c !important
                     <span class="spinner" id="jcAiSpinner" style="display:none; margin-left:8px;"></span>
                 </button>
                 <span id="jcCountBadge" class="jc2-count" aria-live="polite" data-i18n="jobCodeViewAll">전체 보기</span>
-                <!-- Friendly natural-language example chips (run the analyzer) -->
-                <p class="jc2-examples-label" id="jcExamplesLabel">이렇게 적어보세요</p>
-                <div class="jc2-chips" id="jcChips" aria-label="입력 예시" data-i18n-attr="aria-label:jobCodeChipsAria">
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="골프장 청소해요" data-i18n="jobCodeChip1">골프장 청소해요</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="한치잡이 배에서 일해요" data-i18n="jobCodeChip2">한치잡이 배에서 일해요</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="공장에서 박스 포장해요" data-i18n="jobCodeChip3">공장에서 박스 포장해요</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="학원에서 영어 가르쳐요" data-i18n="jobCodeChip4">학원에서 영어 가르쳐요</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="영상 편집하고 유튜브 콘텐츠 만들어요" data-i18n="jobCodeChip5">영상 편집하고 유튜브 콘텐츠 만들어요</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="카페에서 음료 만들어요" data-i18n="jobCodeChip6">카페에서 음료 만들어요</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="중식당에서 서빙해요" data-i18n="jobCodeChip9">중식당에서 서빙해요</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="편의점에서 계산해요" data-i18n="jobCodeChip7">편의점에서 계산해요</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="택배 상하차 해요" data-i18n="jobCodeChip8">택배 상하차 해요</button>
-                </div>
                 <!-- Plain-language concept explainer (expandable, not a giant legal note) -->
                 <details class="jc2-explain" id="jcExplain">
                     <summary class="jc2-explain-sum"><svg class="jc-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#jc-i-bulb"/></svg><span id="jcConceptExplain">직종은 ‘내가 하는 일’, 업종은 ‘회사나 사업장이 하는 일’이에요.</span></summary>
