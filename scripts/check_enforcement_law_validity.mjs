@@ -38,7 +38,11 @@ try {
                   법령일련번호: isAct ? 'TEST-ACT' : 'TEST-RULE',
                   시행일자: isAct ? '20260101' : '20260123' }] }
       : isAct
-        ? { 조문: [{ 조문번호: '20', 조문제목: '체류자격 외 활동', 조문내용: '공식 원문 모의자료' }] }
+        ? { 조문: [
+            { 조문번호: '20', 조문제목: '체류자격 외 활동', 조문내용: '공식 원문 모의자료' },
+            { 조문번호: '18', 조문제목: '취업활동', 조문내용: '공식 원문 모의자료' },
+            { 조문번호: '21', 조문제목: '근무처 변경', 조문내용: '공식 원문 모의자료' },
+          ] }
         : { 조문: [{ 조문번호: '86', 조문제목: '범칙금', 조문내용: '공식 원문 모의자료' }],
             별표: [{ 별표번호: '7', 별표제목: '범칙금 양정기준', 별표내용: '범칙금 모의자료' }] };
     return { ok: true, text: async () => JSON.stringify(payload) };
@@ -50,6 +54,14 @@ try {
   }, baseline);
   assert.equal(current.temporalVerification.status, 'CONFIRMED');
   assert.equal(current.status, 'VERIFIED');
+  const sharedArticles = await source.groundOfficialLaw({
+    violationCode: null,
+    violationCandidates: ['UNAUTHORIZED_EMPLOYMENT_ART18_2', 'UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1'],
+    violationStartDate: '2026-02-01', violationEndDate: '2026-02-20',
+  }, baseline);
+  assert.equal(sharedArticles.status, 'VERIFIED');
+  assert.ok(sharedArticles.evidence.some((item) => item.id === 'live-law:immigration-act:18'));
+  assert.ok(sharedArticles.evidence.some((item) => item.id === 'live-law:immigration-act:21'));
   const historical = await source.groundOfficialLaw({
     violationCode: 'STATUS_OUTSIDE_ACTIVITY_ART20',
     violationStartDate: '2026-01-01', violationEndDate: '2026-01-20',
