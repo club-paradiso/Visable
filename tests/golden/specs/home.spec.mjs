@@ -20,11 +20,15 @@ for (const locale of LOCALES) {
       expect(text).toContain(normalize(c.sub));
       expect(text).toContain(normalize(c.examples));
       expect(text).toContain(normalize(c.coreTools));
-      expect(text).toContain(normalize(c.checklists));
+      // Checklist entry is intentionally not a primary home tool anymore.
+      // Its label remains reachable through the full tools directory.
       expect(text).toContain(normalize(c.allTools));
       // The footer disclaimer must be on every home.
       expect(text).toContain(normalize(c.disclaimer));
     }
+    await expect(page.locator('.cs-tools-core .cs-tool')).toHaveCount(5);
+    await expect(page.locator('.cs-tools-core [data-cs-tool="checklists"]')).toHaveCount(0);
+    await expect(page.locator('.cs-directory a[href="immigration-checklists.html"]')).toHaveCount(1);
     // The language control is present; on desktop it shows the current language by its native name
     // (the phone header shows the short code instead).
     const opener = page.locator('[data-cs-lang-open]:visible').first();
@@ -64,8 +68,10 @@ for (const locale of ['ko', 'en']) {
     await expect.poll(() => page.evaluate(() => document.documentElement.lang)).toBe(locale);
     await expect(page.getByText(normalize(c.coreTools), { exact: false }).first()).toBeVisible();
     const text = normalize(await bodyText(page));
-    // Tool cards: document checklists, form filling, manuals, the full directory.
-    for (const key of ['checklists', 'paperwork', 'manuals', 'allTools']) expect(text, key).toContain(normalize(c[key]));
+    // Five primary tools; the detailed checklist is preserved in the directory.
+    for (const key of ['paperwork', 'manuals', 'allTools']) expect(text, key).toContain(normalize(c[key]));
+    await expect(page.locator('.cs-tools-core .cs-tool')).toHaveCount(5);
+    await expect(page.locator('.cs-directory a[href="immigration-checklists.html"]')).toHaveCount(1);
     // Manual reader and form helper are reachable from the home (the header "forms" link folds away on phones).
     await expect(page.locator('a[href^="manual.html"]:visible').first()).toBeVisible();
     await expect(page.locator('a[href^="form-helper.html"]').first()).toBeAttached();
