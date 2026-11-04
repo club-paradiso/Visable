@@ -205,15 +205,17 @@ test.describe('purpose browse panel (the former journey content, reached from th
 });
 
 test.describe('Waymaker and New Home entries', () => {
-  test('six preparation tools lead to separate AI assistance and the nationality directory entry', async ({ page }) => {
+  test('five distinct tools keep separate AI assistance and the full tools directory', async ({ page }) => {
     await bootHome(page);
-    await expect(page.locator('.cs-tools-core .cs-tool strong')).toHaveText(['내게 필요한 서류', '신청서 작성', '체류 기한 계산·알림', '방문예약 안내', '관할 출입국 찾기', '직업신고 코드 찾기']);
+    await expect(page.locator('.cs-tools-core .cs-tool strong')).toHaveText(['신청서 작성', '체류 기한 계산·알림', '방문예약 안내', '관할 출입국 찾기', '직업신고 코드 찾기']);
     await expect(page.locator('.cs-directory')).not.toHaveAttribute('open', /.*/);
     const waymaker = page.locator('.cs-waymaker-entry');
     const newHome = page.locator('.cs-directory a[href="new-home.html"]');
     const forms = page.locator('.cs-tools-core .cs-tool[data-cs-tool="forms"]');
     await expect(waymaker).toBeVisible();
     await page.locator('.cs-directory summary').click();
+    await expect(page.locator('.cs-tools-core [data-cs-tool="checklists"]')).toHaveCount(0);
+    await expect(page.locator('.cs-directory a[href="immigration-checklists.html"]')).toBeVisible();
     for (const el of [waymaker, newHome, forms]) {
       await el.scrollIntoViewIfNeeded();
       await expect(el).toBeVisible();
