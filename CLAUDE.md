@@ -2,7 +2,7 @@
 
 ## Project
 Korean visa/status-of-stay information platform. 39 체류자격 categories.
-Stack: vanilla HTML/CSS/JS pages built with Vite (multi-page; `npm run build` → `dist/`, deployed by Vercel). index.html is being split out of its single-file form in phases — see docs/rebuild/STATUS.md before touching frontend structure. Data JSON and the classic `assets/js` scripts are served at their original public paths.
+Stack: vanilla HTML/CSS/JS pages built with Vite (multi-page; `npm run build` → `dist/`, deployed by Vercel). index.html's code lives in ES modules under `src/` (one `window.Visable` bridge; 193 one-line stubs remain inline for callers that use bare names), its CSS in `assets/css/tokens.css` + `assets/css/index-*.css`; the other pages' scripts are classic files under `assets/js/pages/`. Static checks that slice frontend source read `scripts/frontend_modules.json` (modules first, then the page) — keep that list current when moving code. See docs/rebuild/STATUS.md and FINAL-REPORT.md before touching frontend structure. Data JSON and the classic `assets/js` scripts are served at their original public paths.
 
 ## Protected files (NEVER broadly rewrite or modify during data work)
 - `visa_data.json`
