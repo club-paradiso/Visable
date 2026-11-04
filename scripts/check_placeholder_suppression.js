@@ -157,7 +157,7 @@ const regressions = [
   ['13. D-2 golden path checks still pass', 'check_d2_student_journey.js'],
   ['14. expanded priority status checks still pass', 'check_priority_status_journeys.js'],
   ['15. remaining status journey checks still pass', 'check_remaining_status_journeys.js'],
-  ['16. exact-code search QA checks still pass', 'check_exact_code_search.js'],
+  // 16. exact-code search QA: retired 2026-11-04 (Phase 7 of the rebuild) in favour of tests/golden/specs/search.spec.mjs.
   ['17. static visa result card checks still pass', 'check_static_visa_result_cards.js'],
   ['18. AI shell semantics checks still pass', 'check_ai_shell_semantics.js'],
 ];

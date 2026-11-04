@@ -135,9 +135,9 @@ CI (repo-validation): scripts/mobile_render_qa.mjs (puppeteer), scripts/mobile_w
 ## Retire mapping (to be executed in Phase 7 only when the golden test exists and is green)
 | legacy check | covering golden test (tests/golden/) | status |
 |---|---|---|
-| check_exact_code_search.js (manual) | search.spec: `?q=D-2` opens the searched state; exact code D-2 / subcode E-7-1 interpretation | pending golden |
-| check_live_feature_surface.mjs dispatcher-key half | home.spec: every landing tool opens (dialog/page) in ko+en | pending golden |
-| check_landing_shell.mjs script/CSS tag regexes | fail-closed.spec: civic script load failure → reload row | pending golden |
+| check_exact_code_search.js (manual) | search.spec: `?q=D-2` opens the searched state; exact code D-2 (ko/en) / subcode E-7-1 interpretation; Z-9 fail-closed | **retired 2026-11-04 (Phase 7)** — file deleted; the spec is green in the golden suite (CI `golden` job and local runs on source and dist) |
+| check_live_feature_surface.mjs dispatcher-key half | home.spec (tool presence/links ko+en), tools/finders/jurisdiction/legacy-card specs (dialogs open) | **kept** — the golden specs open the tools they exercise, but not every dispatcher key the check inventories (`open-short-stay`, the three `reveal-home-section` targets), so the check stays as the complete inventory; it reads the corpus since Phase 3 |
+| check_landing_shell.mjs script/CSS tag regexes | fail-closed.spec (civic script load failure → reload row); visual.spec home states (civic stylesheet applied) | **retired 2026-11-04 (Phase 7)** — the two tag regexes were removed from the check; its other 20+ assertions (shell == `homeHtml()`, a11y attributes, copy parity) stay |
 
 ## Addendum (2026-11-03) — backend/tests modules that slice index.html source
 

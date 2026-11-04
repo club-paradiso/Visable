@@ -244,13 +244,9 @@ function regSummary(code) {
   check('16. expanded priority status checks still pass', ok);
 }
 
-/* 17. Existing exact-code search QA checks still pass */
-{
-  let ok = false;
-  try { execFileSync('node', [path.join(ROOT, 'scripts', 'check_exact_code_search.js')], { stdio: 'ignore' }); ok = true; }
-  catch (e) { ok = false; }
-  check('17. exact-code search QA checks still pass', ok);
-}
+/* 17. (retired 2026-11-04, Phase 7 of the rebuild) The exact-code search QA script was replaced by the golden
+ *     browser spec tests/golden/specs/search.spec.mjs (exact code D-2 ko/en, ?q= searched state, E-7-1 subcode,
+ *     Z-9 fail-closed), which runs in CI; see docs/rebuild/phase0-legacy-checks.md "Retire mapping". */
 
 /* 18. Existing all-status audit still runs and includes targets */
 {
