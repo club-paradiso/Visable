@@ -333,3 +333,32 @@ the options considered, the evidence, and the reason.
   that may change boot order under its own tests. Legacy checks that slice a page's source read a page
   corpus (`scripts/frontend_modules.json` → `pages`), modules first, like the index.html corpus.
 
+## ADR-013 — Phase 6: route handlers move to `backend/routers/`, the facade keeps state and helpers
+- `backend/paradiso_backend.py` (9,196 lines) is one module: configuration, schemas, provider
+  clients, grounding, 28 route handlers and the knowledge-router include. 41 of the 101 backend
+  test modules drive it through `TestClient(pb.app)` and 20+ monkeypatch its module attributes
+  (`pb.OPENROUTER_API_KEY`, `pb._call_openrouter`, `pb._openrouter_complete_with_candidates`, …) —
+  that is the contract the split must keep: every patched name must still be looked up on the
+  facade at call time.
+- So the split moves the **handlers** (the `@app.<method>` functions, ~1,900 lines) into
+  `backend/routers/<group>.py`, each exposing `build_router(pb) -> APIRouter`. The handler text
+  is unchanged except that identifiers resolving to module globals of paradiso_backend are
+  qualified `pb.<name>` (an AST + symtable pass, so locals, parameters, comprehension variables
+  and nested-function scopes are never touched), and the decorator target `app` becomes `router`.
+  Helpers, schemas, configuration and state stay in the facade; a router module never imports
+  the facade (it receives it), so there is no circular import and no frozen copy of a patched name.
+- Routers are included in the facade in the order the decorators used to appear, immediately
+  before the knowledge router, so the route table (and therefore path matching and the OpenAPI
+  document) is identical. `backend/tests/test_api_contract_snapshot.py` pins the full OpenAPI
+  document, the ordered route table, the middleware stack and the exception handlers against a
+  snapshot generated before the first handler moved; the register (101 → 102 modules) runs it.
+- Why not move helpers into services too: moving a patched helper into another module changes
+  what `patch.object(pb, name)` affects (the callers inside the moved module would bind the
+  original), which turns a structural refactor into a test rewrite. Helper extraction is a later
+  step, one helper cluster at a time, each with its own patch-point review.
+- Railway: the production service builds `club-paradiso/Visable` **main**, root `/backend`, with
+  the config-as-code start command `uvicorn paradiso_backend:app` (confirmed in the latest build
+  log). Pushes to the rebuild branch cannot deploy, and the entrypoint `paradiso_backend:app`
+  is unchanged by this phase. The dashboard's start-command field still names the legacy stub
+  `moonshot_backend_fastapi:app`; config-as-code overrides it, and changing dashboard settings
+  is outside this session's scope (owner decision 7).

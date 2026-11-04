@@ -12,7 +12,7 @@ ALLOW_BACKEND_TEST_SKIP="${ALLOW_BACKEND_TEST_SKIP:-0}"
 
 run_offline_backend_checks() {
   echo "INFO: Running offline-safe backend syntax checks..."
-  if ! python3 -m py_compile backend/services/*.py backend/services/knowledge/*.py backend/paradiso_backend.py backend/tests/test_paradiso_backend.py backend/tests/test_e7_workplace_change_law_grounding.py; then
+  if ! python3 -m py_compile backend/services/*.py backend/services/knowledge/*.py backend/paradiso_backend.py backend/routers/*.py backend/tests/test_paradiso_backend.py backend/tests/test_e7_workplace_change_law_grounding.py; then
     echo "ERROR: Offline-safe backend syntax checks failed." >&2
     exit 1
   fi
