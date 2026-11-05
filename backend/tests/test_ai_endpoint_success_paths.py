@@ -185,6 +185,15 @@ class UnifiedAiOverviewSuccessTests(_ProviderConfigured):
 
 
 class EmploymentInterpretSuccessTests(_ProviderConfigured):
+    def setUp(self) -> None:
+        super().setUp()
+        self._saved_groq_key = pb.GROQ_API_KEY
+        pb.GROQ_API_KEY = "synthetic-groq-test-key"
+
+    def tearDown(self) -> None:
+        pb.GROQ_API_KEY = self._saved_groq_key
+        super().tearDown()
+
     GOOD_EXTRACTION = {
         "detectedLanguage": "ko",
         "role": "카페 바리스타",
@@ -208,9 +217,9 @@ class EmploymentInterpretSuccessTests(_ProviderConfigured):
     def test_a_configured_provider_actually_produces_an_extraction(self):
         """The regression: this returned `unavailable` with a working provider."""
         async def fake(prompt, **kw):
-            return provider_success(json.dumps(self.GOOD_EXTRACTION, ensure_ascii=False))
+            return json.dumps(self.GOOD_EXTRACTION, ensure_ascii=False)
 
-        with patch.object(pb, "_openrouter_complete_with_candidates", new=fake):
+        with patch.object(pb, "_call_groq", new=fake):
             body = self._post()
         self.assertEqual(body["status"], "ok", msg=f"reason={body.get('reason')!r}")
         self.assertEqual(body["extraction"]["role"], "카페 바리스타")
@@ -218,9 +227,9 @@ class EmploymentInterpretSuccessTests(_ProviderConfigured):
 
     def test_the_raw_sentence_always_reaches_the_deterministic_analyzer(self):
         async def fake(prompt, **kw):
-            return provider_success(json.dumps(self.GOOD_EXTRACTION, ensure_ascii=False))
+            return json.dumps(self.GOOD_EXTRACTION, ensure_ascii=False)
 
-        with patch.object(pb, "_openrouter_complete_with_candidates", new=fake):
+        with patch.object(pb, "_call_groq", new=fake):
             body = self._post()
         self.assertIn("카페", body["analyzerInput"]["text"])
 
@@ -229,9 +238,9 @@ class EmploymentInterpretSuccessTests(_ProviderConfigured):
         polluted = {**self.GOOD_EXTRACTION, "role": "바리스타 5321", "visaStatus": "Z-9"}
 
         async def fake(prompt, **kw):
-            return provider_success(json.dumps(polluted, ensure_ascii=False))
+            return json.dumps(polluted, ensure_ascii=False)
 
-        with patch.object(pb, "_openrouter_complete_with_candidates", new=fake):
+        with patch.object(pb, "_call_groq", new=fake):
             body = self._post()
         blob = json.dumps(body, ensure_ascii=False)
         self.assertNotIn("5321", blob)
@@ -242,9 +251,9 @@ class EmploymentInterpretSuccessTests(_ProviderConfigured):
     def test_unparseable_model_output_is_extraction_failed_not_provider_error(self):
         """'The model said something useless' != 'the provider is down'."""
         async def fake(prompt, **kw):
-            return provider_success("I am not JSON at all.")
+            return "I am not JSON at all."
 
-        with patch.object(pb, "_openrouter_complete_with_candidates", new=fake):
+        with patch.object(pb, "_call_groq", new=fake):
             body = self._post()
         self.assertEqual(body["status"], "extraction_failed")
         self.assertTrue(body["fallbackAvailable"])
@@ -252,24 +261,73 @@ class EmploymentInterpretSuccessTests(_ProviderConfigured):
 
     def test_all_candidates_failing_is_unavailable_with_the_classified_reason(self):
         async def fake(prompt, **kw):
-            return provider_all_failed("upstream_unavailable")
+            raise pb.HTTPException(status_code=502, detail={"status": 429, "error": "groq_upstream_error"})
 
-        with patch.object(pb, "_openrouter_complete_with_candidates", new=fake):
+        with patch.object(pb, "_call_groq", new=fake):
             body = self._post()
         self.assertEqual(body["status"], "unavailable")
-        self.assertEqual(body["reason"], "upstream_unavailable")
+        self.assertEqual(body["reason"], "rate_limited")
         self.assertTrue(body["fallbackAvailable"])
 
     def test_the_answering_model_is_reported(self):
         async def fake(prompt, **kw):
-            return provider_success(
-                json.dumps(self.GOOD_EXTRACTION, ensure_ascii=False),
-                final_model="vendor/model-y",
-            )
+            return json.dumps(self.GOOD_EXTRACTION, ensure_ascii=False)
 
-        with patch.object(pb, "_openrouter_complete_with_candidates", new=fake):
+        with patch.object(pb, "_call_groq", new=fake):
             body = self._post()
-        self.assertEqual(body["model"], "vendor/model-y")
+        self.assertEqual(body["model"], "openai/gpt-oss-20b")
+        self.assertEqual(body["provider"], "groq")
+
+    def test_openrouter_key_without_groq_key_never_triggers_openrouter(self):
+        async def forbidden(prompt, **kwargs):
+            self.fail("Employment must never send a paid/OpenRouter request")
+        with patch.object(pb, "GROQ_API_KEY", ""), \
+             patch.object(pb, "_openrouter_complete_with_candidates", new=forbidden):
+            body = self._post()
+        self.assertEqual(body["status"], "unavailable")
+        self.assertEqual(body["reason"], "no_provider_configured")
+        self.assertTrue(body["fallbackAvailable"])
+
+    def test_groq_strict_schema_and_bounded_work_are_enforced(self):
+        seen = {}
+        async def fake(prompt, **kwargs):
+            seen.update(kwargs)
+            return json.dumps(self.GOOD_EXTRACTION, ensure_ascii=False)
+        with patch.object(pb, "_call_groq", new=fake):
+            body = self._post()
+        self.assertEqual(body["status"], "ok")
+        self.assertEqual(seen["model"], "openai/gpt-oss-20b")
+        self.assertEqual(seen["response_format"]["type"], "json_schema")
+        self.assertTrue(seen["response_format"]["json_schema"]["strict"])
+        self.assertEqual(seen["max_tokens"], 1800)
+        self.assertLessEqual(seen["timeout_seconds"], 12)
+
+    def test_personal_identifiers_are_redacted_before_groq(self):
+        seen = {}
+        async def fake(prompt, **kwargs):
+            seen["prompt"] = prompt
+            return json.dumps(self.GOOD_EXTRACTION, ensure_ascii=False)
+        sentence = "카페에서 일해요. 연락처 010-1234-5678 메일 someone@example.com"
+        with patch.object(pb, "_call_groq", new=fake):
+            body = self._post(sentence)
+        self.assertEqual(body["status"], "ok")
+        self.assertNotIn("010-1234-5678", seen["prompt"])
+        self.assertNotIn("someone@example.com", seen["prompt"])
+        self.assertIn("010-1234-5678", body["analyzerInput"]["text"])
+
+    def test_rate_limit_cannot_trigger_any_other_hosted_provider(self):
+        called = {"openrouter": False}
+        async def rate_limited(prompt, **kwargs):
+            raise pb.HTTPException(status_code=502, detail={"status": 429, "error": "groq_upstream_error"})
+        async def forbidden(prompt, **kwargs):
+            called["openrouter"] = True
+            raise AssertionError("should never fall back to another provider")
+        with patch.object(pb, "_call_groq", new=rate_limited), \
+             patch.object(pb, "_openrouter_complete_with_candidates", new=forbidden):
+            body = self._post()
+        self.assertEqual(body["reason"], "rate_limited")
+        self.assertFalse(called["openrouter"])
+        self.assertTrue(body["fallbackAvailable"])
 
 
 class AskSuccessPathTests(_ProviderConfigured):
