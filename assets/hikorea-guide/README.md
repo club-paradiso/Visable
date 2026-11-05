@@ -10,13 +10,39 @@ be used as Paradiso branding. Do not add HiKorea logos or marks.
 
 ## Status
 
-> **No screenshots are bundled yet.** The refreshed task-first helper shows
-> concise text instructions and **does not render empty screenshot placeholders**.
-> Verified, sanitized captures can be added later; until then there are no blank
-> media panels or broken image requests. Booking and lookup always happen on the
+> **6 of 13 steps ship a real screen example** (bundled 2026-11-05, see the
+> provenance table below). The remaining 7 steps stay text-only — the helper
+> **does not render empty screenshot placeholders** for them. The unbundled
+> steps sit behind real identity verification (office / purpose / date-time
+> selection, confirmation, change / cancel) or had no verified, personal-data-
+> free capture available (account-info form, login page); per the safety rules
+> below they were left text-only rather than filled with unverified images.
+> Every bundled image was visually inspected before commit: form fields are
+> empty, and the only numbers visible are a one-time CAPTCHA sample and the
+> official specimen (견본) registration card in the identity-verification
+> example — no real person's data. Booking and lookup always happen on the
 > [official HiKorea visit-reservation page](https://www.hikorea.go.kr/resv/ResvIntroR.pt)
 > or the [non-member reservation lookup page](https://www.hikorea.go.kr/mypage/MypgNonRegResvPageR.pt).
 > An account is optional for visit reservations.
+
+## Bundled screenshots — provenance (verified 2026-11-05)
+
+| Filename | What it shows | Source of the capture |
+| --- | --- | --- |
+| `hikorea-signup-01-language.png` | HiKorea homepage: top-right 로그인·회원가입·한국어/ENGLISH/中文, 방문예약 box | Screencapture of hikorea.go.kr published by KorealtyUSA (Feb 2026), https://korealtyusa.com/하이코리아-예약/ |
+| `hikorea-signup-02-terms.png` | Signup terms: 이용약관 + 개인정보 보호정책 with 동의 checkboxes | Ewha Womans University ISA HiKorea manual (2022), official university guide PDF |
+| `hikorea-signup-03-identity-verification.png` | Signup identity check for 등록외국인: 등록번호·성명·입력확인 fields (empty) + official specimen card | Ewha Womans University ISA HiKorea manual (2022) |
+| `hikorea-login-02-verification.png` | Identity verification, 여권번호 신원인증 tab: passport-number field (empty), nationality choices | Real-screen capture published by dikr.co.kr, https://dikr.co.kr/출입국관리사무소-예약-신청-온라인-방문-접수-및-민/ |
+| `hikorea-reservation-01-entry.png` | Visit-reservation guidance screen: 이용안내 / 인증 / 신청서 작성 tabs + official warnings | Real-screen capture published by dikr.co.kr (same article) |
+| `hikorea-reservation-06-reservation-check.png` | Non-member reservation lookup identity check, 신분증 신원인증 tab: 등록(거소)번호·발급일자 fields (empty) | Real-screen capture published by dikr.co.kr (same article) |
+
+The underlying screens are all hikorea.go.kr itself; the publishers above only
+distributed the captures. Blog header / footer framing was cropped out, leaving
+only the HiKorea UI. Live public pages were re-checked on 2026-11-05 (homepage,
+reservation guidance, login, signup terms, non-member lookup all load without
+any login) and the step text was corrected where the live site differed
+(login methods, the three identity-verification tabs, the member / non-member
+reservation buttons).
 
 ## File naming convention
 
