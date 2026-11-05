@@ -49,7 +49,7 @@ from .parser import (
     parse_notice_html,
     sha256_text,
 )
-from .registry import ANNEX7, P0_LAWS, P0_NOTICES
+from .registry import ALL_LAWS, ANNEX7, P0_NOTICES
 from .validator import canonical_json_hash, scan_for_secrets
 
 KST = timezone(timedelta(hours=9))
@@ -149,8 +149,13 @@ class CorpusSync:
             try:
                 en_html = self.law_english(mst)
                 en_index = parse_english_law_html(en_html)
-            except LawSourceError:
-                en_index = {"hasContent": False, "articles": [], "titleBlock": None, "providerNoticeKo": None}
+            except LawSourceError as exc:
+                # A failed English fetch is NOT evidence that no official
+                # translation exists. Fail the law for this run (the stored
+                # snapshot is kept by the fallback) instead of recording a
+                # false NOT_AVAILABLE determination.
+                self.report["errors"].append({"law": slug, "stage": "fetch-en", "mst": mst, "kind": exc.kind})
+                return None
             en_index = dict(en_index)
             en_index["mst"] = mst
             en_index["sourceUrl"] = f"https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq={mst}&urlMode=engLsInfoR&viewCls=engLsInfoR"
@@ -499,23 +504,75 @@ class CorpusSync:
         self.report["notices"].append({"slug": notice["slug"], "effectiveFrom": metadata["effectiveFrom"]})
         return {"slug": notice["slug"], "path": ndir_rel, "effectiveFrom": metadata["effectiveFrom"], "noticeNo": notice["noticeNo"]}
 
+    # -- fallback: keep the stored snapshot when a fetch fails ---------------
+
+    def _stored_result(self, law: Dict[str, Any], previous_entry: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+        """Rebuild a sync result from the already-stored snapshot on disk.
+
+        A failed fetch must never shrink the corpus: the manifest,
+        coverage report and article index keep listing the stored,
+        verified versions (the fetch error itself is still reported, and
+        nothing is re-marked as freshly verified).
+        """
+        if not previous_entry:
+            return None
+        built: List[Dict[str, Any]] = []
+        for version in previous_entry.get("versions", []):
+            vdir = self.root / version["path"]
+            articles_file = vdir / "articles.ko.json"
+            if not articles_file.exists():
+                return None
+            translation_file = vdir / "translation.json"
+            built.append(
+                {
+                    "articlesDoc": json.loads(articles_file.read_text(encoding="utf-8")),
+                    "translation": json.loads(translation_file.read_text(encoding="utf-8")) if translation_file.exists() else {},
+                }
+            )
+        self.report["laws"].append(
+            {"slug": law["slug"], "versions": [v["effectiveFrom"] for v in previous_entry["versions"]], "keptStoredSnapshot": True}
+        )
+        return {"law": law, "versions": previous_entry["versions"], "built": built}
+
     # -- top level -----------------------------------------------------------
 
     def run(self, law_slugs: Optional[List[str]] = None) -> Dict[str, Any]:
+        previous_manifest: Dict[str, Any] = {}
+        manifest_file = self.root / "manifest.json"
+        if manifest_file.exists():
+            previous_manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
+        previous_laws = {entry["slug"]: entry for entry in previous_manifest.get("laws", [])}
+
         results: List[Dict[str, Any]] = []
-        for law in P0_LAWS:
+        for law in ALL_LAWS:
             if law_slugs and law["slug"] not in law_slugs:
                 continue
             result = self.sync_law(law)
+            if result is None:
+                result = self._stored_result(law, previous_laws.get(law["slug"]))
+                if result is not None:
+                    self.report["errors"].append(
+                        {"law": law["slug"], "stage": "fallback", "kind": "stored-snapshot-kept"}
+                    )
             if result:
                 results.append(result)
         rule_result = next((r for r in results if r["law"]["slug"] == "immigration-rule"), None)
         annex_result = self.sync_annex7(rule_result) if not law_slugs or "immigration-rule" in law_slugs else None
-        notice_results = [n for n in (self.sync_notice(notice) for notice in P0_NOTICES) if n]
+        if annex_result is None and previous_manifest.get("annexes"):
+            prev_annex = previous_manifest["annexes"][0]
+            annex_result = {"path": prev_annex["path"], "revisedDate": prev_annex["revisedDate"], "comparison": None}
+        notice_results = []
+        previous_notices = {n["slug"]: n for n in previous_manifest.get("notices", [])}
+        for notice in P0_NOTICES:
+            synced = self.sync_notice(notice)
+            if synced is not None:
+                notice_results.append(synced)
+            elif notice["slug"] in previous_notices:
+                notice_results.append(previous_notices[notice["slug"]])
 
         manifest = {
             "corpus": "Visable Legal Corpus — Korean immigration law (official sources only)",
-            "corpusVersion": "1.0.0",
+            "corpusVersion": "1.1.0",
             "jurisdiction": "KR",
             "languages": ["ko", "en (metadata only — redistribution restricted)"],
             "laws": [
@@ -589,7 +646,7 @@ class CorpusSync:
             laws_cov.append({"slug": law["slug"], "titleKo": law["titleKo"], "versions": versions_cov})
         return {
             "generatedBy": "backend.services.legal_corpus.sync",
-            "scope": "P0 only (Immigration Act / Enforcement Decree / Enforcement Rule / MOJ Notice 2020-212 / Annex 7)",
+            "scope": "P0 (Immigration Act / Enforcement Decree / Enforcement Rule / MOJ Notice 2020-212 / Annex 7) + P1 (Framework Act on Treatment of Foreigners / Refugee Act family / Nationality Act family / Act on the Employment of Foreign Workers family)",
             "laws": laws_cov,
             "annex7": (
                 {"stored": True, "revisedDate": annex_result["revisedDate"], "path": annex_result["path"]}
@@ -604,7 +661,7 @@ class CorpusSync:
             },
             "notCovered": [
                 {"item": "출입국관리법 시행규칙 영문본", "status": "NOT_AVAILABLE", "reason": "국가법령정보센터 영문 페이지가 현행·직전 버전 모두 본문 없이 헤더만 반환함을 2026-11-04 확인"},
-                {"item": "P1 법령 (재한외국인 처우 기본법, 난민법, 국적법, 외국인고용법 등)", "status": "NOT_STARTED", "reason": "P0 완료 전 확장하지 않는다는 작업 원칙에 따라 이번 범위에 포함하지 않음"},
+                {"item": "P1 시행규칙 3종 영문본 (난민법·국적법·외국인근로자 고용법 시행규칙)", "status": "NOT_AVAILABLE", "reason": "국가법령정보센터 영문 페이지가 현행 버전에서 본문 없이 헤더만 반환함을 2026-11-05 확인. 부처 시행규칙은 출입국관리법 시행규칙과 동일하게 영문 본문이 제공되지 않는 패턴"},
             ],
         }
 

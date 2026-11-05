@@ -1,6 +1,6 @@
 {
   "corpus": "Visable Legal Corpus — Korean immigration law (official sources only)",
-  "corpusVersion": "1.0.0",
+  "corpusVersion": "1.1.0",
   "jurisdiction": "KR",
   "languages": [
     "ko",
@@ -98,6 +98,216 @@
           "sourceIdentifier": "291289",
           "path": "laws/immigration-rule/versions/2026-10-23",
           "articleCount": 192,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "NOT_AVAILABLE"
+        }
+      ]
+    },
+    {
+      "slug": "foreigners-treatment-framework-act",
+      "lawId": "010445",
+      "titleKo": "재한외국인 처우 기본법",
+      "titleEn": "FRAMEWORK ACT ON TREATMENT OF FOREIGNERS RESIDING IN THE REPUBLIC OF KOREA",
+      "lawType": "ACT",
+      "priority": "P1",
+      "versions": [
+        {
+          "effectiveFrom": "2025-01-31",
+          "promulgationNo": "20734",
+          "promulgationDate": "2025-01-31",
+          "revisionTypeKo": "일부개정",
+          "sourceIdentifier": "268701",
+          "path": "laws/foreigners-treatment-framework-act/versions/2025-01-31",
+          "articleCount": 25,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "ALIGNED"
+        }
+      ]
+    },
+    {
+      "slug": "refugee-act",
+      "lawId": "011546",
+      "titleKo": "난민법",
+      "titleEn": "REFUGEE ACT",
+      "lawType": "ACT",
+      "priority": "P1",
+      "versions": [
+        {
+          "effectiveFrom": "2016-12-20",
+          "promulgationNo": "14408",
+          "promulgationDate": "2016-12-20",
+          "revisionTypeKo": "일부개정",
+          "sourceIdentifier": "188376",
+          "path": "laws/refugee-act/versions/2016-12-20",
+          "articleCount": 48,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "ALIGNED"
+        }
+      ]
+    },
+    {
+      "slug": "refugee-decree",
+      "lawId": "011878",
+      "titleKo": "난민법 시행령",
+      "titleEn": "ENFORCEMENT DECREE OF THE REFUGEE ACT",
+      "lawType": "ENFORCEMENT_DECREE",
+      "priority": "P1",
+      "versions": [
+        {
+          "effectiveFrom": "2025-09-19",
+          "promulgationNo": "35747",
+          "promulgationDate": "2025-09-16",
+          "revisionTypeKo": "타법개정",
+          "sourceIdentifier": "273705",
+          "path": "laws/refugee-decree/versions/2025-09-19",
+          "articleCount": 29,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "ALIGNED"
+        }
+      ]
+    },
+    {
+      "slug": "refugee-rule",
+      "lawId": "011885",
+      "titleKo": "난민법 시행규칙",
+      "titleEn": "ENFORCEMENT RULE OF THE REFUGEE ACT",
+      "lawType": "ENFORCEMENT_RULE",
+      "priority": "P1",
+      "versions": [
+        {
+          "effectiveFrom": "2024-12-03",
+          "promulgationNo": "1084",
+          "promulgationDate": "2024-12-03",
+          "revisionTypeKo": "일부개정",
+          "sourceIdentifier": "266929",
+          "path": "laws/refugee-rule/versions/2024-12-03",
+          "articleCount": 23,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "NOT_AVAILABLE"
+        }
+      ]
+    },
+    {
+      "slug": "nationality-act",
+      "lawId": "001435",
+      "titleKo": "국적법",
+      "titleEn": "NATIONALITY ACT",
+      "lawType": "ACT",
+      "priority": "P1",
+      "versions": [
+        {
+          "effectiveFrom": "2022-10-01",
+          "promulgationNo": "18978",
+          "promulgationDate": "2022-09-15",
+          "revisionTypeKo": "일부개정",
+          "sourceIdentifier": "244609",
+          "path": "laws/nationality-act/versions/2022-10-01",
+          "articleCount": 32,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "ALIGNED"
+        }
+      ]
+    },
+    {
+      "slug": "nationality-decree",
+      "lawId": "002922",
+      "titleKo": "국적법 시행령",
+      "titleEn": "ENFORCEMENT DECREE OF THE NATIONALITY ACT",
+      "lawType": "ENFORCEMENT_DECREE",
+      "priority": "P1",
+      "versions": [
+        {
+          "effectiveFrom": "2022-12-20",
+          "promulgationNo": "33082",
+          "promulgationDate": "2022-12-20",
+          "revisionTypeKo": "일부개정",
+          "sourceIdentifier": "246165",
+          "path": "laws/nationality-decree/versions/2022-12-20",
+          "articleCount": 50,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "slug": "nationality-rule",
+      "lawId": "006766",
+      "titleKo": "국적법 시행규칙",
+      "titleEn": "ENFORCEMENT RULE OF THE NATIONALITY ACT",
+      "lawType": "ENFORCEMENT_RULE",
+      "priority": "P1",
+      "versions": [
+        {
+          "effectiveFrom": "2026-10-02",
+          "promulgationNo": "1161",
+          "promulgationDate": "2026-10-02",
+          "revisionTypeKo": "일부개정",
+          "sourceIdentifier": "291055",
+          "path": "laws/nationality-rule/versions/2026-10-02",
+          "articleCount": 27,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "NOT_AVAILABLE"
+        }
+      ]
+    },
+    {
+      "slug": "foreign-workers-act",
+      "lawId": "009542",
+      "titleKo": "외국인근로자의 고용 등에 관한 법률",
+      "titleEn": "ACT ON THE EMPLOYMENT OF FOREIGN WORKERS",
+      "lawType": "ACT",
+      "priority": "P1",
+      "versions": [
+        {
+          "effectiveFrom": "2025-10-01",
+          "promulgationNo": "21065",
+          "promulgationDate": "2025-10-01",
+          "revisionTypeKo": "타법개정",
+          "sourceIdentifier": "276857",
+          "path": "laws/foreign-workers-act/versions/2025-10-01",
+          "articleCount": 44,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "ALIGNED"
+        }
+      ]
+    },
+    {
+      "slug": "foreign-workers-decree",
+      "lawId": "009657",
+      "titleKo": "외국인근로자의 고용 등에 관한 법률 시행령",
+      "titleEn": "ENFORCEMENT DECREE OF THE ACT ON THE EMPLOYMENT OF FOREIGN WORKERS",
+      "lawType": "ENFORCEMENT_DECREE",
+      "priority": "P1",
+      "versions": [
+        {
+          "effectiveFrom": "2023-02-03",
+          "promulgationNo": "32844",
+          "promulgationDate": "2022-08-02",
+          "revisionTypeKo": "일부개정",
+          "sourceIdentifier": "244037",
+          "path": "laws/foreign-workers-decree/versions/2023-02-03",
+          "articleCount": 43,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "slug": "foreign-workers-rule",
+      "lawId": "009698",
+      "titleKo": "외국인근로자의 고용 등에 관한 법률 시행규칙",
+      "titleEn": "ENFORCEMENT RULE OF THE ACT ON THE EMPLOYMENT OF FOREIGN WORKERS",
+      "lawType": "ENFORCEMENT_RULE",
+      "priority": "P1",
+      "versions": [
+        {
+          "effectiveFrom": "2025-06-02",
+          "promulgationNo": "442",
+          "promulgationDate": "2025-06-02",
+          "revisionTypeKo": "일부개정",
+          "sourceIdentifier": "271599",
+          "path": "laws/foreign-workers-rule/versions/2025-06-02",
+          "articleCount": 32,
           "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
           "translationAlignment": "NOT_AVAILABLE"
         }

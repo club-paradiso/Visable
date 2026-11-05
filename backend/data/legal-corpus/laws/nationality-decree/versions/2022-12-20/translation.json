@@ -1,0 +1,366 @@
+{
+  "status": "PARTIAL",
+  "englishVersion": {
+    "mst": "246165",
+    "promulgationNo": "33082",
+    "effectiveFrom": "2022-12-20",
+    "sourceUrl": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=246165&urlMode=engLsInfoR&viewCls=engLsInfoR"
+  },
+  "pairs": [
+    {
+      "articleId": "1",
+      "status": "ALIGNED",
+      "titleKo": "목적",
+      "titleEn": "Purpose",
+      "englishTextSha256": "1c6da9c26dc37595359aeb296b85477b27789cbacd08d9dcc684270dd9f315cc"
+    },
+    {
+      "articleId": "2",
+      "status": "ALIGNED",
+      "titleKo": "인지에 의한 국적취득 신고의 절차 등",
+      "titleEn": "Procedures for Reporting on Acquisition of Nationality by Acknowledgment",
+      "englishTextSha256": "c11892e1f995ee48a116ff1aee58879e03d7d16fe83aeb3fd1c7fa0b58ccce9a"
+    },
+    {
+      "articleId": "3",
+      "status": "ALIGNED",
+      "titleKo": "귀화허가의 신청",
+      "titleEn": "Application for Permission for Naturalization",
+      "englishTextSha256": "c442d1cf1cd54d4540e8f1d012c418bae62db195ec8ba895eac7e942d0b85d18"
+    },
+    {
+      "articleId": "4",
+      "status": "ALIGNED",
+      "titleKo": "귀화 요건 심사를 위한 조회ㆍ조사ㆍ확인 등",
+      "titleEn": "Inquiry, Investigation, or Verification for Examination of Requirements for Naturalization",
+      "englishTextSha256": "6e35acefc69fcf11981d1dc130d960a3a1318f80cf67f8c12dce43968e755739"
+    },
+    {
+      "articleId": "4-2",
+      "status": "ALIGNED",
+      "titleKo": "귀화허가 신청자에 대한 종합평가 등",
+      "titleEn": "General Evaluation of Applicants for Permission for Naturalization",
+      "englishTextSha256": "8a560cd89ec9ecc7c6800d75fe64c07c29cd7c28794c38e4c232a5b1d8b030e9"
+    },
+    {
+      "articleId": "4-3",
+      "status": "ALIGNED",
+      "titleKo": "귀화허가의 제한",
+      "titleEn": "Restriction on Permitting Naturalization",
+      "englishTextSha256": "886db5c80a5b7c588977575803ee0f43a698a00a559346725e367c4b4ffb5ff3"
+    },
+    {
+      "articleId": "4-4",
+      "status": "ALIGNED",
+      "titleKo": "귀화허가를 받은 사람에 대한 국민선서 및 귀화증서 수여",
+      "titleEn": "Oath of Citizenship by, and Granting Certificate of Naturalization to, Person Receiving Permission of Naturalization",
+      "englishTextSha256": "6422cdf2ec29f6805d60f3a0977e442c7511f4502957bff51d6b3dde78df96ac"
+    },
+    {
+      "articleId": "4-5",
+      "status": "ALIGNED",
+      "titleKo": "귀화허가를 받은 사람에 대한 국민선서의 내용 등",
+      "titleEn": "Content of Oath of Citizenship by Person Having Obtained Permission for Naturalization",
+      "englishTextSha256": "19261ff1b56241262ef015ffd42f7ecdc63cc052838531a219ad1703ef6d764a"
+    },
+    {
+      "articleId": "4-6",
+      "status": "ALIGNED",
+      "titleKo": "귀화허가를 받은 사람에 대한 국민선서 및 귀화증서 수여 등의 대행",
+      "titleEn": "Vicarious Receipt of Oath of Citizenship from, and Vicarious Granting of Certificate of Naturalization to, Person Having Obtained Permission for Naturalization",
+      "englishTextSha256": "6d4b7c1020857dd17a7523d3754dc765be77ff468b81ad00ab59c616d0087dae"
+    },
+    {
+      "articleId": "5",
+      "status": "ALIGNED",
+      "titleKo": "귀화에 의한 국적 취득의 통보 등",
+      "titleEn": "Notification of Permission for Naturalization",
+      "englishTextSha256": "521509d8461c24ba5d7548e06e2189c2cf9266735aca5d46ca4b2c1980dc5489"
+    },
+    {
+      "articleId": "6",
+      "status": "ALIGNED",
+      "titleKo": "특별귀화 대상자",
+      "titleEn": "Persons subject to Special Naturalization",
+      "englishTextSha256": "9a21bfcdd9266571d5a27b2de435894f20100c70942df69916a3894fe61608f3"
+    },
+    {
+      "articleId": "7",
+      "status": "ALIGNED",
+      "titleKo": "수반취득의 신청절차 등",
+      "titleEn": "Application Procedures for Concurrent Acquisition",
+      "englishTextSha256": "9bce5a770e55966949690785e3959b33ee8e502b609c3f6560bf22da312235a6"
+    },
+    {
+      "articleId": "8",
+      "status": "ALIGNED",
+      "titleKo": "국적회복허가의 신청",
+      "titleEn": "Application for Permission to Recover Nationality",
+      "englishTextSha256": "3ac716e086eeb4f336d1e44154a36c650d3f863531acee05ccc900e8f2ad330e"
+    },
+    {
+      "articleId": "9",
+      "status": "ALIGNED",
+      "titleKo": "국적회복허가 신청에 대한 심사",
+      "titleEn": "Examination of Applications for Recovery of Nationality",
+      "englishTextSha256": "cb1af0b580267ea8ad0adf1a595657cb0f31811e92cb3032a03aa8dd9e497e42"
+    },
+    {
+      "articleId": "9-2",
+      "status": "ALIGNED",
+      "titleKo": "국적회복허가를 받은 사람에 대한 국민선서 및 국적회복증서 수여 등",
+      "titleEn": "Receiving Oath of Citizenship from, and Granting Certificate of Recovery of Nationality to, Person Permitted to Recover Nationality",
+      "englishTextSha256": "b8c36263206c56a161d36ff683fc0c453313d8ba30e9a56f901094059037ae71"
+    },
+    {
+      "articleId": "10",
+      "status": "ALIGNED",
+      "titleKo": "국적회복에 의한 국적 취득의 통보 등",
+      "titleEn": "Notification of Acquisition of Nationality by Recovering Nationality",
+      "englishTextSha256": "4077940494132ac6043873e3e30de7222abb0e957e16296f024f3637a656128c"
+    },
+    {
+      "articleId": "11",
+      "status": "ALIGNED",
+      "titleKo": "외국 국적의 포기방식 등",
+      "titleEn": "Procedures for Renouncing Foreign Nationality",
+      "englishTextSha256": "69c8a999535f772fba7fe40d3466653b85dbd869ed9dede3d8d52e34ed653ae3"
+    },
+    {
+      "articleId": "12",
+      "status": "ALIGNED",
+      "titleKo": "외국 국적 포기사실증명의 요구",
+      "titleEn": "Requests for Certification of Facts concerning Renunciation of Foreign Nationality",
+      "englishTextSha256": "16b282ad84c56f079c4eb1feeeefa66a28d86523aee9aa5a2cf871b4436418dc"
+    },
+    {
+      "articleId": "13",
+      "status": "ALIGNED",
+      "titleKo": "외국 국적 포기가 어려운 자 등",
+      "titleEn": "Persons Having Difficulty in Renouncing Foreign Nationalities",
+      "englishTextSha256": "8b0454dbadef75752d50e4d12619f3b82a7867eba2812d232afb91fa1f46dd02"
+    },
+    {
+      "articleId": "14",
+      "status": "ALIGNED",
+      "titleKo": "외국 국적 미포기자 등에 대한 처우 제한",
+      "titleEn": "Limitations on Treatment for Persons Who Fail to Renounce Foreign Nationality",
+      "englishTextSha256": "75b3ac6f76ce4760487859dcfafc0cca80efdb30d8ef76dcde7d4162c1927516"
+    },
+    {
+      "articleId": "15",
+      "status": "ALIGNED",
+      "titleKo": "국적의 재취득 신고절차 등",
+      "titleEn": "Procedures for Reporting Re-Acquisition of Nationality",
+      "englishTextSha256": "3c846e95f0315bbb1f4e9f0bc7d01393196cdaeaba89403575a722a18353b8a9"
+    },
+    {
+      "articleId": "16",
+      "status": "ALIGNED",
+      "titleKo": "복수국적자의 의의 등",
+      "titleEn": "Meaning of Persons with Multiple Nationalities",
+      "englishTextSha256": "32c9f1e58436e4d036a69ee32146af0f74f911fc572515bab6de4cbd79cdf9f4"
+    },
+    {
+      "articleId": "16-2",
+      "status": "ALIGNED",
+      "titleKo": "직계존속이 외국에서 영주할 목적 없이 체류한 상태에서 출생한 사람",
+      "titleEn": "Persons Born While Their Lineal Ascendants Stayed Abroad without Intention to Permanently Reside in Foreign Countries",
+      "englishTextSha256": "8e31d264091b4282653c83beba16cc2280922c83ec21369c0d2c6922776f4a85"
+    },
+    {
+      "articleId": "17",
+      "status": "ALIGNED",
+      "titleKo": "대한민국 국적의 선택 절차 등",
+      "titleEn": "Procedures for Choosing Nationality of the Republic of Korea",
+      "englishTextSha256": "7a9760f92690b8e8067550f1da2a0b7b3facc56ae7f56c469e025152cf8f552e"
+    },
+    {
+      "articleId": "18",
+      "status": "ALIGNED",
+      "titleKo": "대한민국 국적의 이탈 신고 절차 등",
+      "titleEn": "Procedures for Renouncing Nationality of the Republic of Korea",
+      "englishTextSha256": "d46bf585b4e95236e1b129d094b2811a59b0f610f82a5289a8df898c3349fc92"
+    },
+    {
+      "articleId": "18-2",
+      "status": "ALIGNED",
+      "titleKo": "대한민국 국적 이탈 허가 신청의 세부 자격기준 등",
+      "titleEn": "Procedures for Placing an Order to Choose Nationality",
+      "englishTextSha256": "fa903374f29d2a2a0cd42cd1ad713aea6b111012c87380ec9d82799a925e428b"
+    },
+    {
+      "articleId": "18-3",
+      "status": "ALIGNED",
+      "titleKo": "대한민국 국적 이탈 허가의 절차",
+      "titleEn": "Procedures for Determination on Loss of Nationality of the Republic of Korea",
+      "englishTextSha256": "2ce5fc3d1ceaa8798ad7e7b35885e7d7408381754c24e41a4237c1cce309358c"
+    },
+    {
+      "articleId": "18-4",
+      "status": "ALIGNED",
+      "titleKo": "국적선택명령의 절차 등",
+      "titleEn": "Procedures for Notification of Persons with Multiple Nationalities",
+      "englishTextSha256": "91605ee883b950fe8dfa7563b43432b20641f3cd69771dfa4df85175b9bec3b0"
+    },
+    {
+      "articleId": "18-5",
+      "status": "PARTIAL",
+      "titleKo": "대한민국 국적의 상실결정 절차 등",
+      "titleEn": null,
+      "englishTextSha256": null
+    },
+    {
+      "articleId": "18-6",
+      "status": "PARTIAL",
+      "titleKo": "복수국적자에 관한 통보절차 등",
+      "titleEn": null,
+      "englishTextSha256": null
+    },
+    {
+      "articleId": "19",
+      "status": "ALIGNED",
+      "titleKo": "국적보유의사의 신고절차 등",
+      "titleEn": "Procedures for Reporting Intention to Retain Nationality",
+      "englishTextSha256": "507db8e72fee04ef79ae2bbad8819fcc03721943c5b4e9f866d0c3e93f221cd3"
+    },
+    {
+      "articleId": "20",
+      "status": "ALIGNED",
+      "titleKo": "국적상실의 신고ㆍ통보절차 등",
+      "titleEn": "Procedures for Reporting or Notifying the Loss of Nationality",
+      "englishTextSha256": "4b32503e74ddb4de3ab0c63eb3c003e1fd66959a5c783bc8d536f3c750dcc359"
+    },
+    {
+      "articleId": "21",
+      "status": "ALIGNED",
+      "titleKo": "국적상실자의 처리",
+      "titleEn": "Administration concerning Persons who have Lost Nationality",
+      "englishTextSha256": "7ecf7fc7b280619eed8512c52170e17f744d6b14285dc10ff932034eaefbc15a"
+    },
+    {
+      "articleId": "22",
+      "status": "ALIGNED",
+      "titleKo": null,
+      "titleEn": null,
+      "englishTextSha256": "284db00f0cf612a62184196389490160ed7273f8285b54fea6c5341baeb4a62e"
+    },
+    {
+      "articleId": "23",
+      "status": "ALIGNED",
+      "titleKo": "국적 판정의 신청",
+      "titleEn": "Application for Determination of Nationality",
+      "englishTextSha256": "fce1cf0185e617a15ced66b6cb4b58446e2a6fa801bb57e131d4be9a3543081b"
+    },
+    {
+      "articleId": "24",
+      "status": "ALIGNED",
+      "titleKo": "국적 판정의 심사 및 판정절차 등",
+      "titleEn": "Screening of Determination of Nationality and Determination Procedures",
+      "englishTextSha256": "0b9d5f7e00503def1c3e57691b61e9099bbbf0a37e72bcba3ce8e714f03a19f5"
+    },
+    {
+      "articleId": "25",
+      "status": "ALIGNED",
+      "titleKo": "외국에 주소를 두고 있는 사람의 신고서 등 제출",
+      "titleEn": "Submission of Reports by Persons with Overseas Domiciles",
+      "englishTextSha256": "2f745225dea65b77c734a2b320e0d81570230f04d40261649ec328cdc5e5f0db"
+    },
+    {
+      "articleId": "25-2",
+      "status": "ALIGNED",
+      "titleKo": "신청 또는 신고의 방법ㆍ절차",
+      "titleEn": "Methods and Procedures for Filing Applications or Reporting",
+      "englishTextSha256": "2015fb5086d8691c9e10338e83f13801980fdcf697e63405ce216f491fbf8775"
+    },
+    {
+      "articleId": "25-3",
+      "status": "ALIGNED",
+      "titleKo": "전자민원창구",
+      "titleEn": "Window for Electronic Civil Petitions",
+      "englishTextSha256": "d5c990933a0dc42d46f083a97c52a40ffc5a9cbcb7ab9d5f6bc9bf5eeca9f721"
+    },
+    {
+      "articleId": "26",
+      "status": "ALIGNED",
+      "titleKo": "관보에 고시할 사항",
+      "titleEn": "Matters to Be Publicly Notified in Official Gazette",
+      "englishTextSha256": "5d6584b133735f9d3d90e743bb069bf4368144997d3dde9aa15c3d1d8ced1e26"
+    },
+    {
+      "articleId": "27",
+      "status": "ALIGNED",
+      "titleKo": "허가 등의 취소의 기준ㆍ절차 등",
+      "titleEn": "Standards and Procedures for Revocation of Permission",
+      "englishTextSha256": "819c1584135d177e356b3454c3a3d9d152365414e707c141d6df74bf5e7c8c80"
+    },
+    {
+      "articleId": "28",
+      "status": "ALIGNED",
+      "titleKo": "위원회 심의의 예외",
+      "titleEn": "Exception to Disqualification for Foreign Service Official",
+      "englishTextSha256": "072e47cd329994ee629c8b911b67ea718cc5110a7029bb187da19ca6867382c3"
+    },
+    {
+      "articleId": "28-2",
+      "status": "PARTIAL",
+      "titleKo": "위원회의 구성",
+      "titleEn": null,
+      "englishTextSha256": null
+    },
+    {
+      "articleId": "28-3",
+      "status": "ALIGNED",
+      "titleKo": "위원회 위원장의 직무",
+      "titleEn": "Duties of Chairperson of the Committee",
+      "englishTextSha256": "b7f22974c348ce1f0377c77ee371c713de8d707b3e6b903e8a765a1003143e9e"
+    },
+    {
+      "articleId": "28-4",
+      "status": "ALIGNED",
+      "titleKo": "위원회의 운영",
+      "titleEn": "Operation of the Committee",
+      "englishTextSha256": "6ba2f2cc7785f52ed1de62ce1994b447b1643952c77a6e40e090465fe1252b92"
+    },
+    {
+      "articleId": "28-5",
+      "status": "ALIGNED",
+      "titleKo": "위원회 위원의 해임 및 해촉",
+      "titleEn": "Discharge or Dismissal of Member of the Committee",
+      "englishTextSha256": "e2885dfa25b4a9ebe7c4895072b401e5a29b7e20386e0e92b5ba19d63af95d79"
+    },
+    {
+      "articleId": "28-6",
+      "status": "ALIGNED",
+      "titleKo": "위원의 제척 등",
+      "titleEn": "Exclusion of Members",
+      "englishTextSha256": "8b03c7a797f689efe0c23309d5a95234fe092ad6f8f89d8ba21a6c38473105c6"
+    },
+    {
+      "articleId": "28-7",
+      "status": "ALIGNED",
+      "titleKo": "통보 등의 방법",
+      "titleEn": "Methods of Notification",
+      "englishTextSha256": "f1c6e3be1b69acb900a220fd7d5a38baa5565697b35cc13df0652f741edd7068"
+    },
+    {
+      "articleId": "29",
+      "status": "ALIGNED",
+      "titleKo": "권한의 위임",
+      "titleEn": "Delegation of Authority",
+      "englishTextSha256": "4d9204d7268709bf0339fb3880787c70808e3ff01421b0785a7d3c009206ce31"
+    },
+    {
+      "articleId": "30",
+      "status": "ALIGNED",
+      "titleKo": "민감정보 및 고유식별정보의 처리",
+      "titleEn": "Handling Sensitive Information and Personally Identifiable Information",
+      "englishTextSha256": "7e928c4929e536891772d6f881b0b4304e49856375d8e3e5f2503aab5916392c"
+    }
+  ],
+  "englishArticleCount": 47,
+  "koreanArticleCount": 50,
+  "englishOnlyArticles": [],
+  "note": "공식 영문 번역본의 본문은 저작권상 재배포가 허용되지 않아 저장하지 않습니다. 조문 제목·해시·대응 관계만 기록합니다.",
+  "checkedAt": "2026-11-05T10:46:16+09:00"
+}

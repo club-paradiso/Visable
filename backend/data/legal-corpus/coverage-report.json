@@ -1,6 +1,6 @@
 {
   "generatedBy": "backend.services.legal_corpus.sync",
-  "scope": "P0 only (Immigration Act / Enforcement Decree / Enforcement Rule / MOJ Notice 2020-212 / Annex 7)",
+  "scope": "P0 (Immigration Act / Enforcement Decree / Enforcement Rule / MOJ Notice 2020-212 / Annex 7) + P1 (Framework Act on Treatment of Foreigners / Refugee Act family / Nationality Act family / Act on the Employment of Foreign Workers family)",
   "laws": [
     {
       "slug": "immigration-act",
@@ -95,6 +95,174 @@
           "englishArticleCount": null
         }
       ]
+    },
+    {
+      "slug": "foreigners-treatment-framework-act",
+      "titleKo": "재한외국인 처우 기본법",
+      "versions": [
+        {
+          "effectiveFrom": "2025-01-31",
+          "articleCount": 25,
+          "priorityArticles": {
+            "10": true,
+            "13": true,
+            "14": true
+          },
+          "translationAlignment": "ALIGNED",
+          "englishArticleCount": 25
+        }
+      ]
+    },
+    {
+      "slug": "refugee-act",
+      "titleKo": "난민법",
+      "versions": [
+        {
+          "effectiveFrom": "2016-12-20",
+          "articleCount": 48,
+          "priorityArticles": {
+            "3": true,
+            "5": true,
+            "18": true,
+            "21": true
+          },
+          "translationAlignment": "ALIGNED",
+          "englishArticleCount": 48
+        }
+      ]
+    },
+    {
+      "slug": "refugee-decree",
+      "titleKo": "난민법 시행령",
+      "versions": [
+        {
+          "effectiveFrom": "2025-09-19",
+          "articleCount": 29,
+          "priorityArticles": {
+            "2": true,
+            "18": true
+          },
+          "translationAlignment": "ALIGNED",
+          "englishArticleCount": 29
+        }
+      ]
+    },
+    {
+      "slug": "refugee-rule",
+      "titleKo": "난민법 시행규칙",
+      "versions": [
+        {
+          "effectiveFrom": "2024-12-03",
+          "articleCount": 23,
+          "priorityArticles": {
+            "2": true,
+            "10": true
+          },
+          "translationAlignment": "NOT_AVAILABLE",
+          "englishArticleCount": null
+        }
+      ]
+    },
+    {
+      "slug": "nationality-act",
+      "titleKo": "국적법",
+      "versions": [
+        {
+          "effectiveFrom": "2022-10-01",
+          "articleCount": 32,
+          "priorityArticles": {
+            "5": true,
+            "6": true,
+            "7": true,
+            "10": true
+          },
+          "translationAlignment": "ALIGNED",
+          "englishArticleCount": 32
+        }
+      ]
+    },
+    {
+      "slug": "nationality-decree",
+      "titleKo": "국적법 시행령",
+      "versions": [
+        {
+          "effectiveFrom": "2022-12-20",
+          "articleCount": 50,
+          "priorityArticles": {
+            "3": true,
+            "4": true
+          },
+          "translationAlignment": "PARTIAL",
+          "englishArticleCount": 47
+        }
+      ]
+    },
+    {
+      "slug": "nationality-rule",
+      "titleKo": "국적법 시행규칙",
+      "versions": [
+        {
+          "effectiveFrom": "2026-10-02",
+          "articleCount": 27,
+          "priorityArticles": {
+            "3": true,
+            "4": true,
+            "5": true
+          },
+          "translationAlignment": "NOT_AVAILABLE",
+          "englishArticleCount": null
+        }
+      ]
+    },
+    {
+      "slug": "foreign-workers-act",
+      "titleKo": "외국인근로자의 고용 등에 관한 법률",
+      "versions": [
+        {
+          "effectiveFrom": "2025-10-01",
+          "articleCount": 44,
+          "priorityArticles": {
+            "8": true,
+            "18": true,
+            "25": true
+          },
+          "translationAlignment": "ALIGNED",
+          "englishArticleCount": 44
+        }
+      ]
+    },
+    {
+      "slug": "foreign-workers-decree",
+      "titleKo": "외국인근로자의 고용 등에 관한 법률 시행령",
+      "versions": [
+        {
+          "effectiveFrom": "2023-02-03",
+          "articleCount": 43,
+          "priorityArticles": {
+            "13-4": true,
+            "14": true
+          },
+          "translationAlignment": "PARTIAL",
+          "englishArticleCount": 42
+        }
+      ]
+    },
+    {
+      "slug": "foreign-workers-rule",
+      "titleKo": "외국인근로자의 고용 등에 관한 법률 시행규칙",
+      "versions": [
+        {
+          "effectiveFrom": "2025-06-02",
+          "articleCount": 32,
+          "priorityArticles": {
+            "5": true,
+            "9": true,
+            "14": true
+          },
+          "translationAlignment": "NOT_AVAILABLE",
+          "englishArticleCount": null
+        }
+      ]
     }
   ],
   "annex7": {
@@ -103,8 +271,8 @@
     "path": "annexes/immigration-rule-annex-7/versions/2026-01-23"
   },
   "totals": {
-    "koreanArticlesStored": 1129,
-    "articlesWithAlignedOfficialEnglish": 373,
+    "koreanArticlesStored": 1482,
+    "articlesWithAlignedOfficialEnglish": 551,
     "englishBodyTextStored": 0,
     "englishNote": "Official English body text is never stored (KLRI/ministerial copyright, redistribution prohibited). Alignment metadata only."
   },
@@ -115,9 +283,9 @@
       "reason": "국가법령정보센터 영문 페이지가 현행·직전 버전 모두 본문 없이 헤더만 반환함을 2026-11-04 확인"
     },
     {
-      "item": "P1 법령 (재한외국인 처우 기본법, 난민법, 국적법, 외국인고용법 등)",
-      "status": "NOT_STARTED",
-      "reason": "P0 완료 전 확장하지 않는다는 작업 원칙에 따라 이번 범위에 포함하지 않음"
+      "item": "P1 시행규칙 3종 영문본 (난민법·국적법·외국인근로자 고용법 시행규칙)",
+      "status": "NOT_AVAILABLE",
+      "reason": "국가법령정보센터 영문 페이지가 현행 버전에서 본문 없이 헤더만 반환함을 2026-11-05 확인. 부처 시행규칙은 출입국관리법 시행규칙과 동일하게 영문 본문이 제공되지 않는 패턴"
     }
   ]
 }

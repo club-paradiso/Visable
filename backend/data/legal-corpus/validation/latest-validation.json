@@ -1,8 +1,8 @@
 {
-  "validatedAt": "2026-11-04",
-  "basis": "기준일 2026-11-04 수집본. 재검증은 backend/tests/test_legal_corpus_data.py 실행으로 대체된다.",
+  "validatedAt": "2026-11-05",
+  "basis": "P1 확장(2026-11-05) 후 재검증. 재검증은 backend/tests/test_legal_corpus_data.py 실행으로 대체된다.",
   "ok": true,
   "errors": [],
   "warnings": [],
-  "versionsChecked": 6
+  "versionsChecked": 16
 }

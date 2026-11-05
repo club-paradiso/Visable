@@ -195,6 +195,129 @@ def test_validate_metadata_rejects_missing_field():
 
 
 # ---------------------------------------------------------------------------
+# title block — ministries beyond the original whitelist
+# ---------------------------------------------------------------------------
+
+def test_title_block_accepts_any_ministry_ordinance():
+    from backend.services.legal_corpus.parser import parse_title_block
+
+    block = parse_title_block("[시행 2025. 6. 2.] [고용노동부령 제442호, 2025. 6. 2., 일부개정]")
+    assert block is not None
+    assert block["lawKindKo"] == "고용노동부령"
+    assert block["promulgationNo"] == "442"
+    assert block["effectiveFrom"] == "2025-06-02"
+    block2 = parse_title_block("[시행 2026. 10. 23.] [법무부령 제1172호, 2026. 10. 23., 일부개정]")
+    assert block2 is not None and block2["lawKindKo"] == "법무부령"
+
+
+# ---------------------------------------------------------------------------
+# HTTP client — truncated chunked responses are retried, never used partial
+# ---------------------------------------------------------------------------
+
+def test_client_retries_on_incomplete_read():
+    import http.client
+    import urllib.request
+    from unittest import mock
+
+    from backend.services.legal_corpus.client import LawGoKrClient
+
+    class _Resp:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+        def read(self):
+            return b"<html>ok</html>"
+
+    calls = {"n": 0}
+
+    def flaky_urlopen(req, timeout=None):
+        calls["n"] += 1
+        if calls["n"] < 3:
+            raise http.client.IncompleteRead(b"partial-bytes")
+        return _Resp()
+
+    client = LawGoKrClient(retries=3, sleep=lambda s: None)
+    with mock.patch.object(urllib.request, "urlopen", flaky_urlopen):
+        assert client._get("https://www.law.go.kr/example") == "<html>ok</html>"
+    assert calls["n"] == 3
+
+
+# ---------------------------------------------------------------------------
+# sync fallback — a failed fetch keeps the stored snapshot in the manifest
+# ---------------------------------------------------------------------------
+
+def test_stored_result_fallback_rebuilds_from_disk(tmp_path):
+    import json as _json
+
+    from backend.services.legal_corpus.sync import CorpusSync
+
+    vdir = tmp_path / "laws" / "demo-act" / "versions" / "2025-01-01"
+    vdir.mkdir(parents=True)
+    articles_doc = {
+        "lawId": "000000", "lawSlug": "demo-act", "effectiveFrom": "2025-01-01",
+        "articles": [{"articleId": "1", "articleNumber": "1", "branchNumber": 0,
+                      "titleKo": "목적", "deleted": False, "paragraphs": ["본문"],
+                      "text": "본문", "textSha256": "x" * 64}],
+    }
+    (vdir / "articles.ko.json").write_text(_json.dumps(articles_doc), encoding="utf-8")
+    (vdir / "translation.json").write_text(
+        _json.dumps({"status": "NOT_AVAILABLE", "pairs": [], "englishArticleCount": None}), encoding="utf-8"
+    )
+    previous_entry = {
+        "slug": "demo-act",
+        "versions": [{"effectiveFrom": "2025-01-01", "path": "laws/demo-act/versions/2025-01-01",
+                      "translationAlignment": "NOT_AVAILABLE"}],
+    }
+    law = {"slug": "demo-act", "priority_articles": ["1"]}
+    sync = CorpusSync(tmp_path)
+    result = sync._stored_result(law, previous_entry)
+    assert result is not None
+    assert result["versions"] == previous_entry["versions"]
+    assert result["built"][0]["articlesDoc"]["articles"][0]["articleId"] == "1"
+    assert sync._stored_result(law, None) is None
+
+
+# ---------------------------------------------------------------------------
+# sync — an English fetch failure must never become a NOT_AVAILABLE finding
+# ---------------------------------------------------------------------------
+
+def test_sync_en_fetch_failure_fails_law_instead_of_faking_not_available(tmp_path):
+    from backend.services.legal_corpus.client import LawSourceError
+    from backend.services.legal_corpus.sync import CorpusSync
+
+    ko_html = """<html><body>
+    <div>[시행 2025. 1. 1.] [법률 제12345호, 2025. 1. 1., 제정]</div>
+    <p class="pty1_p4"><input type="checkbox" name="joNoList" value="1:0:000100:1" /> <span class="bl">제1조(목적)</span> 이 법은 목적을 정한다.</p>
+    </body></html>"""
+
+    class _StubClient:
+        def discover_current(self, title_ko):
+            return "999999", "20250101"
+
+        def fetch_law_body_html(self, mst, effective_from):
+            return ko_html
+
+        def fetch_english_body_html(self, mst):
+            raise LawSourceError("network", "simulated outage")
+
+    law = {
+        "slug": "demo-act", "lawId": "000001", "titleKo": "데모법", "titleEn": "DEMO ACT",
+        "jurisdiction": "KR", "lawType": "ACT", "priority": "P1",
+        "known_versions": [{"mst": "999999", "effectiveFrom": "2025-01-01"}],
+        "priority_articles": ["1"],
+    }
+    sync = CorpusSync(tmp_path)
+    sync.client = _StubClient()
+    assert sync.sync_law(law) is None
+    assert any(e.get("stage") == "fetch-en" for e in sync.report["errors"])
+    # …and no version directory with a fabricated translation status exists.
+    assert not (tmp_path / "laws" / "demo-act").exists()
+
+
+# ---------------------------------------------------------------------------
 # adapter — date-based version selection and safety states
 # ---------------------------------------------------------------------------
 
