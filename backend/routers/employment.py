@@ -10,6 +10,7 @@ objects (``pb.X`` is a closure variable of the factory, not a module global).
 
 from typing import Any, Dict
 from fastapi import APIRouter, Depends, HTTPException
+from services.model_policy import EMPLOYMENT_GROQ_FREE_MODEL
 
 
 def build_router(pb) -> APIRouter:
@@ -18,7 +19,7 @@ def build_router(pb) -> APIRouter:
 
     @router.post(
         "/api/employment/interpret",
-        dependencies=[Depends(pb.rate_limit("employment_interpret", per_minute=12, per_day=300))],
+        dependencies=[Depends(pb.rate_limit("employment_interpret", per_minute=8, per_day=120))],
     )
     async def employment_interpret(req: pb.EmploymentInterpretRequest) -> Any:
         """Extract structured job facts from free text for the 취업정보 신고 helper.
@@ -38,7 +39,10 @@ def build_router(pb) -> APIRouter:
             return {"status": "empty_input", "extraction": pb._employment_nl.empty_extraction(),
                     "analyzerInput": None, "interpretation": "", "warnings": []}
 
-        if not any(pb._providers_configured().values()):
+        # Employment extraction is Groq-only, independent from OpenRouter's
+        # global provider routing. A missing Groq key must NEVER silently use
+        # OpenRouter or another potentially billable hosted provider.
+        if not pb.GROQ_API_KEY:
             # The guided/deterministic flow in the UI is unaffected; only the
             # free-sentence convenience layer is unavailable.
             return {
@@ -51,7 +55,10 @@ def build_router(pb) -> APIRouter:
                 "fallbackAvailable": True,
             }
 
-        prompt = pb._employment_nl.build_extraction_prompt(text, lang=lang)
+        # Only send a short, identifier-redacted job description to Groq.
+        # The raw input remains local for the deterministic KSCO/KSIC matcher.
+        safe_text = pb._employment_nl.redact_personal_identifiers(text)
+        prompt = pb._employment_nl.build_extraction_prompt(safe_text, lang=lang)
 
         def _interpret_unavailable(reason: str) -> Dict[str, Any]:
             # The deterministic analyzer is the fallback, so the raw sentence still
@@ -66,26 +73,30 @@ def build_router(pb) -> APIRouter:
                 "fallbackAvailable": True,
             }
 
-        # Same defect as the AI Overview endpoint: the helper returns a RESULT DICT,
-        # not a (text, meta) tuple, so this unpack raised ValueError on every call
-        # and the bare ``except Exception`` reported a provider failure that had not
-        # happened. Employment interpretation never once ran in production.
+        # Single allow-listed Groq model. Do not retry with OpenRouter, 120B,
+        # auto-routing or a paid model when free-tier limits are reached.
         try:
-            attempt_meta = await pb._openrouter_complete_with_candidates(prompt)
+            raw = await pb._call_groq(
+                prompt,
+                model=EMPLOYMENT_GROQ_FREE_MODEL,
+                response_format=pb._employment_nl.groq_strict_response_format(),
+                reasoning_effort="low",
+                max_tokens=1800,
+                timeout_seconds=12,
+            )
         except HTTPException as exc:
-            detail = exc.detail if isinstance(exc.detail, dict) else {}
-            reason, _retryable = pb._classify_openrouter_error(
-                detail.get("status", exc.status_code), detail.get("message"), detail.get("error")
+            upstream = (exc.detail or {}) if isinstance(exc.detail, dict) else {}
+            code = upstream.get("status", exc.status_code)
+            reason = (
+                "rate_limited" if code == 429 else
+                "invalid_provider_credentials" if code in (401, 403) else
+                "invalid_model" if code == 404 else
+                "timeout" if code == 504 else
+                "provider_error"
             )
             return _interpret_unavailable(reason)
         except Exception:
             return _interpret_unavailable("provider_error")
-
-        if not attempt_meta.get("ok") or not (attempt_meta.get("answer") or "").strip():
-            return _interpret_unavailable(
-                str(attempt_meta.get("provider_error_type") or "provider_error")
-            )
-        raw = attempt_meta["answer"]
 
         try:
             known_codes = {
@@ -118,8 +129,8 @@ def build_router(pb) -> APIRouter:
             "clarificationQuestion": data.get("clarificationQuestion", ""),
             "warnings": validated["warnings"],
             "fallbackAvailable": True,
-            "provider": "openrouter",
-            "model": attempt_meta.get("final_model") or "",
+            "provider": "groq",
+            "model": EMPLOYMENT_GROQ_FREE_MODEL,
             "notice": ("직종·업종 코드는 이 단계에서 만들지 않습니다. 아래 후보는 공식 분류표에서 "
                        "검색한 결과이며, 최종 확정은 하이코리아에서 확인하세요."
                        if lang == "ko" else
