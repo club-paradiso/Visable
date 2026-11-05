@@ -466,12 +466,34 @@ _QUERY_EXPANSIONS: Tuple[Tuple[Tuple[str, ...], str], ...] = (
 )
 
 
-def expand_query(question: str, *, issue_concepts: Optional[List[str]] = None, statute_anchors: Optional[List[str]] = None, max_variants: int = 4) -> List[str]:
+# Bare case-name keywords per issue.  ``search_cases`` runs DRF ``target=prec``
+# with ``search=1`` (case-name search): the long expansion phrases in
+# ``_QUERY_EXPANSIONS`` almost never appear verbatim in a case name, so in
+# production they returned zero rows, while a bare keyword returned on-topic
+# titles (measured 2026-11-05 on the production endpoint: 강제퇴거 6,
+# 출국명령 3, 귀화 7, 난민 10, 사증발급 7, 체류자격변경 2, 체류기간연장 9 —
+# every planner-style phrase returned 0).  Keywords are therefore tried
+# BEFORE the broad statute-name anchor and the phrase expansions.
+_QUERY_KEYWORDS: Tuple[Tuple[Tuple[str, ...], Tuple[str, ...]], ...] = (
+    (("강제퇴거", "출국명령", "deportation", "removal", "departure order"), ("강제퇴거", "출국명령")),
+    (("귀화", "국적", "naturalization", "nationality"), ("귀화",)),
+    (("난민", "인도적", "refugee", "asylum", "humanitarian"), ("난민",)),
+    (("사증발급", "비자발급", "visa issuance"), ("사증발급",)),
+    (("체류자격 변경", "자격변경", "변경허가", "status change", "change of status",
+      "change my status", "change status"), ("체류자격변경",)),
+    (("체류기간 연장", "연장허가", "extension", "extend"), ("체류기간연장",)),
+    (("외국인등록", "거소신고", "registration"), ("외국인등록",)),
+)
+
+
+def expand_query(question: str, *, issue_concepts: Optional[List[str]] = None, statute_anchors: Optional[List[str]] = None, max_variants: int = 6) -> List[str]:
     """Build a small set of Korean case-law queries from the question.
 
     Deterministic and network-free. The first variant is the (cleaned) question;
-    subsequent variants add statute-anchored, domain-expanded phrasings so a thin
-    English question still retrieves Korean adjudicative evidence.
+    subsequent variants add issue concepts, bare case-name keywords (which the
+    DRF case-name search can actually match), statute anchors and
+    domain-expanded phrasings so a thin English question still retrieves Korean
+    adjudicative evidence.
     """
     text = " ".join(str(question or "").split())
     low = text.lower()
@@ -486,6 +508,10 @@ def expand_query(question: str, *, issue_concepts: Optional[List[str]] = None, s
         add(text)
     for concept in issue_concepts or []:
         add(str(concept))
+    for triggers, keywords in _QUERY_KEYWORDS:
+        if any(t.lower() in low for t in triggers):
+            for kw in keywords:
+                add(kw)
     for anchor in statute_anchors or []:
         add(str(anchor))
     for triggers, expansion in _QUERY_EXPANSIONS:
@@ -1034,13 +1060,25 @@ def retrieve_legal_evidence(
             env = cli.search_cases(qv, source_type=source_type, search=search, display=max(3, max_cases))
             status = env.get("status")
             if status == "available":
+                added = False
                 for c in env.get("cases", []):
                     key = (c.source_type, c.source_id or c.case_number or c.case_name)
                     if key in seen_ids:
                         continue
                     seen_ids.add(key)
                     collected.append(c)
-                break  # first query variant that yields results is enough per type
+                    added = True
+                # Stop early only once a case actually passes the relevance
+                # gate.  The previous break-on-first-hit let a broad statute
+                # name variant ("출입국관리법" -> criminal-title cases) shadow
+                # the on-topic keyword variants behind it; the whole pool was
+                # then gated out and reported as no_relevant_results even
+                # though on-topic precedents exist (production, 2026-11-05).
+                if added and any(
+                    case_is_relevant(c, query=q)
+                    for c in rank_cases(collected, query=q, issue_concepts=issue_concepts, statute_refs=statute_refs)
+                ):
+                    break
             if status in {"unavailable", "error"}:
                 any_unavailable = True
                 for w in env.get("warnings", []):
