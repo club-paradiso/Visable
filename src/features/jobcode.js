@@ -357,7 +357,7 @@ function renderJobcodeList(rows, box, type, query, terms, opts = {}) {
     // only the long browse list keeps its own scroll area.
     box.classList.toggle('is-guided', !!opts.collapse);
     if (!rows.length) { box.innerHTML = jobcodeEmptyHtml(type); return; }
-    const MAX = 60;
+    const MAX = opts.collapse ? 8 : 60;
     const top = rows[0] ? (rows[0]._score || 0) : 0;
     const card = (r) => renderJobcodeCard(r, query, terms, { conf: jcConfLabel(r, top) });
     const groupHead = (label) => `<div class="jc2-group-head">${escapeHtml(label)}</div>`;
@@ -448,9 +448,13 @@ async function openJobCodeModal() {
     openModal('jobCodeModalOverlay');
     updateJobcodeNaturalSearchLabel();
     _jcFilter = 'all'; _jcLevel = 'all'; _jcSelected = { occupation: null, industry: null }; _jcIncome = '';
+    ++_jcAnalysisRequest; // invalidate any pending request from a prior opening
     _jcAnalysis = null; _jcResultCounts = { occupation: null, industry: null }; _jcClarificationAnswered = false;
     _jcFlow = { state: 'idle', revealed: false };
     jcResetAnswered();
+    const root = document.querySelector('#jobCodeModalOverlay .jc2');
+    if (root) root.classList.remove('jc2--editing');
+    jcSetSearchStatus('');
     jcSetStep('ask');
     setJobcodeFilter('all');
     setJobcodeLevel('all');
@@ -520,22 +524,48 @@ function jcRevealAnswer() {
     root.classList.add('jc2--answered', 'jc2--has-query');
     jcSetStep('result');
 }
-// Two screens. 'ask' = the question and the input, nothing else. 'result' =
-// what Visable understood, one recommendation per side, the memo. The input
-// is hidden on 'result' so a slow typist never sees the screen change under
-// them; "다시 적기" is the one way back.
-function jcSetStep(step) {
+// One continuous surface: keep editable search visible with the results.
+// Draft edits invalidate stale candidates, without hiding or navigating away from input.
+function jcSetStep(step, shouldScroll = true) {
     const root = document.querySelector('#jobCodeModalOverlay .jc2');
     if (!root) return;
     root.dataset.jcStep = step === 'result' ? 'result' : 'ask';
+    if (step === 'result') root.classList.remove('jc2--editing');
     if (step !== 'result') root.classList.remove('jc2--answered');
     const bar = document.getElementById('jcStepbar');
-    if (bar) bar.hidden = step !== 'result';
-    const said = document.getElementById('jcYouSaid');
+    if (bar) bar.hidden = true;
     const input = document.getElementById('jcSearchInput');
+    const said = document.getElementById('jcYouSaid');
     if (said) said.textContent = input ? input.value.trim() : '';
     const body = root.closest('.modal-body') || root;
-    if (body && typeof body.scrollTo === 'function') { try { body.scrollTo({ top: 0 }); } catch (_) { body.scrollTop = 0; } }
+    if (shouldScroll && body && typeof body.scrollTo === 'function') {
+        try { body.scrollTo({ top: 0 }); } catch (_) { body.scrollTop = 0; }
+    }
+}
+function jcSetSearchStatus(message) {
+    const el = document.getElementById('jcSearchStatus');
+    if (el) { el.textContent = message || ''; el.hidden = !message; }
+}
+function jcEditQuery() {
+    const root = document.querySelector('#jobCodeModalOverlay .jc2');
+    if (!root || root.dataset.jcStep !== 'result') return;
+    ++_jcAnalysisRequest;
+    _jcAnalysis = null;
+    _jcClarificationAnswered = false;
+    _jcSelected = { occupation: null, industry: null };
+    _jcResultCounts = { occupation: null, industry: null };
+    _jcFlow = { state: 'idle', revealed: false };
+    const spinner = document.getElementById('jcAiSpinner');
+    if (spinner) { spinner.style.display = 'none'; if (spinner.parentElement) spinner.parentElement.disabled = false; }
+    const results = document.getElementById('jcResults');
+    if (results) results.removeAttribute('aria-busy');
+    jcSetSearchStatus('');
+    root.classList.add('jc2--editing');
+    jcSetStep('ask', false);
+    clearEmploymentAnalysisUI();
+    renderJobcodeSelectedSummary();
+    renderEmploymentChecklist();
+    jcApplyFlow();
 }
 function jcGoBackToAsk() {
     jcSetStep('ask');
@@ -596,6 +626,7 @@ function selectJobcode(type, code) {
     _jcSelected[type] = { code, name: jcName(row) };
     renderJobcodeSelectedSummary();
     renderEmploymentChecklist();   // candidate confirmed → step turns complete
+    jcApplyFlow();                 // final checklist only after both choices
     // refresh select-button states in the relevant pane
     const boxId = type === 'occupation' ? 'jcJobResults' : 'jcIndResults';
     const box = document.getElementById(boxId);
@@ -642,6 +673,16 @@ function renderJobcodeSelectedSummary() {
     // end of the content instead of covering the candidates.
     const sum = document.getElementById('jcSummary');
     if (sum) sum.classList.toggle('is-active', !!(_jcSelected.occupation || _jcSelected.industry));
+    const copyBtn = document.getElementById('jcCopyBtn');
+    if (copyBtn) {
+        const ready = !!(_jcSelected.occupation && _jcSelected.industry);
+        const label = document.getElementById('jcCopyLabel');
+        if (label) label.textContent = ready ? tx('jobCodeCopyMemo')
+            : (currentLanguage === 'zh-CN' ? '请先选择职业和行业' : jcEnLike() ? 'Choose occupation and industry first' : '직종·업종을 먼저 선택하세요');
+        copyBtn.disabled = !ready;
+        copyBtn.setAttribute('aria-disabled', String(!ready));
+        copyBtn.title = ready ? '' : (currentLanguage === 'zh-CN' ? '请先选择职业和行业' : jcEnLike() ? 'Choose both occupation and industry first' : '직종과 업종을 모두 선택하면 복사할 수 있어요');
+    }
     // Compact result-header status: the two taxonomies are separate decisions.
     // Announce progress without adding another step or hiding either list.
     const progress = document.getElementById('jcChoiceProgress');
@@ -665,6 +706,7 @@ function buildJobcodeMemo() {
     ].join('\n');
 }
 function copyJobcodeMemo() {
+    if (!_jcSelected.occupation || !_jcSelected.industry) return;
     const btn = document.getElementById('jcCopyBtn');
     const label = document.getElementById('jcCopyLabel') || btn;
     const text = buildJobcodeMemo();
@@ -846,7 +888,7 @@ function renderEmploymentFollowupChips(analysis) {
     el.hidden = false;
     el.innerHTML = `<div class="jc2-refine-h">${jcIcon('plus')}<span>${currentLanguage === 'zh-CN' ? '后续选择 — 点击以进一步细化' : jcEnLike() ? 'Follow-up — tap to narrow further' : '후속 선택 — 눌러서 더 구체화'}</span></div>`
         + `<div class="jc2-refine-chips">`
-        + chips.slice(0, 14).map((c) => `<button type="button" class="jc2-refine-chip" data-jc-refine="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('')
+        + chips.slice(0, 5).map((c) => `<button type="button" class="jc2-refine-chip" data-jc-refine="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('')
         + `</div>`;
     el.querySelectorAll('.jc2-refine-chip').forEach((btn) => {
         btn.onclick = () => {
@@ -879,26 +921,11 @@ function jcApplyFlow() {
         ? C.employmentFlowState({ analyzerResult: _jcAnalysis, clarificationAnswered: _jcClarificationAnswered, candidatesRevealed: _jcFlow.revealed, hasCandidates })
         : (_jcAnalysis ? 'showing_candidates' : 'idle');
     _jcFlow.state = state;
-    const gated = state === 'needs_clarification';
-    const shown = state === 'showing_candidates';
-    // Candidates are hidden ONLY while a fork question is pending (gated). In idle
-    // they stay visible for the keyword-browse path; the income reminder + final
-    // checklist appear once the guided flow reaches candidates.
-    jcShow('jcResults', !gated);
-    // 연간소득 안내는 신고 준비 단계(3단계)와 요약의 소득 선택칸이 이미 보여주므로 별도 카드는 숨긴다.
+    // Clarification is optional, not a gate blocking the official candidate list.
+    jcShow('jcResults', true);
+    jcShow('jcResultsGate', false);
     jcShow('jcIncomeReminder', false);
-    jcShow('jcFinalCheck', shown);
-    jcShow('jcResultsGate', gated);
-    if (gated) {
-        const gate = document.getElementById('jcResultsGate');
-        if (gate) {
-            gate.innerHTML = `<div class="jc2-gate-h">${jcIcon('lock')}<span>${escapeHtml(jcChecklistCopy('flow.gateTitle'))}</span></div>`
-                + `<p class="jc2-gate-b">${escapeHtml(jcChecklistCopy('flow.gateBody'))}</p>`
-                + `<button type="button" class="jc2-gate-btn" id="jcRevealBtn">${escapeHtml(jcChecklistCopy('flow.reveal'))}</button>`;
-            const rb = gate.querySelector('#jcRevealBtn');
-            if (rb) rb.onclick = () => { _jcFlow.revealed = true; jcApplyFlow(); };
-        }
-    }
+    jcShow('jcFinalCheck', !!(_jcSelected.occupation && _jcSelected.industry));
 }
 /* UX-08 `Emp / Special States` (node 442:39).
    Renders the states buildSpecialStates() derived, each with the one next
@@ -1176,6 +1203,9 @@ async function searchJobcodeWithAI() {
     const input = inputEl ? inputEl.value.trim() : '';
     if (!input) { showToast(currentLanguage === 'zh-CN' ? '请在搜索框中填写您的工作或营业场所（例：中餐厅厨师长）。' : jcEnLike() ? 'Please describe your job or workplace in the search box (e.g. Chinese-restaurant head chef).' : "검색창에 본인의 일이나 사업장을 적어주세요 (예: 중식당 주방장)."); return; }
     jcSetStep('result');
+    jcSetSearchStatus(currentLanguage === 'zh-CN' ? '正在查找…' : jcEnLike() ? 'Finding matching codes…' : '직종·업종 후보를 찾고 있어요…');
+    const busyResults = document.getElementById('jcResults');
+    if (busyResults) busyResults.setAttribute('aria-busy', 'true');
     const requestId = ++_jcAnalysisRequest;
     const isCurrentRequest = () => requestId === _jcAnalysisRequest && inputEl.value.trim() === input;
     const jobBox = document.getElementById('jcJobResults'), indBox = document.getElementById('jcIndResults'), spinner = document.getElementById('jcAiSpinner');
@@ -1189,7 +1219,9 @@ async function searchJobcodeWithAI() {
         if (!_jobcodeData) { try { await loadJobcodeData(); } catch (_) {
             const msg = currentLanguage === 'zh-CN' ? '当前无法使用分析功能。请填写得更具体一些，或稍后再试。' : jcEnLike() ? 'The lookup tool is unavailable right now. Try a more specific description or try again later.' : '지금은 분석 기능을 사용할 수 없어요. 더 구체적으로 적거나 잠시 후 다시 시도해 주세요.';
             const html = `<div class="jc2-empty">${escapeHtml(msg)}</div>`;
-            if (jobBox) jobBox.innerHTML = html; if (indBox) indBox.innerHTML = html; return;
+            if (jobBox) jobBox.innerHTML = html; if (indBox) indBox.innerHTML = html;
+            jcSetSearchStatus(msg);
+            return;
         } }
         // Deterministic analyzer: entity extraction → interpretation, ambiguity
         // chips, tips, AND entity-aware terms fed into the existing scorer.
@@ -1267,9 +1299,10 @@ async function searchJobcodeWithAI() {
         _jcResultCounts = { occupation: jobRows.length, industry: indRows.length };
         renderEmploymentChecklist();
         renderEmploymentWeakHelp(analysis, jobRows.length, indRows.length);
-        // Progressive flow: gate candidates behind a pending fork question.
+        // Show candidates with optional clarifications, never behind a gate.
         jcApplyFlow();
         jcRevealAnswer();
+        jcSetSearchStatus(currentLanguage === 'zh-CN' ? `已找到候选项 · 职业 ${jobRows.length} · 行业 ${indRows.length}` : jcEnLike() ? `Candidates found · Occupation ${jobRows.length} · Industry ${indRows.length}` : `후보 검색 완료 · 직종 ${jobRows.length}건 · 업종 ${indRows.length}건`);
         const badge = document.getElementById('jcCountBadge');
         if (badge) badge.hidden = true;
         if (badge) badge.textContent = currentLanguage === 'zh-CN' ? `职业 ${jobRows.length} · 行业 ${indRows.length}` : jcEnLike() ? `Occupation ${jobRows.length} · Industry ${indRows.length}` : `직종 ${jobRows.length} · 업종 ${indRows.length}`;
@@ -1278,9 +1311,17 @@ async function searchJobcodeWithAI() {
             if (jobBox) jobBox.insertAdjacentHTML('afterbegin', noteHtml);
         }
     } catch (e) {
+        if (requestId !== _jcAnalysisRequest) return;
         const errorHtml = `<div class="jc2-empty" style="color:var(--color-error);">${currentLanguage === 'zh-CN' ? '自然语言搜索出错' : jcEnLike() ? 'Natural-language search error' : '자연어 검색 오류'}: ${escapeHtml(e.message)}</div>`;
         if (jobBox) jobBox.innerHTML = errorHtml; if (indBox) indBox.innerHTML = errorHtml;
-    } finally { if (requestId === _jcAnalysisRequest) { if (btn) btn.disabled = false; if (spinner) spinner.style.display = 'none'; } }
+        jcSetSearchStatus(currentLanguage === 'zh-CN' ? '请修改描述后重试' : jcEnLike() ? 'Edit your description and try again' : '설명을 수정하고 다시 찾아보세요.');
+    } finally {
+        if (requestId === _jcAnalysisRequest) {
+            if (btn) btn.disabled = false;
+            if (spinner) spinner.style.display = 'none';
+            if (busyResults) busyResults.removeAttribute('aria-busy');
+        }
+    }
 }
 // DOMContentLoaded wiring for the search field and the income bracket select (moved from the inline
 // DOMContentLoaded handler; called from there at the same point).
@@ -1289,13 +1330,14 @@ function wireJobcodeInputs() {
     if (jcSearchInput) {
         jcSearchInput.addEventListener('input', (e) => {
             clearTimeout(_jcSearchDebounce); clearTimeout(_jcAutoAnalyzeDebounce);
+            jcEditQuery();
             const v = e.target.value;
             _jcSearchDebounce = setTimeout(() => renderJobcodeResults(v), 200);
             // 타이핑이 멈췄다고 자동 분석하지 않는다 — 결과 화면으로 넘어가 버리면
             // 천천히 입력하는 사람은 쓰던 문장을 잃는다. Enter 또는 버튼으로만 찾는다.
         });
         jcSearchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') { clearTimeout(_jcSearchDebounce); clearTimeout(_jcAutoAnalyzeDebounce); searchJobcodeWithAI(); }
+            if (e.key === 'Enter' && !e.isComposing && e.keyCode !== 229) { clearTimeout(_jcSearchDebounce); clearTimeout(_jcAutoAnalyzeDebounce); searchJobcodeWithAI(); }
         });
     }
     // Income bracket choice → checklist step 3 reflects a (draft) user selection.
