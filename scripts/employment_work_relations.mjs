@@ -17,7 +17,7 @@ const EN_STAFF_TARGETS = [
   'developers', 'designers', 'engineers', 'drivers', 'cleaners',
   'instructors', 'contractors', 'chefs', 'cooks', 'interpreters'
 ];
-const KO_MANAGING = '관리|채용|선발|배치|감독|총괄|조율|운영|근태|인사|급여|연수|훈련|교육|스케줄|일정|코디네이|지원';
+const KO_MANAGING = '관리|채용|선발|배치|감독|총괄|조율|운영|근태|인사|급여|연수|훈련|교육|스케줄|일정|코디네이|지원|담당';
 const EN_MANAGING = '(?:manag(?:e|es|ing|ement)?|supervis(?:e|es|ing|ion)?|hir(?:e|es|ing)?|recruit(?:s|ing|ment)?|schedul(?:e|es|ing)?|coordinat(?:e|es|ing|ion)?|oversee|overseeing|train(?:s|ing)?|staffing)';
 const escapeRx = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -97,9 +97,11 @@ export function inferEmploymentRelation(text, roleSurfaces = []) {
   const hit = findManagedTarget(query, roleSurfaces);
   if (!hit) return null;
   const own = explicitPersonalRole(query, roleSurfaces);
-  const duty = dutyFamily(query);
+  // Classify the action attached to the human target, not incidental nouns
+  // elsewhere in the sentence (e.g. 교육청 is a workplace, not training work).
+  const duty = dutyFamily(hit.phrase);
   const educationAuthority = /교육청|교육지원청|(?:office of education|education authority|education department)/i.test(query);
-  const specificDuty = duty !== 'coordination' || /(?:채용|배치|인사|근태|급여|연수|훈련|일정|스케줄|행정|supervis|hire|recruit|train|schedule)/i.test(query);
+  const specificDuty = duty !== 'coordination' || /(?:채용|배치|인사|근태|급여|연수|훈련|일정|스케줄|supervis|hire|recruit|train|schedule)/i.test(hit.phrase);
   const roleNames = ROLE_CANDIDATE_NAMES[duty].slice();
   if (educationAuthority) {
     if (!roleNames.includes('기타 정부 행정 사무원')) roleNames.push('기타 정부 행정 사무원');
