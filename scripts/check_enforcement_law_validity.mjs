@@ -113,6 +113,57 @@ try {
   assert.ok(apiRejected.limitations.some((item) => item.includes('upstream_authorization_or_registration_error')));
   assert.notEqual(apiRejected.status, 'VERIFIED');
 
+  // Public-endpoint fallback: when the DRF Open API rejects the caller
+  // (unregistered server IP/domain for the OC — the production failure),
+  // the credential-free public law.go.kr pages must still verify the
+  // article texts live. The synthetic annex PDF cannot match the stored
+  // official hash, so the annex stays unverified and the status is
+  // LIMITED — the fallback never inflates a failed check into VERIFIED.
+  const publicSource = require('../lib/enforcement-law-public.js');
+  const syntheticRuleHtml = `<html><body>
+    <p class="pty1_p4"><input type="hidden" name="joNoList" value="0086"/><label>제86조(범칙금의 부과)</label>① 범칙금의 양정기준은 별표 7과 같다.</p>
+    <!-- 별표 서식 시작 -->
+    <div onclick="bylInfoDiv('12')">[별표 7] 범칙금의 양정기준(제86조제1항 관련)
+      <a href="/LSW/flDownload.do?gubun=&amp;flSeq=170813013&amp;bylClsCd=110201">PDF</a></div>
+    <!-- 별표 서식 끝 -->
+  </body></html>`;
+  assert.deepEqual(
+    publicSource.parseAnnexFiles(syntheticRuleHtml, '7'),
+    [{ flSeq: '170813013', bylClsCd: '110201' }],
+  );
+  const syntheticActHtml = `<html><body>
+    <p class="pty1_p4"><input type="hidden" name="joNoList" value="0021"/><label>제21조(근무처의 변경·추가)</label>① 외국인은 근무처를 변경하거나 추가하려면 허가를 받아야 한다.</p>
+    <p>② 세부 사항은 대통령령으로 정한다.</p>
+  </body></html>`;
+  assert.ok(publicSource.parseArticles(syntheticActHtml).get('21').includes('근무처를 변경하거나 추가하려면'));
+
+  globalThis.fetch = async (url) => {
+    const raw = String(url);
+    if (raw.includes('/DRF/')) {
+      return { ok: true, text: async () => JSON.stringify({ result: '사용자 정보 검증에 실패하였습니다.', msg: '서버장비의 IP주소 및 도메인주소를 등록해 주세요.' }) };
+    }
+    if (raw.includes('lsInfoR.do')) {
+      const isRule = raw.includes('lsiSeq=777002');
+      return { ok: true, text: async () => (isRule ? syntheticRuleHtml : syntheticActHtml) };
+    }
+    if (raw.includes('flDownload.do')) {
+      return { ok: true, arrayBuffer: async () => new TextEncoder().encode('not-the-official-pdf').buffer };
+    }
+    const isRulePage = decodeURIComponent(raw).includes('시행규칙');
+    return { ok: true, text: async () => `<a href="lsInfoP.do?lsiSeq=${isRulePage ? '777002' : '777001'}&amp;efYd=${isRulePage ? '20261023' : '20261002'}">현재 법령</a>` };
+  };
+  const publicFallback = await source.groundOfficialLaw({
+    violationCode: 'UNAUTHORIZED_WORKPLACE_CHANGE_ART21_1',
+    violationStartDate: '2026-10-24', violationEndDate: '2026-11-03',
+  }, baseline);
+  assert.equal(publicFallback.temporalVerification.status, 'CONFIRMED');
+  assert.ok(publicFallback.evidence.some((item) => item.id === 'live-law:immigration-act:21'
+    && item.excerpt.includes('근무처를 변경하거나 추가하려면')));
+  assert.ok(publicFallback.evidence.some((item) => item.id === 'live-law:immigration-rule:86'));
+  assert.ok(!publicFallback.evidence.some((item) => item.id === 'live-law:immigration-rule:appendix7'),
+    'annex must stay unverified when the live PDF hash does not match the stored official file');
+  assert.equal(publicFallback.status, 'LIMITED');
+
   // Searching two short variants improves recall but never promotes an
   // unrelated immigration ruling to a "similar case".
   const { retrieveOfficialPrecedents } = require('../lib/enforcement-precedent-grounding.js');
