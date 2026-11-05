@@ -1212,7 +1212,12 @@ async function searchJobcodeWithAI() {
         // 분석기(회귀테스트로 순위까지 검증됨)가 낸 후보를 최상단에 그대로 두고,
         // 인라인 키워드 스코어러 결과는 그 아래를 채우는 보충으로만 쓴다 —
         // 두 스코어러의 가중치 차이로 1위가 뒤바뀌는 문제(예: 서빙인데 조리사가 1위)를 막는다.
-        const jobRows = jcRowsFromAnalysis(analysis && analysis.occupationCandidates, getScoredJobcodeRows('occupation', '', jobKw, 60));
+        // Do not reintroduce the teacher/childcare false positives through the
+        // legacy keyword fallback after the analyzer has recognized that the
+        // person's actual job is administering teacher staffing.
+        const occupationFallback = analysis && analysis.managedTeacherAdministration
+            ? [] : getScoredJobcodeRows('occupation', '', jobKw, 60);
+        const jobRows = jcRowsFromAnalysis(analysis && analysis.occupationCandidates, occupationFallback);
         const indRows = jcRowsFromAnalysis(analysis && analysis.industryCandidates, getScoredJobcodeRows('industry', '', indKw, 60));
         // Guided AI layout: top recommendation vs alternatives. When the analyzer
         // is still clarifying, show "몇 가지 가능성이 있어요" (no false "closest").
