@@ -357,7 +357,7 @@ class CorpusSync:
         if not rule_result:
             return None
         current = rule_result["built"][-1]
-        annex = next((a for a in current["annexes"] if a["titleKo"].startswith("[별표 7]")), None)
+        annex = next((a for a in current.get("annexes", []) if a["titleKo"].startswith("[별표 7]")), None)
         if annex is None:
             self.report["errors"].append({"stage": "annex7", "kind": "parse", "message": "별표 7 not found in Rule annex list"})
             return None
@@ -523,10 +523,17 @@ class CorpusSync:
             if not articles_file.exists():
                 return None
             translation_file = vdir / "translation.json"
+            annexes_file = vdir / "annexes.json"
             built.append(
                 {
+                    "mst": version["sourceIdentifier"],
+                    "effectiveFrom": version["effectiveFrom"],
                     "articlesDoc": json.loads(articles_file.read_text(encoding="utf-8")),
                     "translation": json.loads(translation_file.read_text(encoding="utf-8")) if translation_file.exists() else {},
+                    # Annex 7 sync reads the Rule's annex list from the built
+                    # version — restore it from the stored annexes.json so a
+                    # fallback result behaves like a freshly synced one.
+                    "annexes": json.loads(annexes_file.read_text(encoding="utf-8")).get("annexes", []) if annexes_file.exists() else [],
                 }
             )
         self.report["laws"].append(
@@ -572,7 +579,7 @@ class CorpusSync:
 
         manifest = {
             "corpus": "Visable Legal Corpus — Korean immigration law (official sources only)",
-            "corpusVersion": "1.1.0",
+            "corpusVersion": "1.2.0",
             "jurisdiction": "KR",
             "languages": ["ko", "en (metadata only — redistribution restricted)"],
             "laws": [
@@ -646,7 +653,7 @@ class CorpusSync:
             laws_cov.append({"slug": law["slug"], "titleKo": law["titleKo"], "versions": versions_cov})
         return {
             "generatedBy": "backend.services.legal_corpus.sync",
-            "scope": "P0 (Immigration Act / Enforcement Decree / Enforcement Rule / MOJ Notice 2020-212 / Annex 7) + P1 (Framework Act on Treatment of Foreigners / Refugee Act family / Nationality Act family / Act on the Employment of Foreign Workers family)",
+            "scope": "P0 (Immigration Act / Enforcement Decree / Enforcement Rule / MOJ Notice 2020-212 / Annex 7) + P1 (Framework Act on Treatment of Foreigners / Refugee Act family / Nationality Act family / Act on the Employment of Foreign Workers family) + P2 (Act on the Immigration and Legal Status of Overseas Koreans family / Multicultural Families Support Act family)",
             "laws": laws_cov,
             "annex7": (
                 {"stored": True, "revisedDate": annex_result["revisedDate"], "path": annex_result["path"]}
@@ -661,7 +668,7 @@ class CorpusSync:
             },
             "notCovered": [
                 {"item": "출입국관리법 시행규칙 영문본", "status": "NOT_AVAILABLE", "reason": "국가법령정보센터 영문 페이지가 현행·직전 버전 모두 본문 없이 헤더만 반환함을 2026-11-04 확인"},
-                {"item": "P1 시행규칙 3종 영문본 (난민법·국적법·외국인근로자 고용법 시행규칙)", "status": "NOT_AVAILABLE", "reason": "국가법령정보센터 영문 페이지가 현행 버전에서 본문 없이 헤더만 반환함을 2026-11-05 확인. 부처 시행규칙은 출입국관리법 시행규칙과 동일하게 영문 본문이 제공되지 않는 패턴"},
+                {"item": "시행규칙 영문본 (P1 3종 + P2 2종: 난민법·국적법·외국인근로자 고용법·재외동포법·다문화가족지원법 시행규칙)", "status": "NOT_AVAILABLE", "reason": "국가법령정보센터 영문 페이지가 현행 버전에서 본문 없이 헤더만 반환함을 2026-11-05 확인. 부처 시행규칙은 출입국관리법 시행규칙과 동일하게 영문 본문이 제공되지 않는 패턴"},
             ],
         }
 

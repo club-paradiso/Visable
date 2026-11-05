@@ -1,6 +1,6 @@
 {
   "generatedBy": "backend.services.legal_corpus.sync",
-  "scope": "P0 (Immigration Act / Enforcement Decree / Enforcement Rule / MOJ Notice 2020-212 / Annex 7) + P1 (Framework Act on Treatment of Foreigners / Refugee Act family / Nationality Act family / Act on the Employment of Foreign Workers family)",
+  "scope": "P0 (Immigration Act / Enforcement Decree / Enforcement Rule / MOJ Notice 2020-212 / Annex 7) + P1 (Framework Act on Treatment of Foreigners / Refugee Act family / Nationality Act family / Act on the Employment of Foreign Workers family) + P2 (Act on the Immigration and Legal Status of Overseas Koreans family / Multicultural Families Support Act family)",
   "laws": [
     {
       "slug": "immigration-act",
@@ -263,6 +263,124 @@
           "englishArticleCount": null
         }
       ]
+    },
+    {
+      "slug": "overseas-koreans-act",
+      "titleKo": "재외동포의 출입국과 법적 지위에 관한 법률",
+      "versions": [
+        {
+          "effectiveFrom": "2025-07-22",
+          "articleCount": 18,
+          "priorityArticles": {
+            "5": true,
+            "6": true,
+            "10": true
+          },
+          "translationAlignment": "ALIGNED",
+          "englishArticleCount": 18
+        }
+      ]
+    },
+    {
+      "slug": "overseas-koreans-decree",
+      "titleKo": "재외동포의 출입국과 법적 지위에 관한 법률 시행령",
+      "versions": [
+        {
+          "effectiveFrom": "2023-12-14",
+          "articleCount": 22,
+          "priorityArticles": {
+            "4": true,
+            "7": true
+          },
+          "translationAlignment": "NOT_AVAILABLE",
+          "englishArticleCount": null
+        },
+        {
+          "effectiveFrom": "2026-03-24",
+          "articleCount": 22,
+          "priorityArticles": {
+            "4": true,
+            "7": true
+          },
+          "translationAlignment": "NOT_AVAILABLE",
+          "englishArticleCount": null
+        }
+      ]
+    },
+    {
+      "slug": "overseas-koreans-rule",
+      "titleKo": "재외동포의 출입국과 법적 지위에 관한 법률 시행규칙",
+      "versions": [
+        {
+          "effectiveFrom": "2025-02-01",
+          "articleCount": 15,
+          "priorityArticles": {
+            "2": true,
+            "3": true
+          },
+          "translationAlignment": "NOT_AVAILABLE",
+          "englishArticleCount": null
+        }
+      ]
+    },
+    {
+      "slug": "multicultural-families-act",
+      "titleKo": "다문화가족지원법",
+      "versions": [
+        {
+          "effectiveFrom": "2025-12-30",
+          "articleCount": 26,
+          "priorityArticles": {
+            "6": true,
+            "11-2": true,
+            "12": true
+          },
+          "translationAlignment": "ALIGNED",
+          "englishArticleCount": 26
+        }
+      ]
+    },
+    {
+      "slug": "multicultural-families-decree",
+      "titleKo": "다문화가족지원법 시행령",
+      "versions": [
+        {
+          "effectiveFrom": "2025-10-01",
+          "articleCount": 22,
+          "priorityArticles": {
+            "11": true,
+            "12": true
+          },
+          "translationAlignment": "NOT_AVAILABLE",
+          "englishArticleCount": null
+        },
+        {
+          "effectiveFrom": "2026-01-02",
+          "articleCount": 22,
+          "priorityArticles": {
+            "11": true,
+            "12": true
+          },
+          "translationAlignment": "NOT_AVAILABLE",
+          "englishArticleCount": null
+        }
+      ]
+    },
+    {
+      "slug": "multicultural-families-rule",
+      "titleKo": "다문화가족지원법 시행규칙",
+      "versions": [
+        {
+          "effectiveFrom": "2025-10-01",
+          "articleCount": 11,
+          "priorityArticles": {
+            "3": true,
+            "5": true
+          },
+          "translationAlignment": "NOT_AVAILABLE",
+          "englishArticleCount": null
+        }
+      ]
     }
   ],
   "annex7": {
@@ -271,8 +389,8 @@
     "path": "annexes/immigration-rule-annex-7/versions/2026-01-23"
   },
   "totals": {
-    "koreanArticlesStored": 1482,
-    "articlesWithAlignedOfficialEnglish": 551,
+    "koreanArticlesStored": 1640,
+    "articlesWithAlignedOfficialEnglish": 595,
     "englishBodyTextStored": 0,
     "englishNote": "Official English body text is never stored (KLRI/ministerial copyright, redistribution prohibited). Alignment metadata only."
   },
@@ -283,7 +401,7 @@
       "reason": "국가법령정보센터 영문 페이지가 현행·직전 버전 모두 본문 없이 헤더만 반환함을 2026-11-04 확인"
     },
     {
-      "item": "P1 시행규칙 3종 영문본 (난민법·국적법·외국인근로자 고용법 시행규칙)",
+      "item": "시행규칙 영문본 (P1 3종 + P2 2종: 난민법·국적법·외국인근로자 고용법·재외동포법·다문화가족지원법 시행규칙)",
       "status": "NOT_AVAILABLE",
       "reason": "국가법령정보센터 영문 페이지가 현행 버전에서 본문 없이 헤더만 반환함을 2026-11-05 확인. 부처 시행규칙은 출입국관리법 시행규칙과 동일하게 영문 본문이 제공되지 않는 패턴"
     }

@@ -186,6 +186,40 @@ def test_p1_translation_alignment_facts():
     assert fd["englishArticleCount"] == 42 and fd["koreanArticleCount"] == 43
 
 
+def test_p2_translation_alignment_facts():
+    """P2 alignment facts verified live against law.go.kr on 2026-11-05."""
+    manifest = _load(CORPUS_ROOT / "manifest.json")
+    by_slug = {law["slug"]: law for law in manifest["laws"]}
+    total_p2_articles = sum(
+        version["articleCount"]
+        for law in registry.P2_LAWS
+        for version in by_slug[law["slug"]]["versions"]
+    )
+    assert total_p2_articles == 158
+
+    # Both decrees carry the in-force version AND the promulgated
+    # not-yet-effective version the site's current pointer names.
+    assert [v["effectiveFrom"] for v in by_slug["overseas-koreans-decree"]["versions"]] == ["2023-12-14", "2026-03-24"]
+    assert [v["effectiveFrom"] for v in by_slug["multicultural-families-decree"]["versions"]] == ["2025-10-01", "2026-01-02"]
+
+    expected_status = {
+        "overseas-koreans-act": "ALIGNED",
+        "overseas-koreans-decree": "NOT_AVAILABLE",
+        "overseas-koreans-rule": "NOT_AVAILABLE",
+        "multicultural-families-act": "ALIGNED",
+        "multicultural-families-decree": "NOT_AVAILABLE",
+        "multicultural-families-rule": "NOT_AVAILABLE",
+    }
+    for slug, status in expected_status.items():
+        for version in by_slug[slug]["versions"]:
+            assert version["translationAlignment"] == status, (slug, version["effectiveFrom"])
+            translation = _load(CORPUS_ROOT / version["path"] / "translation.json")
+            assert translation["status"] == status
+            if status == "ALIGNED":
+                assert translation["englishArticleCount"] == version["articleCount"]
+                assert all(pair["status"] == "ALIGNED" for pair in translation["pairs"])
+
+
 def test_moj_notice_2020_212_stored():
     notice_dir = CORPUS_ROOT / "notices" / "moj-notice-2020-212-workplace-report-eligibility"
     meta = _load(notice_dir / "metadata.json")

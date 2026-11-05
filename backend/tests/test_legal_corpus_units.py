@@ -266,10 +266,13 @@ def test_stored_result_fallback_rebuilds_from_disk(tmp_path):
     (vdir / "translation.json").write_text(
         _json.dumps({"status": "NOT_AVAILABLE", "pairs": [], "englishArticleCount": None}), encoding="utf-8"
     )
+    (vdir / "annexes.json").write_text(
+        _json.dumps({"annexes": [{"titleKo": "[별표 7] 데모", "files": []}]}), encoding="utf-8"
+    )
     previous_entry = {
         "slug": "demo-act",
         "versions": [{"effectiveFrom": "2025-01-01", "path": "laws/demo-act/versions/2025-01-01",
-                      "translationAlignment": "NOT_AVAILABLE"}],
+                      "sourceIdentifier": "999999", "translationAlignment": "NOT_AVAILABLE"}],
     }
     law = {"slug": "demo-act", "priority_articles": ["1"]}
     sync = CorpusSync(tmp_path)
@@ -277,6 +280,11 @@ def test_stored_result_fallback_rebuilds_from_disk(tmp_path):
     assert result is not None
     assert result["versions"] == previous_entry["versions"]
     assert result["built"][0]["articlesDoc"]["articles"][0]["articleId"] == "1"
+    # The stored annex list must be restored too — Annex 7 sync reads it
+    # from the built version and crashed on fallback results without it.
+    assert result["built"][0]["annexes"][0]["titleKo"].startswith("[별표 7]")
+    assert result["built"][0]["mst"] == "999999"
+    assert result["built"][0]["effectiveFrom"] == "2025-01-01"
     assert sync._stored_result(law, None) is None
 
 

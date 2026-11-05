@@ -1,0 +1,17 @@
+{
+  "type": "VERSION_DIFF",
+  "previousVersion": "2023-12-14",
+  "addedArticles": [],
+  "removedArticles": [],
+  "modifiedArticles": [
+    {
+      "articleId": "17-3",
+      "titleKo": null,
+      "oldSha256": "23eae5361de2c3dbdd65fe6ffe1e5167f43438fef1e891a12ad2883b5e4216ec",
+      "newSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "oldDeleted": false,
+      "newDeleted": true
+    }
+  ],
+  "unchangedCount": 21
+}

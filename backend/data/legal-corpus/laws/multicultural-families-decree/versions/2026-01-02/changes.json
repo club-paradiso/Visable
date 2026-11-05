@@ -1,0 +1,17 @@
+{
+  "type": "VERSION_DIFF",
+  "previousVersion": "2025-10-01",
+  "addedArticles": [],
+  "removedArticles": [],
+  "modifiedArticles": [
+    {
+      "articleId": "5",
+      "titleKo": "정책위원회의 구성 등",
+      "oldSha256": "fbf49ff462de84cab119d235e78a0950e02e9abbd927848ad46a5ff1cab91925",
+      "newSha256": "1aea9727394cf70d745f950c5fe876b03a5de496d8623b0db46f4315aefd505d",
+      "oldDeleted": false,
+      "newDeleted": false
+    }
+  ],
+  "unchangedCount": 21
+}

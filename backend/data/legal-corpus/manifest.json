@@ -1,6 +1,6 @@
 {
   "corpus": "Visable Legal Corpus — Korean immigration law (official sources only)",
-  "corpusVersion": "1.1.0",
+  "corpusVersion": "1.2.0",
   "jurisdiction": "KR",
   "languages": [
     "ko",
@@ -308,6 +308,154 @@
           "sourceIdentifier": "271599",
           "path": "laws/foreign-workers-rule/versions/2025-06-02",
           "articleCount": 32,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "NOT_AVAILABLE"
+        }
+      ]
+    },
+    {
+      "slug": "overseas-koreans-act",
+      "lawId": "001999",
+      "titleKo": "재외동포의 출입국과 법적 지위에 관한 법률",
+      "titleEn": "ACT ON THE IMMIGRATION AND LEGAL STATUS OF OVERSEAS KOREANS",
+      "lawType": "ACT",
+      "priority": "P2",
+      "versions": [
+        {
+          "effectiveFrom": "2025-07-22",
+          "promulgationNo": "20677",
+          "promulgationDate": "2025-01-21",
+          "revisionTypeKo": "타법개정",
+          "sourceIdentifier": "268553",
+          "path": "laws/overseas-koreans-act/versions/2025-07-22",
+          "articleCount": 18,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "ALIGNED"
+        }
+      ]
+    },
+    {
+      "slug": "overseas-koreans-decree",
+      "lawId": "004662",
+      "titleKo": "재외동포의 출입국과 법적 지위에 관한 법률 시행령",
+      "titleEn": "ENFORCEMENT DECREE OF THE ACT ON THE IMMIGRATION AND LEGAL STATUS OF OVERSEAS KOREANS",
+      "lawType": "ENFORCEMENT_DECREE",
+      "priority": "P2",
+      "versions": [
+        {
+          "effectiveFrom": "2023-12-14",
+          "promulgationNo": "33919",
+          "promulgationDate": "2023-12-12",
+          "revisionTypeKo": "일부개정",
+          "sourceIdentifier": "256767",
+          "path": "laws/overseas-koreans-decree/versions/2023-12-14",
+          "articleCount": 22,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "NOT_AVAILABLE"
+        },
+        {
+          "effectiveFrom": "2026-03-24",
+          "promulgationNo": "36220",
+          "promulgationDate": "2026-03-24",
+          "revisionTypeKo": "타법개정",
+          "sourceIdentifier": "284843",
+          "path": "laws/overseas-koreans-decree/versions/2026-03-24",
+          "articleCount": 22,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "NOT_AVAILABLE"
+        }
+      ]
+    },
+    {
+      "slug": "overseas-koreans-rule",
+      "lawId": "008011",
+      "titleKo": "재외동포의 출입국과 법적 지위에 관한 법률 시행규칙",
+      "titleEn": "ENFORCEMENT RULE OF THE ACT ON THE IMMIGRATION AND LEGAL STATUS OF OVERSEAS KOREANS",
+      "lawType": "ENFORCEMENT_RULE",
+      "priority": "P2",
+      "versions": [
+        {
+          "effectiveFrom": "2025-02-01",
+          "promulgationNo": "1087",
+          "promulgationDate": "2024-12-24",
+          "revisionTypeKo": "일부개정",
+          "sourceIdentifier": "267499",
+          "path": "laws/overseas-koreans-rule/versions/2025-02-01",
+          "articleCount": 15,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "NOT_AVAILABLE"
+        }
+      ]
+    },
+    {
+      "slug": "multicultural-families-act",
+      "lawId": "010718",
+      "titleKo": "다문화가족지원법",
+      "titleEn": "MULTICULTURAL FAMILIES SUPPORT ACT",
+      "lawType": "ACT",
+      "priority": "P2",
+      "versions": [
+        {
+          "effectiveFrom": "2025-12-30",
+          "promulgationNo": "21272",
+          "promulgationDate": "2025-12-30",
+          "revisionTypeKo": "일부개정",
+          "sourceIdentifier": "281953",
+          "path": "laws/multicultural-families-act/versions/2025-12-30",
+          "articleCount": 26,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "ALIGNED"
+        }
+      ]
+    },
+    {
+      "slug": "multicultural-families-decree",
+      "lawId": "010842",
+      "titleKo": "다문화가족지원법 시행령",
+      "titleEn": "ENFORCEMENT DECREE OF THE MULTICULTURAL FAMILIES SUPPORT ACT",
+      "lawType": "ENFORCEMENT_DECREE",
+      "priority": "P2",
+      "versions": [
+        {
+          "effectiveFrom": "2025-10-01",
+          "promulgationNo": "35806",
+          "promulgationDate": "2025-10-01",
+          "revisionTypeKo": "타법개정",
+          "sourceIdentifier": "277439",
+          "path": "laws/multicultural-families-decree/versions/2025-10-01",
+          "articleCount": 22,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "NOT_AVAILABLE"
+        },
+        {
+          "effectiveFrom": "2026-01-02",
+          "promulgationNo": "35948",
+          "promulgationDate": "2025-12-30",
+          "revisionTypeKo": "타법개정",
+          "sourceIdentifier": "281629",
+          "path": "laws/multicultural-families-decree/versions/2026-01-02",
+          "articleCount": 22,
+          "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
+          "translationAlignment": "NOT_AVAILABLE"
+        }
+      ]
+    },
+    {
+      "slug": "multicultural-families-rule",
+      "lawId": "010840",
+      "titleKo": "다문화가족지원법 시행규칙",
+      "titleEn": "ENFORCEMENT RULE OF THE MULTICULTURAL FAMILIES SUPPORT ACT",
+      "lawType": "ENFORCEMENT_RULE",
+      "priority": "P2",
+      "versions": [
+        {
+          "effectiveFrom": "2025-10-01",
+          "promulgationNo": "1",
+          "promulgationDate": "2025-10-01",
+          "revisionTypeKo": "타법개정",
+          "sourceIdentifier": "278829",
+          "path": "laws/multicultural-families-rule/versions/2025-10-01",
+          "articleCount": 11,
           "verificationStatus": "VERIFIED_OFFICIAL_SNAPSHOT",
           "translationAlignment": "NOT_AVAILABLE"
         }

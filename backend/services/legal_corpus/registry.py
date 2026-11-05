@@ -234,7 +234,113 @@ P1_LAWS: List[Dict[str, Any]] = [
     FOREIGN_WORKERS_RULE,
 ]
 
-ALL_LAWS: List[Dict[str, Any]] = P0_LAWS + P1_LAWS
+# ---------------------------------------------------------------------------
+# P2 laws (added 2026-11-05 on the user's request, same pipeline)
+#
+# Identifiers and current versions verified live against law.go.kr on
+# 2026-11-05. For both Enforcement Decrees the site's current pointer is a
+# promulgated but not-yet-effective version (재외동포법 시행령: effective
+# 2026-03-24; 다문화가족지원법 시행령: effective 2026-01-02), so the
+# currently-in-force version is registered alongside it — otherwise the
+# corpus would hold no decree text that applies today.
+# ---------------------------------------------------------------------------
+
+OVERSEAS_KOREANS_ACT: Dict[str, Any] = {
+    "slug": "overseas-koreans-act",
+    "lawId": "001999",
+    "titleKo": "재외동포의 출입국과 법적 지위에 관한 법률",
+    "titleEn": "ACT ON THE IMMIGRATION AND LEGAL STATUS OF OVERSEAS KOREANS",
+    "jurisdiction": "KR",
+    "lawType": "ACT",
+    "priority": "P2",
+    "known_versions": [
+        {"mst": "268553", "effectiveFrom": "2025-07-22"},
+    ],
+    "priority_articles": ["5", "6", "10"],
+}
+
+OVERSEAS_KOREANS_DECREE: Dict[str, Any] = {
+    "slug": "overseas-koreans-decree",
+    "lawId": "004662",
+    "titleKo": "재외동포의 출입국과 법적 지위에 관한 법률 시행령",
+    "titleEn": "ENFORCEMENT DECREE OF THE ACT ON THE IMMIGRATION AND LEGAL STATUS OF OVERSEAS KOREANS",
+    "jurisdiction": "KR",
+    "lawType": "ENFORCEMENT_DECREE",
+    "priority": "P2",
+    "known_versions": [
+        {"mst": "256767", "effectiveFrom": "2023-12-14"},
+        {"mst": "284843", "effectiveFrom": "2026-03-24"},
+    ],
+    "priority_articles": ["4", "7"],
+}
+
+OVERSEAS_KOREANS_RULE: Dict[str, Any] = {
+    "slug": "overseas-koreans-rule",
+    "lawId": "008011",
+    "titleKo": "재외동포의 출입국과 법적 지위에 관한 법률 시행규칙",
+    "titleEn": "ENFORCEMENT RULE OF THE ACT ON THE IMMIGRATION AND LEGAL STATUS OF OVERSEAS KOREANS",
+    "jurisdiction": "KR",
+    "lawType": "ENFORCEMENT_RULE",
+    "priority": "P2",
+    "known_versions": [
+        {"mst": "267499", "effectiveFrom": "2025-02-01"},
+    ],
+    "priority_articles": ["2", "3"],
+}
+
+MULTICULTURAL_FAMILIES_ACT: Dict[str, Any] = {
+    "slug": "multicultural-families-act",
+    "lawId": "010718",
+    "titleKo": "다문화가족지원법",
+    "titleEn": "MULTICULTURAL FAMILIES SUPPORT ACT",
+    "jurisdiction": "KR",
+    "lawType": "ACT",
+    "priority": "P2",
+    "known_versions": [
+        {"mst": "281953", "effectiveFrom": "2025-12-30"},
+    ],
+    "priority_articles": ["6", "11-2", "12"],
+}
+
+MULTICULTURAL_FAMILIES_DECREE: Dict[str, Any] = {
+    "slug": "multicultural-families-decree",
+    "lawId": "010842",
+    "titleKo": "다문화가족지원법 시행령",
+    "titleEn": "ENFORCEMENT DECREE OF THE MULTICULTURAL FAMILIES SUPPORT ACT",
+    "jurisdiction": "KR",
+    "lawType": "ENFORCEMENT_DECREE",
+    "priority": "P2",
+    "known_versions": [
+        {"mst": "277439", "effectiveFrom": "2025-10-01"},
+        {"mst": "281629", "effectiveFrom": "2026-01-02"},
+    ],
+    "priority_articles": ["11", "12"],
+}
+
+MULTICULTURAL_FAMILIES_RULE: Dict[str, Any] = {
+    "slug": "multicultural-families-rule",
+    "lawId": "010840",
+    "titleKo": "다문화가족지원법 시행규칙",
+    "titleEn": "ENFORCEMENT RULE OF THE MULTICULTURAL FAMILIES SUPPORT ACT",
+    "jurisdiction": "KR",
+    "lawType": "ENFORCEMENT_RULE",
+    "priority": "P2",
+    "known_versions": [
+        {"mst": "278829", "effectiveFrom": "2025-10-01"},
+    ],
+    "priority_articles": ["3", "5"],
+}
+
+P2_LAWS: List[Dict[str, Any]] = [
+    OVERSEAS_KOREANS_ACT,
+    OVERSEAS_KOREANS_DECREE,
+    OVERSEAS_KOREANS_RULE,
+    MULTICULTURAL_FAMILIES_ACT,
+    MULTICULTURAL_FAMILIES_DECREE,
+    MULTICULTURAL_FAMILIES_RULE,
+]
+
+ALL_LAWS: List[Dict[str, Any]] = P0_LAWS + P1_LAWS + P2_LAWS
 
 # ---------------------------------------------------------------------------
 # P0 administrative notice (행정규칙 / 법무부 고시)
