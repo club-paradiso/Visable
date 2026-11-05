@@ -318,19 +318,20 @@ function assertInvariants(id, st) {
       R.jcApplyFlow();
       expect('flow-dom', R.flow() === 'showing_candidates', 'golf (employer-only fork) keeps candidates visible');
       expect('flow-dom', els['jcResults'].hidden === false, 'golf candidates visible next to the question');
-      // --- guided flow: candidates GATED behind a pending occupation fork, revealed on dismiss ---
+      // Pending questions must NOT block users from seeing candidate codes.
       const rSquid = analyze('오징어 일 해요', 'ko');
-      R.set(rSquid, 5, 5);                // occupation fork, has candidates
+      R.set(rSquid, 5, 5);
       R.jcApplyFlow();
-      expect('flow-dom', R.flow() === 'needs_clarification', 'occupation fork gates candidates');
-      expect('flow-dom', els['jcResults'].hidden === true, 'candidates hidden while gated');
-      expect('flow-dom', els['jcResultsGate'].hidden === false, 'gate shown while pending');
-      expect('flow-dom', els['jcResultsGate'].innerHTML.includes('그냥 후보 보기'), 'gate offers a reveal button');
-      expect('flow-dom', els['jcFinalCheck'].hidden === true, 'final checklist hidden while gated');
-      R.jcDismissClarification();         // 잘 모르겠어요 → reveal, keep both possibilities
-      expect('flow-dom', R.flow() === 'showing_candidates', 'dismiss reveals candidates');
-      expect('flow-dom', els['jcResults'].hidden === false, 'candidates shown after reveal');
-      expect('flow-dom', els['jcFinalCheck'].hidden === false, 'final checklist shown after reveal');
+      expect('flow-dom', R.flow() === 'needs_clarification', 'ambiguity is still recorded');
+      expect('flow-dom', els['jcResults'].hidden === false, 'uncertain candidates visible without answering');
+      expect('flow-dom', els['jcResultsGate'].hidden === true, 'mandatory gate removed');
+      expect('flow-dom', els['jcFinalCheck'].hidden === true, 'final confirmation waits for both selections');
+      R.jcDismissClarification();
+      expect('flow-dom', els['jcResults'].hidden === false, 'dismissing the question does not change visible candidates');
+      R.select('occupation', '5311');
+      R.select('industry', '56111');
+      R.jcApplyFlow();
+      expect('flow-dom', els['jcFinalCheck'].hidden === false, 'final confirmation appears once both codes are selected');
       // no-clarification query shows candidates immediately
       R.set(analyze('English teacher at a hagwon', 'en'), 5, 5);
       R.jcApplyFlow();
