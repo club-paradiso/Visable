@@ -28,4 +28,22 @@ test('employment code finder loads the canonical dataset and finds an occupation
   // Only the canonical file is requested, and it loads.
   expect(dataResponses.map((r) => r.url)).toEqual(['/data/jobcode_master.json']);
   expect(dataResponses[0].status).toBe(200);
+
+  // Accessibility/usability contract: the search stays editable on the SAME
+  // screen after matching. A clarification cannot hide the candidate list.
+  await expect(field).toBeVisible();
+  await expect(page.locator('#jcStepbar')).toBeHidden();
+  await expect(page.locator('#jcResults')).toBeVisible();
+  await expect(page.locator('#jcResultsGate')).toBeHidden();
+  await expect(page.locator('#jcCopyBtn')).toBeDisabled();
+
+  // Rewriting the description must discard stale results and selections,
+  // without switching to a separate back/edit dialog.
+  await field.fill('개발자');
+  await expect(field).toBeVisible();
+  await expect(page.locator('#jobCodeModalOverlay .jc2')).toHaveAttribute('data-jc-step', 'ask');
+  await field.press('Enter');
+  await expect(page.locator('#jobCodeModalOverlay .jc2')).toHaveAttribute('data-jc-step', 'result');
+  await expect(field).toBeVisible();
+  await expect(page.locator('#jcResults')).toBeVisible({ timeout: 30_000 });
 });
