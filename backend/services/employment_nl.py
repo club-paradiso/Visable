@@ -91,9 +91,9 @@ def redact_personal_identifiers(text: str) -> str:
     best-effort redaction, NOT a substitute for a sensitive-data warning.
     """
     scrubbed = str(text or "")
-    scrubbed = re.sub(r"(?i)\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b", "[email]", scrubbed)
-    scrubbed = re.sub(r"(?<!\\d)\\d{6}\\s*[-]?\\s*[1-8]\\d{6}(?!\\d)", "[identity]", scrubbed)
-    scrubbed = re.sub(r"(?<!\\d)01[016789][-\\s]?\\d{3,4}[-\\s]?\\d{4}(?!\\d)", "[phone]", scrubbed)
+    scrubbed = re.sub(r"(?i)\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", "[email]", scrubbed)
+    scrubbed = re.sub(r"(?<!\d)\d{6}\s*[-]?\s*[1-8]\d{6}(?!\d)", "[identity]", scrubbed)
+    scrubbed = re.sub(r"(?<!\d)01[016789][-\s]?\d{3,4}[-\s]?\d{4}(?!\d)", "[phone]", scrubbed)
     return scrubbed
 
 
