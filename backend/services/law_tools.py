@@ -1127,6 +1127,104 @@ def _coerce_limit(limit: int) -> int:
     return max(1, min(value, 100))
 
 
+def _public_search_fallback(
+    query: str,
+    *,
+    target: str,
+    limit: int,
+    config: GroundingConfig,
+    drf_error_type: str,
+) -> Optional[Dict[str, Any]]:
+    """Credential-free public transport fallback for ``search_laws``.
+
+    The DRF OC must be registered for the caller's egress IP/domain, which
+    some deployments cannot do (the Vercel path needed the same fallback in
+    ``lib/enforcement-law-public.js``).  When DRF fails at the infrastructure
+    level — or answers empty for a query that names a real law — the public
+    law.go.kr pages still serve the official current text with no credential
+    (``services.law_public``).  Returns a normal ``ok`` envelope whose rows
+    are marked ``transport="public"``, or ``None`` when the public path also
+    finds nothing (the original DRF error then stands, unchanged).
+
+    Only attempted with the default (real) transport: an injected transport
+    means a controlled/offline environment whose callers assert exact DRF
+    behavior, and hermetic tests must never reach the live site.
+    """
+    try:
+        from . import law_public
+
+        rows = law_public.search_law_rows(
+            query,
+            limit=limit,
+            timeout=max(15.0, float(config.timeout_seconds or 0)),
+        )
+    except Exception:
+        return None
+    if not rows:
+        return None
+    return {
+        "tool": "search_laws",
+        "status": "ok",
+        "error_type": "",
+        "query": query,
+        "target": target,
+        "source_url": str(rows[0].get("source_url") or ""),
+        "raw_status": 200,
+        "parser_status": "public_html",
+        "response_shape_hint": "public_law_page",
+        "failure_reason": "",
+        "attempted_targets": [target] if target else [],
+        "results": rows,
+        "result_count": len(rows),
+        "retrieved_at": _now_iso(),
+        "transport": "public_fallback",
+        "fallback_from": drf_error_type,
+    }
+
+
+def _public_detail_fallback(
+    law_name: str,
+    article: str,
+    *,
+    config: GroundingConfig,
+    drf_error_type: str,
+) -> Optional[Dict[str, Any]]:
+    """Public transport fallback for ``get_law_detail`` (see search twin)."""
+    try:
+        from . import law_public
+
+        found = law_public.detail_for_law(
+            law_name,
+            article,
+            timeout=max(15.0, float(config.timeout_seconds or 0)),
+        )
+    except Exception:
+        return None
+    if found is None:
+        return None
+    detail = dict(found["detail"])
+    detail["articles"] = found["articles"]
+    return {
+        "tool": "get_law_detail",
+        "status": "ok",
+        "error_type": "",
+        "query": law_name,
+        "target": "law",
+        "source_url": str(detail.get("source_url") or ""),
+        "raw_status": 200,
+        "parser_status": "public_html",
+        "response_shape_hint": "public_law_page",
+        "failure_reason": "",
+        "attempted_targets": ["law"],
+        "results": [detail],
+        "result_count": 1,
+        "retrieved_at": _now_iso(),
+        "transport": "public_fallback",
+        "fallback_from": drf_error_type,
+        "detail": detail,
+    }
+
+
 def search_laws(
     query: str,
     *,
@@ -1146,7 +1244,7 @@ def search_laws(
     if not q:
         return _tool_error("search_laws", query="", target=target, error_type=LAW_API_NO_RESULTS)
     capped = _coerce_limit(limit)
-    return _execute(
+    result = _execute(
         tool="search_laws",
         config=cfg,
         transport=transport,
@@ -1158,6 +1256,19 @@ def search_laws(
         source_type="law" if (target or "law") == "law" else "admin_rule",
         limit=capped,
     )
+    if (
+        result.get("status") != "ok"
+        and transport is None
+        and (target or "law") == "law"
+        and result.get("error_type") != LAW_API_NOT_CONFIGURED
+    ):
+        fallback = _public_search_fallback(
+            q, target=target or "law", limit=capped, config=cfg,
+            drf_error_type=str(result.get("error_type") or ""),
+        )
+        if fallback is not None:
+            return fallback
+    return result
 
 
 # The Open Law API caps ``display`` at 100 and orders results 가나다 rather than by
@@ -1289,8 +1400,16 @@ def get_law_detail(
     if not resolved_id and resolved_name:
         search = search_laws(resolved_name, config=cfg, transport=transport, limit=1)
         if search["status"] != "ok":
-            return _tool_error("get_law_detail", query=resolved_name, target="law",
-                               error_type=search["error_type"])
+            error = _tool_error("get_law_detail", query=resolved_name, target="law",
+                                error_type=search["error_type"])
+            if transport is None:
+                fallback = _public_detail_fallback(
+                    resolved_name, article, config=cfg,
+                    drf_error_type=str(error.get("error_type") or ""),
+                )
+                if fallback is not None:
+                    return fallback
+            return error
         top = search["results"][0]
         resolved_id = top.get("law_serial_no") or top.get("law_id") or ""
         resolved_name = top.get("law_name") or resolved_name
@@ -1324,6 +1443,13 @@ def get_law_detail(
         result["detail"] = detail
     # Strip the raw payload so it never propagates to a caller / the LLM.
     result.pop("_raw_payload", None)
+    if result["status"] != "ok" and transport is None and resolved_name:
+        fallback = _public_detail_fallback(
+            resolved_name, article, config=cfg,
+            drf_error_type=str(result.get("error_type") or ""),
+        )
+        if fallback is not None:
+            return fallback
     return result
 
 

@@ -44,6 +44,7 @@ if str(BACKEND_DIR) not in sys.path:
 import paradiso_backend as pb  # noqa: E402
 from services import law_cloud_fallback  # noqa: E402
 from services import law_grounding as lg  # noqa: E402
+from services import law_public  # noqa: E402
 from services import law_tools as lt  # noqa: E402
 from services import legal_evidence as le  # noqa: E402
 from services.grounding_config import GroundingConfig  # noqa: E402
@@ -764,8 +765,13 @@ class F9FailureIsNotAbsenceTests(_CleanEnvMixin, unittest.TestCase):
         for name, (body, marker) in bodies.items():
             with self.subTest(body=name):
                 law_cloud_fallback._PAGE_CACHE.clear()
+                # Since 2026-11-05 a DRF failure also tries the credential-free
+                # public transport (services.law_public); a "could not check"
+                # simulation must fail BOTH official transports, otherwise the
+                # public path legitimately verifies the citation.
                 with patch.object(lg, "load_grounding_config", return_value=_cfg()), \
-                     patch.object(lt, "_default_transport", lambda url, timeout, b=body: _ok(b)):
+                     patch.object(lt, "_default_transport", lambda url, timeout, b=body: _ok(b)), \
+                     patch.object(law_public, "_default_fetch", lambda url, timeout: (0, "")):
                     context = lg.build_law_grounding_context(self.QUESTION)
                 citation = context["citation_verification"]["citations"][0]
                 self.assertEqual(citation["law_name"], self.CITED_LAW)
@@ -1165,7 +1171,10 @@ class F12RedirectTests(_CleanEnvMixin, unittest.TestCase):
             return 200, "", EMPTY_LAW_SEARCH
 
         getattr(lt, "_WARNINGS_LOGGED", set()).clear()  # logged once per process
-        with _served_by(routes) as host, _captured_warnings() as lines:
+        # This test pins the DRF transport's redirect policy only; keep the
+        # 2026-11-05 public fallback out of the request accounting.
+        with _served_by(routes) as host, _captured_warnings() as lines, \
+             patch.object(law_public, "_default_fetch", lambda url, timeout: (0, "")):
             result = lt.search_laws("가상체류관리법", config=_cfg())
             lt.search_laws("가상체류관리법", config=_cfg())
         self.assertEqual(len(host.seen), 2, host.seen)

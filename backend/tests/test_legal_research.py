@@ -22,6 +22,7 @@ if str(BACKEND_DIR) not in sys.path:
 
 from fastapi.testclient import TestClient  # noqa: E402
 import services.law_tools as law_tools  # noqa: E402
+from services import law_public  # noqa: E402
 from services import legal_research as LR  # noqa: E402
 import paradiso_backend as P  # noqa: E402
 
@@ -211,12 +212,18 @@ class ResearchEndpointTests(unittest.TestCase):
         self._oc = os.environ.get("LAW_API_OC")
         self._key = os.environ.get("LAW_API_KEY")
         self._t = law_tools._default_transport
+        # Since 2026-11-05 a DRF failure also tries the credential-free
+        # public transport (services.law_public); an "upstream failure"
+        # simulation must fail both official transports.
+        self._pf = law_public._default_fetch
+        law_public._default_fetch = lambda url, timeout: (0, "")
         os.environ["LAW_API_OC"] = "test-oc"
         os.environ.pop("LAW_API_KEY", None)
         self.client = TestClient(P.app)
 
     def tearDown(self):
         law_tools._default_transport = self._t
+        law_public._default_fetch = self._pf
         for name, val in (("LAW_API_OC", self._oc), ("LAW_API_KEY", self._key)):
             if val is None:
                 os.environ.pop(name, None)
@@ -317,11 +324,15 @@ class ResearchProgressStreamTests(unittest.TestCase):
     def setUp(self):
         self._oc = os.environ.get("LAW_API_OC")
         self._t = law_tools._default_transport
+        # See ResearchEndpointTests.setUp: fail the public transport too.
+        self._pf = law_public._default_fetch
+        law_public._default_fetch = lambda url, timeout: (0, "")
         os.environ["LAW_API_OC"] = "test-oc"
         self.client = TestClient(P.app)
 
     def tearDown(self):
         law_tools._default_transport = self._t
+        law_public._default_fetch = self._pf
         if self._oc is None:
             os.environ.pop("LAW_API_OC", None)
         else:
