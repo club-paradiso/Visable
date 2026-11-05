@@ -294,7 +294,12 @@ function matchConcepts(normalizedText, tokenSet, concepts) {
     }
     if (hit) matched.push({ concept, matchedSurface: hit });
   }
+  // A long role phrase can contain the name of the workplace:
+  // "어린이집 보조교사" must retain BOTH the daycare workplace (KSIC)
+  // and the employee's role (KSCO). Suppress nested surfaces only WITHIN
+  // the same semantic entity type.
   return matched.filter((m) => !matched.some((o) => o !== m
+    && o.concept.type === m.concept.type
     && o.matchedSurface.length > m.matchedSurface.length
     && o.matchedSurface.includes(m.matchedSurface)));
 }
@@ -1410,7 +1415,11 @@ export function createEmploymentAnalyzer(deps = {}) {
     const exactWorkplaceIndustry = (!industryUnknown && !understanding.employerUnclear)
       ? entities.workplaceMatches
         .map((m) => m.concept.business_label_ko)
-        .filter(Boolean)
+        // A broad exact name such as "음식점업" must not displace a
+        // more-specific match ("중식 음식점업", "한식 음식점업", "치킨").
+        // Preserve only cases where the official activity is both distinctive
+        // and otherwise easily confused with another institution category.
+        .filter((name) => ['보육시설 운영업', '유아 교육기관'].includes(name))
         .flatMap((name) => searchTrack(index, 'industry', name, [name], {
           limit: 5, sourceMeta: indMeta,
           confidenceCap: managedStaff ? 'medium' : confidenceCap,
