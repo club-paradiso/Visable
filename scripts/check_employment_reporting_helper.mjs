@@ -22,6 +22,7 @@ const html = [...JSON.parse(fs.readFileSync(path.join(repo, 'scripts', 'frontend
 const js = fs.readFileSync(path.join(repo, 'src', 'features', 'jobcode.js'), 'utf8');
 const data = JSON.parse(fs.readFileSync(path.join(repo, 'data', 'jobcode_master.json'), 'utf8'));
 const ko = JSON.parse(fs.readFileSync(path.join(repo, 'data', 'i18n', 'ko.json'), 'utf8'));
+const polish = fs.readFileSync(path.join(repo, 'assets', 'css', 'jobcode-refinement.css'), 'utf8');
 
 const failures = [];
 const ok = (cond, msg) => { if (!cond) failures.push(msg); };
@@ -79,6 +80,23 @@ ok(/1345|하이코리아|출입국/.test(koScope),
 // guided checklist (dynamic; copy lives in scripts/employment_checklist.mjs) +
 // plain-language pane labels before the official classification terms
 has('id="jcChecklist"', 'guided checklist container missing');
+// Visual refinement must remain compatible with the existing functional markup.
+// Result progress is an announcement, NOT a new mandatory step or code verdict.
+has('id="jcChoiceProgress"', 'selection progress indicator missing');
+has('class="jc2-lead-index"', 'search-stage visual hierarchy missing');
+has('class="jc2-result-index"', 'result-stage visual hierarchy missing');
+has('assets/css/jobcode-refinement.css', 'scoped UI polish stylesheet not loaded');
+hasJs('progress.classList.toggle', 'selection progress not updated by the existing summary renderer');
+ok(polish.includes('#jobCodeModalOverlay .jc2-modal') && polish.includes('max-width: 940px'),
+  'finder must have a usable desktop width for two-pane comparisons');
+ok(polish.includes('@media (max-width: 680px)') && polish.includes('.jc2-summary.is-active { position: static; }'),
+  'mobile selection summary must not cover result cards');
+ok(polish.includes('@media (prefers-reduced-motion: reduce)'),
+  'reduced-motion support missing from finder polish');
+ok(polish.includes(':focus-visible') && polish.includes('min-height: 43px'),
+  'finder candidate actions need visible focus and mobile-sized tap targets');
+ok(!polish.includes('display: none; /* scope warning */'),
+  'finder must never hide permission/reporting warning');
 has('내가 하는 일에 가까운 항목', 'occupation pane plain-language label missing');
 has('회사나 사업장이 하는 일에 가까운 항목', 'industry pane plain-language label missing');
 // guided-flow: candidate gate + Step-5 final HiKorea checklist
@@ -167,7 +185,7 @@ if (start !== -1 && end !== -1) {
   vm.createContext(sandbox);
   const exportTail = `
 ;globalThis.__JC = { normalizeJobcodeText, getJobcodeSearchTerms, scoreJobcodeRow,
-  getScoredJobcodeRows, jobcodeEmptyHtml, buildJobcodeMemo, renderJobcodeGuidance,
+  getScoredJobcodeRows, jobcodeEmptyHtml, buildJobcodeMemo, renderJobcodeGuidance, renderJobcodeSelectedSummary,
   JC_AMBIGUOUS_TERMS, setData: (d)=>{_jobcodeData=d;}, setSelected:(s)=>{_jcSelected=s;} };`;
   try {
     vm.runInContext(region + exportTail, sandbox, { filename: 'jobcode-helper.js' });
@@ -218,6 +236,18 @@ if (start !== -1 && end !== -1) {
     ok(memo.includes('62') && memo.includes('컴퓨터 프로그래밍'), 'memo missing selected industry');
     ok(memo.includes('연간 1천만 원 미만'), 'memo missing income band');
     ok(memo.includes('최종 신고 전 HiKorea 화면에서 재확인'), 'memo missing final HiKorea confirmation warning');
+    // 7) Result-header progress follows existing selections (no extra gate).
+    JC.renderJobcodeSelectedSummary();
+    ok(dom._els['jcChoiceProgress'].textContent === '2/2 선택 완료',
+      'both selections must mark the result header as complete');
+    JC.setSelected({ occupation: { code: '22', name: '정보 통신 전문가 및 기술직' }, industry: null });
+    JC.renderJobcodeSelectedSummary();
+    ok(dom._els['jcChoiceProgress'].textContent === '1/2 선택',
+      'one classification must remain visibly incomplete');
+    JC.setSelected({ occupation: null, industry: null });
+    JC.renderJobcodeSelectedSummary();
+    ok(dom._els['jcChoiceProgress'].textContent === '0/2 선택',
+      'resetting the finder must reset selection progress');
   }
 }
 
