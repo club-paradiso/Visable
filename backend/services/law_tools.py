@@ -2760,6 +2760,60 @@ def build_law_evidence_pack(
             if not relevant_precedent_items:
                 family_result["status"] = SOURCE_STATUS_NO_RESULTS
 
+    # Keyword retry (2026-11-05): DRF ``target=prec`` matches case names, so
+    # the planner phrase used above ("출입국관리법 체류자격 신고의무 신고")
+    # returns zero rows in production, and the one broad query that does hit
+    # (the bare statute name) returns criminal-title cases the topic gate
+    # correctly rejects.  Bare issue keywords (강제퇴거, 귀화, 체류자격변경 …)
+    # are what the case-name search can actually match — retry with them
+    # before the pack reports no precedent.  Retried items pass through the
+    # same topic gate; the gate itself is unchanged.
+    if (
+        not relevant_precedent_items
+        and retrieve is not False
+        and (
+            precedent_warranted
+            or "precedent" in (source_family_retrieval.get("source_family_statuses") or {})
+        )
+        and cfg.law_api_configured
+        and cfg.mode != "disabled"
+    ):
+        try:
+            from .citation_verifier import precedent_keyword_queries
+
+            for kw_query in precedent_keyword_queries(text):
+                retry_result = retrieve_official_source_family(
+                    "precedent", kw_query,
+                    limit=max(1, min(cfg_display(cfg), 3)),
+                    config=cfg, transport=transport,
+                )
+                retry_items = [
+                    item for item in (retry_result.get("precedent_evidence_items") or [])
+                    if precedent_evidence_item_is_relevant(item, query=text)
+                ]
+                if not retry_items:
+                    continue
+                relevant_precedent_items = retry_items
+                source_family_retrieval["precedent_evidence_items"] = retry_items
+                fam_statuses = dict(source_family_retrieval.get("source_family_statuses") or {})
+                fam_statuses["precedent"] = retry_result.get("status", "")
+                source_family_retrieval["source_family_statuses"] = fam_statuses
+                fam_counts = dict(source_family_retrieval.get("source_family_result_counts") or {})
+                fam_counts["precedent"] = len(retry_result.get("normalized_items") or [])
+                source_family_retrieval["source_family_result_counts"] = fam_counts
+                for family_result in source_family_retrieval.get("source_family_results") or []:
+                    if family_result.get("source_family") != "precedent":
+                        continue
+                    family_result["normalized_items"] = [
+                        item for item in (retry_result.get("normalized_items") or [])
+                        if precedent_evidence_item_is_relevant(item, query=text)
+                    ]
+                    family_result["precedent_evidence_items"] = retry_items
+                    family_result["status"] = retry_result.get("status", "")
+                break
+        except Exception:  # pragma: no cover - precedent retry must never break the pack
+            pass
+
     law_grounding_used = bool(law_sources) or context_used_hint
 
     # --- Grounding status taxonomy -----------------------------------------

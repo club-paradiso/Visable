@@ -659,6 +659,103 @@ def search_precedents(
     )
 
 
+# ---------------------------------------------------------------------------
+# Public detail fallback (credential-free, by identifier)
+# ---------------------------------------------------------------------------
+# The public precedent page serves the full official text with NO credential,
+# keyed by the same serial the DRF search returns (verified 2026-11-05:
+# DRF ID 234321 == precSeq 234321, 대법원 2021도3652).  Keyword *search* has
+# no equivalent public GET endpoint — the public search UI is a JS-driven
+# POST flow and the simple list endpoints return empty shells — so this
+# fallback covers detail only; list search stays DRF.
+_PUBLIC_PRECEDENT_BASE = "https://www.law.go.kr/LSW/precInfoR.do?precSeq="
+_PRECEDENT_HEADER_RE = re.compile(
+    r"\[(?P<court>[^\]\[]+?)\s+(?P<year>\d{4})\.\s*(?P<month>\d{1,2})\.\s*(?P<day>\d{1,2})\.\s*"
+    r"선고\s+(?P<case_number>\S+?)\s+(?:판결|결정|명령)\]"
+)
+_PRECEDENT_SECTION_RE = re.compile(r"【(판시사항|판결요지|참조조문|전문|주문|이유)】")
+
+
+def public_precedent_url(source_id: str) -> str:
+    """Credential-free official precedent page (same ID space as DRF prec)."""
+    ident = re.sub(r"[^A-Za-z0-9_-]", "", str(source_id or ""))[:80]
+    return f"{_PUBLIC_PRECEDENT_BASE}{ident}" if ident else ""
+
+
+def _precedent_html_to_lines(html: str) -> List[str]:
+    text = re.sub(r"<script[\s\S]*?</script>|<style[\s\S]*?</style>", " ", html or "")
+    text = re.sub(r"<[^>]+>", "\n", text)
+    lines = [" ".join(line.split()) for line in text.split("\n")]
+    return [line for line in lines if line]
+
+
+def parse_public_precedent_html(html: str, source_id: str) -> Optional[Dict[str, Any]]:
+    """Parse one public ``precInfoR.do`` page into a body-grade evidence item.
+
+    Conservative: the bracketed court header (``[대법원 2023. 3. 13. 선고
+    2021도3652 판결]``) must be present — the site's error page has none, so
+    a failed lookup can never be mistaken for a real precedent.
+    """
+    ident = re.sub(r"[^A-Za-z0-9_-]", "", str(source_id or ""))[:80]
+    if not ident or not html:
+        return None
+    lines = _precedent_html_to_lines(html)
+    joined = "\n".join(lines)
+    header = _PRECEDENT_HEADER_RE.search(joined)
+    if not header:
+        return None
+    # The case name sits on the first text line, directly above the header.
+    title = ""
+    if lines and not (lines[0].startswith("[") and "선고" in lines[0]):
+        title = lines[0]
+    sections: Dict[str, str] = {}
+    parts = _PRECEDENT_SECTION_RE.split(joined)
+    # parts: [prefix, name1, body1, name2, body2, ...]
+    for idx in range(1, len(parts) - 1, 2):
+        sections.setdefault(parts[idx], parts[idx + 1].strip())
+    holding = sections.get("판시사항", "")
+    summary = sections.get("판결요지", "") or holding
+    if not (holding or summary):
+        return None
+    decision_date = (
+        f"{int(header.group('year')):04d}{int(header.group('month')):02d}{int(header.group('day')):02d}"
+    )
+    return build_source_family_evidence_item(
+        source_family="precedent",
+        result_kind="body_result",
+        title=title,
+        source_name=header.group("court"),
+        case_number=header.group("case_number"),
+        serial_number=ident,
+        decision_date=decision_date,
+        court_or_agency=header.group("court"),
+        url=public_precedent_url(ident),
+        snippet=summary,
+        holding_summary=holding,
+        internal_status="body_result_public",
+    )
+
+
+def fetch_public_precedent_item(
+    source_id: str,
+    *,
+    timeout: float = 20.0,
+    fetch: Optional[Any] = None,
+) -> Optional[Dict[str, Any]]:
+    """Fetch + parse the public precedent page for one serial, or ``None``."""
+    ident = re.sub(r"[^A-Za-z0-9_-]", "", str(source_id or ""))[:80]
+    if not ident:
+        return None
+    from . import law_public
+
+    status, html = law_public.fetch_public_page(
+        public_precedent_url(ident), fetch=fetch, timeout=timeout,
+    )
+    if status != 200 or not html:
+        return None
+    return parse_public_precedent_html(html, ident)
+
+
 def get_precedent_detail(
     source_id: str,
     *,
@@ -696,16 +793,35 @@ def get_precedent_detail(
     if not response.ok:
         status = "timeout" if response.error_type == "timeout" else "bad_response"
         error_type = lt.LAW_API_TIMEOUT if response.error_type == "timeout" else lt.LAW_API_BAD_RESPONSE
-        return _envelope(
+        envelope = _envelope(
             family="precedent", status=status, public_status="temporarily_unavailable",
             result_kind="unavailable", query=ident, sanitized_url=sanitized,
             items=[_unavailable_item("precedent", internal_status=status, transient=True)],
             error_type=error_type,
         )
-    return normalize_precedent_body_response(
-        response.text,
-        http_status=response.status_code,
-        query=ident,
-        sanitized_url=sanitized,
-        target=PRECEDENT_LIST_TARGET,
-    )
+    else:
+        envelope = normalize_precedent_body_response(
+            response.text,
+            http_status=response.status_code,
+            query=ident,
+            sanitized_url=sanitized,
+            target=PRECEDENT_LIST_TARGET,
+        )
+    if envelope.get("status") != "results_found" and transport is None:
+        # Public fallback (2026-11-05): the credential-free precInfoR page is
+        # keyed by the same serial, so a DRF registration/auth failure no
+        # longer zeroes out precedent detail.  Only with the default (real)
+        # transport — an injected transport means a controlled environment
+        # whose callers assert exact DRF behavior.
+        item = fetch_public_precedent_item(
+            ident, timeout=max(10.0, float(cfg.timeout_seconds or 0)),
+        )
+        if item is not None:
+            return _envelope(
+                family="precedent", status="results_found", public_status="available",
+                result_kind="body_result", query=ident, items=[item],
+                sanitized_url=public_precedent_url(ident),
+                response_shape_hint="public_prec_page", parser_status="public_html",
+                target=PRECEDENT_LIST_TARGET,
+            )
+    return envelope

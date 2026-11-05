@@ -260,6 +260,51 @@ _EVIDENCE_TOPIC_GATES = (
 )
 
 
+# Bare case-name keywords per topic gate, aligned by index with
+# ``_EVIDENCE_TOPIC_GATES``.  DRF ``target=prec`` matches case *names*, so a
+# keyword that appears verbatim in case titles retrieves on-topic precedents
+# where the query planner's long phrases return nothing (production-measured
+# 2026-11-05 via /api/legal/precedents/search: 강제퇴거 6, 출국명령 3, 귀화 7,
+# 난민 10 — while the exact planner phrases returned 0).
+_EVIDENCE_TOPIC_KEYWORDS = (
+    ("체류자격변경",),  # 근무처 변경·이직 — case titles use 체류자격변경불허 wording
+    ("귀화",),
+    ("난민",),
+    ("강제퇴거", "출국명령"),
+    ("외국인등록",),
+)
+
+# Issues with a measured keyword but no topic gate above.
+_EXTRA_PRECEDENT_KEYWORDS = (
+    (re.compile(r"사증발급|비자발급|visa issuance", re.IGNORECASE), ("사증발급",)),
+    (re.compile(r"체류기간\s*연장|체류\s*연장|extension", re.IGNORECASE), ("체류기간연장",)),
+)
+
+
+def precedent_keyword_queries(query: str) -> List[str]:
+    """Short DRF precedent search queries for the issues named in ``query``.
+
+    The evidence-pack precedent search uses the planner's first law query — a
+    long phrase DRF's case-name search cannot match.  These bare keywords are
+    the retry vocabulary; results still pass through
+    ``precedent_evidence_item_is_relevant`` unchanged, so a keyword that only
+    retrieves off-topic titles changes nothing.
+    """
+    out: List[str] = []
+    text = query or ""
+    for (question_re, _evidence_re), keywords in zip(_EVIDENCE_TOPIC_GATES, _EVIDENCE_TOPIC_KEYWORDS):
+        if question_re.search(text):
+            for kw in keywords:
+                if kw not in out:
+                    out.append(kw)
+    for pattern, keywords in _EXTRA_PRECEDENT_KEYWORDS:
+        if pattern.search(text):
+            for kw in keywords:
+                if kw not in out:
+                    out.append(kw)
+    return out
+
+
 def precedent_evidence_item_is_relevant(item: Dict[str, Any], *, query: str) -> bool:
     """Return whether a normalized precedent-family item matches the named issue.
 

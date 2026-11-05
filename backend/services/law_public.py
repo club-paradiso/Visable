@@ -87,6 +87,21 @@ def public_law_url(law_name: str) -> str:
     return f"{BASE}/" + urllib.parse.quote(f"법령/{law_name}")
 
 
+def fetch_public_page(
+    url: str,
+    *,
+    fetch: Optional[PublicFetch] = None,
+    timeout: float = 20.0,
+) -> Tuple[int, str]:
+    """Fetch one public law.go.kr page through the shared public seam.
+
+    Used by the precedent detail fallback (``precInfoR.do``) so every public
+    request shares the same user agent, error contract and test seam.
+    """
+    send = fetch or _default_fetch
+    return send(url, timeout)
+
+
 def discover_current(
     law_name: str,
     *,
