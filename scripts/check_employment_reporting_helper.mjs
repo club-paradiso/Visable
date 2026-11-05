@@ -98,7 +98,7 @@ ok(polish.includes('@media (prefers-reduced-motion: reduce)'),
 has('class="jc2-hero-rule"', 'editorial taxonomy index missing');
 has('class="jc2-pane-ordinal" aria-hidden="true">A</span>', 'occupation comparison index missing');
 has('class="jc2-pane-ordinal" aria-hidden="true">B</span>', 'industry comparison index missing');
-has('jobcode-refinement.css?v=20261105-ux2', 'editorial stylesheet cache version missing');
+has('jobcode-refinement.css?v=20261105-ux3', 'one-screen usability stylesheet cache version missing');
 ok(polish.includes('grid-template-columns: minmax(0, .87fr) minmax(0, 1.13fr)'),
   'large-screen ask view must give the editor and search distinct columns');
 ok(polish.includes('.jc2[data-jc-step="ask"] > :not(.jc2-hero):not(.jc2-searchpanel)'),
@@ -120,6 +120,20 @@ has('회사나 사업장이 하는 일에 가까운 항목', 'industry pane plai
 // guided-flow: candidate gate + Step-5 final HiKorea checklist
 has('id="jcResultsGate"', 'candidate gate element missing');
 has('id="jcFinalCheck"', 'final HiKorea checklist card missing');
+has('id="jcSearchStatus"', 'live search status must be available to assistive technology');
+has('aria-atomic="true" hidden', 'live status should not announce empty content');
+hasJs('function jcEditQuery()', 'editing must invalidate stale results without navigating away');
+hasJs("jcSetStep('ask', false)", 'editing must not jump the scroll position');
+hasJs("jcShow('jcResults', true)", 'uncertain candidates must remain visible');
+hasJs("jcShow('jcResultsGate', false)", 'mandatory clarification gate must be removed');
+hasJs("if (!_jcSelected.occupation || !_jcSelected.industry) return;", 'incomplete code memo must never be copied');
+hasJs("e.key === 'Enter' && !e.isComposing", 'Korean/Chinese IME composition must not trigger duplicate searches');
+ok(polish.includes('.jc2[data-jc-step="result"] .jc2-searchpanel')
+    && polish.includes('display: flex !important')
+    && polish.includes('.jc2--editing'),
+  'results must retain an editable search field without a second-screen transition');
+ok(polish.includes('.jc2-copy:disabled'), 'incomplete memo copy must have a visible disabled state');
+
 has('하이코리아에서 마지막으로 확인할 것', 'final-check title missing');
 has('연간소득 구간', 'income step copy missing');
 // segmented filter
@@ -266,6 +280,8 @@ if (start !== -1 && end !== -1) {
     JC.renderJobcodeSelectedSummary();
     ok(dom._els['jcChoiceProgress'].textContent === '0/2 선택',
       'resetting the finder must reset selection progress');
+    ok(dom._els['jcCopyBtn'].disabled === true,
+      'memo copy stays disabled until both codes are selected');
   }
 }
 
