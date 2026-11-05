@@ -1,3 +1,6 @@
+import { inferEmploymentRelation, relationQuestion } from './employment_work_relations.mjs';
+export { inferEmploymentRelation } from './employment_work_relations.mjs';
+
 /*
  * employment_code_analyzer.mjs
  * ----------------------------------------------------------------------------
@@ -1260,21 +1263,6 @@ function buildLegalNotes(legalSources, sensitivity) {
  */
 export { buildSpecialStates, SPECIAL_STATE_IDS };
 
-/**
- * Role-target guard: "I manage assistant teachers" describes the administrator,
- * not one of the teachers being managed. Constrain this guard to an educational
- * authority + an explicit teacher-staff management action; a person actually
- * teaching at a school must keep the ordinary teaching search path.
- *
- * This is a reading of the sentence, not an assignment of a classification code.
- * The resulting candidates are still looked up in the canonical KSCO8 table.
- */
-export function detectManagedTeacherAdministration(text) {
-  const q = normalize(text);
-  if (!/(?:교육청|교육지원청|교육부)/.test(q)) return false;
-  return /(?:원어민\s*)?(?:영어\s*)?(?:보조\s*)?(?:교사|교원|강사)(?:들|님)?(?:를|을|의)?\s*(?:관리|인사|채용|배치|운영|담당|지원)/.test(q);
-}
-
 export function createEmploymentAnalyzer(deps = {}) {
   const dataset = deps.data || { data: [] };
   const lexicon = deps.lexicon || { ko: { concepts: [] }, en: { concepts: [] } };
@@ -1301,7 +1289,8 @@ export function createEmploymentAnalyzer(deps = {}) {
   function analyze(input) {
     const safeInput = typeof input === 'string' ? { text: input } : (input || { text: '' });
     const understanding = understandEmploymentInput(safeInput.text, surfaces);
-    const teacherStaffAdministration = detectManagedTeacherAdministration(safeInput.text);
+    const workRelation = inferEmploymentRelation(safeInput.text, conceptPool.filter((c) => c.type === 'role').flatMap((c) => c.surface || []));
+    const managedStaff = workRelation && workRelation.kind === 'managed_staff';
     const extraction = safeInput.facts && typeof safeInput.facts === 'object' ? safeInput.facts : null;
     // AI supplies descriptions only. Official codes always come from searchTrack.
     let roleText = extraction ? [extraction.role, ...(extraction.tasks || [])].filter(Boolean).join(' ') : '';
@@ -1369,34 +1358,50 @@ export function createEmploymentAnalyzer(deps = {}) {
     // The person's own words (particles stripped), for the literal-name signal.
     const occOwnWords = withPlaceStems(tokenize(roleText || workText));
     const indOwnWords = withPlaceStems(tokenize(extraction && extraction.employerMainBusiness || workText));
-    // The managed staff are the OBJECT of the user's work, not the user's job.
-    // Do not send "보조교사" / "영어" / model-extracted teacher labels to the
-    // occupation scorer in this case. Offer canonical administrative families
-    // while the person clarifies whether they do HR, training or government
-    // administration. These are official-name retrieval hints, NOT invented codes.
-    const administrativeTerms = [
-      '인사 및 노무 사무원',
-      '교육 및 훈련 사무원',
-      '기타 정부 행정 사무원'
-    ];
-    const hasSupervisorTitle = /(?:팀장|과장|관리자|총괄|부서장)/.test(safeInput.text || '');
-    if (teacherStaffAdministration && hasSupervisorTitle) administrativeTerms.push('교육 관리자');
-    const preferredAdministrativeRole = hasSupervisorTitle ? '교육 관리자'
-      : /(?:연수|훈련|교육\s*(?:프로그램|과정))/.test(safeInput.text || '') ? '교육 및 훈련 사무원'
-      : /(?:공문|민원|일반\s*행정)/.test(safeInput.text || '') ? '기타 정부 행정 사무원'
-      : '인사 및 노무 사무원';
-    const effectiveOccupationTerms = teacherStaffAdministration ? administrativeTerms : occTerms;
-    const occupationCandidates = searchTrack(
-      index, 'occupation',
-      teacherStaffAdministration ? preferredAdministrativeRole : (roleText || workText),
-      effectiveOccupationTerms,
-      { limit: 5, sourceMeta: occMeta,
-        confidenceCap: teacherStaffAdministration ? 'medium' : confidenceCap,
-        caveats: occCaveats, ownWords: teacherStaffAdministration ? [] : occOwnWords }
-    );
-    const industryCandidates = searchTrack(index, 'industry', extraction && extraction.employerMainBusiness || workText, indTerms, {
-      limit: 5, sourceMeta: indMeta, confidenceCap: understanding.employerUnclear ? 'low' : confidenceCap, caveats: indCaveats, ownWords: indOwnWords
-    });
+    // Role/target separation applies to ANY recognized employee category, not
+    // merely a teacher at an education office. A managed nurse/developer/chef
+    // is not necessarily the user's own profession. Model-extracted role labels
+    // may not override the more reliable explicit grammar of the original text.
+    //
+    // Retrieve each relevant administrative candidate by EXACT OFFICIAL NAME:
+    // no invented codes and no unrelated name/keyword matches. The question
+    // remains open when "managing" does not say whether this is HR, operations
+    // or departmental leadership.
+    const administrativeNames = managedStaff ? workRelation.roleNames : [];
+    const occupationCandidates = managedStaff
+      ? administrativeNames.flatMap((name) => searchTrack(index, 'occupation', name, [name], {
+          limit: 5, sourceMeta: occMeta, confidenceCap: 'medium', caveats: occCaveats, ownWords: []
+        }).filter((c) => c.officialName === name).slice(0, 1)).slice(0, 5)
+      : searchTrack(index, 'occupation', roleText || workText, occTerms, {
+          limit: 5, sourceMeta: occMeta, confidenceCap, caveats: occCaveats, ownWords: occOwnWords
+        });
+    const effectiveOccupationTerms = managedStaff ? administrativeNames : occTerms;
+
+    // The managed people's profession must NEVER be used as evidence for the
+    // employer's industry. In particular, a public 교육청 is classified as
+    // education administration, NOT as a private education service.
+    // For outsourced staff the place of work does not establish the employer.
+    const relationEmployerKnown = !!(workRelation && (
+      workRelation.educationAuthority || entities.workplaceMatches.length
+    ));
+    const industryUnknown = !!(managedStaff && (!relationEmployerKnown || understanding.employerUnclear));
+    const relationIndustryText = managedStaff
+      ? (workRelation.educationAuthority ? '교육 행정'
+        : entities.workplaceMatches.map((m) => m.matchedSurface).join(' '))
+      : '';
+    const relationIndustryTerms = managedStaff
+      ? (workRelation.educationAuthority ? ['교육 행정']
+        : entities.workplaceMatches.flatMap((m) => m.concept.industry_terms || []))
+      : [];
+    const effectiveIndustryTerms = managedStaff ? relationIndustryTerms : indTerms;
+    const industryCandidates = industryUnknown ? []
+      : searchTrack(index, 'industry',
+          managedStaff ? relationIndustryText : (extraction && extraction.employerMainBusiness || workText),
+          effectiveIndustryTerms,
+          { limit: 5, sourceMeta: indMeta,
+            confidenceCap: managedStaff ? 'medium' : (understanding.employerUnclear ? 'low' : confidenceCap),
+            caveats: indCaveats, ownWords: managedStaff ? [] : indOwnWords }
+        );
 
     // Analyzer mode (field_labor / arts_entertainment / service / professional /
     // ambiguous) decides the banner, which forks to ask, and how empty results are
@@ -1427,18 +1432,24 @@ export function createEmploymentAnalyzer(deps = {}) {
     const employerQuestion = understanding.employerUnclear ? [{ flag: 'employer_business', topic: 'employer_business',
       question: locale === 'en' ? 'What is the main business of the company that employs you, rather than the site where you work?' : '실제로 고용한 회사는 어떤 사업을 하나요? 일하는 장소와 고용한 회사가 다르면 회사의 주된 사업을 알려주세요.', chips: [] }] : [];
     const aiQuestion = extraction && extraction.needsClarification && extraction.clarificationQuestion ? [{ flag: 'ai_clarification', question: extraction.clarificationQuestion, chips: [] }] : [];
-    const adminQuestion = teacherStaffAdministration
-      && !/(?:채용|배치|인사|연수|훈련|공문|민원|일반\s*행정|총괄|팀장|과장|관리자)/.test(safeInput.text || '')
-      ? [{ flag: 'managed_teacher_duties',
-        question: '교사 인력을 관리하면서 주로 어떤 업무를 하시나요?',
-        chips: ['교사 인사·채용·배치', '교사 연수·교육 프로그램 운영', '교육청 일반 행정', '부서·인력 총괄 관리자'] }]
-      : [];
-    const ambiguityQuestions = [...adminQuestion, ...employerQuestion, ...aiQuestion, ...fieldQuestions.slice(0, 1), ...conceptQuestions, ...fieldQuestions.slice(1)].slice(0, 3);
+    const relationFollowUp = relationQuestion(workRelation, locale);
+    const relationQuestions = relationFollowUp ? [relationFollowUp] : [];
+    const unknownEmployerQuestion = industryUnknown ? [{
+      flag: 'unknown_employer_industry', topic: 'employer_business',
+      question: locale === 'en'
+        ? 'What is the main business of the company that directly employs you?'
+        : '실제로 고용한 기관·회사는 어떤 사업을 하나요?',
+      chips: []
+    }] : [];
+    const ambiguityQuestions = [...relationQuestions, ...unknownEmployerQuestion, ...employerQuestion, ...aiQuestion, ...fieldQuestions.slice(0, 1), ...(managedStaff ? [] : conceptQuestions), ...fieldQuestions.slice(1)].slice(0, 3);
 
     const followUpChips = buildFollowUpChips(entities, ambiguousMatches);
     const warnings = buildWarnings(safeInput, entities, occupationCandidates, industryCandidates, context);
-    if (teacherStaffAdministration) warnings.unshift(
-      '교사를 관리하는 행정업무로 이해했어요. 실제 담당하는 인사·연수·행정·총괄 업무에 따라 최종 직종이 달라질 수 있어요.'
+    if (managedStaff) warnings.unshift(
+      '문장에서 언급한 인력은 업무 대상이며 본인의 직업으로 단정하지 않았어요. 담당 업무와 실제 고용주를 확인해 최종 직종·업종을 선택하세요.'
+    );
+    if (workRelation && workRelation.kind === 'mixed') warnings.unshift(
+      '직접 수행하는 직종과 다른 인력을 관리하는 업무가 함께 언급되었어요. 주된 업무를 먼저 확인해 주세요.'
     );
     const sourceNotes = [
       ...buildSourceNotes(sources || { occupation: occMeta, industry: indMeta }, context),
@@ -1454,11 +1465,14 @@ export function createEmploymentAnalyzer(deps = {}) {
       ? (hasSignals ? 'needs_confirmation' : 'no_match')
       : 'official_list';
 
-    const parsedInterpretation = teacherStaffAdministration
+    const parsedInterpretation = managedStaff
       ? (locale === 'en'
-        ? 'You manage teacher staffing at an education authority; teaching or childcare is not your described job.'
-        : '교육청에서 교사 인력을 관리하는 업무로 이해했어요. 교사나 보육교사로 분류하지 않았어요.')
-      : buildParsedInterpretation(entities, fieldSig, mode, locale);
+        ? `Read as personnel administration/coordination. The ${workRelation.target} are the people you work with, not necessarily your own occupation.`
+        : `‘${workRelation.target}’은(는) 관리·지원하는 대상이고, 본인의 주업무는 인력 관리·운영으로 이해했어요.`)
+      : (workRelation && workRelation.kind === 'mixed'
+        ? (locale === 'en' ? 'Both a direct occupation and staff management were mentioned. Please confirm your primary role.'
+          : '직접 수행하는 직무와 다른 인력의 관리가 함께 언급되었어요. 주업무 확인이 필요해요.')
+        : buildParsedInterpretation(entities, fieldSig, mode, locale));
     const clarificationRequired = ambiguityQuestions.length > 0;
     const clarificationQuestion = clarificationRequired ? ambiguityQuestions[0].question : null;
     // Hold candidates back only when the open question can change WHAT THE
@@ -1504,7 +1518,7 @@ export function createEmploymentAnalyzer(deps = {}) {
       },
       extracted: {
         language: entities.language,
-        jobRole: teacherStaffAdministration ? '교사 인력 관리·교육행정' : (entities.jobRole || undefined),
+        jobRole: managedStaff ? '인력 관리·운영 관련 업무' : (entities.jobRole || undefined),
         workplaceType: entities.workplaceType || undefined,
         businessActivity: entities.businessActivity || undefined,
         employmentType: entities.employmentType || undefined,
@@ -1518,7 +1532,9 @@ export function createEmploymentAnalyzer(deps = {}) {
       },
       occupationCandidates,
       industryCandidates,
-      managedTeacherAdministration: teacherStaffAdministration,
+      employmentRelation: workRelation || undefined,
+      managedStaff: !!managedStaff,
+      industryEvidenceMissing: industryUnknown,
       incomeReportingNote,
       clarificationRequired,
       clarificationBlocking,
@@ -1530,7 +1546,7 @@ export function createEmploymentAnalyzer(deps = {}) {
       // Per-track expanded search terms — exposed so a host UI can feed them into
       // its own scorer (entity-aware retrieval) instead of re-deriving them.
       occupationTerms: effectiveOccupationTerms,
-      industryTerms: indTerms,
+      industryTerms: effectiveIndustryTerms,
       cautionNotes,
       warnings,
       sourceStatus,
