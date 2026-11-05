@@ -25,6 +25,7 @@ const STATIC_COPIES = [
   'docs/source-manuals/2026-10-19/visa_manual_261019.pdf',
   'docs/source-manuals/2026-11-02/stay_manual_261102.pdf',
   'scripts/employment_code_analyzer.mjs',
+  'scripts/employment_work_relations.mjs',
   'scripts/employment_checklist.mjs',
   'scripts/employment_interpret_client.mjs',
   'scripts/enforcement-ui.mjs',
