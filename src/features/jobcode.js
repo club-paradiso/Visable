@@ -642,6 +642,17 @@ function renderJobcodeSelectedSummary() {
     // end of the content instead of covering the candidates.
     const sum = document.getElementById('jcSummary');
     if (sum) sum.classList.toggle('is-active', !!(_jcSelected.occupation || _jcSelected.industry));
+    // Compact result-header status: the two taxonomies are separate decisions.
+    // Announce progress without adding another step or hiding either list.
+    const progress = document.getElementById('jcChoiceProgress');
+    if (progress) {
+        const count = Number(!!_jcSelected.occupation) + Number(!!_jcSelected.industry);
+        const zh = currentLanguage === 'zh-CN', en = jcEnLike();
+        progress.textContent = count === 2
+            ? (zh ? '2/2 已选择' : en ? '2/2 selected' : '2/2 선택 완료')
+            : (zh ? `${count}/2 已选择` : en ? `${count}/2 selected` : `${count}/2 선택`);
+        progress.classList.toggle('is-complete', count === 2);
+    }
 }
 function buildJobcodeMemo() {
     const occ = _jcSelected.occupation, ind = _jcSelected.industry;
