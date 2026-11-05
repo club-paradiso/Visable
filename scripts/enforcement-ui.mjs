@@ -637,7 +637,7 @@ const dispositionLabels = {
   CRIMINAL_REFERRAL: '형사절차 회부'
 };
 
-const basisLabels = { SUPPORTED: '근거 확인', INFERRED: '추론', UNKNOWN: '미확인' };
+const basisLabels = { SUPPORTED: '확인된 사실', INFERRED: '입력 내용에서 파악', UNKNOWN: '아직 확인 안 됨' };
 
 function factors(items = []) {
   if (!items.length) return '<p class="subtle">확인된 요인이 없습니다.</p>';
@@ -1005,7 +1005,7 @@ function renderResult(data) {
         <h3>처분 전망</h3>
         <p class="subtle">예상 범칙금 범위</p>
         <p class="amount">${data.analysisPending ? '확인 중' : monetary ? range(monetary.predictedLikelyRange) : aiBody ? '대기 중' : 'AI 추정 보류'}</p>
-        <p>${aiBody ? aiBody : data.analysisPending ? '법령 기준은 먼저 확인할 수 있어요. AI 예상은 검증 후 표시해요.' : monetary?.pointEstimateKrw != null ? `대표 추정액: <strong>${won(monetary.pointEstimateKrw)}</strong>` : monetary ? '근거가 충분하지 않아 대표 추정액을 표시하지 않습니다.' : '유효성 검증을 통과한 구조화 예측이 없어 금액을 임의로 만들지 않았습니다.'}</p>
+        <p>${aiBody ? aiBody : data.analysisPending ? '법령 기준은 먼저 확인할 수 있어요. AI 예상은 준비되는 대로 표시해요.' : monetary?.pointEstimateKrw != null ? `대표 추정액: <strong>${won(monetary.pointEstimateKrw)}</strong>` : monetary ? '근거가 충분하지 않아 대표 추정액을 표시하지 않습니다.' : '제시할 수 있는 예상 근거가 충분하지 않아 금액을 임의로 만들지 않았습니다.'}</p>
         ${monetary && directionLabels[monetary.predictedDirection] ? `<p><span class="tag tag--direction" data-direction="${escapeHtml(monetary.predictedDirection)}">${escapeHtml(directionLabels[monetary.predictedDirection])}</span></p>` : ''}
         ${moneyReasons.length ? `<div class="money-reasons"><strong>이 범위인 이유</strong>${factors(moneyReasons)}</div>` : ''}
         <p class="subtle">${escapeHtml(modelLabel)}</p>

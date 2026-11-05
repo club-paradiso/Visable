@@ -186,6 +186,30 @@ class WorkplaceFlowTests(unittest.IsolatedAsyncioTestCase):
         for banned in ("사람의 검토", "사람 검토", "결정론적", "운영자", "API 키", "스냅샷", "엔진"):
             self.assertNotIn(banned, rendered)
 
+    def test_duration_note_credits_entered_period_not_month_conversion(self):
+        """Live-experiment finding (2026-11-05): with an entered duration
+        and no exact dates, the baseline note must say the entered period
+        was used — never claim a 30-day month conversion. Dated cases must
+        not carry the note at all, and rendered baseline fields must not
+        confess internal verification state."""
+        cases = {entry["id"]: entry["case"] for entry in _load_cases()}
+        baseline = calculate_legal_baseline(
+            StructuredCase.model_validate(cases["e7-permit-excluded-occupation"])
+        )
+        self.assertEqual(baseline.status, "AVAILABLE")
+        self.assertTrue(
+            any("입력한 기간(63일)으로 계산했습니다" in a for a in baseline.assumptions),
+            baseline.assumptions,
+        )
+        self.assertFalse(any("1개월로 환산" in a for a in baseline.assumptions))
+        dated = calculate_legal_baseline(
+            StructuredCase.model_validate(cases["report-filed-does-not-satisfy-permit"])
+        )
+        self.assertFalse(any("입력한 기간" in a for a in dated.assumptions), dated.assumptions)
+        rendered = "\n".join(baseline.assumptions + baseline.missing_facts)
+        for banned in ("VERIFIED", "서버에서 검증", "실시간 법령 API 검증이 완전한", "추론"):
+            self.assertNotIn(banned, rendered)
+
     async def test_unknown_is_never_coerced_to_false(self):
         """Brief case 15: 'do not know' answers stay None end to end."""
         case = StructuredCase.model_validate(

@@ -95,4 +95,34 @@ assertUserFieldsClean(conflict, 'user-confirmation conflict');
 // Before-notice-effective-date case stays clean as well.
 assertUserFieldsClean(determineWorkplaceRegime(fixtures.cases.find((entry) => entry.id === 'before-notice-effective').case), 'before-notice-effective');
 
+// Result-screen wording (2026-11-05 live-experiment findings): rendered
+// baseline fields of a calculated case and an unresolved case must not
+// confess internal verification state, and the duration note must credit
+// the period the user actually entered instead of claiming a 30-day month
+// conversion the user never made.
+const RESULT_BANNED_TERMS = ['VERIFIED', '서버에서 검증', '실시간 법령 API 검증이 완전한', '추론'];
+function assertBaselineClean(baseline, label) {
+  const rendered = [
+    ...(baseline.assumptions || []), ...(baseline.missingFacts || []),
+  ].join('\n');
+  for (const term of RESULT_BANNED_TERMS) {
+    assert.ok(!rendered.includes(term), `${label}: rendered baseline fields must not contain "${term}"`);
+  }
+}
+const enteredPeriod = calculateLegalBaseline(
+  fixtures.cases.find((entry) => entry.id === 'e7-permit-excluded-occupation').case,
+);
+assert.equal(enteredPeriod.status, 'AVAILABLE');
+assert.ok((enteredPeriod.assumptions || []).some((a) => a.includes('입력한 기간(63일)으로 계산했습니다')),
+  'duration-only case must state that the entered period was used');
+assert.ok(!(enteredPeriod.assumptions || []).some((a) => a.includes('1개월로 환산')),
+  'duration-only case must not claim a 30-day month conversion');
+assertBaselineClean(enteredPeriod, 'calculated case');
+assertBaselineClean(missionBaseline, 'unresolved case');
+const datedBaseline = calculateLegalBaseline(
+  fixtures.cases.find((entry) => entry.id === 'report-filed-does-not-satisfy-permit').case,
+);
+assert.ok(!(datedBaseline.assumptions || []).some((a) => a.includes('입력한 기간')),
+  'dated case must not carry the entered-period note');
+
 console.log(`Enforcement workplace parity passed (${fixtures.cases.length} shared fixtures + narrative checks).`);

@@ -361,7 +361,7 @@ def calculate_legal_baseline(case: StructuredCase, *, database: Optional[Dict[st
     maximum = min(statutory_maximum, baseline + baseline // 2)
     assumptions = []
     if not (case.violation_start_date and case.violation_end_date):
-        assumptions.append("정확한 시작·종료일이 없어 30일을 1개월로 환산했습니다.")
+        assumptions.append(f"정확한 날짜 대신 입력한 기간({duration}일)으로 계산했습니다.")
     codes = [row["violationCode"] for row in shared_rules] if shared_rules else [case.violation_code]
     if shared_rules:
         assumptions.append(SHARED_TIER_NOTE)
