@@ -29,6 +29,7 @@ if str(BACKEND_DIR) not in sys.path:
 
 from fastapi.testclient import TestClient  # noqa: E402
 import services.law_tools as law_tools  # noqa: E402
+from services import law_public  # noqa: E402
 import paradiso_backend as P  # noqa: E402
 
 
@@ -89,12 +90,20 @@ class LegalSourceSearchApiTests(unittest.TestCase):
         self._saved_oc = os.environ.get("LAW_API_OC")
         self._saved_key = os.environ.get("LAW_API_KEY")
         self._saved_transport = law_tools._default_transport
+        # Since 2026-11-05 a DRF failure also tries the credential-free
+        # public transport (services.law_public).  These tests simulate the
+        # upstream through the DRF seam only, so pin the public seam to a
+        # failure as well — "upstream failure" here means every official
+        # transport failed.
+        self._saved_public_fetch = law_public._default_fetch
+        law_public._default_fetch = lambda url, timeout: (0, "")
         os.environ["LAW_API_OC"] = "test-oc-secret"
         os.environ.pop("LAW_API_KEY", None)
         self.client = TestClient(P.app)
 
     def tearDown(self):
         law_tools._default_transport = self._saved_transport
+        law_public._default_fetch = self._saved_public_fetch
         for name, value in (("LAW_API_OC", self._saved_oc), ("LAW_API_KEY", self._saved_key)):
             if value is None:
                 os.environ.pop(name, None)
