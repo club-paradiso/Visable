@@ -93,6 +93,24 @@ ok(polish.includes('@media (max-width: 680px)') && polish.includes('.jc2-summary
   'mobile selection summary must not cover result cards');
 ok(polish.includes('@media (prefers-reduced-motion: reduce)'),
   'reduced-motion support missing from finder polish');
+// Editorial redesign: desktop split composer, visually distinct comparison,
+ // and a compact single-column/mobile flow. Keep classification and safety data.
+has('class="jc2-hero-rule"', 'editorial taxonomy index missing');
+has('class="jc2-pane-ordinal" aria-hidden="true">A</span>', 'occupation comparison index missing');
+has('class="jc2-pane-ordinal" aria-hidden="true">B</span>', 'industry comparison index missing');
+has('jobcode-refinement.css?v=20261105-ux2', 'editorial stylesheet cache version missing');
+ok(polish.includes('grid-template-columns: minmax(0, .87fr) minmax(0, 1.13fr)'),
+  'large-screen ask view must give the editor and search distinct columns');
+ok(polish.includes('.jc2[data-jc-step="ask"] > :not(.jc2-hero):not(.jc2-searchpanel)'),
+  'additional advanced/assistive content must span the whole desktop grid');
+ok(polish.includes('.jc2-hero-rule') && polish.includes('.jc2-pane-ordinal'),
+  'typographic navigation system incomplete');
+ok(polish.includes('@media (max-width: 490px)'),
+  'small phone layout override missing');
+ok(polish.includes('.jc2-list.is-guided > .jc2-group-head:first-child + .jc2-card'),
+  'top proposed code must be visibly distinct from alternatives');
+ok(polish.includes('background: var(--bg1)') && polish.includes('color: var(--t2)'),
+  'editorial colours must derive from active Visable theme tokens');
 ok(polish.includes(':focus-visible') && polish.includes('min-height: 43px'),
   'finder candidate actions need visible focus and mobile-sized tap targets');
 ok(!polish.includes('display: none; /* scope warning */'),
