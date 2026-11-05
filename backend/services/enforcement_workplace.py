@@ -70,6 +70,7 @@ NEXT_QUESTIONS = {
     "허가 취득 여부": "근무를 시작하기 전에 출입국관서에서 근무처 변경·추가 허가를 받았나요?",
     "행정 절차 진행 여부": "출입국관서에 허가 신청이나 신고를 한 적이 있나요?",
     "사건 당시 고시 버전": "사건 날짜를 기준으로 당시 시행 고시를 확인해야 합니다. 변경 날짜를 알려 주세요.",
+    "이 계산기 판별 대상(E-1~E-7) 밖 체류자격의 근무처 변경·추가 절차": "이 계산기의 근무처 변경·추가 판별은 E-1~E-7 체류자격을 대상으로 합니다. 다른 체류자격은 절차가 다를 수 있으니, 본인의 체류자격에 맞는 절차를 관할 출입국·외국인관서(☎1345)에서 확인해 주세요.",
 }
 
 
@@ -251,6 +252,10 @@ def _engine_determine(case: StructuredCase, rules: Dict[str, Any]) -> WorkplaceD
         return _finish(det)
 
     if not _ELIGIBLE_STATUS_RE.match(status):
+        # User-facing guidance lives in missing_facts (rendered as "아직
+        # 확인할 사항"); human_review_reason stays internal metadata only
+        # and is never rendered to end users.
+        det.missing_facts.append("이 계산기 판별 대상(E-1~E-7) 밖 체류자격의 근무처 변경·추가 절차")
         det.human_review_reason = (
             "검증된 고시 규칙은 E-1~E-7 체류자격의 신고 대상 판별만 다룹니다. "
             "그 밖의 체류자격은 이 엔진으로 사전허가/사후신고를 확정하지 않습니다."

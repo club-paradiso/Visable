@@ -1,0 +1,14 @@
+{
+  "provider": "국가법령정보센터 (법제처)",
+  "sourceUrl": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=268701",
+  "bodyEndpoint": "https://www.law.go.kr/LSW/lsInfoR.do?lsiSeq=268701&efYd=20250131&ancYnChk=0",
+  "drfApi": {
+    "lawSearch": "https://www.law.go.kr/DRF/lawSearch.do?target=law",
+    "lawService": "https://www.law.go.kr/DRF/lawService.do?target=law",
+    "note": "DRF Open API는 OC(등록된 식별자 + 서버 IP/도메인)가 필요해, 코퍼스 수집은 동일한 공식 본문을 제공하는 공개 웹 엔드포인트로 수행했습니다. LAW_API_OC가 설정된 환경에서는 sync가 DRF 교차 검증을 시도할 수 있습니다.",
+    "crossCheckPerformed": false
+  },
+  "sourceHtmlSha256": "822f5739f43adf28e8fd7246464e6b9717f0b3372b6060f98e5bb153030f6b7e",
+  "retrievedAt": "2026-11-05T10:51:05+09:00",
+  "reusePermission": "FREE_WITH_ATTRIBUTION — 법령 본문은 저작권법 제7조상 보호받지 못하는 저작물이며, 국가법령정보센터 법령정보는 공공데이터로서 출처 표시를 조건으로 영리 목적 포함 자유 이용이 보장됩니다. 위조·변조 및 출처 미표기는 금지됩니다."
+}
