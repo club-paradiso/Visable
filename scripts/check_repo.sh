@@ -234,6 +234,7 @@ if command -v node >/dev/null 2>&1; then
   node scripts/check_employment_reporting_helper.mjs
   # Deterministic natural-language analyzer: no hallucinated codes, 직종/업종
   # track separation, ambiguity follow-ups, and source metadata present.
+  node scripts/check_employment_work_relations.mjs
   node scripts/check_employment_code_analyzer.mjs
   # Mode suites (field_labor/professional/service/arts/ambiguous): 500+ fixtures —
   # mode detection, parsed signals, cluster coverage, never a silent dead-end.

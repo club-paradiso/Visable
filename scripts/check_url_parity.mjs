@@ -17,7 +17,7 @@ if (!existsSync(dist)) { console.error('dist/ missing — run npm run build firs
 const pages = readdirSync(root).filter((f) => f.endsWith('.html') && statSync(join(root, f)).isFile());
 // Shipped code only: the pages, assets/js, and the scripts/*.mjs files the pages load at runtime
 // (the rest of scripts/ is Node tooling that never runs in the browser).
-const RUNTIME_SCRIPTS = ['scripts/employment_code_analyzer.mjs', 'scripts/employment_checklist.mjs', 'scripts/employment_interpret_client.mjs', 'scripts/enforcement-ui.mjs'];
+const RUNTIME_SCRIPTS = ['scripts/employment_code_analyzer.mjs', 'scripts/employment_work_relations.mjs', 'scripts/employment_checklist.mjs', 'scripts/employment_interpret_client.mjs', 'scripts/enforcement-ui.mjs'];
 const sources = [...pages.map((p) => join(root, p)), ...walk(join(root, 'assets/js')), ...RUNTIME_SCRIPTS.map((p) => join(root, p)).filter(existsSync)];
 // Only quoted strings and attribute values count as URL references; a path inside a code
 // comment such as "(scripts/check_x.mjs)" is documentation, not a URL the site serves.

@@ -597,11 +597,26 @@
       "industry_terms": []
     },
     {
+      "id": "teaching_assistant",
+      "type": "role",
+      "surface": [
+        "보조교사",
+        "교사 보조",
+        "수업 보조"
+      ],
+      "label_ko": "교사 보조",
+      "occupation_terms": [
+        "교사 보조 및 관련 종사원"
+      ],
+      "industry_terms": []
+    },
+    {
       "id": "childcare_teacher",
       "type": "role",
       "surface": [
+        "어린이집 보조교사",
+        "보육 보조교사",
         "보육교사",
-        "보조교사",
         "어린이집 교사",
         "유아교사",
         "보육"
@@ -1413,12 +1428,12 @@
       "surface": [
         "어린이집",
         "보육시설",
-        "유치원",
         "놀이방"
       ],
       "label_ko": "어린이집 / 보육시설",
       "business_label_ko": "보육시설 운영업",
       "industry_terms": [
+        "보육시설 운영업",
         "보육시설",
         "사회복지",
         "보육"
@@ -1429,6 +1444,25 @@
         "보조교사",
         "조리",
         "원장(자영업)"
+      ]
+    },
+    {
+      "id": "kindergarten",
+      "type": "workplace",
+      "surface": [
+        "유치원"
+      ],
+      "label_ko": "유치원 / 유아 교육기관",
+      "business_label_ko": "유아 교육기관",
+      "industry_terms": [
+        "유아 교육기관",
+        "유아 교육"
+      ],
+      "occupation_terms": [],
+      "ambiguous_roles": [
+        "유치원 교사",
+        "수업 보조",
+        "행정직원"
       ]
     },
     {

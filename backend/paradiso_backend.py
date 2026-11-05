@@ -1573,7 +1573,14 @@ async def _call_openrouter(
 
 
 async def _call_groq(
-    prompt: str, model: Optional[str] = None, system_prompt: Optional[str] = None
+    prompt: str,
+    model: Optional[str] = None,
+    system_prompt: Optional[str] = None,
+    *,
+    response_format: Optional[Dict[str, Any]] = None,
+    max_tokens: Optional[int] = None,
+    reasoning_effort: Optional[str] = None,
+    timeout_seconds: Optional[float] = None,
 ) -> str:
     if not GROQ_API_KEY:
         raise HTTPException(
@@ -1589,16 +1596,27 @@ async def _call_groq(
             detail={"error": "httpx_missing", "message": "httpx is not installed."},
         )
 
-    payload = {
+    payload: Dict[str, Any] = {
         "model": model or GROQ_MODEL,
         "messages": _llm_messages(prompt, system_prompt),
     }
+    # Optional strict structured outputs for the employment interpretation
+    # feature. Existing Groq clients remain unaffected when omitted.
+    if response_format is not None:
+        payload["response_format"] = response_format
+    if max_tokens is not None:
+        payload["max_tokens"] = min(2200, max(256, int(max_tokens)))
+    if reasoning_effort in {"low", "medium", "high"}:
+        payload["reasoning_effort"] = reasoning_effort
+    call_timeout = OPENROUTER_TIMEOUT_SECONDS if timeout_seconds is None else max(
+        2.0, min(20.0, float(timeout_seconds))
+    )
     headers = {
         "Authorization": f"Bearer {GROQ_API_KEY}",
         "Content-Type": "application/json",
     }
     try:
-        async with httpx.AsyncClient(timeout=OPENROUTER_TIMEOUT_SECONDS) as client:
+        async with httpx.AsyncClient(timeout=call_timeout) as client:
             resp = await client.post(
                 "https://api.groq.com/openai/v1/chat/completions",
                 headers=headers,

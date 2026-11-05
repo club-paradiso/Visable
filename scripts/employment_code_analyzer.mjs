@@ -1,3 +1,6 @@
+import { inferEmploymentRelation, relationQuestion } from './employment_work_relations.mjs';
+export { inferEmploymentRelation } from './employment_work_relations.mjs';
+
 /*
  * employment_code_analyzer.mjs
  * ----------------------------------------------------------------------------
@@ -291,7 +294,12 @@ function matchConcepts(normalizedText, tokenSet, concepts) {
     }
     if (hit) matched.push({ concept, matchedSurface: hit });
   }
+  // A long role phrase can contain the name of the workplace:
+  // "어린이집 보조교사" must retain BOTH the daycare workplace (KSIC)
+  // and the employee's role (KSCO). Suppress nested surfaces only WITHIN
+  // the same semantic entity type.
   return matched.filter((m) => !matched.some((o) => o !== m
+    && o.concept.type === m.concept.type
     && o.matchedSurface.length > m.matchedSurface.length
     && o.matchedSurface.includes(m.matchedSurface)));
 }
@@ -1286,6 +1294,8 @@ export function createEmploymentAnalyzer(deps = {}) {
   function analyze(input) {
     const safeInput = typeof input === 'string' ? { text: input } : (input || { text: '' });
     const understanding = understandEmploymentInput(safeInput.text, surfaces);
+    const workRelation = inferEmploymentRelation(safeInput.text, conceptPool.filter((c) => c.type === 'role').flatMap((c) => c.surface || []));
+    const managedStaff = workRelation && workRelation.kind === 'managed_staff';
     const extraction = safeInput.facts && typeof safeInput.facts === 'object' ? safeInput.facts : null;
     // AI supplies descriptions only. Official codes always come from searchTrack.
     let roleText = extraction ? [extraction.role, ...(extraction.tasks || [])].filter(Boolean).join(' ') : '';
@@ -1353,12 +1363,71 @@ export function createEmploymentAnalyzer(deps = {}) {
     // The person's own words (particles stripped), for the literal-name signal.
     const occOwnWords = withPlaceStems(tokenize(roleText || workText));
     const indOwnWords = withPlaceStems(tokenize(extraction && extraction.employerMainBusiness || workText));
-    const occupationCandidates = searchTrack(index, 'occupation', roleText || workText, occTerms, {
-      limit: 5, sourceMeta: occMeta, confidenceCap, caveats: occCaveats, ownWords: occOwnWords
-    });
-    const industryCandidates = searchTrack(index, 'industry', extraction && extraction.employerMainBusiness || workText, indTerms, {
-      limit: 5, sourceMeta: indMeta, confidenceCap: understanding.employerUnclear ? 'low' : confidenceCap, caveats: indCaveats, ownWords: indOwnWords
-    });
+    // Role/target separation applies to ANY recognized employee category, not
+    // merely a teacher at an education office. A managed nurse/developer/chef
+    // is not necessarily the user's own profession. Model-extracted role labels
+    // may not override the more reliable explicit grammar of the original text.
+    //
+    // Retrieve each relevant administrative candidate by EXACT OFFICIAL NAME:
+    // no invented codes and no unrelated name/keyword matches. The question
+    // remains open when "managing" does not say whether this is HR, operations
+    // or departmental leadership.
+    const administrativeNames = managedStaff ? workRelation.roleNames : [];
+    const occupationCandidates = managedStaff
+      ? administrativeNames.flatMap((name) => searchTrack(index, 'occupation', name, [name], {
+          limit: 5, sourceMeta: occMeta, confidenceCap: 'medium', caveats: occCaveats, ownWords: []
+        }).filter((c) => c.officialName === name).slice(0, 1)).slice(0, 5)
+      : searchTrack(index, 'occupation', roleText || workText, occTerms, {
+          limit: 5, sourceMeta: occMeta, confidenceCap, caveats: occCaveats, ownWords: occOwnWords
+        });
+    const effectiveOccupationTerms = managedStaff ? administrativeNames : occTerms;
+
+    // The managed people's profession must NEVER be used as evidence for the
+    // employer's industry. In particular, a public 교육청 is classified as
+    // education administration, NOT as a private education service.
+    // For outsourced staff the place of work does not establish the employer.
+    const relationEmployerKnown = !!(workRelation && (
+      workRelation.educationAuthority || entities.workplaceMatches.length
+    ));
+    const industryUnknown = !!(managedStaff && (!relationEmployerKnown || understanding.employerUnclear));
+    const relationIndustryText = managedStaff
+      ? (workRelation.educationAuthority ? '교육 행정'
+        : entities.workplaceMatches.map((m) => m.matchedSurface).join(' '))
+      : '';
+    const relationIndustryTerms = managedStaff
+      ? (workRelation.educationAuthority ? ['교육 행정']
+        : entities.workplaceMatches.flatMap((m) => m.concept.industry_terms || []))
+      : [];
+    const effectiveIndustryTerms = managedStaff ? relationIndustryTerms : indTerms;
+    const industryMatches = industryUnknown ? []
+      : searchTrack(index, 'industry',
+          managedStaff ? relationIndustryText : (extraction && extraction.employerMainBusiness || workText),
+          effectiveIndustryTerms,
+          { limit: 5, sourceMeta: indMeta,
+            confidenceCap: managedStaff ? 'medium' : (understanding.employerUnclear ? 'low' : confidenceCap),
+            caveats: indCaveats, ownWords: managedStaff ? [] : indOwnWords }
+        );
+    // Business-activity classification must come from the actual employer.
+    // When a clearly named workplace has an EXACT official industry title
+    // (e.g. 어린이집→보육시설 운영업, 유치원→유아 교육기관),
+    // preserve that verified lexical signal above noisy word-overlap scores.
+    // Do not infer a dispatch/contractor company's business from the host site.
+    const exactWorkplaceIndustry = (!industryUnknown && !understanding.employerUnclear)
+      ? entities.workplaceMatches
+        .map((m) => m.concept.business_label_ko)
+        // A broad exact name such as "음식점업" must not displace a
+        // more-specific match ("중식 음식점업", "한식 음식점업", "치킨").
+        // Preserve only cases where the official activity is both distinctive
+        // and otherwise easily confused with another institution category.
+        .filter((name) => ['보육시설 운영업', '유아 교육기관'].includes(name))
+        .flatMap((name) => searchTrack(index, 'industry', name, [name], {
+          limit: 5, sourceMeta: indMeta,
+          confidenceCap: managedStaff ? 'medium' : confidenceCap,
+          caveats: indCaveats, ownWords: []
+        }).filter((c) => c.officialName === name).slice(0, 1))
+      : [];
+    const industryCandidates = [...new Map([...exactWorkplaceIndustry, ...industryMatches]
+      .map((c) => [String(c.code), c])).values()].slice(0, 5);
 
     // Analyzer mode (field_labor / arts_entertainment / service / professional /
     // ambiguous) decides the banner, which forks to ask, and how empty results are
@@ -1389,10 +1458,25 @@ export function createEmploymentAnalyzer(deps = {}) {
     const employerQuestion = understanding.employerUnclear ? [{ flag: 'employer_business', topic: 'employer_business',
       question: locale === 'en' ? 'What is the main business of the company that employs you, rather than the site where you work?' : '실제로 고용한 회사는 어떤 사업을 하나요? 일하는 장소와 고용한 회사가 다르면 회사의 주된 사업을 알려주세요.', chips: [] }] : [];
     const aiQuestion = extraction && extraction.needsClarification && extraction.clarificationQuestion ? [{ flag: 'ai_clarification', question: extraction.clarificationQuestion, chips: [] }] : [];
-    const ambiguityQuestions = [...employerQuestion, ...aiQuestion, ...fieldQuestions.slice(0, 1), ...conceptQuestions, ...fieldQuestions.slice(1)].slice(0, 3);
+    const relationFollowUp = relationQuestion(workRelation, locale);
+    const relationQuestions = relationFollowUp ? [relationFollowUp] : [];
+    const unknownEmployerQuestion = industryUnknown ? [{
+      flag: 'unknown_employer_industry', topic: 'employer_business',
+      question: locale === 'en'
+        ? 'What is the main business of the company that directly employs you?'
+        : '실제로 고용한 기관·회사는 어떤 사업을 하나요?',
+      chips: []
+    }] : [];
+    const ambiguityQuestions = [...relationQuestions, ...unknownEmployerQuestion, ...employerQuestion, ...aiQuestion, ...fieldQuestions.slice(0, 1), ...(managedStaff ? [] : conceptQuestions), ...fieldQuestions.slice(1)].slice(0, 3);
 
     const followUpChips = buildFollowUpChips(entities, ambiguousMatches);
     const warnings = buildWarnings(safeInput, entities, occupationCandidates, industryCandidates, context);
+    if (managedStaff) warnings.unshift(
+      '문장에서 언급한 인력은 업무 대상이며 본인의 직업으로 단정하지 않았어요. 담당 업무와 실제 고용주를 확인해 최종 직종·업종을 선택하세요.'
+    );
+    if (workRelation && workRelation.kind === 'mixed') warnings.unshift(
+      '직접 수행하는 직종과 다른 인력을 관리하는 업무가 함께 언급되었어요. 주된 업무를 먼저 확인해 주세요.'
+    );
     const sourceNotes = [
       ...buildSourceNotes(sources || { occupation: occMeta, industry: indMeta }, context),
       ...buildLegalNotes(legalSources, legalSensitivity)
@@ -1407,7 +1491,14 @@ export function createEmploymentAnalyzer(deps = {}) {
       ? (hasSignals ? 'needs_confirmation' : 'no_match')
       : 'official_list';
 
-    const parsedInterpretation = buildParsedInterpretation(entities, fieldSig, mode, locale);
+    const parsedInterpretation = managedStaff
+      ? (locale === 'en'
+        ? `Read as personnel administration/coordination. The ${workRelation.target} are the people you work with, not necessarily your own occupation.`
+        : `‘${workRelation.target}’은(는) 관리·지원하는 대상이고, 본인의 주업무는 인력 관리·운영으로 이해했어요.`)
+      : (workRelation && workRelation.kind === 'mixed'
+        ? (locale === 'en' ? 'Both a direct occupation and staff management were mentioned. Please confirm your primary role.'
+          : '직접 수행하는 직무와 다른 인력의 관리가 함께 언급되었어요. 주업무 확인이 필요해요.')
+        : buildParsedInterpretation(entities, fieldSig, mode, locale));
     const clarificationRequired = ambiguityQuestions.length > 0;
     const clarificationQuestion = clarificationRequired ? ambiguityQuestions[0].question : null;
     // Hold candidates back only when the open question can change WHAT THE
@@ -1453,7 +1544,7 @@ export function createEmploymentAnalyzer(deps = {}) {
       },
       extracted: {
         language: entities.language,
-        jobRole: entities.jobRole || undefined,
+        jobRole: managedStaff ? '인력 관리·운영 관련 업무' : (entities.jobRole || undefined),
         workplaceType: entities.workplaceType || undefined,
         businessActivity: entities.businessActivity || undefined,
         employmentType: entities.employmentType || undefined,
@@ -1467,6 +1558,9 @@ export function createEmploymentAnalyzer(deps = {}) {
       },
       occupationCandidates,
       industryCandidates,
+      employmentRelation: workRelation || undefined,
+      managedStaff: !!managedStaff,
+      industryEvidenceMissing: industryUnknown,
       incomeReportingNote,
       clarificationRequired,
       clarificationBlocking,
@@ -1477,8 +1571,8 @@ export function createEmploymentAnalyzer(deps = {}) {
       matchedConcepts: entities.matchedConcepts,
       // Per-track expanded search terms — exposed so a host UI can feed them into
       // its own scorer (entity-aware retrieval) instead of re-deriving them.
-      occupationTerms: occTerms,
-      industryTerms: indTerms,
+      occupationTerms: effectiveOccupationTerms,
+      industryTerms: effectiveIndustryTerms,
       cautionNotes,
       warnings,
       sourceStatus,
