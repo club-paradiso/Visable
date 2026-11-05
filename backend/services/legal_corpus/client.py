@@ -27,6 +27,7 @@ current".
 
 from __future__ import annotations
 
+import http.client
 import os
 import time
 import urllib.error
@@ -39,7 +40,7 @@ DRF_BASE = "http://www.law.go.kr/DRF"
 USER_AGENT = "VisableLegalCorpus/1.0 (+https://github.com/club-paradiso/Visable)"
 
 DEFAULT_TIMEOUT = 30.0
-DEFAULT_RETRIES = 3
+DEFAULT_RETRIES = 5
 
 
 class LawSourceError(RuntimeError):
@@ -88,6 +89,11 @@ class LawGoKrClient:
             except TimeoutError as exc:
                 last_exc = exc
             except urllib.error.URLError as exc:
+                last_exc = exc
+            except http.client.HTTPException as exc:
+                # law.go.kr intermittently truncates chunked responses
+                # (http.client.IncompleteRead). The partial body is never
+                # used — the whole request is retried instead.
                 last_exc = exc
             if attempt < self.retries - 1:
                 self._sleep(min(2 ** attempt, 8))
