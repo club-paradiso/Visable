@@ -55,6 +55,48 @@ EXTRACTION_FIELDS: Dict[str, str] = {
     "clarificationQuestion": "str",
 }
 
+def groq_strict_response_format() -> Dict[str, Any]:
+    """Groq strict JSON Schema, derived from the same validator contract.
+
+    Every property must be required and extra keys forbidden. This guarantees
+    shape, NOT factual accuracy: validate_extraction still runs afterwards.
+    """
+    def field_schema(kind: str) -> Dict[str, Any]:
+        if kind == "bool":
+            return {"type": "boolean"}
+        if kind == "list":
+            return {"type": "array", "items": {"type": "string"}}
+        return {"type": "string"}
+
+    properties = {name: field_schema(kind) for name, kind in EXTRACTION_FIELDS.items()}
+    return {
+        "type": "json_schema",
+        "json_schema": {
+            "name": "visable_employment_facts",
+            "strict": True,
+            "schema": {
+                "type": "object",
+                "properties": properties,
+                "required": list(properties),
+                "additionalProperties": False,
+            },
+        },
+    }
+
+
+def redact_personal_identifiers(text: str) -> str:
+    """Avoid transmitting common personal identifiers to third-party inference.
+
+    Keep the original sentence for the local deterministic analyzer. This is
+    best-effort redaction, NOT a substitute for a sensitive-data warning.
+    """
+    scrubbed = str(text or "")
+    scrubbed = re.sub(r"(?i)\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b", "[email]", scrubbed)
+    scrubbed = re.sub(r"(?<!\\d)\\d{6}\\s*[-]?\\s*[1-8]\\d{6}(?!\\d)", "[identity]", scrubbed)
+    scrubbed = re.sub(r"(?<!\\d)01[016789][-\\s]?\\d{3,4}[-\\s]?\\d{4}(?!\\d)", "[phone]", scrubbed)
+    return scrubbed
+
+
 _MAX_STRING = 160
 _MAX_LIST_ITEMS = 12
 _MAX_CLARIFICATION = 240
