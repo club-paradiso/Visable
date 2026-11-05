@@ -1260,6 +1260,21 @@ function buildLegalNotes(legalSources, sensitivity) {
  */
 export { buildSpecialStates, SPECIAL_STATE_IDS };
 
+/**
+ * Role-target guard: "I manage assistant teachers" describes the administrator,
+ * not one of the teachers being managed. Constrain this guard to an educational
+ * authority + an explicit teacher-staff management action; a person actually
+ * teaching at a school must keep the ordinary teaching search path.
+ *
+ * This is a reading of the sentence, not an assignment of a classification code.
+ * The resulting candidates are still looked up in the canonical KSCO8 table.
+ */
+export function detectManagedTeacherAdministration(text) {
+  const q = normalize(text);
+  if (!/(?:교육청|교육지원청|교육부)/.test(q)) return false;
+  return /(?:원어민\s*)?(?:영어\s*)?(?:보조\s*)?(?:교사|교원|강사)(?:들|님)?(?:를|을|의)?\s*(?:관리|인사|채용|배치|운영|담당|지원)/.test(q);
+}
+
 export function createEmploymentAnalyzer(deps = {}) {
   const dataset = deps.data || { data: [] };
   const lexicon = deps.lexicon || { ko: { concepts: [] }, en: { concepts: [] } };
@@ -1286,6 +1301,7 @@ export function createEmploymentAnalyzer(deps = {}) {
   function analyze(input) {
     const safeInput = typeof input === 'string' ? { text: input } : (input || { text: '' });
     const understanding = understandEmploymentInput(safeInput.text, surfaces);
+    const teacherStaffAdministration = detectManagedTeacherAdministration(safeInput.text);
     const extraction = safeInput.facts && typeof safeInput.facts === 'object' ? safeInput.facts : null;
     // AI supplies descriptions only. Official codes always come from searchTrack.
     let roleText = extraction ? [extraction.role, ...(extraction.tasks || [])].filter(Boolean).join(' ') : '';
@@ -1353,9 +1369,31 @@ export function createEmploymentAnalyzer(deps = {}) {
     // The person's own words (particles stripped), for the literal-name signal.
     const occOwnWords = withPlaceStems(tokenize(roleText || workText));
     const indOwnWords = withPlaceStems(tokenize(extraction && extraction.employerMainBusiness || workText));
-    const occupationCandidates = searchTrack(index, 'occupation', roleText || workText, occTerms, {
-      limit: 5, sourceMeta: occMeta, confidenceCap, caveats: occCaveats, ownWords: occOwnWords
-    });
+    // The managed staff are the OBJECT of the user's work, not the user's job.
+    // Do not send "보조교사" / "영어" / model-extracted teacher labels to the
+    // occupation scorer in this case. Offer canonical administrative families
+    // while the person clarifies whether they do HR, training or government
+    // administration. These are official-name retrieval hints, NOT invented codes.
+    const administrativeTerms = [
+      '인사 및 노무 사무원',
+      '교육 및 훈련 사무원',
+      '기타 정부 행정 사무원'
+    ];
+    const hasSupervisorTitle = /(?:팀장|과장|관리자|총괄|부서장)/.test(safeInput.text || '');
+    if (teacherStaffAdministration && hasSupervisorTitle) administrativeTerms.push('교육 관리자');
+    const preferredAdministrativeRole = hasSupervisorTitle ? '교육 관리자'
+      : /(?:연수|훈련|교육\s*(?:프로그램|과정))/.test(safeInput.text || '') ? '교육 및 훈련 사무원'
+      : /(?:공문|민원|일반\s*행정)/.test(safeInput.text || '') ? '기타 정부 행정 사무원'
+      : '인사 및 노무 사무원';
+    const effectiveOccupationTerms = teacherStaffAdministration ? administrativeTerms : occTerms;
+    const occupationCandidates = searchTrack(
+      index, 'occupation',
+      teacherStaffAdministration ? preferredAdministrativeRole : (roleText || workText),
+      effectiveOccupationTerms,
+      { limit: 5, sourceMeta: occMeta,
+        confidenceCap: teacherStaffAdministration ? 'medium' : confidenceCap,
+        caveats: occCaveats, ownWords: teacherStaffAdministration ? [] : occOwnWords }
+    );
     const industryCandidates = searchTrack(index, 'industry', extraction && extraction.employerMainBusiness || workText, indTerms, {
       limit: 5, sourceMeta: indMeta, confidenceCap: understanding.employerUnclear ? 'low' : confidenceCap, caveats: indCaveats, ownWords: indOwnWords
     });
@@ -1389,10 +1427,19 @@ export function createEmploymentAnalyzer(deps = {}) {
     const employerQuestion = understanding.employerUnclear ? [{ flag: 'employer_business', topic: 'employer_business',
       question: locale === 'en' ? 'What is the main business of the company that employs you, rather than the site where you work?' : '실제로 고용한 회사는 어떤 사업을 하나요? 일하는 장소와 고용한 회사가 다르면 회사의 주된 사업을 알려주세요.', chips: [] }] : [];
     const aiQuestion = extraction && extraction.needsClarification && extraction.clarificationQuestion ? [{ flag: 'ai_clarification', question: extraction.clarificationQuestion, chips: [] }] : [];
-    const ambiguityQuestions = [...employerQuestion, ...aiQuestion, ...fieldQuestions.slice(0, 1), ...conceptQuestions, ...fieldQuestions.slice(1)].slice(0, 3);
+    const adminQuestion = teacherStaffAdministration
+      && !/(?:채용|배치|인사|연수|훈련|공문|민원|일반\s*행정|총괄|팀장|과장|관리자)/.test(safeInput.text || '')
+      ? [{ flag: 'managed_teacher_duties',
+        question: '교사 인력을 관리하면서 주로 어떤 업무를 하시나요?',
+        chips: ['교사 인사·채용·배치', '교사 연수·교육 프로그램 운영', '교육청 일반 행정', '부서·인력 총괄 관리자'] }]
+      : [];
+    const ambiguityQuestions = [...adminQuestion, ...employerQuestion, ...aiQuestion, ...fieldQuestions.slice(0, 1), ...conceptQuestions, ...fieldQuestions.slice(1)].slice(0, 3);
 
     const followUpChips = buildFollowUpChips(entities, ambiguousMatches);
     const warnings = buildWarnings(safeInput, entities, occupationCandidates, industryCandidates, context);
+    if (teacherStaffAdministration) warnings.unshift(
+      '교사를 관리하는 행정업무로 이해했어요. 실제 담당하는 인사·연수·행정·총괄 업무에 따라 최종 직종이 달라질 수 있어요.'
+    );
     const sourceNotes = [
       ...buildSourceNotes(sources || { occupation: occMeta, industry: indMeta }, context),
       ...buildLegalNotes(legalSources, legalSensitivity)
@@ -1407,7 +1454,11 @@ export function createEmploymentAnalyzer(deps = {}) {
       ? (hasSignals ? 'needs_confirmation' : 'no_match')
       : 'official_list';
 
-    const parsedInterpretation = buildParsedInterpretation(entities, fieldSig, mode, locale);
+    const parsedInterpretation = teacherStaffAdministration
+      ? (locale === 'en'
+        ? 'You manage teacher staffing at an education authority; teaching or childcare is not your described job.'
+        : '교육청에서 교사 인력을 관리하는 업무로 이해했어요. 교사나 보육교사로 분류하지 않았어요.')
+      : buildParsedInterpretation(entities, fieldSig, mode, locale);
     const clarificationRequired = ambiguityQuestions.length > 0;
     const clarificationQuestion = clarificationRequired ? ambiguityQuestions[0].question : null;
     // Hold candidates back only when the open question can change WHAT THE
@@ -1453,7 +1504,7 @@ export function createEmploymentAnalyzer(deps = {}) {
       },
       extracted: {
         language: entities.language,
-        jobRole: entities.jobRole || undefined,
+        jobRole: teacherStaffAdministration ? '교사 인력 관리·교육행정' : (entities.jobRole || undefined),
         workplaceType: entities.workplaceType || undefined,
         businessActivity: entities.businessActivity || undefined,
         employmentType: entities.employmentType || undefined,
@@ -1467,6 +1518,7 @@ export function createEmploymentAnalyzer(deps = {}) {
       },
       occupationCandidates,
       industryCandidates,
+      managedTeacherAdministration: teacherStaffAdministration,
       incomeReportingNote,
       clarificationRequired,
       clarificationBlocking,
@@ -1477,7 +1529,7 @@ export function createEmploymentAnalyzer(deps = {}) {
       matchedConcepts: entities.matchedConcepts,
       // Per-track expanded search terms — exposed so a host UI can feed them into
       // its own scorer (entity-aware retrieval) instead of re-deriving them.
-      occupationTerms: occTerms,
+      occupationTerms: effectiveOccupationTerms,
       industryTerms: indTerms,
       cautionNotes,
       warnings,
