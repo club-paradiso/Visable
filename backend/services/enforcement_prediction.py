@@ -325,7 +325,7 @@ def validate_ai_prediction(
         monetary["legalRange"] = baseline.legally_adjustable_range.public_dict()
 
     cap = _confidence_cap(case, baseline, evidence)
-    reasons = ["법령상 기준과 예측 결과를 분리해 검증했습니다."]
+    reasons = ["법령 기준 금액과 예상 범위를 나눠서 보여드립니다."]
     if not evidence.similar_cases:
         reasons.append("실제 처분을 비교할 공개 유사사례가 제한적입니다.")
     if case.unknown_facts:
@@ -349,7 +349,7 @@ def unavailable_prediction(
         similar_cases=evidence.similar_cases,
         confidence=PredictionConfidence(
             level="INSUFFICIENT",
-            reasons=["법령상 기준은 유지되지만 예측 모델의 유효한 구조화 결과가 없습니다."],
+            reasons=["AI 예상 결과는 이번 분석에서 제시하지 않습니다. 법령상 기준은 그대로 확인할 수 있습니다."],
         ),
         limitations=list(dict.fromkeys([*evidence.limitations, reason])),
     )
