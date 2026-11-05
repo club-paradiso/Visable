@@ -40,7 +40,7 @@ function findManagedTarget(query, roleSurfaces) {
     if (ko) {
       // "영어 보조교사를 관리", "간호사들의 근태를 관리", "요리사 채용".
       const tail = '(?:들|분|님|들분)?(?:을|를|의|에게|에\\s*대한|들에\\s*대한)?';
-      const qualifier = '(?:\\s*(?:근태|급여|스케줄|일정|인사|채용|배치|교육|연수|훈련|업무)(?:를|을|의)?)?';
+      const qualifier = '(?:\\s*(?:인력|직원|근태|급여|스케줄|일정|인사|채용|배치|교육|연수|훈련|업무)(?:를|을|의)?)?';
       const pattern = new RegExp(t + tail + qualifier + '\\s*(?:' + KO_MANAGING + ')', 'u');
       const m = pattern.exec(query);
       if (m) return { target: surface, phrase: m[0], action: findKoreanAction(m[0]) };
