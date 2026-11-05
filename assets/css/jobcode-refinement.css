@@ -905,3 +905,20 @@
   }
   #jobCodeModalOverlay .jc2-refine { padding: .65rem; }
 }
+
+/* Keep the query field in place after an edit. No reappearing hero or split view. */
+#jobCodeModalOverlay .jc2[data-jc-step="ask"].jc2--editing {
+  display: flex !important;
+  flex-direction: column;
+}
+#jobCodeModalOverlay .jc2[data-jc-step="ask"].jc2--editing > .jc2-hero {
+  display: none !important;
+}
+#jobCodeModalOverlay .jc2[data-jc-step="ask"].jc2--editing > .jc2-searchpanel {
+  display: flex !important;
+  width: 100%;
+  min-height: 0;
+}
+#jobCodeModalOverlay .jc2[data-jc-step="ask"].jc2--editing .jc2-explain {
+  display: none;
+}
