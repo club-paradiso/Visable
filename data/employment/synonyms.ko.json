@@ -597,11 +597,24 @@
       "industry_terms": []
     },
     {
+      "id": "teaching_assistant",
+      "type": "role",
+      "surface": [
+        "보조교사",
+        "교사 보조",
+        "수업 보조"
+      ],
+      "label_ko": "교사 보조",
+      "occupation_terms": [
+        "교사 보조 및 관련 종사원"
+      ],
+      "industry_terms": []
+    },
+    {
       "id": "childcare_teacher",
       "type": "role",
       "surface": [
         "보육교사",
-        "보조교사",
         "어린이집 교사",
         "유아교사",
         "보육"
