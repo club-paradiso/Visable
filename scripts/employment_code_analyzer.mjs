@@ -1394,7 +1394,7 @@ export function createEmploymentAnalyzer(deps = {}) {
         : entities.workplaceMatches.flatMap((m) => m.concept.industry_terms || []))
       : [];
     const effectiveIndustryTerms = managedStaff ? relationIndustryTerms : indTerms;
-    const industryCandidates = industryUnknown ? []
+    const industryMatches = industryUnknown ? []
       : searchTrack(index, 'industry',
           managedStaff ? relationIndustryText : (extraction && extraction.employerMainBusiness || workText),
           effectiveIndustryTerms,
@@ -1402,6 +1402,23 @@ export function createEmploymentAnalyzer(deps = {}) {
             confidenceCap: managedStaff ? 'medium' : (understanding.employerUnclear ? 'low' : confidenceCap),
             caveats: indCaveats, ownWords: managedStaff ? [] : indOwnWords }
         );
+    // Business-activity classification must come from the actual employer.
+    // When a clearly named workplace has an EXACT official industry title
+    // (e.g. 어린이집→보육시설 운영업, 유치원→유아 교육기관),
+    // preserve that verified lexical signal above noisy word-overlap scores.
+    // Do not infer a dispatch/contractor company's business from the host site.
+    const exactWorkplaceIndustry = (!industryUnknown && !understanding.employerUnclear)
+      ? entities.workplaceMatches
+        .map((m) => m.concept.business_label_ko)
+        .filter(Boolean)
+        .flatMap((name) => searchTrack(index, 'industry', name, [name], {
+          limit: 5, sourceMeta: indMeta,
+          confidenceCap: managedStaff ? 'medium' : confidenceCap,
+          caveats: indCaveats, ownWords: []
+        }).filter((c) => c.officialName === name).slice(0, 1))
+      : [];
+    const industryCandidates = [...new Map([...exactWorkplaceIndustry, ...industryMatches]
+      .map((c) => [String(c.code), c])).values()].slice(0, 5);
 
     // Analyzer mode (field_labor / arts_entertainment / service / professional /
     // ambiguous) decides the banner, which forks to ask, and how empty results are
