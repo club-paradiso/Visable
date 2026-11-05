@@ -1206,8 +1206,11 @@ async function searchJobcodeWithAI() {
         renderEmploymentFollowupChips(analysis);
         renderEmploymentTips(analysis);
         const searchText = analysis ? analysis.searchText : input;
-        let jobKw = getJobcodeSearchTerms(searchText, analysis ? analysis.occupationTerms : []);
-        let indKw = getJobcodeSearchTerms(searchText, analysis ? analysis.industryTerms : []);
+        // If the sentence names employees as task targets, their profession is
+        // explicitly NOT an occupation/industry search keyword for this user.
+        const scopedRelation = !!(analysis && analysis.managedStaff);
+        let jobKw = scopedRelation ? (analysis.occupationTerms || []) : getJobcodeSearchTerms(searchText, analysis ? analysis.occupationTerms : []);
+        let indKw = scopedRelation ? (analysis.industryTerms || []) : getJobcodeSearchTerms(searchText, analysis ? analysis.industryTerms : []);
         let fallbackNote = null;
         // 분석기(회귀테스트로 순위까지 검증됨)가 낸 후보를 최상단에 그대로 두고,
         // 인라인 키워드 스코어러 결과는 그 아래를 채우는 보충으로만 쓴다 —
@@ -1215,10 +1218,11 @@ async function searchJobcodeWithAI() {
         // Do not reintroduce the teacher/childcare false positives through the
         // legacy keyword fallback after the analyzer has recognized that the
         // person's actual job is administering teacher staffing.
-        const occupationFallback = analysis && analysis.managedTeacherAdministration
+        const occupationFallback = scopedRelation
             ? [] : getScoredJobcodeRows('occupation', '', jobKw, 60);
         const jobRows = jcRowsFromAnalysis(analysis && analysis.occupationCandidates, occupationFallback);
-        const indRows = jcRowsFromAnalysis(analysis && analysis.industryCandidates, getScoredJobcodeRows('industry', '', indKw, 60));
+        const indRows = jcRowsFromAnalysis(analysis && analysis.industryCandidates,
+            scopedRelation ? [] : getScoredJobcodeRows('industry', '', indKw, 60));
         // Guided AI layout: top recommendation vs alternatives. When the analyzer
         // is still clarifying, show "몇 가지 가능성이 있어요" (no false "closest").
         const ambiguous = !!(analysis && analysis.clarificationRequired && !_jcClarificationAnswered);
