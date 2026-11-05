@@ -1,0 +1,405 @@
+/* Employment code finder — restrained, responsive editorial polish.
+   Scope every rule to this dialog; existing theme tokens own the colours. */
+#jobCodeModalOverlay .jc2-modal {
+  width: min(940px, calc(100vw - 28px));
+  max-width: 940px;
+  max-height: min(91dvh, 900px);
+  border-radius: 22px;
+  overflow: hidden;
+}
+#jobCodeModalOverlay .modal-header {
+  padding: 1.05rem clamp(1rem, 3vw, 1.65rem);
+  background: var(--bg1);
+  border-bottom: 1px solid var(--bd2);
+}
+#jobCodeModalOverlay .modal-title {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  font-size: clamp(.98rem, 2vw, 1.15rem);
+  letter-spacing: -.025em;
+}
+#jobCodeModalOverlay .modal-body.jc2 {
+  min-width: 0;
+  padding: clamp(.95rem, 2.5vw, 1.55rem);
+  gap: 1rem;
+  overscroll-behavior: contain;
+}
+#jobCodeModalOverlay .jc2-hero {
+  position: relative;
+  padding: clamp(1.15rem, 2.8vw, 1.75rem);
+  border: 1px solid color-mix(in srgb, var(--ac) 21%, var(--bd2));
+  border-radius: 20px;
+  background: linear-gradient(125deg,
+    color-mix(in srgb, var(--ac) 10%, var(--bg1)) 0%,
+    color-mix(in srgb, var(--ac) 3%, var(--bg1)) 62%,
+    var(--bg1) 100%);
+}
+#jobCodeModalOverlay .jc2-lead-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.05rem;
+  height: 2.05rem;
+  margin-bottom: .85rem;
+  border: 1px solid color-mix(in srgb, var(--ac) 35%, var(--bd));
+  border-radius: 10px;
+  background: var(--bg1);
+  color: var(--ac2);
+  font: 800 .79rem/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+#jobCodeModalOverlay .jc2-ask {
+  max-width: 22ch;
+  margin: 0 0 .35rem;
+  font-size: clamp(1.45rem, 3.1vw, 1.95rem);
+  font-weight: 830;
+  letter-spacing: -.055em;
+  line-height: 1.24;
+}
+#jobCodeModalOverlay .jc2-anylang {
+  display: flex;
+  align-items: flex-start;
+  gap: .4rem;
+  margin: 0;
+  color: var(--t2);
+  font-size: .85rem;
+  line-height: 1.55;
+  word-break: keep-all;
+}
+#jobCodeModalOverlay .jc2-anylang .jc-ic { flex: none; margin-top: .15rem; }
+#jobCodeModalOverlay .jc2-searchpanel {
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+  padding: clamp(.75rem, 2vw, 1.1rem);
+  border: 1px solid var(--bd2);
+  border-radius: 18px;
+  background: var(--bg1);
+  box-shadow: 0 7px 24px color-mix(in srgb, var(--t1) 5%, transparent);
+}
+#jobCodeModalOverlay .jc2-search-wrap { position: relative; }
+#jobCodeModalOverlay .jc2-search-ic {
+  left: 1rem;
+  width: 20px;
+  height: 20px;
+}
+#jobCodeModalOverlay .jc2-search-input {
+  width: 100%;
+  min-width: 0;
+  min-height: 56px;
+  padding: .9rem 1rem .9rem 3rem;
+  border: 1.5px solid var(--bd);
+  border-radius: 13px;
+  background: var(--bgI);
+  color: var(--t1);
+  font-size: 1rem;
+  box-shadow: none;
+}
+#jobCodeModalOverlay .jc2-search-input:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ac) 35%, transparent);
+  outline-offset: 2px;
+  border-color: var(--ac);
+}
+#jobCodeModalOverlay .jc2-ai-btn {
+  display: flex;
+  min-height: 52px;
+  padding: .85rem 1rem;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+  border: 1px solid var(--ac);
+  border-radius: 13px;
+  background: var(--ac);
+  color: #fff;
+  font-size: .98rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  box-shadow: 0 5px 14px color-mix(in srgb, var(--ac) 15%, transparent);
+  transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+}
+#jobCodeModalOverlay .jc2-ai-btn .jc-ic { width: 19px; height: 19px; order: 2; }
+#jobCodeModalOverlay .jc2-ai-btn:hover:not(:disabled) {
+  color: #fff;
+  background: var(--ac2);
+  border-color: var(--ac2);
+  box-shadow: 0 8px 19px color-mix(in srgb, var(--ac) 21%, transparent);
+  transform: translateY(-1px);
+}
+#jobCodeModalOverlay .jc2-ai-btn:disabled { opacity: .65; cursor: progress; }
+#jobCodeModalOverlay .jc2-ai-btn:focus-visible { outline: 3px solid var(--ac); outline-offset: 3px; }
+[data-theme="dark"] #jobCodeModalOverlay .jc2-ai-btn { color: #111827; }
+[data-theme="dark"] #jobCodeModalOverlay .jc2-ai-btn:hover:not(:disabled) { color: #111827; }
+#jobCodeModalOverlay .jc2-count {
+  position: static;
+  display: inline-flex;
+  align-self: flex-start;
+  max-width: 100%;
+  overflow: visible;
+  transform: none;
+  padding: .2rem .65rem;
+  border: 1px solid var(--bd2);
+  background: var(--bg2);
+  color: var(--t2);
+  font-size: .74rem;
+}
+#jobCodeModalOverlay .jc2-count[hidden] { display: none; }
+#jobCodeModalOverlay .jc2-explain {
+  margin: .2rem 0 0;
+  padding: .55rem .75rem;
+  border: 1px solid var(--bd2);
+  border-radius: 12px;
+  background: transparent;
+}
+#jobCodeModalOverlay .jc2-explain-sum,
+#jobCodeModalOverlay .jc2-advanced-sum { min-height: 36px; display: flex; align-items: center; }
+#jobCodeModalOverlay .jc2-advanced { margin-top: .15rem; padding-top: .3rem; }
+#jobCodeModalOverlay .jc2-seg { min-height: 40px; }
+#jobCodeModalOverlay .jc2-stepbar {
+  display: flex;
+  gap: .8rem;
+  align-items: center;
+  padding: .75rem .9rem;
+  border: 1px solid var(--bd2);
+  border-radius: 16px;
+  background: var(--bg2);
+}
+#jobCodeModalOverlay .jc2-stepbar[hidden] { display: none; }
+#jobCodeModalOverlay .jc2-result-index {
+  display: grid;
+  place-items: center;
+  flex: 0 0 2.2rem;
+  height: 2.2rem;
+  border-radius: 11px;
+  background: var(--bg1);
+  color: var(--ac2);
+  font: 800 .8rem/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+#jobCodeModalOverlay .jc2-back {
+  min-height: 40px;
+  border-radius: 11px;
+  border-width: 1px;
+  padding: .4rem .7rem;
+  background: var(--bg1);
+  white-space: nowrap;
+  font-size: .81rem;
+}
+#jobCodeModalOverlay .jc2-you-said {
+  flex: 1 1 15rem;
+  min-width: 0;
+  font-weight: 650;
+  font-size: .88rem;
+  line-height: 1.45;
+}
+#jobCodeModalOverlay .jc2-you-said-k {
+  margin-bottom: .13rem;
+  font-size: .71rem;
+  color: var(--t3);
+}
+#jobCodeModalOverlay .jc2-progress {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  min-height: 29px;
+  margin-left: auto;
+  padding: .28rem .68rem;
+  border-radius: 999px;
+  border: 1px solid var(--bd);
+  background: var(--bg1);
+  color: var(--t2);
+  font-size: .73rem;
+  font-weight: 750;
+  white-space: nowrap;
+}
+#jobCodeModalOverlay .jc2-progress.is-complete {
+  border-color: color-mix(in srgb, var(--color-success, #16a34a) 30%, var(--bd));
+  color: var(--color-success, #15803d);
+  background: color-mix(in srgb, var(--color-success, #16a34a) 9%, var(--bg1));
+}
+#jobCodeModalOverlay .jc2-interpret {
+  padding: .85rem 1rem;
+  border-radius: 15px;
+  background: var(--bg2);
+  border: 1px solid var(--bd2);
+}
+#jobCodeModalOverlay .jc2-refine {
+  border-radius: 15px;
+}
+#jobCodeModalOverlay .jc2-results {
+  gap: 1rem;
+  align-items: start;
+}
+#jobCodeModalOverlay .jc2-pane {
+  min-width: 0;
+  padding: clamp(.75rem, 2vw, 1.05rem);
+  border: 1px solid var(--bd2);
+  border-top: 3px solid var(--jc-accent);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--jc-accent) 3%, var(--bg1));
+}
+#jobCodeModalOverlay .jc2-pane[data-pane="occupation"] { --jc-accent: var(--ac); }
+#jobCodeModalOverlay .jc2-pane[data-pane="industry"] { --jc-accent: var(--cFm, #A84A6B); }
+#jobCodeModalOverlay .jc2-pane-h {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .48rem;
+  min-height: 2.6rem;
+  margin: 0 0 .85rem;
+  font-size: .96rem;
+  line-height: 1.4;
+  letter-spacing: -.02em;
+}
+#jobCodeModalOverlay .jc2-pane-ic {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--jc-accent) 12%, var(--bg1));
+  color: var(--jc-accent);
+}
+#jobCodeModalOverlay .jc2-pane-title { min-width: 0; font-weight: 800; }
+#jobCodeModalOverlay .jc2-pane-plain { margin-top: .15rem; font-size: .75rem; line-height: 1.4; }
+#jobCodeModalOverlay .jc2-pane-badge { display: none; }
+#jobCodeModalOverlay .jc2-pane-tag {
+  margin-left: auto;
+  padding: .15rem .4rem;
+  border-radius: 6px;
+  border: 1px solid var(--bd2);
+  font-size: .66rem;
+}
+#jobCodeModalOverlay .jc2-list {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: .65rem;
+  padding: 0;
+  max-height: 48vh;
+}
+#jobCodeModalOverlay .jc2-list.is-guided { max-height: none; overflow: visible; }
+#jobCodeModalOverlay .jc2-card {
+  min-width: 0;
+  padding: .85rem .9rem;
+  gap: .46rem;
+  border: 1px solid var(--bd2);
+  border-radius: 13px;
+  background: var(--bg1);
+  box-shadow: none;
+}
+#jobCodeModalOverlay .jc2-card:hover {
+  border-color: var(--jc-accent, var(--ac));
+  box-shadow: 0 4px 13px color-mix(in srgb, var(--t1) 7%, transparent);
+}
+#jobCodeModalOverlay .jc2-card:has(.jc2-select.is-sel) {
+  border-color: var(--jc-accent, var(--ac));
+  background: color-mix(in srgb, var(--jc-accent, var(--ac)) 6%, var(--bg1));
+}
+#jobCodeModalOverlay .jc2-card-name {
+  font-size: .96rem;
+  line-height: 1.45;
+  font-weight: 790;
+  letter-spacing: -.02em;
+}
+#jobCodeModalOverlay .jc2-code {
+  padding: .24rem .55rem;
+  border-radius: 7px;
+  font-size: .77rem;
+}
+#jobCodeModalOverlay .jc2-card-path,
+#jobCodeModalOverlay .jc2-card-other,
+#jobCodeModalOverlay .jc2-card-help { overflow-wrap: anywhere; }
+#jobCodeModalOverlay .jc2-group-head {
+  margin: .15rem 0 .1rem;
+  padding: .2rem .1rem;
+  color: var(--t2);
+  font-size: .76rem;
+  font-weight: 760;
+}
+#jobCodeModalOverlay .jc2-select {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: .35rem;
+  align-self: stretch;
+  width: 100%;
+  min-height: 43px;
+  margin-top: .15rem;
+  padding: .55rem .75rem;
+  border-radius: 10px;
+  border: 1px solid var(--jc-accent, var(--ac));
+  background: transparent;
+  color: var(--jc-accent, var(--ac2));
+  font-size: .81rem;
+  font-weight: 800;
+}
+#jobCodeModalOverlay .jc2-select:hover,
+#jobCodeModalOverlay .jc2-select.is-sel {
+  background: var(--jc-accent, var(--ac));
+  color: #fff;
+}
+[data-theme="dark"] #jobCodeModalOverlay .jc2-select:hover,
+[data-theme="dark"] #jobCodeModalOverlay .jc2-select.is-sel { color: #111827; }
+#jobCodeModalOverlay .jc2-more-btn {
+  min-height: 43px;
+  border-radius: 11px;
+  background: var(--bg1);
+}
+#jobCodeModalOverlay .jc2-summary {
+  position: static;
+  bottom: auto;
+  padding: .95rem 1.1rem;
+  gap: .65rem;
+  border: 1px solid var(--bd2);
+  border-radius: 16px;
+  background: var(--bg1);
+  box-shadow: none;
+}
+#jobCodeModalOverlay .jc2-summary.is-active {
+  position: static;
+  bottom: auto;
+  border-color: color-mix(in srgb, var(--ac) 36%, var(--bd2));
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--t1) 6%, transparent);
+}
+#jobCodeModalOverlay .jc2-sum-v { min-width: 0; overflow-wrap: anywhere; }
+#jobCodeModalOverlay .jc2-copy { min-height: 47px; border-radius: 11px; }
+#jobCodeModalOverlay .jc2-trust { gap: .5rem; }
+#jobCodeModalOverlay .jc2-scope-warn {
+  padding: .75rem .85rem;
+  border: 1px solid color-mix(in srgb, var(--color-warning, #b45309) 25%, var(--bd2));
+  border-left: 3px solid var(--color-warning, #b45309);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-warning, #b45309) 7%, var(--bg1));
+  font-size: .79rem;
+  line-height: 1.55;
+}
+#jobCodeModalOverlay .jc2-final,
+#jobCodeModalOverlay .jc2-sources { border-radius: 14px; }
+#jobCodeModalOverlay :is(.jc2-ai-btn, .jc2-select, .jc2-back, .jc2-copy, .jc2-seg, .jc2-more-btn):focus-visible {
+  outline: 2px solid var(--ac);
+  outline-offset: 2px;
+}
+@media (max-width: 680px) {
+  #jobCodeModalOverlay .jc2-modal {
+    width: calc(100vw - 12px);
+    max-height: calc(100dvh - 18px);
+    border-radius: 17px;
+  }
+  #jobCodeModalOverlay .modal-header { padding: .85rem .95rem; }
+  #jobCodeModalOverlay .modal-body.jc2 { padding: .85rem; gap: .8rem; }
+  #jobCodeModalOverlay .jc2-hero { padding: 1.15rem; border-radius: 16px; }
+  #jobCodeModalOverlay .jc2-searchpanel { border-radius: 15px; }
+  #jobCodeModalOverlay .jc2-stepbar { gap: .5rem; padding: .7rem; }
+  #jobCodeModalOverlay .jc2-result-index { display: none; }
+  #jobCodeModalOverlay .jc2-you-said { flex-basis: calc(100% - 130px); }
+  #jobCodeModalOverlay .jc2-progress { margin-left: 0; }
+  #jobCodeModalOverlay .jc2-pane { padding: .75rem; }
+  #jobCodeModalOverlay .jc2-list { max-height: none; overflow: visible; }
+  #jobCodeModalOverlay .jc2-summary.is-active { position: static; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #jobCodeModalOverlay .jc2-ai-btn,
+  #jobCodeModalOverlay .jc2-card { transition: none; }
+  #jobCodeModalOverlay .jc2-ai-btn:hover:not(:disabled) { transform: none; }
+  #jobCodeModalOverlay .jc2-summary--pulse { animation: none; }
+}
