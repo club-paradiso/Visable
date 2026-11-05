@@ -30,6 +30,11 @@ from typing import Any, Dict, List, Optional, Sequence
 MODEL_POLICY_VERSION = "2026-09-production-truth-audit-v1"
 OPENROUTER_MODEL_OVERRIDE_OPT_IN_ENV = "OPENROUTER_ALLOW_MODEL_ENV_OVERRIDES"
 
+# Employment interpretation uses exactly this Groq model and never silently
+# falls back to another hosted/paid provider. Using it at no cost additionally
+# requires the deployment's Groq organization to remain on the Free plan.
+EMPLOYMENT_GROQ_FREE_MODEL = "openai/gpt-oss-20b"
+
 DEFAULT_ROUTER_MODEL = "google/gemma-4-31b-it:free"
 DEFAULT_TRANSLATION_MODEL = "google/gemma-4-31b-it:free"
 
