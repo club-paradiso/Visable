@@ -237,7 +237,7 @@
     uxOptionalAccount: '선택 · 계정 준비 도구 펼치기',
     uxResultDetail: '예약 순서·준비사항 자세히',
     uxManageHint: '비회원 예약은 공식 예약조회 화면에서 본인 인증 후 확인하세요. 회원 예약은 하이코리아 로그인 후 조회합니다.',
-    uxGuideHint: '스크린샷 대신 핵심 단계만 보여줍니다. 실제 버튼 이름은 하이코리아에서 확인하세요.',
+    uxGuideHint: '각 단계마다 실제 하이코리아 화면 예시를 함께 보여줍니다. 사진이 없는 단계는 설명만으로 안내합니다.',
     uxBackToBooking: '방문예약 안내로 돌아가기',
     uxReservationIntro: '예약 목적을 잘 모르겠다면 먼저 찾고, 알고 있다면 바로 공식 사이트에서 신청하세요.',
     uxFastLinks: '빠른 시작',
@@ -389,6 +389,8 @@
     progressDoneOf: '단계 완료',
     shotPending: '스크린샷 준비 중',
     shotPendingSub: '실제 화면 캡처는 곧 추가될 예정이에요. 아래 설명을 먼저 참고하세요.',
+    shotCaption: '실제 하이코리아 화면 예시입니다. 화면 구성은 바뀔 수 있으니, 버튼 이름은 하이코리아에서 최종 확인하세요.',
+    lookForLabel: '찾을 버튼·항목',
     guideProgressAria: '안내 진행률',
     prevTab: '이전',
     nextTab: '다음',
@@ -453,12 +455,12 @@
     lgC1: '비밀번호를 잊었다면 아이디·비밀번호 찾기를 이용하세요.',
     lgE1: 'Tap “Login”, then enter your ID and password.',
     lgT2: '간편인증 또는 비회원 인증 확인',
-    lgD2: '회원 로그인이 어려우면 간편인증이나 비회원 인증으로 진행할 수 있는지 확인하세요.',
+    lgD2: '로그인 화면에서는 디지털원패스, 공동인증서, 금융인증서, 간편인증 같은 다른 방법도 고를 수 있어요. 회원 로그인이 어려우면 비회원 인증(신분증·여권번호·사증번호)으로 진행할 수 있는지 확인하세요.',
     lgC2: '인증서가 필요할 수 있으니 미리 준비해 두면 편해요.',
 
     resIntro: '로그인한 다음, 방문예약을 잡는 과정이에요. 화면 순서대로 따라오세요.',
     rsT1: '방문예약 메뉴 들어가기',
-    rsD1: '민원신청 → 방문예약 → 방문예약 신청 순서로 들어갑니다.',
+    rsD1: '민원신청 → 방문예약을 누르면 이용안내 화면이 나옵니다. 내용을 확인하고 체크한 뒤, 회원 예약하기 또는 비회원 예약하기를 누르세요.',
     rsC1: '당일 예약은 어려울 수 있어요. 보통 다음 날부터 예약할 수 있습니다.',
     rsE1: 'Go to Civil Petitions → Visit Reservation → Apply.',
     rsT2: '방문할 출입국관서 선택',
@@ -477,7 +479,7 @@
 
     mngIntro: '잡아둔 예약을 확인하거나 변경·취소하는 방법이에요.',
     mgT1: '예약 내역 확인',
-    mgD1: '로그인 후 방문예약 메뉴에서 내 예약 내역을 확인할 수 있어요.',
+    mgD1: '로그인 후 방문예약 메뉴에서 내 예약 내역을 확인할 수 있어요. 비회원 예약은 신원확인 화면에서 신분증·여권번호·사증번호 중 하나로 인증하면 확인할 수 있어요.',
     mgC1: '예약 확인증은 방문 전에 저장해 두면 편해요.',
     mgE1: 'Check your reservation under the Visit Reservation menu.',
     mgT2: '예약 변경·취소',
@@ -533,7 +535,7 @@
     uxOptionalAccount: 'Optional: account preparation tools',
     uxResultDetail: 'Show booking steps and checklist',
     uxManageHint: 'For non-member bookings, verify your identity on the official lookup page. Members should sign in to view reservations.',
-    uxGuideHint: 'Follow the key steps below; the live HiKorea screen may look different.',
+    uxGuideHint: 'Each step shows an example of the real HiKorea screen where one is available. Steps without a photo are text-only.',
     uxBackToBooking: 'Back to booking guide',
     uxReservationIntro: 'Not sure which purpose to choose? Check first. Otherwise, open official booking now.',
     uxFastLinks: 'Quick start',
@@ -685,6 +687,8 @@
     progressDoneOf: 'steps done',
     shotPending: 'Screenshot coming soon',
     shotPendingSub: 'A real screen capture will be added here. Follow the text below for now.',
+    shotCaption: 'Example of the real HiKorea screen. Layouts can change, so confirm button names on HiKorea.',
+    lookForLabel: 'Look for',
     guideProgressAria: 'Guide progress',
     prevTab: 'Back',
     nextTab: 'Next',
@@ -749,12 +753,12 @@
     lgC1: 'If you forgot your password, use the find ID / password option.',
     lgE1: 'Tap Login, then enter your ID and password.',
     lgT2: 'Check simple or non-member verification',
-    lgD2: 'If member login is hard, check whether simple verification or non-member verification is available.',
+    lgD2: 'The login screen also offers Digital One Pass, certificate, and simple verification options. If member login is hard, check whether non-member verification (ID card, passport number, or visa number) is available.',
     lgC2: 'You may need a certificate, so prepare it in advance.',
 
     resIntro: 'After logging in, this is how to book a visit. Follow the screens in order.',
     rsT1: 'Enter the visit reservation menu',
-    rsD1: 'Go to Civil Petitions, then Visit Reservation, then Apply.',
+    rsD1: 'Open Civil Petitions, then Visit Reservation. Read the guidance page, tick the confirmation checkbox, then choose Member Reservation or Non-member Reservation.',
     rsC1: 'Same-day reservations may not be possible. Booking is usually available from the next day.',
     rsE1: 'Go to Civil Petitions, then Visit Reservation, then Apply.',
     rsT2: 'Select the immigration office',
@@ -773,7 +777,7 @@
 
     mngIntro: 'This is how to check, change, or cancel a reservation you already made.',
     mgT1: 'Check your reservation',
-    mgD1: 'After logging in, view your reservations in the Visit Reservation menu.',
+    mgD1: 'After logging in, view your reservations in the Visit Reservation menu. For a non-member booking, verify your identity on the verification screen using your ID card, passport number, or visa number.',
     mgC1: 'Save the confirmation before your visit so it is handy.',
     mgE1: 'Check your reservation under the Visit Reservation menu.',
     mgT2: 'Change or cancel',
@@ -829,7 +833,7 @@
     uxOptionalAccount: '可选：展开账号准备工具',
     uxResultDetail: '查看预约步骤与准备事项',
     uxManageHint: '非会员预约请在官方查询页认证身份；会员预约请登录查看。',
-    uxGuideHint: '请参考文字步骤，以 HiKorea 当前页面为准。',
+    uxGuideHint: '每个步骤都会尽量附上 HiKorea 的实际界面示例；没有照片的步骤仅提供文字说明。',
     uxBackToBooking: '返回预约指南',
     uxReservationIntro: '不确定预约事项时先查看，否则直接进入官方预约。',
     uxFastLinks: '快速开始',
@@ -980,6 +984,8 @@
     progressDoneOf: '步骤已完成',
     shotPending: '截图准备中',
     shotPendingSub: '实际屏幕截图即将添加。请先参考下方说明。',
+    shotCaption: '这是 HiKorea 的实际界面示例。界面构成可能变更，请在 HiKorea 上最终确认按钮名称。',
+    lookForLabel: '要找的按钮·项目',
     guideProgressAria: '指引进度',
     prevTab: '上一步',
     nextTab: '下一步',
@@ -1044,12 +1050,12 @@
     lgC1: '如忘记密码，请使用“查找账号·密码”。',
     lgE1: 'Tap “Login”, then enter your ID and password.',
     lgT2: '确认简易认证或非会员认证',
-    lgD2: '如果会员登录有困难，请确认是否可用简易认证或非会员认证办理。',
+    lgD2: '登录界面还提供数字一证通、共同证书、金融证书和简易认证等方式。如果会员登录有困难，请确认是否可用非会员认证（身份证件、护照号码或签证号码）办理。',
     lgC2: '可能需要认证证书，提前准备会更方便。',
 
     resIntro: '登录之后，这是预约访问的过程。请按屏幕顺序跟着做。',
     rsT1: '进入访问预约菜单',
-    rsD1: '按 民愿申请 → 访问预约 → 访问预约申请 的顺序进入。',
+    rsD1: '点击 民愿申请 → 访问预约 后会出现使用指南页面。阅读并勾选确认后，点击“会员预约”或“非会员预约”。',
     rsC1: '当日预约可能较难。通常从次日起才可预约。',
     rsE1: 'Go to Civil Petitions → Visit Reservation → Apply.',
     rsT2: '选择要前往的出入境机关',
@@ -1068,7 +1074,7 @@
 
     mngIntro: '这是确认、变更或取消已预约内容的方法。',
     mgT1: '确认预约记录',
-    mgD1: '登录后，可在访问预约菜单中确认我的预约记录。',
+    mgD1: '登录后，可在访问预约菜单中确认我的预约记录。非会员预约可在身份确认界面使用身份证件、护照号码或签证号码认证后确认。',
     mgC1: '预约确认证在访问前保存好会更方便。',
     mgE1: 'Check your reservation under the Visit Reservation menu.',
     mgT2: '变更·取消预约',
@@ -1178,31 +1184,32 @@
 
   /* --------------------------------------------------- screenshot manifest */
   // Where sanitized screenshots live. See assets/hikorea-guide/README.md for the
-  // naming convention + privacy-masking process. Each entry has available:false
-  // until a real, sanitized capture is dropped in (flip to true — that is the
-  // ONLY edit needed). While unavailable an accessible placeholder renders, so
-  // there is never a broken image path or a 404.
+  // naming convention, privacy-masking process, and per-file provenance. Steps
+  // with a bundled, verified capture are available:true; the rest stay
+  // available:false and render text-only (shotFigureHtml returns ''), so there
+  // is never a broken image path or a 404. lookFor names the exact on-screen
+  // HiKorea label (Korean, as shown on the live site) the user should find.
   var SHOT_DIR = 'assets/hikorea-guide/';
   var GUIDE_STEPS = {
     signup: [
-      { id: 'sg1', file: 'hikorea-signup-01-language.png', available: false, titleKey: 'sgT1', doKey: 'sgD1', cautionKey: 'sgC1', enKey: 'sgE1' },
-      { id: 'sg2', file: 'hikorea-signup-02-terms.png', available: false, titleKey: 'sgT2', doKey: 'sgD2', cautionKey: 'sgC2' },
-      { id: 'sg3', file: 'hikorea-signup-03-identity-verification.png', available: false, titleKey: 'sgT3', doKey: 'sgD3', cautionKey: 'sgC3', enKey: 'sgE3' },
-      { id: 'sg4', file: 'hikorea-signup-04-account-info.png', available: false, titleKey: 'sgT4', doKey: 'sgD4', cautionKey: 'sgC4' }
+      { id: 'sg1', file: 'hikorea-signup-01-language.png', available: true, lookFor: '회원가입', titleKey: 'sgT1', doKey: 'sgD1', cautionKey: 'sgC1', enKey: 'sgE1' },
+      { id: 'sg2', file: 'hikorea-signup-02-terms.png', available: true, lookFor: '가입하기', titleKey: 'sgT2', doKey: 'sgD2', cautionKey: 'sgC2' },
+      { id: 'sg3', file: 'hikorea-signup-03-identity-verification.png', available: true, lookFor: '확인', titleKey: 'sgT3', doKey: 'sgD3', cautionKey: 'sgC3', enKey: 'sgE3' },
+      { id: 'sg4', file: 'hikorea-signup-04-account-info.png', available: false, lookFor: '회원가입', titleKey: 'sgT4', doKey: 'sgD4', cautionKey: 'sgC4' }
     ],
     login: [
-      { id: 'lg1', file: 'hikorea-login-01-login-page.png', available: false, titleKey: 'lgT1', doKey: 'lgD1', cautionKey: 'lgC1', enKey: 'lgE1' },
-      { id: 'lg2', file: 'hikorea-login-02-verification.png', available: false, titleKey: 'lgT2', doKey: 'lgD2', cautionKey: 'lgC2' }
+      { id: 'lg1', file: 'hikorea-login-01-login-page.png', available: false, lookFor: '로그인', titleKey: 'lgT1', doKey: 'lgD1', cautionKey: 'lgC1', enKey: 'lgE1' },
+      { id: 'lg2', file: 'hikorea-login-02-verification.png', available: true, lookFor: '여권번호 신원인증', titleKey: 'lgT2', doKey: 'lgD2', cautionKey: 'lgC2' }
     ],
     reservation: [
-      { id: 'rs1', file: 'hikorea-reservation-01-entry.png', available: false, titleKey: 'rsT1', doKey: 'rsD1', cautionKey: 'rsC1', enKey: 'rsE1' },
-      { id: 'rs2', file: 'hikorea-reservation-02-office-select.png', available: false, titleKey: 'rsT2', doKey: 'rsD2', cautionKey: 'rsC2' },
+      { id: 'rs1', file: 'hikorea-reservation-01-entry.png', available: true, lookFor: '회원 예약하기 · 비회원 예약하기', titleKey: 'rsT1', doKey: 'rsD1', cautionKey: 'rsC1', enKey: 'rsE1' },
+      { id: 'rs2', file: 'hikorea-reservation-02-office-select.png', available: false, lookFor: '신청서 작성', titleKey: 'rsT2', doKey: 'rsD2', cautionKey: 'rsC2' },
       { id: 'rs3', file: 'hikorea-reservation-03-purpose-select.png', available: false, titleKey: 'rsT3', doKey: 'rsD3', cautionKey: 'rsC3', enKey: 'rsE3' },
       { id: 'rs4', file: 'hikorea-reservation-04-date-time.png', available: false, titleKey: 'rsT4', doKey: 'rsD4', cautionKey: 'rsC4' },
-      { id: 'rs5', file: 'hikorea-reservation-05-confirmation.png', available: false, titleKey: 'rsT5', doKey: 'rsD5', cautionKey: 'rsC5' }
+      { id: 'rs5', file: 'hikorea-reservation-05-confirmation.png', available: false, lookFor: '예약 접수증', titleKey: 'rsT5', doKey: 'rsD5', cautionKey: 'rsC5' }
     ],
     manage: [
-      { id: 'mg1', file: 'hikorea-reservation-06-reservation-check.png', available: false, titleKey: 'mgT1', doKey: 'mgD1', cautionKey: 'mgC1', enKey: 'mgE1' },
+      { id: 'mg1', file: 'hikorea-reservation-06-reservation-check.png', available: true, lookFor: '신분증 신원인증', titleKey: 'mgT1', doKey: 'mgD1', cautionKey: 'mgC1', enKey: 'mgE1' },
       { id: 'mg2', file: 'hikorea-reservation-07-change-cancel.png', available: false, titleKey: 'mgT2', doKey: 'mgD2', cautionKey: 'mgC2' }
     ]
   };
@@ -1361,6 +1368,10 @@
       '#hikoreaGuideBody .prh-step-title{font-size:1.04rem;font-weight:800;line-height:1.35;margin:0;word-break:keep-all;}',
       '#hikoreaGuideBody .prh-shot{margin:0;border:1px solid var(--bd2);border-radius:var(--radius-md,10px);overflow:hidden;background:var(--bg0);}',
       '#hikoreaGuideBody .prh-shot-img{display:block;width:100%;height:auto;cursor:zoom-in;}',
+      '#hikoreaGuideBody .prh-shot-cap{padding:.5rem .7rem;font-size:.74rem;line-height:1.5;color:var(--t3);background:var(--bg1);border-top:1px solid var(--bd2);}',
+      '#hikoreaGuideBody .prh-lookfor{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin:.55rem 0 0;}',
+      '#hikoreaGuideBody .prh-lookfor-label{font-size:.74rem;font-weight:700;color:var(--t3);}',
+      '#hikoreaGuideBody .prh-lookfor-chip{font-size:.8rem;font-weight:800;color:var(--ac);background:color-mix(in srgb,var(--ac) 10%,var(--bg0));border:1px solid color-mix(in srgb,var(--ac) 35%,var(--bd2));border-radius:999px;padding:.18rem .6rem;}',
       '#hikoreaGuideBody .prh-shot-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem;min-height:170px;padding:1.2rem 1rem;text-align:center;border:2px dashed var(--bd3);border-radius:var(--radius-md,10px);background:repeating-linear-gradient(45deg,var(--bg0),var(--bg0) 10px,var(--bg2) 10px,var(--bg2) 20px);}',
       '#hikoreaGuideBody .prh-shot-ph-icon{font-size:1.7rem;line-height:1;}',
       '#hikoreaGuideBody .prh-shot-ph-title{font-size:.86rem;font-weight:800;color:var(--t2);}',
@@ -1587,7 +1598,7 @@
     if (shot.available) {
       return '<figure class="prh-shot"><img class="prh-shot-img" loading="lazy" decoding="async" src="' +
         esc(SHOT_DIR + shot.file) + '" alt="' + esc(alt) + '" data-prh-action="zoom" data-prh-src="' + esc(SHOT_DIR + shot.file) +
-        '"></figure>';
+        '"><figcaption class="prh-shot-cap">' + esc(STR.shotCaption) + '</figcaption></figure>';
     }
     // Accessible placeholder — no <img>, so no network request / no broken path.
     // The full instruction is still conveyed by the do/caution text below.
@@ -1606,6 +1617,9 @@
     html += '<div class="prh-step-head"><span class="prh-step-num">' + n + '</span>' +
       '<h4 class="prh-step-title">' + esc(STR[shot.titleKey]) + '</h4></div>';
     html += shotFigureHtml(shot);
+    if (shot.lookFor) {
+      html += '<p class="prh-lookfor"><span class="prh-lookfor-label">' + esc(STR.lookForLabel) + '</span><span class="prh-lookfor-chip">' + esc(shot.lookFor) + '</span></p>';
+    }
     html += '<div class="prh-step-block prh-step-do"><span class="prh-step-label">' + esc(STR.stepDoLabel) +
       '</span><p>' + esc(STR[shot.doKey]) + '</p></div>';
     if (shot.cautionKey) {
