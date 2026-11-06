@@ -31,7 +31,7 @@
 - `src/features/finders.js` 및 `src/data/paths.js`: 새 명부 경로 및 지역 인덱스 설정.
 - `index.html`: 의료기관 찾기 모달에서 날짜 조건과 6종 검사 안내.
 - `src/i18n/runtime.js` 및 `data/i18n/*.json`: 지원 언어별 공지, 최신 명부 출처.
-- `backend/data/visa_authoring/statuses/E-2.json`: 외국인등록 안내의 날짜 조건에 대한 원문 근거 기록.
+- `data/policies/e2_drug_screening_2026_11_02.json`: E-2 외국인등록 적용 요건 및 원문 근거를 버전 관리(생성형 비자 데이터와 분리).
 - `scripts/validate_designated_medical_institutions.py`: 신규 1,130건 데이터 유효성 검사.
 
 ## 회귀 확인
