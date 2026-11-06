@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Validate data/designated_medical_institutions_2026_04_30.json.
+Validate data/designated_medical_institutions_2026_11_02.json.
 Exits non-zero if any check fails.
 """
 import json, sys, os, re
 
-DATA_FILE = os.path.join(os.path.dirname(__file__), '..', 'data', 'designated_medical_institutions_2026_04_30.json')
+DATA_FILE = os.path.join(os.path.dirname(__file__), '..', 'data', 'designated_medical_institutions_2026_11_02.json')
 
 def fail(msg):
     print(f"FAIL: {msg}", file=sys.stderr)
@@ -29,7 +29,7 @@ for key in ("source_title", "source_date", "source_file", "record_count"):
     if not meta.get(key):
         fail(f"_meta missing required field: {key}")
 
-if meta["source_date"] != "2026-04-30":
+if meta["source_date"] != "2026-11-02":
     fail(f"Unexpected source_date: {meta['source_date']}")
 
 institutions = data["institutions"]
@@ -40,8 +40,8 @@ if not isinstance(institutions, list) or len(institutions) == 0:
 if len(institutions) != meta["record_count"]:
     fail(f"record_count {meta['record_count']} != actual {len(institutions)}")
 
-if len(institutions) < 900:
-    fail(f"Suspiciously few records: {len(institutions)} (expected 1000+)")
+if len(institutions) != 1130:
+    fail(f"Unexpected record count: {len(institutions)} (expected 1130)")
 
 # Per-record checks
 REQUIRED_FIELDS = ("id", "serial_no", "region", "institution_name", "address", "source_date")
@@ -82,8 +82,11 @@ for i, rec in enumerate(institutions):
     elif region not in REGIONS:
         errors.append(f"Record {i} (id={rec.get('id')}): unknown region {region!r}")
 
+    if rec.get("id") != f"med-{i + 1:04d}":
+        errors.append(f"Record {i}: unstable ID {rec.get('id')!r}")
+
     # source_date per record
-    if rec.get("source_date") != "2026-04-30":
+    if rec.get("source_date") != "2026-11-02":
         errors.append(f"Record {i}: source_date {rec.get('source_date')!r}")
 
     # Check for replacement/null characters
@@ -135,30 +138,11 @@ for required_region in ("서울", "제주"):
 
 # Known-record assertions: verify specific source-backed records
 KNOWN_RECORDS = {
-    540: {
-        "region": "대전",
-        "institution_name": "(사)한국건강관리협회 대전광역시 충청남도지부",
-        "address": "대전광역시 서구 계룡로 611",
-        "phone": "042-530-2243",
-    },
-    1092: {
-        "region": "충북",
-        "institution_name": "(사)대한산업보건협회 충북지역본부",
-        "address": "충청북도 청주시 흥덕구 직지대로 397",
-        "phone": "043-263-7137",
-    },
-    1093: {
-        "region": "충북",
-        "institution_name": "(사)한국건강관리협회 충청북도 세종특별자치시지부",
-        "address": "충청북도 청주시 흥덕구 직지대로 631",
-        "phone": "043-299-5765",
-    },
-    1096: {
-        "region": "충북",
-        "institution_name": "충청북도 충주의료원",
-        "address": "충청북도 충주시 사직산21길 34",
-        "phone": "043-841-0166",
-    },
+    1: {"region": "강원", "institution_name": "강릉동인병원", "address": "강원특별자치도 강릉시 강릉대로 419번길 42", "phone": "033-651-6161"},
+    231: {"region": "경기", "institution_name": "알파원헬스케어의원", "address": "경기도 안산시 단원구 중앙대로 929, 4층", "phone": "070-7605-5573"},
+    540: {"region": "대전", "institution_name": "(의)영훈의료재단 대전선병원", "address": "대전광역시 중구 목중로 29", "phone": "042-220-8275"},
+    1127: {"region": "충북", "institution_name": "(사)한국건강관리협회 충청북도 세종특별자치시지부", "address": "충청북도 청주시 흥덕구 직지대로 631", "phone": "043-299-5765"},
+    1130: {"region": "충북", "institution_name": "충청북도 충주의료원", "address": "충청북도 충주시 사직산21길 34", "phone": "043-841-0166"},
 }
 
 rec_by_serial = {r["serial_no"]: r for r in institutions}
