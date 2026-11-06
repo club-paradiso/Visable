@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "policy_id": "moj-e2-drug-screening-2026-11-02",
+  "title_ko": "회화지도(E-2) 강사 마약검사 항목 등 변경 안내",
+  "title_en": "Notice Regarding Regulatory Changes in Drug Screening Test for Foreign Language Instructors (E-2 Status)",
+  "issued_by": "법무부",
+  "effective_from": "2026-11-02",
+  "date_basis": "visa_or_confirmation_of_visa_issuance_application_receipt_date",
+  "scope": {
+    "visa_category": "E-2",
+    "application_types": [
+      "confirmation_of_visa_issuance",
+      "visa_issuance"
+    ],
+    "received_on_or_after": "2026-11-02",
+    "submission_stage": "foreigner_registration"
+  },
+  "previous_screening": [
+    "MA",
+    "THC",
+    "COC",
+    "OPI"
+  ],
+  "required_screening": [
+    "MA",
+    "THC",
+    "COC",
+    "OPI",
+    "MDMA",
+    "KET"
+  ],
+  "validity": {
+    "months": 4,
+    "from": "date_of_result"
+  },
+  "designated_institutions": {
+    "source_date": "2026-11-02",
+    "dataset": "data/designated_medical_institutions_2026_11_02.json",
+    "renewed_designation_required": false
+  },
+  "caution_ko": "적용 기준은 외국인등록일이 아닌 사증발급인정서 또는 비자 신청 접수일이다. 국내 체류자격 변경 등에 자동 확대 적용하지 않는다. 기존 면제 대상의 개별 적용관계 및 의료기관별 실제 검사 제공 여부는 별도 확인한다.",
+  "caution_en": "The trigger is the receipt date of the E-2 visa or CVI application, not the foreign-registration date. Do not automatically extend this notice to domestic status changes. Check any existing exemptions and each clinic's actual six-panel test availability separately.",
+  "source_files": [
+    "회화지도 강사(E-2) 마약검사 항목 등 변경 안내문(국문).pdf",
+    "회화지도 강사(E-2) 마약검사 항목 등 변경 안내문(영문).pdf"
+  ]
+}
