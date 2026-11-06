@@ -23,7 +23,7 @@ _TITLE = re.compile(r"^\s*\[[^\]\n]*\]\s*")
 _NUM = re.compile(r"\d[\d,.]*")
 _CODE = re.compile(r"(?<![A-Za-z0-9-])[A-Z]-\d{1,2}(?:-\d{1,2})?(?![0-9-])")
 INPUT_FIELDS = ("uncovered_sentence", "uncovered_items", "reply_language", "scope_status_code", "scope_location",
-                "language_retry", "branch_retry", "status_retry", "conflict_records", "choice_retry")
+                "language_retry", "branch_retry", "status_retry", "conflict_records", "choice_retry", "choice_codes")
 _FIELD_RE = re.compile(r"\b(?:" + "|".join(INPUT_FIELDS) + r")\b")
 
 

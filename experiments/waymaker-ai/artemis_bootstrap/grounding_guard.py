@@ -47,6 +47,9 @@ of them though its cited evidence names both (choice_coverage), the system asks 
 choice_retry note quoting the evidence sentence about the other code (contract v16). If the retried answer still
 leaves it out, or cannot be released, the released answer carries a labelled system notice quoting that sentence;
 nothing is withheld for it, and the model's sentences are never edited.
+Mission 005-W: the first call already names, as choice_codes (contract v17), the codes a choice question asks between
+that the part's admissible evidence names (two or more, in question order), so the model can cover each of them
+before any retry. The choice retry stays as a second line.
 Research-only; nothing here is wired into the production backend.
 """
 from __future__ import annotations
@@ -72,7 +75,7 @@ from waymaker_ai.evidence_admissibility import (ITEM_LABELS, parent_code, reques
 from waymaker_ai.evidence_registry import TrustRegistry
 from waymaker_ai.response_contract import parse_response
 
-CONTRACT_VERSION = "v16"
+CONTRACT_VERSION = "v17"
 PROVENANCE = ("model_generated", "model_generated_with_system_notice", "system_withheld", "system_clarification",
               "review_required", "post_generation_blocked", "invalid_response")
 #: Mission 005-J: worst guard decision first, for joining per-sub-code parts.
@@ -286,6 +289,14 @@ def conflict_records(evidence: list) -> list:
             if status_check.conflicting_values([a.get("text", ""), b.get("text", "")])]
 
 
+def choice_marks(question: str, evidence: list) -> list:
+    """Mission 005-W: the codes a choice question asks between that the evidence names, in question order,
+    when there are two or more (choice_coverage's rule); otherwise []."""
+    named = [c for c in choice_coverage.choice_codes(question)
+             if any(c in choice_coverage._CODE.findall(e.get("text", "")) for e in evidence)]
+    return named if len(named) >= 2 else []
+
+
 def prepare(question: str, intake: Optional[Mapping], candidates: list, registry: Optional[TrustRegistry],
             evaluation_date: str) -> dict:
     """Pre-inference: admissibility, outcome, and the exact items the model would receive (one per part)."""
@@ -316,6 +327,9 @@ def prepare(question: str, intake: Optional[Mapping], candidates: list, registry
             pairs = conflict_records(evidence)
             if pairs:
                 system["conflict_records"] = pairs
+            codes = choice_marks(selection.get("context_question", question), evidence)
+            if codes:
+                system["choice_codes"] = codes
             items.append({"question": cleaned["question"], "evidence": evidence, "system": system})
             parts.append({"status_code": sub, "location": loc, "evidence": evidence, "uncovered_items": keys})
     return {"selection": selection, "reply_language": lang, "question": question,

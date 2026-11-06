@@ -226,6 +226,14 @@ end to end 81/81, zero critical. All six choice questions got a first answer nam
 choice retry added the other code in two (Vietnamese) and the notice quoted it in four. Raw scores the first
 answer, as in 005-T, so DEV-20 v2 did not run. All seven conflict cases were again conflicts first. See the
 [Mission 005-V report](runs/mission005v/MISSION-005-V-REPORT.ko.md).
+Mission 005-W (frozen 2026-11-06, not run yet): the first model call names the codes a choice question asks
+between as `choice_codes` (contract v17): the question's sibling codes that the part's admissible evidence names,
+two or more, in question order. Across DEV-20 v2 and the 005-F..V suites the mark falls on exactly DEV-20 003/004
+and A05V-45/62/63/68/70/71. The choice retry stays as the second line. The new suite (I-5 family) found that the
+first-person reader took the "I" of I-5-1 for the pronoun; a status code letter no longer counts (spec 2), and
+replaying 1,401 recorded cases changes no earlier result. Gate v18 = gate v17 with the 005-W manifest; thresholds
+unchanged. Six choice cases, one per category; re-derived blind (81/81); all 19 review edits applied after checking
+them against correct, value-first and real-model conflict answers.
 Free T4 run (commit 83f5f27): gate v15 **failed** on raw true_conflict 0/3 alone; end to end was 81/81
 for the first time, with no critical, no unsafe release and no trust bypass. In five conflict cases
 asking what each record says the first answer was status answered; the status retry turned all five

@@ -46,7 +46,7 @@ def run(cid, replies):
 
 # --- contract v12 ---------------------------------------------------------------------------------
 def test_v12_adds_only_the_input_name_and_the_retry_line():
-    assert "v12" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v12", "v13", "v14", "v15", "v16")   # 005-R: v13, 005-T: v14, 005-U: v15, 005-V: v16
+    assert "v12" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v12", "v13", "v14", "v15", "v16", "v17")   # 005-R: v13, 005-T: v14, 005-U: v15, 005-V: v16, 005-W: v17
     v11, v12 = SYSTEM_PROMPTS["v11"].splitlines(), SYSTEM_PROMPTS["v12"].splitlines()
     assert len(v12) == len(v11) + 1
     added = [line for line in v12 if line not in v11]

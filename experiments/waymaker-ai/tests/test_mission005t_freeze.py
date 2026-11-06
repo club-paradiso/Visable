@@ -47,7 +47,9 @@ CHANGED_AFTER_005T = {"artemis_bootstrap/grounding_guard.py", "artemis_bootstrap
                       "artemis_bootstrap/dev20_v2.py", "artemis_bootstrap/gemma4_runtime.py",
                       "waymaker_ai/inference_input.py", "waymaker_ai/response_contract.py",
                       # Mission 005-V
-                      "artemis_bootstrap/status_check.py"}
+                      "artemis_bootstrap/status_check.py",
+                      # Mission 005-W
+                      "waymaker_ai/evidence_admissibility.py"}
 FREEZE_COMMIT_005T = "83f5f274828fd98c4bed8710c04cf7989ed60752"
 
 

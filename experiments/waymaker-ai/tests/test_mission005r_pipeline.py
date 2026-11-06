@@ -94,7 +94,7 @@ def test_recorded_answers_of_earlier_runs_trigger_only_dev20_v2_item_011():
 
 
 def test_v13_adds_only_the_input_name_and_the_retry_line():
-    assert "v13" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v13", "v14", "v15", "v16")   # 005-T: v14, 005-U: v15, 005-V: v16
+    assert "v13" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v13", "v14", "v15", "v16", "v17")   # 005-T: v14, 005-U: v15, 005-V: v16, 005-W: v17
     v12, v13 = SYSTEM_PROMPTS["v12"].splitlines(), SYSTEM_PROMPTS["v13"].splitlines()
     assert len(v13) == len(v12) + 1
     added = [line for line in v13 if line not in v12]

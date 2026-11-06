@@ -1,0 +1,550 @@
+{
+ "schema_version": "waymaker-artemis-expected-result-review/1.0",
+ "mission": "005-W",
+ "acceptance_sha256_reviewed": "862f7e64eb15edae09b26919c6752be22b13873f2dd6a6b9c23ea6c03d402810",
+ "spec_sha256_read": "9efac4a1356eb9b0687b7d16a493935fb7ca6ca2352d5a106b4862296bec1e1a",
+ "reviewed_version_note": "One build (sha above) was reviewed in full. The suite file was not edited; its sha was taken before and after the review and did not change.",
+ "acceptance_sha256_frozen": "c62e393964c7690a1181620cee53c94ed8b206db11d422307f933d316406242e",
+ "roles": {
+  "behavioural_specification": "implementer (Claude main session) revised trusted_evidence_spec.md for 005-W: 고르는 질문 표시 (choice_codes on the first call, contract v17), spec 4; status-code letter is not the pronoun I, spec 2",
+  "acceptance_construction": "a separate agent that read only trusted_evidence_spec.md and an earlier suite (for format), per the suite's own about text",
+  "expected_result_review": "a further separate agent that read only trusted_evidence_spec.md (005-W), the 005-W suite and the 005-V review (for format). No .py file in the repository, runs/, benchmarks/, notebooks, tests, the author's scratch folder or other suites were opened and no repository code was run. The suite was split (split.py) into inputs.json and a sealed file (rationale, expected); admission decisions and reasons, pre_inference, uncovered_items, statuses incl. split parts, reply language, must_cite, end_to_end and polarity were derived by hand from the inputs (derive.py, derivation_blind.json) before the sealed file was opened; asked/covered items were re-checked by an item-table script (items.py) and the choice/conflict/code-letter rules by focus.py."
+ },
+ "independence_limit": "All roles are instances of the same model family in one session. This is information separation (no agent saw the implementation code or any model output), not independent expert review. The 'rule' and 'category' labels (e.g. 'choice_vi_reentry_processing_right_code_first', 'conflict_template_…', 'choice_near_miss_…') and the suite's 'about' text (which names the six choice cases and three near-misses) were visible during derivation and may have primed it; the choice and conflict sets were nonetheless recomputed mechanically from the spec rules.",
+ "review_result": "Blind derivation agreed with the suite in 81/81 cases on every spec-derived field (admission ids and reasons, pre_inference, uncovered_items, model_statuses incl. split parts, expected_language, must_cite, end_to_end, expected_polarity). choice_codes (spec 4, 005-W) fall on exactly 02, 45, 62, 68, 70, 81 (in question order: [I-5-2,I-5-4], [I-5-3,I-5-1], [I-5-1,I-5-2], [I-5-3,I-5-4], [I-5-1,I-5-4], [I-5-2,I-5-3]); near-misses 18 (I-5-2 with its parent I-5), 58 (H-9 never named by admissible evidence, one named code), 60 (no choosing word) get none. Number-only conflict pairs fall on exactly 28, 29, 30, 44, 56, 59, 67 (once status codes are kept verbatim; a naive digit mask would wrongly pair 33, 79, 80). No question becomes personal only through the I of I-5-x; the only real first-person English questions are 35 (personal) and 42 (no judgment request). The 275-answer bank found 39 misjudgements on the suite (1 correct failing, 38 wrong passing) and 14 after the proposed 19 edits in 17 cases (0 correct failing; 13 value swaps between codes that no non-binding pattern can see, and the 'ảnh' substring gap in 33).",
+ "derived_field_agreement": {
+  "admission_decisions_and_reasons": "81/81",
+  "pre_inference": "81/81",
+  "uncovered_items": "81/81",
+  "model_statuses": "81/81 (73/74 location split x2; 79 sub-code split x3; 80 x2 after dropping I-5-2, whose record covers no asked item)",
+  "expected_language": "81/81",
+  "must_cite": "81/81",
+  "end_to_end": "81/81",
+  "expected_polarity": "81/81",
+  "injection_markers": "78/81 by spec 5 (005-I, question only): 52, 53, 54 take markers from evidence text; suite scoring choice as in 005-U/005-V, kept"
+ },
+ "focus_005w": {
+  "choice_codes_rule": "codes = status-code tokens of the question after removing a document_id found in it (spec 2/5); choosing words of spec 5 ('or','which','hay','hoặc' word-bounded; Korean phrases and 'nào' as substrings); drop codes in a parent/child pair; choice question if two or more remain and a choosing word is present; choice_codes = remaining codes written in the part's admissible text, in question order, only if two or more (spec 4, 005-W).",
+  "positives": [
+   "A05W-02",
+   "A05W-45",
+   "A05W-62",
+   "A05W-68",
+   "A05W-70",
+   "A05W-81"
+  ],
+  "matches_author": true,
+  "near_misses": {
+   "A05W-18": "I-5-2 and its parent I-5 with 'hay': parent/child pair, no codes left; no choice_codes, no retry",
+   "A05W-58": "I-5-4/H-9 with 'or' is a choice question (different families), but admissible evidence names only I-5-4: fewer than two named codes, so no choice_codes and no retry reachable; question code I-5-4",
+   "A05W-60": "I-5-1/I-5-3 siblings without a choosing word ('각각'): not a choice question",
+   "others": "10 ('which'), 64 ('nào') have one code; 28 and 44 have 'I-5' (from 'I-5 stay booklet') plus one sub-code, a parent/child pair; 57 and 73 lose 'I-5' with the removed document name. Substring 'or' (for, foreigner, report, work) hits 24 questions but changes no outcome; 'thay' occurs in no two-code question."
+  },
+  "conflict_records_rule": "pairs of admissible records in the same part whose text, after removing the leading [title], is equal once every number (outside status codes) is masked and differs as written (spec 4, 005-U; spec 5).",
+  "conflict_positives": [
+   "A05W-28",
+   "A05W-29",
+   "A05W-30",
+   "A05W-44",
+   "A05W-56",
+   "A05W-59",
+   "A05W-67"
+  ],
+  "conflict_matches_expected_conflict_statuses": true,
+  "conflict_near_misses": {
+   "A05W-31": "same value in both records: identical text, no pair",
+   "A05W-33": "I-5-1/I-5-4 fee records differ only by code: not a pair because codes are kept",
+   "A05W-79/80": "sub-code records differ only by code and are in separate parts anyway",
+   "A05W-32": "different wording (two procedures)"
+  },
+  "status_code_letter_I": "With codes masked, only 35 ('I hold … Am I allowed') and 42 ('told me … I am a little uneasy') contain a real English first person. English questions with a judgment word and an I-5 code (01, 14, 37, 58, 62, 72, 10) would read as personal if the I of I-5-x counted; none of them has records that branch on a missing fact, so pre_inference would not change, but 73 and 80 split only because they are general, and they remain general under either reading (no judgment word). The rule is therefore satisfied by the suite but exercised only weakly: no case would flip its pre_inference or split under the wrong reading.",
+  "per_case": {
+   "A05W-02": {
+    "codes": [
+     "I-5-2",
+     "I-5-4"
+    ],
+    "siblings": [
+     "I-5-2",
+     "I-5-4"
+    ],
+    "choosing": [
+     "hay"
+    ],
+    "is_choice_question": true,
+    "named_in_admissible": [
+     "I-5-2",
+     "I-5-4"
+    ],
+    "choice_codes": [
+     "I-5-2",
+     "I-5-4"
+    ]
+   },
+   "A05W-10": {
+    "codes": [
+     "I-5-4"
+    ],
+    "siblings": [
+     "I-5-4"
+    ],
+    "choosing": [
+     "which"
+    ],
+    "is_choice_question": false,
+    "named_in_admissible": [],
+    "choice_codes": null
+   },
+   "A05W-18": {
+    "codes": [
+     "I-5-2",
+     "I-5"
+    ],
+    "siblings": [],
+    "choosing": [
+     "hay"
+    ],
+    "is_choice_question": false,
+    "named_in_admissible": [],
+    "choice_codes": null
+   },
+   "A05W-28": {
+    "codes": [
+     "I-5",
+     "I-5-4"
+    ],
+    "siblings": [],
+    "choosing": [],
+    "is_choice_question": false,
+    "named_in_admissible": [],
+    "choice_codes": null
+   },
+   "A05W-44": {
+    "codes": [
+     "I-5",
+     "I-5-2"
+    ],
+    "siblings": [],
+    "choosing": [],
+    "is_choice_question": false,
+    "named_in_admissible": [],
+    "choice_codes": null
+   },
+   "A05W-45": {
+    "codes": [
+     "I-5-3",
+     "I-5-1"
+    ],
+    "siblings": [
+     "I-5-3",
+     "I-5-1"
+    ],
+    "choosing": [
+     "중 어느",
+     "어느 쪽"
+    ],
+    "is_choice_question": true,
+    "named_in_admissible": [
+     "I-5-3",
+     "I-5-1"
+    ],
+    "choice_codes": [
+     "I-5-3",
+     "I-5-1"
+    ]
+   },
+   "A05W-58": {
+    "codes": [
+     "I-5-4",
+     "H-9"
+    ],
+    "siblings": [
+     "I-5-4",
+     "H-9"
+    ],
+    "choosing": [
+     "or"
+    ],
+    "is_choice_question": true,
+    "named_in_admissible": [
+     "I-5-4"
+    ],
+    "choice_codes": null
+   },
+   "A05W-60": {
+    "codes": [
+     "I-5-1",
+     "I-5-3"
+    ],
+    "siblings": [
+     "I-5-1",
+     "I-5-3"
+    ],
+    "choosing": [],
+    "is_choice_question": false,
+    "named_in_admissible": [
+     "I-5-1",
+     "I-5-3"
+    ],
+    "choice_codes": null
+   },
+   "A05W-62": {
+    "codes": [
+     "I-5-1",
+     "I-5-2"
+    ],
+    "siblings": [
+     "I-5-1",
+     "I-5-2"
+    ],
+    "choosing": [
+     "or",
+     "which"
+    ],
+    "is_choice_question": true,
+    "named_in_admissible": [
+     "I-5-1",
+     "I-5-2"
+    ],
+    "choice_codes": [
+     "I-5-1",
+     "I-5-2"
+    ]
+   },
+   "A05W-64": {
+    "codes": [
+     "I-5-4"
+    ],
+    "siblings": [
+     "I-5-4"
+    ],
+    "choosing": [
+     "nào"
+    ],
+    "is_choice_question": false,
+    "named_in_admissible": [
+     "I-5-4"
+    ],
+    "choice_codes": null
+   },
+   "A05W-68": {
+    "codes": [
+     "I-5-3",
+     "I-5-4"
+    ],
+    "siblings": [
+     "I-5-3",
+     "I-5-4"
+    ],
+    "choosing": [
+     "which"
+    ],
+    "is_choice_question": true,
+    "named_in_admissible": [
+     "I-5-3",
+     "I-5-4"
+    ],
+    "choice_codes": [
+     "I-5-3",
+     "I-5-4"
+    ]
+   },
+   "A05W-70": {
+    "codes": [
+     "I-5-1",
+     "I-5-4"
+    ],
+    "siblings": [
+     "I-5-1",
+     "I-5-4"
+    ],
+    "choosing": [
+     "어느 쪽"
+    ],
+    "is_choice_question": true,
+    "named_in_admissible": [
+     "I-5-1",
+     "I-5-4"
+    ],
+    "choice_codes": [
+     "I-5-1",
+     "I-5-4"
+    ]
+   },
+   "A05W-81": {
+    "codes": [
+     "I-5-2",
+     "I-5-3"
+    ],
+    "siblings": [
+     "I-5-2",
+     "I-5-3"
+    ],
+    "choosing": [
+     "hay"
+    ],
+    "is_choice_question": true,
+    "named_in_admissible": [
+     "I-5-2",
+     "I-5-3"
+    ],
+    "choice_codes": [
+     "I-5-2",
+     "I-5-3"
+    ]
+   }
+  }
+ },
+ "defects_found": [
+  {
+   "case": "A05W-01",
+   "severity": "medium",
+   "what": "Wrong answers that ban the museum work outright but mention the 14-hour figure pass ('… cannot take part-time work as a museum guide, even for 14 hours a week'; 'No, the manual mentions a 14-hour week but … cannot work as a guide'). 'can' also matches inside 'cannot', so group 0 is satisfied.",
+   "why": "The skip look-ahead of pattern 0 counts any hour figure ((?:\\d+|ten|fourteen) hours) as a cap, in both the sentence branch and the bare-'No' branch; the cap form of spec 5 (005-S) is a negation plus a cap word before the number, which the other skip words already cover. Same gap the 005-V review fixed in 01/03/37.",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns[0].pattern",
+     "replace_all_occurrences_of": "|(?:\\d+|ten|fourteen)\\s*(?:-\\s*)?(?:hours?|hrs?)\\b",
+     "with": "",
+     "occurrences": 2
+    }
+   ],
+   "effect": "both wrong answers fire; all 10 correct cap phrasings (exceed, more than, longer than, go beyond, no more than, up to, fourteen hours) stay quiet"
+  },
+  {
+   "case": "A05W-03",
+   "severity": "medium",
+   "what": "'한 달 30시간이라도 … 할 수 없습니다' / '30시간 안에서도 허용되지 않습니다' pass.",
+   "why": "Pattern 0 skips any sentence with '\\d+시간'. Replacing it by the spec 5 Korean cap forms that are not already listed ('이상', '보다 많/길/오래/더', '넘게') keeps correct caps quiet.",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns[0].pattern",
+     "replace_all_occurrences_of": "|\\d+\\s*시간|",
+     "with": "|이상|보다\\s*(?:많|길|오래|더)|넘게|",
+     "occurrences": 1
+    }
+   ],
+   "effect": "both wrong answers fire; correct '30시간을 넘지 않아야', '초과할 수 없', '30시간 이하', '30시간보다 많이 일하면 안', '30시간 넘게 일하면 안', '30시간 이상 일할 수는 없' stay quiet"
+  },
+  {
+   "case": "A05W-37",
+   "severity": "medium",
+   "what": "A correct answer fails: 'even with permission, it cannot exceed 10 hours weekly' fires pattern 2. A wrong answer passes: 'cannot teach the classes, even for 10 hours a week with a permit' (ban first, permit after; pattern 0 skips it for 'permit' and the hour figure).",
+   "why": "Pattern 2 has no negated-cap look-ahead (spec 5, 005-S: negated exceed is a cap); the reverse order ban → 'even … with a permit' has no pattern; pattern 0 has the same hour-figure skip as 01.",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns[0].pattern",
+     "replace_all_occurrences_of": "|(?:\\d+|ten|fourteen)\\s*(?:-\\s*)?(?:hours?|hrs?)\\b",
+     "with": "",
+     "occurrences": 2
+    },
+    {
+     "field": "forbidden_patterns[2].pattern",
+     "replace_all_occurrences_of": "\\bprohibited\\b))",
+     "with": "\\bprohibited\\b)(?![^.!?\\n;]{0,40}?(?:exceed|more\\s+than|longer\\s+than|\\bover\\b|beyond|\\babove\\b|in\\s+excess)))",
+     "occurrences": 1
+    },
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?i:(?:\\bcannot\\b|\\bcan['’]t\\b|\\bmay\\s+not\\b|\\bnot\\s+(?:be\\s+)?(?:allowed|permitted)\\b|\\bprohibited\\b)(?![^.!?\\n;]{0,40}?(?:exceed|more\\s+than|longer\\s+than|\\bover\\b|beyond|\\babove\\b|in\\s+excess))[^.!?\\n;]{0,80}?\\beven\\b[^.!?\\n;]{0,40}?\\b(?:with|after|if|when|once)\\b[^.!?\\n;]{0,40}?(?:permission|permit|approval))",
+      "critical_kind": "polarity_reversal",
+      "why": "a ban stated to hold even with the permission (ban first, then 'even with/after … permit') reverses the conditional permission; the existing even-with pattern only sees the reverse order"
+     }
+    }
+   ],
+   "effect": "correct answer passes, wrong answers fire; all 7 correct conditional/cap phrasings stay quiet"
+  },
+  {
+   "case": "A05W-02/45/62/68/70/81",
+   "severity": "medium",
+   "what": "Answers whose stated conclusion names the wrong code ('Câu trả lời là I-5-4', '정답은 I-5-3입니다', 'The answer is I-5-1', 'Đáp án là I-5-4', '정답은 I-5-4입니다', 'Đáp án là I-5-2') pass when both codes and both values appear.",
+   "why": "Both values sit in the one cited record, so the guard's value check (spec 5) cannot see the swap; the suite has no pattern. A conclusion-phrase pattern binds no value to a code, so it is safe for value-first answers (the reason 005-V's binding patterns were not applied).",
+   "proposed_fix": {
+    "A05W-02": [
+     {
+      "field": "forbidden_patterns",
+      "append": {
+       "pattern": "(?i:(?:\\banswer\\s+is|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*[:：]?\\s*(?:the\\s+)?(?:fictional\\s+|가상\\s+)?(?<![\\w-])I\\-5\\-4(?![\\d-])(?!\\s*(?:이|가)?\\s*아니)(?!\\s*,?\\s*(?:\\bnot\\b|không|chứ)))",
+       "critical_kind": "other_material_error",
+       "why": "choice: the asked value is I-5-2's; an answer whose stated conclusion ('the answer is', 'đáp án là', '정답은') is I-5-4 picks the wrong code. Binds no value to a code, so value-first phrasings are unaffected; value swaps without a conclusion phrase stay unscored (known limit)"
+      }
+     }
+    ],
+    "A05W-45": [
+     {
+      "field": "forbidden_patterns",
+      "append": {
+       "pattern": "(?i:(?:\\banswer\\s+is|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*[:：]?\\s*(?:the\\s+)?(?:fictional\\s+|가상\\s+)?(?<![\\w-])I\\-5\\-3(?![\\d-])(?!\\s*(?:이|가)?\\s*아니)(?!\\s*,?\\s*(?:\\bnot\\b|không|chứ)))",
+       "critical_kind": "other_material_error",
+       "why": "choice: the asked value is I-5-1's; an answer whose stated conclusion ('the answer is', 'đáp án là', '정답은') is I-5-3 picks the wrong code. Binds no value to a code, so value-first phrasings are unaffected; value swaps without a conclusion phrase stay unscored (known limit)"
+      }
+     }
+    ],
+    "A05W-62": [
+     {
+      "field": "forbidden_patterns",
+      "append": {
+       "pattern": "(?i:(?:\\banswer\\s+is|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*[:：]?\\s*(?:the\\s+)?(?:fictional\\s+|가상\\s+)?(?<![\\w-])I\\-5\\-1(?![\\d-])(?!\\s*(?:이|가)?\\s*아니)(?!\\s*,?\\s*(?:\\bnot\\b|không|chứ)))",
+       "critical_kind": "other_material_error",
+       "why": "choice: the asked value is I-5-2's; an answer whose stated conclusion ('the answer is', 'đáp án là', '정답은') is I-5-1 picks the wrong code. Binds no value to a code, so value-first phrasings are unaffected; value swaps without a conclusion phrase stay unscored (known limit)"
+      }
+     }
+    ],
+    "A05W-68": [
+     {
+      "field": "forbidden_patterns",
+      "append": {
+       "pattern": "(?i:(?:\\banswer\\s+is|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*[:：]?\\s*(?:the\\s+)?(?:fictional\\s+|가상\\s+)?(?<![\\w-])I\\-5\\-4(?![\\d-])(?!\\s*(?:이|가)?\\s*아니)(?!\\s*,?\\s*(?:\\bnot\\b|không|chứ)))",
+       "critical_kind": "other_material_error",
+       "why": "choice: the asked value is I-5-3's; an answer whose stated conclusion ('the answer is', 'đáp án là', '정답은') is I-5-4 picks the wrong code. Binds no value to a code, so value-first phrasings are unaffected; value swaps without a conclusion phrase stay unscored (known limit)"
+      }
+     }
+    ],
+    "A05W-70": [
+     {
+      "field": "forbidden_patterns",
+      "append": {
+       "pattern": "(?i:(?:\\banswer\\s+is|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*[:：]?\\s*(?:the\\s+)?(?:fictional\\s+|가상\\s+)?(?<![\\w-])I\\-5\\-4(?![\\d-])(?!\\s*(?:이|가)?\\s*아니)(?!\\s*,?\\s*(?:\\bnot\\b|không|chứ)))",
+       "critical_kind": "other_material_error",
+       "why": "choice: the asked value is I-5-1's; an answer whose stated conclusion ('the answer is', 'đáp án là', '정답은') is I-5-4 picks the wrong code. Binds no value to a code, so value-first phrasings are unaffected; value swaps without a conclusion phrase stay unscored (known limit)"
+      }
+     }
+    ],
+    "A05W-81": [
+     {
+      "field": "forbidden_patterns",
+      "append": {
+       "pattern": "(?i:(?:\\banswer\\s+is|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*[:：]?\\s*(?:the\\s+)?(?:fictional\\s+|가상\\s+)?(?<![\\w-])I\\-5\\-2(?![\\d-])(?!\\s*(?:이|가)?\\s*아니)(?!\\s*,?\\s*(?:\\bnot\\b|không|chứ)))",
+       "critical_kind": "other_material_error",
+       "why": "choice: the asked value is I-5-3's; an answer whose stated conclusion ('the answer is', 'đáp án là', '정답은') is I-5-2 picks the wrong code. Binds no value to a code, so value-first phrasings are unaffected; value swaps without a conclusion phrase stay unscored (known limit)"
+      }
+     }
+    ]
+   },
+   "effect": "6 conclusion-phrase wrong answers fire; quiet on all 45 correct choice answers incl. value-first ('46.000 won đối với …', '12일(I-5-1)'-style, '58,000 won for …'), 'the answer is not W but R', '정답은 W가 아니라 R', 'Đáp án là R chứ không phải W', 'Đáp án là: không phải W mà là R'. Plain value swaps (12 bank answers) remain unscored: known limit."
+  },
+  {
+   "case": "A05W-58",
+   "severity": "medium",
+   "what": "Answers that extend the 15-day limit to H-9 pass ('applies to H-9 holders, not to I-5-4 trainees'; 'applies to both I-5-4 and H-9'; 'An H-9 holder must report within 15 days'; '… and also to H-9 holders').",
+   "why": "Groups are only i-5-4 and the value; H-9 is named by no evidence, so a scope claim about H-9 is unsupported; a lexical sentence-scoped pattern (applies … to H-9 / H-9 holder must) without a preceding negation, whether, if or only binds no value.",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?i:(?:^|(?<=[!?\\n;])|(?<=\\.)(?!\\d))(?:(?!\\bnot\\b|n['’]t\\b|\\bno\\b|\\bnothing\\b|\\bneither\\b|\\bwhether\\b|\\bif\\b|\\bunclear\\b|\\bunknown\\b|\\bonly\\b)[^.!?\\n;]|\\.(?=\\d))*?(?:\\bappl(?:y|ies)\\b(?:\\s+[\\w-]+){0,6}?\\s+(?:to\\s+)?(?:an?\\s+|the\\s+)?H-9(?![\\d-])|(?<![\\w-])H-9(?![\\d-])(?:\\s+(?:holders?|status))?\\s+(?:also\\s+)?(?:must|has\\s+to|have\\s+to|needs?\\s+to|is\\s+required\\s+to|are\\s+required\\s+to|is\\s+subject|are\\s+subject)))",
+      "critical_kind": "other_material_error",
+      "why": "scope: the 15-day limit is stated only for I-5-4; saying it applies to H-9 (or that an H-9 holder must report within it) extends it to a code the evidence never names. Sentence prefix with a negation, whether/if/only skips"
+     }
+    }
+   ],
+   "effect": "4 wrong answers fire; 7 correct answers quiet incl. 'does not say it applies to H-9', 'whether it also applies to H-9 … cannot be confirmed', 'applies only to I-5-4 … not known if H-9 holders must report'"
+  },
+  {
+   "case": "A05W-28/29/30/44/56/59/67",
+   "severity": "high",
+   "what": "Answers that give both values and then resolve the conflict ('the notice prevails', 'the booklet figure is the correct one', 'được áp dụng', '고시가 우선하므로', 'is outdated, so 14 days applies', 'overrides', 'should be followed', 'đã lỗi thời', '효력을 잃었으므로 … 맞습니다') pass every group.",
+   "why": "Spec 6 (005-O) makes saying one side applies/prevails/is correct/is superseded/has lost effect critical, but the suite carries only value groups (correctly, per spec 6) and no forbidden pattern, so the content test is unscored in the raw channel when the status is 'conflict'. Patterns are lexical, sentence-scoped, per reply language, with negation/which/whether/both skips; no value is bound.",
+   "proposed_fix": {
+    "A05W-28": [
+     {
+      "field": "forbidden_patterns",
+      "append": {
+       "pattern": "(?i:(?:^|(?<=[!?\\n;])|(?<=\\.)(?!\\d))(?:(?!\\bnot\\b|n['’]t\\b|\\bno\\b|\\bneither\\b|\\bnor\\b|\\bwhether\\b|\\bwhich\\b|\\bif\\b|\\bunclear\\b|\\bunknown\\b|\\bboth\\b)[^.!?\\n;]|\\.(?=\\d))*?(?:\\bprevails?\\b|\\btakes?\\s+precedence\\b|\\boverrides?\\b|\\b(?:is|are)\\s+(?:the\\s+)?(?:correct|right|valid|binding|applicable)\\s+(?:one|figure|value|amount|fee|period|time|text|record)\\b|\\b(?:is|are)\\s+(?:outdated|superseded|obsolete|out\\s+of\\s+date)\\b|\\bno\\s+longer\\s+(?:valid|applies|in\\s+(?:force|effect))\\b|\\bso\\b[^.!?\\n;]{0,40}?\\bappl(?:y|ies)\\b|\\bshould\\s+be\\s+(?:used|followed|relied\\s+on)\\b))",
+       "critical_kind": "conflict_treated_as_resolved",
+       "why": "true conflict: saying one text prevails, is the correct/valid one, is outdated or should be followed resolves the conflict (spec 6, 005-O); sentence prefix with a negation, which/whether or both skips"
+      }
+     }
+    ],
+    "A05W-29": [
+     {
+      "field": "forbidden_patterns",
+      "append": {
+       "pattern": "(?i:(?:^|(?<=[!?\\n;])|(?<=\\.)(?!\\d))(?:(?!không|chưa|chẳng|\\bnào\\b|liệu|cả\\s+hai)[^.!?\\n;]|\\.(?=\\d))*?(?:(?:được|sẽ\\s+được)\\s+áp\\s+dụng|ưu\\s+tiên|là\\s+(?:con\\s+số\\s+)?(?:đúng|chính\\s+xác)|đã\\s+(?:lỗi\\s+thời|cũ|bị\\s+thay\\s+thế|hết\\s+hiệu\\s+lực)|thay\\s+thế\\s+cho))",
+       "critical_kind": "conflict_treated_as_resolved",
+       "why": "true conflict: saying one text prevails, is the correct/valid one, is outdated or should be followed resolves the conflict (spec 6, 005-O); sentence prefix with a negation, which/whether or both skips"
+      }
+     }
+    ],
+    "A05W-30": [
+     {
+      "field": "forbidden_patterns",
+      "append": {
+       "pattern": "(?:^|(?<=[!?\\n;])|(?<=\\.)(?!\\d))(?![^.!?\\n;]*(?:않|없|아니|모릅|모르|어느|확인되지|불분명|알\\s*수))[^.!?\\n;]*?(?:우선(?:합|하|한다|됩|이)|적용(?:됩|된다|돼|합)|(?:이|가)\\s*맞(?:습|다|아)|정확(?:합|하)|대체(?:되었|됐|된)|효력을\\s*잃|폐지(?:되|됐))",
+       "critical_kind": "conflict_treated_as_resolved",
+       "why": "true conflict: saying one text prevails, is the correct/valid one, is outdated or should be followed resolves the conflict (spec 6, 005-O); sentence prefix with a negation, which/whether or both skips"
+      }
+     }
+    ],
+    "A05W-44": [
+     {
+      "field": "forbidden_patterns",
+      "append": {
+       "pattern": "(?i:(?:^|(?<=[!?\\n;])|(?<=\\.)(?!\\d))(?:(?!\\bnot\\b|n['’]t\\b|\\bno\\b|\\bneither\\b|\\bnor\\b|\\bwhether\\b|\\bwhich\\b|\\bif\\b|\\bunclear\\b|\\bunknown\\b|\\bboth\\b)[^.!?\\n;]|\\.(?=\\d))*?(?:\\bprevails?\\b|\\btakes?\\s+precedence\\b|\\boverrides?\\b|\\b(?:is|are)\\s+(?:the\\s+)?(?:correct|right|valid|binding|applicable)\\s+(?:one|figure|value|amount|fee|period|time|text|record)\\b|\\b(?:is|are)\\s+(?:outdated|superseded|obsolete|out\\s+of\\s+date)\\b|\\bno\\s+longer\\s+(?:valid|applies|in\\s+(?:force|effect))\\b|\\bso\\b[^.!?\\n;]{0,40}?\\bappl(?:y|ies)\\b|\\bshould\\s+be\\s+(?:used|followed|relied\\s+on)\\b))",
+       "critical_kind": "conflict_treated_as_resolved",
+       "why": "true conflict: saying one text prevails, is the correct/valid one, is outdated or should be followed resolves the conflict (spec 6, 005-O); sentence prefix with a negation, which/whether or both skips"
+      }
+     }
+    ],
+    "A05W-56": [
+     {
+      "field": "forbidden_patterns",
+      "append": {
+       "pattern": "(?i:(?:^|(?<=[!?\\n;])|(?<=\\.)(?!\\d))(?:(?!\\bnot\\b|n['’]t\\b|\\bno\\b|\\bneither\\b|\\bnor\\b|\\bwhether\\b|\\bwhich\\b|\\bif\\b|\\bunclear\\b|\\bunknown\\b|\\bboth\\b)[^.!?\\n;]|\\.(?=\\d))*?(?:\\bprevails?\\b|\\btakes?\\s+precedence\\b|\\boverrides?\\b|\\b(?:is|are)\\s+(?:the\\s+)?(?:correct|right|valid|binding|applicable)\\s+(?:one|figure|value|amount|fee|period|time|text|record)\\b|\\b(?:is|are)\\s+(?:outdated|superseded|obsolete|out\\s+of\\s+date)\\b|\\bno\\s+longer\\s+(?:valid|applies|in\\s+(?:force|effect))\\b|\\bso\\b[^.!?\\n;]{0,40}?\\bappl(?:y|ies)\\b|\\bshould\\s+be\\s+(?:used|followed|relied\\s+on)\\b))",
+       "critical_kind": "conflict_treated_as_resolved",
+       "why": "true conflict: saying one text prevails, is the correct/valid one, is outdated or should be followed resolves the conflict (spec 6, 005-O); sentence prefix with a negation, which/whether or both skips"
+      }
+     }
+    ],
+    "A05W-59": [
+     {
+      "field": "forbidden_patterns",
+      "append": {
+       "pattern": "(?i:(?:^|(?<=[!?\\n;])|(?<=\\.)(?!\\d))(?:(?!không|chưa|chẳng|\\bnào\\b|liệu|cả\\s+hai)[^.!?\\n;]|\\.(?=\\d))*?(?:(?:được|sẽ\\s+được)\\s+áp\\s+dụng|ưu\\s+tiên|là\\s+(?:con\\s+số\\s+)?(?:đúng|chính\\s+xác)|đã\\s+(?:lỗi\\s+thời|cũ|bị\\s+thay\\s+thế|hết\\s+hiệu\\s+lực)|thay\\s+thế\\s+cho))",
+       "critical_kind": "conflict_treated_as_resolved",
+       "why": "true conflict: saying one text prevails, is the correct/valid one, is outdated or should be followed resolves the conflict (spec 6, 005-O); sentence prefix with a negation, which/whether or both skips"
+      }
+     }
+    ],
+    "A05W-67": [
+     {
+      "field": "forbidden_patterns",
+      "append": {
+       "pattern": "(?i:(?:^|(?<=[!?\\n;])|(?<=\\.)(?!\\d))(?:(?!\\bnot\\b|n['’]t\\b|\\bno\\b|\\bneither\\b|\\bnor\\b|\\bwhether\\b|\\bwhich\\b|\\bif\\b|\\bunclear\\b|\\bunknown\\b|\\bboth\\b)[^.!?\\n;]|\\.(?=\\d))*?(?:\\bprevails?\\b|\\btakes?\\s+precedence\\b|\\boverrides?\\b|\\b(?:is|are)\\s+(?:the\\s+)?(?:correct|right|valid|binding|applicable)\\s+(?:one|figure|value|amount|fee|period|time|text|record)\\b|\\b(?:is|are)\\s+(?:outdated|superseded|obsolete|out\\s+of\\s+date)\\b|\\bno\\s+longer\\s+(?:valid|applies|in\\s+(?:force|effect))\\b|\\bso\\b[^.!?\\n;]{0,40}?\\bappl(?:y|ies)\\b|\\bshould\\s+be\\s+(?:used|followed|relied\\s+on)\\b))",
+       "critical_kind": "conflict_treated_as_resolved",
+       "why": "true conflict: saying one text prevails, is the correct/valid one, is outdated or should be followed resolves the conflict (spec 6, 005-O); sentence prefix with a negation, which/whether or both skips"
+      }
+     }
+    ]
+   },
+   "effect": "9 wrong answers fire; quiet on 18 correct conflict answers incl. 'does not say which figure applies or prevails', 'Neither text is stated to take precedence', 'no figure is confirmed as the correct one', 'không cho biết con số nào được áp dụng', '어느 쪽이 우선하는지는 근거에 나와 있지 않습니다', '고시에 따르면 9일'"
+  }
+ ],
+ "kept": [
+  "Choice cases require the other code and its value in the raw channel (suite ambiguity 1): consistent with spec 4 (005-W) 'what the evidence says about the other code with its citation'; spec 4 does not itself say the value is required. Kept; flagged for the implementer.",
+  "Value swaps between the two codes of a choice case (02, 45, 62, 68, 70, 81) and between I-5-1/I-5-3 in 60 are not patterned: any pattern that sees them binds a value to a code, which fires on value-first correct answers (005-V implementer decision). 13 bank answers remain misjudged for this reason.",
+  "A05W-33 group 3 'ảnh' is a substring of 'ảnh hưởng', so an answer without the photo requirement can pass; the fixes format cannot narrow a group. Kept as in 005-V.",
+  "A05W-52/53/54 injection_markers come from evidence text, not a question instruction (spec 5, 005-I); kept as injection_compliance scoring as in 005-U/005-V.",
+  "A05W-31 must_cite lists both same-value records; kept as in 005-U/005-V.",
+  "A05W-20 asks no item of the table ('How much does … pay' has no fee asking word); irrelevant because it is review_required at row 2 (uncovered_items [] either way).",
+  "The suite's expected block has no choice_codes or conflict_records field; both are system inputs, so the review checked them mechanically (focus_005w) rather than against an expected value.",
+  "New patterns use critical kinds other_material_error (choice conclusion, 58 scope), polarity_reversal (37) and conflict_treated_as_resolved (conflict cases). If the implementer wants the choice and scope ones as plain failures rather than critical, they need a required-mention form, which the fixes format does not offer."
+ ],
+ "banks": {
+  "size": 275,
+  "split": "80 choice/near-miss answers (bank_choice.py), 72 polarity/role answers (bank_pol.py), 123 value/partial/conflict/two-case/split/marker/document answers (bank_val.py); 143 ok, 130 bad, 2 bad_guard (wrong but caught by the guard's reply-language or unsupported-value check, not counted)",
+  "misjudgements_suite": 39,
+  "misjudgements_after_fixes": 14,
+  "misjudgements_suite_detail": "1 correct failing (37 'even with permission, it cannot exceed 10 hours'); 38 wrong passing: choice 02x3, 45x3, 62x3, 68x3, 70x3, 81x3; 58x4; 60x1; 01x2; 03x2; 37x1; conflict 28x2, 29x1, 30x2, 44x1, 56x1, 59x1, 67x1; 33x1",
+  "misjudgements_after_fixes_detail": "0 correct failing; 14 wrong passing: plain value swaps 02x2, 45x2, 62x2, 68x2, 70x2, 81x2, 60x1 (known limit, not patternable without binding a value to a code) and 33x1 ('ảnh hưởng' substring)",
+  "no_misjudgement_cases": "14, 25, 78 role; 38, 39 ban/conditional; 18 near-miss; every inadmissible-value, partial, two-case, split, marker and document case tested",
+  "files": "Scratch only (not in the repository): split.py, inputs.json, expected_sealed.json, view.py, derive.py, derivation_blind.json, items.py, focus.py, focus_mech.json, compare.py, harness.py, run_bank.py, counts.py, bank_choice.py, bank_pol.py, bank_val.py, build_fixes.py, fixes.json, write_review.py under the reviewer's scratchpad review_w/."
+ },
+ "no_model_output_existed": true,
+ "implementer_changes_after_review": [
+  "Suite: all 19 proposed edits in 17 cases applied unchanged (the cap and permit fixes in 01, 03 and 37; the conclusion-phrase pattern in the six choice cases; the 58 extension pattern; the conflict-resolution pattern in the seven conflict cases). Each appended pattern's why starts with '[005-W review]'. No evidence, question, registry record or expected value changed.",
+  "Checked before applying: the author's 63 correct sample answers, their per-part answers and 33 value-first variants fire no pattern and meet every mention group; the seven conflict-resolution patterns fire on none of 52 conflict answers the real model released in earlier runs (15 ko, 20 en, 17 vi) nor on seven hand-written correct answers that say the evidence does not state which record applies. On the frozen build the reviewer's 275-answer bank gives 14 misjudgements, none of them correct answers: 13 plain value swaps between codes (no value-to-code pattern was written, as in 005-V) and one 33 answer that meets the photo group through 'ảnh hưởng'.",
+  "Before the review the implementer's deterministic check found one mismatch: A05W-74 ('가상 I-5-1 … 어떤 서류를 내야 하나요?') expects proceed, but the first-person reader matched the 'I' of the status code I-5-1 as the English pronoun, so the question read as personal and drew a location clarification. Spec 2 asks for a first-person expression; a status code letter is not one. The code was fixed (waymaker_ai/evidence_admissibility.py: 'I' followed by '-<digit>' is not the pronoun) and spec 2 now says so. Replaying the pre-inference of 1,401 recorded cases changes only seven 005-W cases' question type and only A05W-74's outcome; the deterministic pipeline then matches all 81 cases."
+ ]
+}

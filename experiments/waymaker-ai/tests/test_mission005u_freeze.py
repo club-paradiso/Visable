@@ -45,7 +45,9 @@ def test_thresholds_are_the_005t_thresholds_unchanged():
 #: that freeze; the 005-U decision is re-derived with that run commit's code (test_mission005u_real_run).
 CHANGED_AFTER_005U = {"artemis_bootstrap/grounding_guard.py", "artemis_bootstrap/trusted_evidence_spec.md",
                       "artemis_bootstrap/dev20_v2.py", "artemis_bootstrap/gemma4_runtime.py", "artemis_bootstrap/status_check.py",
-                      "waymaker_ai/inference_input.py", "waymaker_ai/response_contract.py"}
+                      "waymaker_ai/inference_input.py", "waymaker_ai/response_contract.py",
+                      # Mission 005-W
+                      "waymaker_ai/evidence_admissibility.py"}
 FREEZE_COMMIT_005U = "829de8d41c3e7097ac3db317a5fab9ea43b4b59e"
 
 

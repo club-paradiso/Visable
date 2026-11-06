@@ -59,13 +59,36 @@ def test_recorded_gate_decision_is_intact_and_fail_on_two_raw_categories():
     assert (c["end_to_end_correct"], c["critical_unsafe_released"], c["trust_bypass"], c["choice_retries"]) == (81, 0, 0, 6)
 
 
-def test_decision_and_results_reproduce_byte_for_byte(tmp_path):
+RUN_COMMIT_005V = "8421c4d"
+
+
+def _005v_tree(tmp_path):
+    """Mission 005-W later changed files the 005-V manifest froze, so the 005-V gate runs on the code of the
+    005-V run commit, extracted from git."""
+    import subprocess
+    repo = Path(subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=BOOT, capture_output=True, text=True).stdout.strip() or "/nonexistent")
+    if not (repo / ".git").exists() or shutil.which("tar") is None or subprocess.run(
+            ["git", "cat-file", "-e", f"{RUN_COMMIT_005V}^{{commit}}"], cwd=repo, capture_output=True).returncode:
+        pytest.skip("needs git history for the 005-V run commit")
+    archive = subprocess.run(["git", "archive", RUN_COMMIT_005V, "experiments/waymaker-ai"], cwd=repo,
+                             capture_output=True, check=True).stdout
+    subprocess.run(["tar", "-x", "-C", str(tmp_path)], input=archive, check=True)
+    root = tmp_path / "experiments" / "waymaker-ai"
+    run = root / "artemis_bootstrap" / "runs" / "mission005v" / "synthetic_acceptance"
+    run.mkdir(parents=True, exist_ok=True)
     for name in ("generations.jsonl", "sessions.jsonl", "pipeline.jsonl"):
-        shutil.copy(ACC / name, tmp_path / name)
-    results, record = gate17.score_dir(tmp_path)
-    gate17.write(tmp_path, results, record)
-    assert sha(tmp_path / "gate_decision.json") == RAW_SHA256["gate_decision.json"]
-    assert sha(tmp_path / "synthetic_acceptance_results.json") == RAW_SHA256["synthetic_acceptance_results.json"]
+        shutil.copy(ACC / name, run / name)
+    return root, run
+
+
+def test_decision_and_results_reproduce_byte_for_byte_with_the_005v_code(tmp_path):
+    import subprocess
+    root, run = _005v_tree(tmp_path)
+    result = subprocess.run([sys.executable, "-I", "artemis_bootstrap/synthetic_safety_gate_v17.py", "score", "--out-dir", str(run)],
+                            cwd=root, capture_output=True, text=True)
+    assert result.returncode == 6, result.stderr[-800:]   # 6: the decision is not pass
+    assert sha(run / "gate_decision.json") == RAW_SHA256["gate_decision.json"]
+    assert sha(run / "synthetic_acceptance_results.json") == RAW_SHA256["synthetic_acceptance_results.json"]
 
 
 def test_the_failed_decision_cannot_unlock_dev20_v2():

@@ -26,9 +26,10 @@ SOURCE_PROVENANCE_VALUES = frozenset({"official_manual", "official_notice", "com
 # adds branch_retry (the system's note quoting a case of the cited evidence the previous answer left out); v14
 # (005-T) adds status_retry (the system's note naming a status or form problem of the previous answer); v15
 # (005-U) adds conflict_records (pairs of evidence IDs whose texts differ only in their numbers); v16 (005-V) adds
-# choice_retry (the system's note that a choice question was answered with only one of its codes).
+# choice_retry (the system's note that a choice question was answered with only one of its codes); v17 (005-W) adds
+# choice_codes (the codes a choice question asks between that the evidence names).
 SYSTEM_FIELDS = ("reply_language", "uncovered_items", "scope_status_code", "scope_location", "as_of", "uncovered_sentence",
-                 "language_retry", "branch_retry", "status_retry", "conflict_records", "choice_retry")
+                 "language_retry", "branch_retry", "status_retry", "conflict_records", "choice_retry", "choice_codes")
 REPLY_LANGUAGES = frozenset({"ko", "en", "vi"})
 
 
@@ -116,4 +117,11 @@ def project_inference_item(item: Mapping) -> dict:
                     for p in pairs):
                 raise ValueError("System conflict_records must be pairs of two different evidence IDs of this item")
             projected["system"]["conflict_records"] = [list(p) for p in pairs]
+        if "choice_codes" in system:
+            codes = system["choice_codes"]
+            texts = " ".join(e["text"] for e in projected["evidence"])
+            if not isinstance(codes, list) or not 2 <= len(codes) <= 6 or len(set(codes)) != len(codes) or not all(
+                    isinstance(c, str) and re.fullmatch(r"[A-Z]-\d{1,2}(?:-\d{1,2})?", c) and c in texts for c in codes):
+                raise ValueError("System choice_codes must be two to six different status codes named in this item's evidence")
+            projected["system"]["choice_codes"] = list(codes)
     return projected

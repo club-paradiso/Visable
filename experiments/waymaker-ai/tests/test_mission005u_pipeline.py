@@ -41,7 +41,7 @@ def test_records_that_differ_in_more_than_numbers_are_not(text):
 
 
 def test_v15_adds_only_the_input_name_and_the_conflict_records_line():
-    assert "v15" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v15", "v16")   # 005-V: v16
+    assert "v15" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v15", "v16", "v17")   # 005-V: v16, 005-W: v17
     v14, v15 = SYSTEM_PROMPTS["v14"].splitlines(), SYSTEM_PROMPTS["v15"].splitlines()
     assert len(v15) == len(v14) + 1
     added = [line for line in v15 if line not in v14]

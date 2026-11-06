@@ -53,7 +53,7 @@ def test_a_code_is_missing_only_when_the_evidence_names_it_and_the_answer_names_
 
 
 def test_v16_adds_only_the_input_name_and_the_choice_retry_line():
-    assert CONTRACT_VERSIONS[-1] == "v16" and guard.CONTRACT_VERSION == "v16"
+    assert "v16" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v16", "v17")   # 005-W: v17
     v15, v16 = SYSTEM_PROMPTS["v15"].splitlines(), SYSTEM_PROMPTS["v16"].splitlines()
     assert len(v16) == len(v15) + 1
     added = [line for line in v16 if line not in v15]
@@ -67,7 +67,7 @@ def test_choice_retry_is_an_allowlisted_one_line_v16_input():
     assert project_inference_item(item)["system"]["choice_retry"] == note
     assert list(json.loads(build_messages(item, "v16")[1]["content"])) == [
         "question", "reply_language", "uncovered_items", "choice_retry", "evidence"]
-    with pytest.raises(ValueError, match="v16 input"):
+    with pytest.raises(ValueError, match=r"v16\+? input"):
         build_messages(item, "v15")
 
 
