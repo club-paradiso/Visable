@@ -627,6 +627,8 @@ function applyLanguage(code, options = {}) {
     setText('#medFinder .p-kicker', tx('medKicker'));
     setText('#medFinder .p-section-copy', tx('medCopy'));
     setText('#medFinderSourceNote', tx('medSourceNote'));
+    setText('#medFinderE2UpdateTitle', tx('medE2UpdateTitle'));
+    setText('#medFinderE2UpdateText', tx('medE2UpdateText'));
     setText('#medFinderDisclaimerText', tx('medDisclaimer'));
     setAttr('#medFinderChips', 'aria-label', tx('medChipsAria'));
     setText('label[for="medFinderKeyword"]', tx('medKeywordLabel'));

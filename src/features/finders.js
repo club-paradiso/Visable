@@ -3,7 +3,7 @@
  * Registered-agent finder and designated-hospital finder (Phase 3, moved verbatim from
  * index.html lines 25572-25775 and 25574-25773).
  * Legacy IIFEs kept as-is: they fetch data/agent_registry_2026-04-30.json and
- * data/designated_medical_institutions_2026_04_30.json with cache:'no-cache', use the inline globals
+ * data/designated_medical_institutions_2026_11_02.json with cache:'no-cache', use the inline globals
  * tx(), localizeRegion() and the paradiso-language-applied event, and expose window.updateAgentFinderLanguage /
  * window.updateMedFinderLanguage for applyLanguage() (compatibility surface, ADR-009).
  * They used to run at parse time; as a module they run after parsing, so the two fetches start a few
@@ -397,7 +397,7 @@
     promptEl.hidden = true;
     errorEl.hidden = true;
     // Parse-time IIFE: runs before the module entry, so it cannot use window.Visable (ADR-009 note).
-    fetch('data/designated_medical_institutions_2026_04_30.json', { cache: 'no-cache' })
+    fetch('data/designated_medical_institutions_2026_11_02.json', { cache: 'no-cache' })
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
@@ -406,6 +406,7 @@
         loadingEl.hidden = true;
         dataset.meta = json && json._meta ? json._meta : {};
         dataset.institutions = Array.isArray(json && json.institutions) ? json.institutions : [];
+        dataset.regions = Array.isArray(json && json.regions) ? json.regions : [];
         applyFilter();
       })
       .catch(function () {

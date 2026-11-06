@@ -454,7 +454,7 @@
   "medTitle": "Find MOJ-designated health check institutions",
   "medKicker": "Medical guidance",
   "medCopy": "Search institutions available for employment physical exams and health checkups by region, institution name, or address.",
-  "medSourceNote": "Source: MOJ-designated medical institutions for employment physicals and health checkups, 2026-04-30.",
+  "medSourceNote": "Source: MOJ-designated medical institutions for employment physicals and health checkups, 2026-11-02.",
   "medDisclaimer": "Call before visiting to confirm exam availability, appointment requirements, test items, and required materials. Visable does not recommend medical institutions or guarantee exam availability.",
   "medCallNotice": "This list is for reference only and does not guarantee exam availability or medical advice.",
   "medChipsAria": "Quick region filter",
@@ -1628,5 +1628,7 @@
     "editionNote": "Switching the edition keeps everything you entered.",
     "mobilePreviewOpen": "Open preview",
     "dirty": "in progress"
-  }
+  },
+  "medE2UpdateTitle": "E-2: six-panel drug screening · applications received from Nov 2, 2026",
+  "medE2UpdateText": "For E-2 visa or Confirmation of Visa Issuance applications received on or after Nov 2, 2026, an employment medical certificate covering six substances (MA, THC, COC, OPI, MDMA, KET) is required when registering as a foreigner. Results are valid for four months from the result date. Eligibility is based on the visa/CVI application receipt date, not the registration date. Confirm six-panel testing with the clinic before visiting."
 }
