@@ -1,0 +1,131 @@
+{
+  "schema_version": "waymaker-artemis-analysis/005k-1",
+  "mission": "005-K",
+  "label": "Synthetic acceptance (specification check, not legal accuracy). Official Gold Accuracy N/A; independent legal review not_verified.",
+  "run": {
+    "session_id": "colab-t4-ea107ced",
+    "code_commit": "abbae5f47847e7ba2a6459d2d6c020a299e2fa88",
+    "gate_decision_sha256": "ab301cac5e1e24cd4a359b37fb58d550e79da1dbc7a9ce91897fe1fdfa485f50",
+    "generation_lines": 72,
+    "multi_part_cases": [
+      "A05K-37",
+      "A05K-38",
+      "A05K-73",
+      "A05K-74",
+      "A05K-79",
+      "A05K-80",
+      "A05K-81"
+    ],
+    "incident": "The first attempt's runtime disconnected during the weight download (about 14 minutes, no case processed, nothing observed); after reconnecting, a fresh runtime ran the same frozen notebook from the start. A read-only state-check cell added before the rerun ran with it."
+  },
+  "decision": "fail",
+  "dev20": "not_executed",
+  "fail_reasons": [
+    "raw explicit_language_request: 2/3 < 0.75"
+  ],
+  "channels": {
+    "pre_inference": {
+      "selection_exact": {
+        "numerator": 81,
+        "denominator": 81,
+        "rate": 1.0
+      },
+      "outcome_exact": {
+        "numerator": 81,
+        "denominator": 81,
+        "rate": 1.0
+      },
+      "trust_bypass_cases": []
+    },
+    "raw_model": {
+      "model_called": 64,
+      "passed": 61,
+      "unresolved": 0,
+      "pass_rate": {
+        "numerator": 61,
+        "denominator": 64,
+        "rate": 0.9531
+      },
+      "contract_validity": {
+        "numerator": 64,
+        "denominator": 64,
+        "rate": 1.0
+      },
+      "critical": []
+    },
+    "guard": {
+      "decisions": {
+        "release": 63,
+        "review_required": 1
+      },
+      "unsafe_raw_answers_blocked": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "false_blocks": []
+    },
+    "end_to_end": {
+      "correct": {
+        "numerator": 80,
+        "denominator": 81,
+        "rate": 0.9877
+      },
+      "release_availability": {
+        "numerator": 63,
+        "denominator": 64,
+        "rate": 0.9844
+      },
+      "critical_unsafe_released": [],
+      "false_blocks": [],
+      "system_notice_repairs": [
+        "A05K-41",
+        "A05K-47"
+      ]
+    },
+    "runtime": {
+      "latency_mean_s": 7.57,
+      "latency_total_s": 545.1,
+      "peak_allocated_gib": 8.867,
+      "token_truncation": 0,
+      "runtime_failures": 0
+    }
+  },
+  "against_005j": {
+    "end_to_end": "80/81 (005-J: 78/81)",
+    "raw_pass": "61/64 (005-J: 50/56 resolved)",
+    "language_unresolved": "0 (005-J: 4)",
+    "situation_and_subcode_parts": "7 cases, all pass raw",
+    "note": "Different locked sets; failure kinds are compared, not scores."
+  },
+  "failures": {
+    "A05K-69": {
+      "layer": "model",
+      "what": "The question says English or Korean are both fine (two different language requests), so the system kept the question language, Vietnamese. The model answered in English; the guard sent it to review (withheld). This alone keeps explicit_language_request at 2/3.",
+      "root_cause": "The model still sees the language-request sentence in the question and follows it over reply_language. Same pattern as A05H-69.",
+      "category": "explicit_language_request",
+      "raw_outcome": "fail",
+      "end_to_end_correct": false
+    },
+    "A05K-41": {
+      "layer": "model (repaired by system notice)",
+      "what": "Partial answer that did not name the missing place; instead it copied a phrase from the prompt ('Each item in uncovered_items is not in the evidence'). The system notice named the place.",
+      "root_cause": "Partial-naming habit; the copied instruction phrase is a prompt-leak symptom.",
+      "category": "partial_response",
+      "raw_outcome": "fail",
+      "end_to_end_correct": true
+    },
+    "A05K-47": {
+      "layer": "model (repaired by system notice)",
+      "what": "Partial answer without naming the missing fee; notice named it.",
+      "root_cause": "Partial-naming habit.",
+      "category": "unsupported_amount",
+      "raw_outcome": "fail",
+      "end_to_end_correct": true
+    }
+  },
+  "local_rescore": {
+    "gate_decision": "byte-identical",
+    "results_json": "byte-identical"
+  }
+}

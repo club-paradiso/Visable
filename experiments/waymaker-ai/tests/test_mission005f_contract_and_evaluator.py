@@ -33,8 +33,10 @@ def test_v1_and_v2_prompts_are_unchanged():
 
 
 def test_v3_is_explicit_and_distinct():
-    assert CONTRACT_VERSIONS == ("v1", "v2", "v3")
-    assert len({prompt_sha256(v) for v in CONTRACT_VERSIONS}) == 3
+    # Mission 005-G added v4 after these; the first three and their order stay.
+    assert CONTRACT_VERSIONS[:3] == ("v1", "v2", "v3")
+    assert len({prompt_sha256(v) for v in CONTRACT_VERSIONS}) == len(CONTRACT_VERSIONS)
+    assert prompt_sha256("v3").startswith("9d78fb00d027")
 
 
 @pytest.mark.parametrize("phrase", ["list every item", "partial", "own case", "never ask for them again",

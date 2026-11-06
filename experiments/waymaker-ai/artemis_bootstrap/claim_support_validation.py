@@ -18,6 +18,28 @@ Results are `contradiction` (a clear mismatch), `needs_review` (a claim it canno
 place, or a signal it cannot settle) or `no_contradiction_found`. It never says
 "supported": a paraphrase it cannot read is not certified, it is just not
 contradicted. No model is called.
+
+Mission 005-M: with `with_source=True`, an evidence item's text source fields (the
+document name and the other `source` fields the model is shown, see
+waymaker_ai.inference_input.SOURCE_TEXT_FIELDS) count as part of the item, so a value
+copied from a cited document's name ("운영지침(2026년판)") is not an unsupported claim.
+The default keeps the 005-F..005-L behaviour (title and text only).
+
+Mission 005-N: with `ages_apart=True`, an age ("17 years of age", "aged 17", "만 17세", "17 tuổi") is not
+read as a period, in the answer or the evidence. A05M-38 withheld a correct answer that wrote "17 years
+of age" because it was compared with the evidence's 90일.
+
+Mission 005-Q: with `vi_dates=True`, a Vietnamese date is read as a date, not as periods.
+"(ngày) 1 tháng 6 năm 2026" becomes the date 2026-06-01, "ngày 1 tháng 6" the date 6월 1일, and a
+month-year "tháng 6 năm 2026" is not compared at all. A05P-24 withheld a correct answer that wrote
+"ngày 1 tháng 6 năm 2026" because "1 tháng" and "6 năm" were read as periods against 18일.
+
+Mission 005-S: with `caps_apart=True`, a cap on an amount is not read as a prohibition or a permission.
+"must not exceed 18 hours", "no more than 18 hours", "18시간을 넘지 않는", "초과할 수 없는 20일",
+"không được vượt quá 18 giờ" limit a number; the activity itself is still allowed. A05R-37 withheld a
+correct answer ("must obtain permission … which must not exceed 18 hours per week") as a reversal of
+"…넘지 않는 범위에서 … 할 수 있다". The cap is blanked in the answer and the evidence before polarity is read;
+values are still compared as before.
 """
 from __future__ import annotations
 
@@ -28,6 +50,10 @@ from typing import Iterable, Mapping
 import trust_gate
 
 _CODE_RE = re.compile(r"(?<![A-Za-z0-9-])([A-Z]-\d{1,2}(?:-[0-9A-Z]{1,2})?)(?![0-9])")
+#: Mission 005-M: the source fields the model is shown (waymaker_ai.inference_input.SOURCE_TEXT_FIELDS).
+SOURCE_TEXT_FIELDS = ("document_id", "source_id", "version_id", "provision", "effective_date",
+                      "publication_date", "retrieval_date", "source_url", "official_url",
+                      "domain", "provenance", "page_locator")
 
 # Polarity words per language. Prohibition spans are removed before looking for a
 # permission, so "cannot" is never read as "can".
@@ -65,9 +91,33 @@ def _nfc(text: str) -> str:
     return _DOT_THOUSANDS_RE.sub(lambda m: m.group(1) + m.group(2).replace(".", ","), text)
 
 
-def polarity(text: str) -> set:
-    """{'prohibited', 'permitted'} signals in text, prohibition read first."""
+#: Mission 005-S: a negated "exceed / more than" next to a number is a cap on that number, not a polarity.
+_NUM = (r"(?:\d[\d,.]*|(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|"
+        r"sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred)\b)")
+_NEG_EN = (r"(?:\b(?:must|may|shall|should|will|can|could|does|do|did|is|are)\s+not\b|\bcannot\b"
+           r"|\b(?:can|must|may|does|do|did|is|are|should|could|wo|won)?n['’]t\b|\bca\s*n['’]t\b|\bnot\b)")
+#: Korean verbs of exceeding an amount, negated: a cap even when the number is in an earlier sentence ("이 금액을 넘으면 안").
+_KO_EXCEED = r"(?:넘지\s*않|초과하지\s*않|넘을\s*수\s*없|초과할\s*수\s*없|넘어서는\s*안|초과해서는\s*안|넘으면\s*안|초과하면\s*안|넘겨(?:서는|서도|도)?\s*(?:안|않|못))"
+_CAP_RE = re.compile(
+    _NEG_EN + r"\s+(?:[A-Za-z]+\s+){0,4}?(?:(?:go(?:ing)?\s+beyond|be\s+(?:more|longer)\s+than|more\s+than|longer\s+than|over|beyond|above|in\s+excess\s+of)"
+    r"\s+(?:a\s+total\s+of\s+|the\s+)?" + _NUM + r"|exceed\w*)"
+    r"|\bno\s+(?:more|longer)\s+than\s+" + _NUM +
+    r"|" + _KO_EXCEED +
+    r"|\d[\d,.]*[^.?!\n\d]{0,12}?(?:넘게|(?:많|길|오래|더)\w*)[^.?!\n]{0,20}?(?:없|안\s*(?:됩|돼|된|되)|않|못)"
+    r"|(?:không\s+được|không\s+thể|không)\s+(?:\S+\s+){0,6}?(?:vượt\s+quá|quá|nhiều\s+hơn|hơn|trên)\s+\d[\d,.]*",
+    re.IGNORECASE)
+
+
+def _without_caps(text: str) -> str:
+    return _CAP_RE.sub(" ", text)
+
+
+def polarity(text: str, caps_apart: bool = False) -> set:
+    """{'prohibited', 'permitted'} signals in text, prohibition read first. With caps_apart (005-S),
+    a cap on an amount is left out first."""
     text = _nfc(text)
+    if caps_apart:
+        text = _without_caps(text)
     found = set()
     if _PROHIBITED.search(text):
         found.add("prohibited")
@@ -89,18 +139,46 @@ def obligation(text: str) -> set:
     return found
 
 
-def polarity_reversed(answer: str, expected: str) -> bool:
+def polarity_reversed(answer: str, expected: str, caps_apart: bool = False) -> bool:
     """The answer states only the opposite of the expected 'prohibited'/'permitted'."""
     other = {"prohibited": "permitted", "permitted": "prohibited"}[expected]
-    return polarity(answer) == {other}
+    return polarity(answer, caps_apart) == {other}
 
 
 def _codes(text: str) -> set:
     return set(_CODE_RE.findall(_nfc(text)))
 
 
+_AGE_RE = re.compile(r"\b\d{1,3}(?:\s+|\s*-\s*)years?(?:\s+|\s*-\s*)(?:of\s+age|old)\b|\bage[ds]?\s+\d{1,3}\b"
+                     r"|(?:만\s*)?\d{1,3}\s*세(?!대)|\b\d{1,3}\s+tuổi", re.IGNORECASE)
+
+
+def _without_ages(text: str) -> str:
+    return _AGE_RE.sub(" ", text)
+
+
+_VI_DATE_FULL_RE = re.compile(r"(?:\bngày\s+)?\b(\d{1,2})\s+tháng\s+(\d{1,2})\s+năm\s+(\d{4})\b", re.IGNORECASE)
+_VI_DATE_MD_RE = re.compile(r"\bngày\s+(\d{1,2})\s+tháng\s+(\d{1,2})\b", re.IGNORECASE)
+_VI_MONTH_YEAR_RE = re.compile(r"\btháng\s+\d{1,2}\s+năm\s+\d{4}\b", re.IGNORECASE)
+
+
+def _with_vi_dates(text: str) -> str:
+    """Mission 005-Q: Vietnamese dates in a form trust_gate reads as dates; month-years blanked."""
+    text = _VI_DATE_FULL_RE.sub(lambda m: f"{m.group(3)}-{int(m.group(2)):02d}-{int(m.group(1)):02d}", text)
+    text = _VI_DATE_MD_RE.sub(lambda m: f"{int(m.group(2))}월 {int(m.group(1))}일", text)
+    return _VI_MONTH_YEAR_RE.sub(" ", text)
+
+
+def _item_text(e: Mapping, with_source: bool) -> str:
+    parts = [e.get("title", ""), e.get("text", "")]
+    if with_source and isinstance(e.get("source"), Mapping):
+        parts += [e["source"][k] for k in SOURCE_TEXT_FIELDS if isinstance(e["source"].get(k), str)]
+    return _nfc("\n".join(parts))
+
+
 def check(answer: str, question: str, evidence: Iterable[Mapping], cited: Iterable[str],
-          admissible: Mapping[str, bool]) -> dict:
+          admissible: Mapping[str, bool], with_source: bool = False, ages_apart: bool = False,
+          vi_dates: bool = False, caps_apart: bool = False) -> dict:
     """Compare answer claims with cited admissible evidence.
 
     `admissible` maps evidence id -> bool (from the evaluator-side trust record, never
@@ -109,7 +187,13 @@ def check(answer: str, question: str, evidence: Iterable[Mapping], cited: Iterab
     evidence = list(evidence)
     cited = set(cited)
     answer = _nfc(answer)
-    by_id = {e["id"]: _nfc(f"{e.get('title', '')}\n{e.get('text', '')}") for e in evidence}
+    by_id = {e["id"]: _item_text(e, with_source) for e in evidence}
+    if ages_apart:
+        answer, question = _without_ages(answer), _without_ages(question)
+        by_id = {i: _without_ages(t) for i, t in by_id.items()}
+    if vi_dates:
+        answer, question = _with_vi_dates(answer), _with_vi_dates(question)
+        by_id = {i: _with_vi_dates(t) for i, t in by_id.items()}
     cited_ok = "\n".join(t for i, t in by_id.items() if i in cited and admissible.get(i))
     other_ok = "\n".join(t for i, t in by_id.items() if i not in cited and admissible.get(i))
     bad = "\n".join(t for i, t in by_id.items() if not admissible.get(i))
@@ -143,7 +227,7 @@ def check(answer: str, question: str, evidence: Iterable[Mapping], cited: Iterab
         add("code_not_in_cited_evidence", code, "review")
 
     if cited_ok:
-        page, said = polarity(cited_ok), polarity(answer)
+        page, said = polarity(cited_ok, caps_apart), polarity(answer, caps_apart)
         if page == {"prohibited"} and said == {"permitted"}:
             add("polarity_reversal", "evidence prohibits; answer permits", "critical")
         elif page == {"permitted"} and said == {"prohibited"}:

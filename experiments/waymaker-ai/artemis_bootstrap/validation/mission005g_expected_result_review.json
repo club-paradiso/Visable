@@ -1,0 +1,29 @@
+{
+  "schema_version": "waymaker-artemis-expected-result-review/1.0",
+  "mission": "005-G",
+  "acceptance_sha256_reviewed": "8a4d961e6d6181c13d5647107b84490452bc30dcdcb03962f7b7a81c9d2a165a",
+  "acceptance_sha256_frozen": "25365ea55e9296f5d59bb440e19b2361be364ba3a17370e129fee1278599059d",
+  "roles": {
+    "behavioural_specification": "implementer (Claude main session) wrote trusted_evidence_spec.md",
+    "acceptance_construction": "separate agent; read only the spec",
+    "expected_result_review": "second separate agent; read only the spec and the suite; re-derived every admissibility decision, reason, pre_inference, uncovered_items and language independently",
+    "implementation": "Claude main session"
+  },
+  "independence_limit": "All roles are instances of the same model family in one session. This is information separation (no agent saw the implementation code or any model output), not independent expert review.",
+  "review_result": "All admissibility decisions, reason codes, pre_inference, uncovered_items, expected_language and end_to_end values matched the reviewer's independent re-derivation.",
+  "defects_fixed_before_freeze": [
+    "A05G-31: conflict forbidden pattern matched negated correct answers; dropped",
+    "A05G-28/29/30: recency-resolution pattern matched correct refusals; dropped",
+    "A05G-38/42/63: role-reversal patterns matched negated correct answers; now require an affirmative reversed claim",
+    "A05G-15: polarity pattern not tied to the work claim; tied. required_mentions widened with Korean prohibition forms",
+    "A05G-29: required_mentions widened with 'cannot'",
+    "A05G-49 (and 09/50/51): day patterns matched calendar dates; narrowed to deadline claims"
+  ],
+  "coverage_added_before_freeze": [
+    "intake.procedure null in 7 cases (detected from text)",
+    "intake.jurisdiction/location null in 2 cases",
+    "as_of exactly on an effective_until date (A05G-24)"
+  ],
+  "kept": "A05G-46 stays insufficient_evidence (no admissible evidence covers any asked item)",
+  "no_model_output_existed": true
+}

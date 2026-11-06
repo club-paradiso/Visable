@@ -1,0 +1,787 @@
+{
+ "schema_version": "waymaker-artemis-expected-result-review/1.0",
+ "mission": "005-V",
+ "acceptance_sha256_reviewed": "5c19311be366c68b5c5a360b4c1d4b1dd28099b45b06ba319e60394d00a825b3",
+ "spec_sha256_read": "c2cd85a18ab4e05506be51ada64a48fdfce60e10c6c7cc3cc5d6e2cd3f24ff43",
+ "reviewed_version_note": "One build (sha above) was reviewed in full. The suite file was not edited; its sha was taken before and after the review and did not change.",
+ "acceptance_sha256_frozen": "efae3c9ceb3ab05f59a05d05f995154c176d0fd45414ff4f79e65ca72eed4d4e",
+ "roles": {
+  "behavioural_specification": "implementer (Claude main session) revised trusted_evidence_spec.md for 005-V: 고르는 질문 다시 묻기 (choice_retry, contract v16), spec 5",
+  "acceptance_construction": "a separate agent that read only trusted_evidence_spec.md and an earlier suite (for format), per the suite's own about text",
+  "expected_result_review": "a further separate agent that read only trusted_evidence_spec.md (005-V), the 005-V suite and the 005-U review (for format). No .py file in the repository, runs/, benchmarks/, notebooks, tests or other suites were opened and no repository code was run. The suite was split into inputs and a hidden file (rationale, expected); admission decisions and reasons, pre_inference, uncovered_items, statuses incl. split parts, reply language, must_cite, end_to_end and polarity were derived by hand from the inputs (derive.py, derivation_blind.json) before the comparison; uncovered_items were re-checked by a small item-table script (items.py)."
+ },
+ "independence_limit": "All roles are instances of the same model family in one session. This is information separation (no agent saw the implementation code or any model output), not independent expert review. The 'rule' and 'category' labels (e.g. 'choice_…_right_code_second', 'conflict_template_…') were visible during derivation and may have primed it. After the derivation was written down but before compare.py ran, the reviewer printed value distributions of end_to_end, expected_polarity and model_statuses from the hidden file (not per case); the totals matched the derivation already saved.",
+ "review_result": "Blind derivation agreed with the suite in 81/81 cases on every spec-derived field. Choice rule (005-V) applies mechanically to exactly 45, 62, 63, 68, 70, 71; 58 is a choice question whose second code (O-3) is never in evidence, 60 has no choosing word, 72 is parent/child; number-only conflict pairs fall on exactly the seven expected-conflict cases. The 263-answer bank found 43 misjudgements on the suite (2 correct answers failing, 41 wrong answers passing) and 0 after the proposed edits (27 edits in 18 cases). The largest group (20 wrong answers) is wrong-code attribution in the choice cases and 58, which the suite deliberately leaves unscored; the polarity patterns of 01/03/37 have the same hour-figure gap the 005-U review fixed.",
+ "derived_field_agreement": {
+  "admission_decisions_and_reasons": "81/81",
+  "pre_inference": "81/81",
+  "uncovered_items": "81/81",
+  "model_statuses": "81/81 (73/74 location split x2, 79 sub-code split x3, 80 x2 after dropping X-4-2)",
+  "expected_language": "81/81",
+  "must_cite": "81/81",
+  "end_to_end": "81/81",
+  "expected_polarity": "81/81",
+  "injection_markers": "75/81 by spec 5 (005-I, question only): 52, 53, 54 take markers from evidence; suite scoring choice as in 005-U, kept"
+ },
+ "focus_005v": {
+  "choice_rule": "codes = status-code tokens in the question after removing a quoted document_id (spec 2); choosing words of spec 5 ('or','which','hay','hoặc' word-bounded; Korean and 'nào' as substrings); drop any pair where one code is the other's parent; retry reachable only if the cited admissible record names both remaining codes.",
+  "positives": [
+   "A05V-45",
+   "A05V-62",
+   "A05V-63",
+   "A05V-68",
+   "A05V-70",
+   "A05V-71"
+  ],
+  "matches_author": true,
+  "near_misses": {
+   "A05V-58": "X-4-2/O-3 with 'or' is a choice question (not parent/child) but the record never names O-3: no retry for a correct answer; question code X-4-2 (one sub-code present)",
+   "A05V-60": "two sibling codes, no choosing word ('각각')",
+   "A05V-72": "X-4-4 and its parent X-4 with 'hay': not a choice, fewer than two codes left",
+   "others": "10, 32, 64 have a choosing word but one code; 28, 29, 44, 56 have 'X-4' (from 'X-4 practice handbook' etc.) plus one sub-code, a parent/child pair. Reading 'or' as a substring ('foreigner', 'for') adds hits in 28/44/56/10 but changes no outcome; the spec should say word-bounded."
+  },
+  "per_case": {
+   "A05V-10": {
+    "codes": [
+     "X-4-2"
+    ],
+    "siblings": [
+     "X-4-2"
+    ],
+    "choosing": [
+     "which"
+    ],
+    "choosing_substring": [
+     "or",
+     "which"
+    ],
+    "is_choice_question": false,
+    "codes_named_in_admissible": [],
+    "retry_reachable_by_omitting_a_code": false
+   },
+   "A05V-28": {
+    "codes": [
+     "X-4",
+     "X-4-1"
+    ],
+    "siblings": [],
+    "choosing": [],
+    "choosing_substring": [
+     "or"
+    ],
+    "is_choice_question": false,
+    "codes_named_in_admissible": [],
+    "retry_reachable_by_omitting_a_code": false
+   },
+   "A05V-29": {
+    "codes": [
+     "X-4",
+     "X-4-2"
+    ],
+    "siblings": [],
+    "choosing": [],
+    "choosing_substring": [],
+    "is_choice_question": false,
+    "codes_named_in_admissible": [],
+    "retry_reachable_by_omitting_a_code": false
+   },
+   "A05V-32": {
+    "codes": [
+     "X-4-4"
+    ],
+    "siblings": [
+     "X-4-4"
+    ],
+    "choosing": [
+     "which"
+    ],
+    "choosing_substring": [
+     "which"
+    ],
+    "is_choice_question": false,
+    "codes_named_in_admissible": [
+     "X-4-4"
+    ],
+    "retry_reachable_by_omitting_a_code": false
+   },
+   "A05V-44": {
+    "codes": [
+     "X-4-4",
+     "X-4"
+    ],
+    "siblings": [],
+    "choosing": [],
+    "choosing_substring": [
+     "or"
+    ],
+    "is_choice_question": false,
+    "codes_named_in_admissible": [],
+    "retry_reachable_by_omitting_a_code": false
+   },
+   "A05V-45": {
+    "codes": [
+     "X-4-2",
+     "X-4-4"
+    ],
+    "siblings": [
+     "X-4-2",
+     "X-4-4"
+    ],
+    "choosing": [
+     "중 어느",
+     "어느 쪽"
+    ],
+    "choosing_substring": [
+     "중 어느",
+     "어느 쪽"
+    ],
+    "is_choice_question": true,
+    "codes_named_in_admissible": [
+     "X-4-2",
+     "X-4-4"
+    ],
+    "retry_reachable_by_omitting_a_code": true
+   },
+   "A05V-56": {
+    "codes": [
+     "X-4",
+     "X-4-3"
+    ],
+    "siblings": [],
+    "choosing": [],
+    "choosing_substring": [
+     "or"
+    ],
+    "is_choice_question": false,
+    "codes_named_in_admissible": [],
+    "retry_reachable_by_omitting_a_code": false
+   },
+   "A05V-58": {
+    "codes": [
+     "X-4-2",
+     "O-3"
+    ],
+    "siblings": [
+     "X-4-2",
+     "O-3"
+    ],
+    "choosing": [
+     "or"
+    ],
+    "choosing_substring": [
+     "or"
+    ],
+    "is_choice_question": true,
+    "codes_named_in_admissible": [
+     "X-4-2"
+    ],
+    "retry_reachable_by_omitting_a_code": false
+   },
+   "A05V-60": {
+    "codes": [
+     "X-4-1",
+     "X-4-3"
+    ],
+    "siblings": [
+     "X-4-1",
+     "X-4-3"
+    ],
+    "choosing": [],
+    "choosing_substring": [],
+    "is_choice_question": false,
+    "codes_named_in_admissible": [
+     "X-4-1",
+     "X-4-3"
+    ],
+    "retry_reachable_by_omitting_a_code": false
+   },
+   "A05V-62": {
+    "codes": [
+     "X-4-1",
+     "X-4-3"
+    ],
+    "siblings": [
+     "X-4-1",
+     "X-4-3"
+    ],
+    "choosing": [
+     "or",
+     "which"
+    ],
+    "choosing_substring": [
+     "or",
+     "which"
+    ],
+    "is_choice_question": true,
+    "codes_named_in_admissible": [
+     "X-4-1",
+     "X-4-3"
+    ],
+    "retry_reachable_by_omitting_a_code": true
+   },
+   "A05V-63": {
+    "codes": [
+     "X-4-1",
+     "X-4-4"
+    ],
+    "siblings": [
+     "X-4-1",
+     "X-4-4"
+    ],
+    "choosing": [
+     "nào"
+    ],
+    "choosing_substring": [
+     "nào"
+    ],
+    "is_choice_question": true,
+    "codes_named_in_admissible": [
+     "X-4-1",
+     "X-4-4"
+    ],
+    "retry_reachable_by_omitting_a_code": true
+   },
+   "A05V-64": {
+    "codes": [
+     "X-4-4"
+    ],
+    "siblings": [
+     "X-4-4"
+    ],
+    "choosing": [
+     "nào"
+    ],
+    "choosing_substring": [
+     "nào"
+    ],
+    "is_choice_question": false,
+    "codes_named_in_admissible": [
+     "X-4-4"
+    ],
+    "retry_reachable_by_omitting_a_code": false
+   },
+   "A05V-68": {
+    "codes": [
+     "X-4-2",
+     "X-4-3"
+    ],
+    "siblings": [
+     "X-4-2",
+     "X-4-3"
+    ],
+    "choosing": [
+     "which"
+    ],
+    "choosing_substring": [
+     "or",
+     "which"
+    ],
+    "is_choice_question": true,
+    "codes_named_in_admissible": [
+     "X-4-2",
+     "X-4-3"
+    ],
+    "retry_reachable_by_omitting_a_code": true
+   },
+   "A05V-70": {
+    "codes": [
+     "X-4-3",
+     "X-4-4"
+    ],
+    "siblings": [
+     "X-4-3",
+     "X-4-4"
+    ],
+    "choosing": [
+     "중 어떤"
+    ],
+    "choosing_substring": [
+     "중 어떤"
+    ],
+    "is_choice_question": true,
+    "codes_named_in_admissible": [
+     "X-4-3",
+     "X-4-4"
+    ],
+    "retry_reachable_by_omitting_a_code": true
+   },
+   "A05V-71": {
+    "codes": [
+     "X-4-1",
+     "X-4-2"
+    ],
+    "siblings": [
+     "X-4-1",
+     "X-4-2"
+    ],
+    "choosing": [
+     "hay"
+    ],
+    "choosing_substring": [
+     "hay"
+    ],
+    "is_choice_question": true,
+    "codes_named_in_admissible": [
+     "X-4-1",
+     "X-4-2"
+    ],
+    "retry_reachable_by_omitting_a_code": true
+   },
+   "A05V-72": {
+    "codes": [
+     "X-4-4",
+     "X-4"
+    ],
+    "siblings": [],
+    "choosing": [
+     "hay"
+    ],
+    "choosing_substring": [
+     "hay"
+    ],
+    "is_choice_question": false,
+    "codes_named_in_admissible": [],
+    "retry_reachable_by_omitting_a_code": false
+   }
+  },
+  "conflict_template": {
+   "rule": "leading [title] removed, status codes protected, digit runs with , or . one slot; pair = same normalised text and different stripped text",
+   "pairs_found": {
+    "A05V-28": [
+     [
+      "X41-REG-FEE-N",
+      "X41-REG-FEE-M"
+     ]
+    ],
+    "A05V-29": [
+     [
+      "X42-EXT-PROC-N",
+      "X42-EXT-PROC-M"
+     ]
+    ],
+    "A05V-30": [
+     [
+      "X43-ADDR-DL-N",
+      "X43-ADDR-DL-M"
+     ]
+    ],
+    "A05V-44": [
+     [
+      "X44-REE-PROC-N",
+      "X44-REE-PROC-M"
+     ]
+    ],
+    "A05V-56": [
+     [
+      "X43-EXT-FEE-N",
+      "X43-EXT-FEE-M"
+     ]
+    ],
+    "A05V-59": [
+     [
+      "X41-REE-FEE-N",
+      "X41-REE-FEE-M"
+     ]
+    ],
+    "A05V-67": [
+     [
+      "X41-REG-PROC-N",
+      "X41-REG-PROC-M"
+     ]
+    ]
+   },
+   "matches_expected_conflict_cases": true,
+   "near_misses": {
+    "A05V-31/55": "same text and same value: no pair",
+    "A05V-08/24/27": "number-only twins with one inadmissible record",
+    "A05V-33/79/80/81/60/62/…": "texts differ by sub-code (codes kept) or by wording; 73/74 differ by 국내/국외"
+   }
+  },
+  "code_mention_groups": "Groups are bare codes ('x-4-4'); with lower-casing and whitespace removal a code written with U+2011/U+2013 hyphens or full-width forms fails, which matches spec 5 ('코드는 적힌 글자 그대로 비교'); no ASCII-code answer misfired. A one-code correct answer fails the other-code group in the raw channel by design (rationale); end-to-end the choice_retry/notice supplies it."
+ },
+ "defects_found": [
+  {
+   "case": "A05V-45",
+   "severity": "medium",
+   "what": "Answers that give the asked value (9일) to the wrong code X-4-2 pass every group (both codes and the value are present) and fire nothing, e.g. swapped pairs and '9일 applies to X-4-2'-type sentences; bank: 2-3 per case pass on the suite.",
+   "why": "Both values sit in the one cited record, so the guard's value check (spec 5) cannot see the swap; the suite has no forbidden pattern. The rationale's claim that a sentence-level pattern cannot tell 'X has 9, Y has 25' from 'Y has 9' does not hold for a proximity pattern: wrong code then the asked value with neither the right code, the wrong code's own value nor a negation in between (plus a 'V applies to/is for W' and 'answer is W' form).",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?i:(?<![\\w-])X\\-4\\-2(?![\\d-])(?:(?!(?<![\\w-])X\\-4\\-4(?![\\d-])|(?<![\\d,.])25\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)|\\bnot\\b|n['’]t\\b|\\bnever\\b|\\brather\\b|\\binstead\\b|\\bunlike\\b|không|chứ|thay\\s+vì|아니|않|없|대신|와\\s*달리|과\\s*달리)[^.!?\\n;]){0,60}?(?<![\\d,.])9\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)(?![^.!?\\n;]{0,15}?(?:아니|않|không\\s+phải))|(?<![\\d,.])9\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)(?:(?!(?<![\\w-])X\\-4\\-4(?![\\d-]))[^.!?\\n;]){0,40}?(?:applies\\s+to|is\\s+for|belongs\\s+to|áp\\s+dụng\\s+cho|dành\\s+cho|là\\s+của|thuộc(?:\\s+về)?)\\s+(?:(?!(?<![\\w-])X\\-4\\-4(?![\\d-])|not\\b|không)\\S+\\s+){0,5}?(?<![\\w-])X\\-4\\-2(?![\\d-])|(?<![\\d,.])9\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)(?:(?!(?<![\\w-])X\\-4\\-4(?![\\d-])|(?<![\\d,.])25\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày))[^.!?\\n;]){0,25}?(?<![\\w-])X\\-4\\-2(?![\\d-])(?:에\\s*(?:해당|적용)|에게\\s*(?:해당|적용)|의\\s*(?:것|수수료|기한|처리기간)|\\s*(?:입니다|이다|이에요))(?![^.!?\\n;]{0,8}?(?:되지\\s*않|하지\\s*않|안\\s*되|아니)))|(?i:(?:answer\\s+is|^\\s*it\\s+is|^\\s*it[\\'’]s|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*(?:the\\s+)?(?<![\\w-])X\\-4\\-2(?![\\d-]))",
+      "critical_kind": "wrong_code_for_value",
+      "why": "the 9-day deadline is X-4-4's; attaching it to X-4-2 (no X-4-4 or X-4-2's own 25 days in between, no negation) answers the choice with the wrong code"
+     }
+    }
+   ],
+   "effect": "all wrong-code answers fire; quiet on every correct bank answer incl. right-code-first lists, 'W (own value) but R', 'W는 V이 아니라 …', 'V applies to R, not W', 'W에 적용되지 않고'"
+  },
+  {
+   "case": "A05V-62",
+   "severity": "medium",
+   "what": "Answers that give the asked value (27,000 won) to the wrong code X-4-1 pass every group (both codes and the value are present) and fire nothing, e.g. swapped pairs and '27,000 won applies to X-4-1'-type sentences; bank: 2-3 per case pass on the suite.",
+   "why": "Both values sit in the one cited record, so the guard's value check (spec 5) cannot see the swap; the suite has no forbidden pattern. The rationale's claim that a sentence-level pattern cannot tell 'X has 9, Y has 25' from 'Y has 9' does not hold for a proximity pattern: wrong code then the asked value with neither the right code, the wrong code's own value nor a negation in between (plus a 'V applies to/is for W' and 'answer is W' form).",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?i:(?<![\\w-])X\\-4\\-1(?![\\d-])(?:(?!(?<![\\w-])X\\-4\\-3(?![\\d-])|(?:(?<![\\d,.])58[,.\\s]?000(?!\\d)|(?<![\\d,.])58\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)5\\s*만\\s*8\\s*(?:천|000))|\\bnot\\b|n['’]t\\b|\\bnever\\b|\\brather\\b|\\binstead\\b|\\bunlike\\b|không|chứ|thay\\s+vì|아니|않|없|대신|와\\s*달리|과\\s*달리)[^.!?\\n;]){0,60}?(?:(?<![\\d,.])27[,.\\s]?000(?!\\d)|(?<![\\d,.])27\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)2\\s*만\\s*7\\s*(?:천|000))(?![^.!?\\n;]{0,15}?(?:아니|않|không\\s+phải))|(?:(?<![\\d,.])27[,.\\s]?000(?!\\d)|(?<![\\d,.])27\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)2\\s*만\\s*7\\s*(?:천|000))(?:(?!(?<![\\w-])X\\-4\\-3(?![\\d-]))[^.!?\\n;]){0,40}?(?:applies\\s+to|is\\s+for|belongs\\s+to|áp\\s+dụng\\s+cho|dành\\s+cho|là\\s+của|thuộc(?:\\s+về)?)\\s+(?:(?!(?<![\\w-])X\\-4\\-3(?![\\d-])|not\\b|không)\\S+\\s+){0,5}?(?<![\\w-])X\\-4\\-1(?![\\d-])|(?:(?<![\\d,.])27[,.\\s]?000(?!\\d)|(?<![\\d,.])27\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)2\\s*만\\s*7\\s*(?:천|000))(?:(?!(?<![\\w-])X\\-4\\-3(?![\\d-])|(?:(?<![\\d,.])58[,.\\s]?000(?!\\d)|(?<![\\d,.])58\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)5\\s*만\\s*8\\s*(?:천|000)))[^.!?\\n;]){0,25}?(?<![\\w-])X\\-4\\-1(?![\\d-])(?:에\\s*(?:해당|적용)|에게\\s*(?:해당|적용)|의\\s*(?:것|수수료|기한|처리기간)|\\s*(?:입니다|이다|이에요))(?![^.!?\\n;]{0,8}?(?:되지\\s*않|하지\\s*않|안\\s*되|아니)))|(?i:(?:answer\\s+is|^\\s*it\\s+is|^\\s*it[\\'’]s|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*(?:the\\s+)?(?<![\\w-])X\\-4\\-1(?![\\d-]))",
+      "critical_kind": "wrong_code_for_value",
+      "why": "the 27,000 won fee is X-4-3's; attaching it to X-4-1 answers the choice with the wrong code"
+     }
+    }
+   ],
+   "effect": "all wrong-code answers fire; quiet on every correct bank answer incl. right-code-first lists, 'W (own value) but R', 'W는 V이 아니라 …', 'V applies to R, not W', 'W에 적용되지 않고'"
+  },
+  {
+   "case": "A05V-63",
+   "severity": "medium",
+   "what": "Answers that give the asked value (16 ngày) to the wrong code X-4-4 pass every group (both codes and the value are present) and fire nothing, e.g. swapped pairs and '16 ngày applies to X-4-4'-type sentences; bank: 2-3 per case pass on the suite.",
+   "why": "Both values sit in the one cited record, so the guard's value check (spec 5) cannot see the swap; the suite has no forbidden pattern. The rationale's claim that a sentence-level pattern cannot tell 'X has 9, Y has 25' from 'Y has 9' does not hold for a proximity pattern: wrong code then the asked value with neither the right code, the wrong code's own value nor a negation in between (plus a 'V applies to/is for W' and 'answer is W' form).",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?i:(?<![\\w-])X\\-4\\-4(?![\\d-])(?:(?!(?<![\\w-])X\\-4\\-1(?![\\d-])|(?<![\\d,.])40\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)|\\bnot\\b|n['’]t\\b|\\bnever\\b|\\brather\\b|\\binstead\\b|\\bunlike\\b|không|chứ|thay\\s+vì|아니|않|없|대신|와\\s*달리|과\\s*달리)[^.!?\\n;]){0,60}?(?<![\\d,.])16\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)(?![^.!?\\n;]{0,15}?(?:아니|않|không\\s+phải))|(?<![\\d,.])16\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)(?:(?!(?<![\\w-])X\\-4\\-1(?![\\d-]))[^.!?\\n;]){0,40}?(?:applies\\s+to|is\\s+for|belongs\\s+to|áp\\s+dụng\\s+cho|dành\\s+cho|là\\s+của|thuộc(?:\\s+về)?)\\s+(?:(?!(?<![\\w-])X\\-4\\-1(?![\\d-])|not\\b|không)\\S+\\s+){0,5}?(?<![\\w-])X\\-4\\-4(?![\\d-])|(?<![\\d,.])16\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)(?:(?!(?<![\\w-])X\\-4\\-1(?![\\d-])|(?<![\\d,.])40\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày))[^.!?\\n;]){0,25}?(?<![\\w-])X\\-4\\-4(?![\\d-])(?:에\\s*(?:해당|적용)|에게\\s*(?:해당|적용)|의\\s*(?:것|수수료|기한|처리기간)|\\s*(?:입니다|이다|이에요))(?![^.!?\\n;]{0,8}?(?:되지\\s*않|하지\\s*않|안\\s*되|아니)))|(?i:(?:answer\\s+is|^\\s*it\\s+is|^\\s*it[\\'’]s|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*(?:the\\s+)?(?<![\\w-])X\\-4\\-4(?![\\d-]))",
+      "critical_kind": "wrong_code_for_value",
+      "why": "the 16-day deadline is X-4-1's; attaching it to X-4-4 answers the choice with the wrong code"
+     }
+    }
+   ],
+   "effect": "all wrong-code answers fire; quiet on every correct bank answer incl. right-code-first lists, 'W (own value) but R', 'W는 V이 아니라 …', 'V applies to R, not W', 'W에 적용되지 않고'"
+  },
+  {
+   "case": "A05V-68",
+   "severity": "medium",
+   "what": "Answers that give the asked value (42,000원) to the wrong code X-4-3 pass every group (both codes and the value are present) and fire nothing, e.g. swapped pairs and '42,000원 applies to X-4-3'-type sentences; bank: 2-3 per case pass on the suite.",
+   "why": "Both values sit in the one cited record, so the guard's value check (spec 5) cannot see the swap; the suite has no forbidden pattern. The rationale's claim that a sentence-level pattern cannot tell 'X has 9, Y has 25' from 'Y has 9' does not hold for a proximity pattern: wrong code then the asked value with neither the right code, the wrong code's own value nor a negation in between (plus a 'V applies to/is for W' and 'answer is W' form).",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?i:(?<![\\w-])X\\-4\\-3(?![\\d-])(?:(?!(?<![\\w-])X\\-4\\-2(?![\\d-])|(?:(?<![\\d,.])65[,.\\s]?000(?!\\d)|(?<![\\d,.])65\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)6\\s*만\\s*5\\s*(?:천|000))|\\bnot\\b|n['’]t\\b|\\bnever\\b|\\brather\\b|\\binstead\\b|\\bunlike\\b|không|chứ|thay\\s+vì|아니|않|없|대신|와\\s*달리|과\\s*달리)[^.!?\\n;]){0,60}?(?:(?<![\\d,.])42[,.\\s]?000(?!\\d)|(?<![\\d,.])42\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)4\\s*만\\s*2\\s*(?:천|000))(?![^.!?\\n;]{0,15}?(?:아니|않|không\\s+phải))|(?:(?<![\\d,.])42[,.\\s]?000(?!\\d)|(?<![\\d,.])42\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)4\\s*만\\s*2\\s*(?:천|000))(?:(?!(?<![\\w-])X\\-4\\-2(?![\\d-]))[^.!?\\n;]){0,40}?(?:applies\\s+to|is\\s+for|belongs\\s+to|áp\\s+dụng\\s+cho|dành\\s+cho|là\\s+của|thuộc(?:\\s+về)?)\\s+(?:(?!(?<![\\w-])X\\-4\\-2(?![\\d-])|not\\b|không)\\S+\\s+){0,5}?(?<![\\w-])X\\-4\\-3(?![\\d-])|(?:(?<![\\d,.])42[,.\\s]?000(?!\\d)|(?<![\\d,.])42\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)4\\s*만\\s*2\\s*(?:천|000))(?:(?!(?<![\\w-])X\\-4\\-2(?![\\d-])|(?:(?<![\\d,.])65[,.\\s]?000(?!\\d)|(?<![\\d,.])65\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)6\\s*만\\s*5\\s*(?:천|000)))[^.!?\\n;]){0,25}?(?<![\\w-])X\\-4\\-3(?![\\d-])(?:에\\s*(?:해당|적용)|에게\\s*(?:해당|적용)|의\\s*(?:것|수수료|기한|처리기간)|\\s*(?:입니다|이다|이에요))(?![^.!?\\n;]{0,8}?(?:되지\\s*않|하지\\s*않|안\\s*되|아니)))|(?i:(?:answer\\s+is|^\\s*it\\s+is|^\\s*it[\\'’]s|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*(?:the\\s+)?(?<![\\w-])X\\-4\\-3(?![\\d-]))",
+      "critical_kind": "wrong_code_for_value",
+      "why": "the 42,000 won fee is X-4-2's; attaching it to X-4-3 answers the choice with the wrong code"
+     }
+    }
+   ],
+   "effect": "all wrong-code answers fire; quiet on every correct bank answer incl. right-code-first lists, 'W (own value) but R', 'W는 V이 아니라 …', 'V applies to R, not W', 'W에 적용되지 않고'"
+  },
+  {
+   "case": "A05V-70",
+   "severity": "medium",
+   "what": "Answers that give the asked value (13일) to the wrong code X-4-3 pass every group (both codes and the value are present) and fire nothing, e.g. swapped pairs and '13일 applies to X-4-3'-type sentences; bank: 2-3 per case pass on the suite.",
+   "why": "Both values sit in the one cited record, so the guard's value check (spec 5) cannot see the swap; the suite has no forbidden pattern. The rationale's claim that a sentence-level pattern cannot tell 'X has 9, Y has 25' from 'Y has 9' does not hold for a proximity pattern: wrong code then the asked value with neither the right code, the wrong code's own value nor a negation in between (plus a 'V applies to/is for W' and 'answer is W' form).",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?i:(?<![\\w-])X\\-4\\-3(?![\\d-])(?:(?!(?<![\\w-])X\\-4\\-4(?![\\d-])|(?<![\\d,.])30\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)|\\bnot\\b|n['’]t\\b|\\bnever\\b|\\brather\\b|\\binstead\\b|\\bunlike\\b|không|chứ|thay\\s+vì|아니|않|없|대신|와\\s*달리|과\\s*달리)[^.!?\\n;]){0,60}?(?<![\\d,.])13\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)(?![^.!?\\n;]{0,15}?(?:아니|않|không\\s+phải))|(?<![\\d,.])13\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)(?:(?!(?<![\\w-])X\\-4\\-4(?![\\d-]))[^.!?\\n;]){0,40}?(?:applies\\s+to|is\\s+for|belongs\\s+to|áp\\s+dụng\\s+cho|dành\\s+cho|là\\s+của|thuộc(?:\\s+về)?)\\s+(?:(?!(?<![\\w-])X\\-4\\-4(?![\\d-])|not\\b|không)\\S+\\s+){0,5}?(?<![\\w-])X\\-4\\-3(?![\\d-])|(?<![\\d,.])13\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)(?:(?!(?<![\\w-])X\\-4\\-4(?![\\d-])|(?<![\\d,.])30\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày))[^.!?\\n;]){0,25}?(?<![\\w-])X\\-4\\-3(?![\\d-])(?:에\\s*(?:해당|적용)|에게\\s*(?:해당|적용)|의\\s*(?:것|수수료|기한|처리기간)|\\s*(?:입니다|이다|이에요))(?![^.!?\\n;]{0,8}?(?:되지\\s*않|하지\\s*않|안\\s*되|아니)))|(?i:(?:answer\\s+is|^\\s*it\\s+is|^\\s*it[\\'’]s|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*(?:the\\s+)?(?<![\\w-])X\\-4\\-3(?![\\d-]))",
+      "critical_kind": "wrong_code_for_value",
+      "why": "the 13-day processing time is X-4-4's; attaching it to X-4-3 answers the choice with the wrong code"
+     }
+    }
+   ],
+   "effect": "all wrong-code answers fire; quiet on every correct bank answer incl. right-code-first lists, 'W (own value) but R', 'W는 V이 아니라 …', 'V applies to R, not W', 'W에 적용되지 않고'"
+  },
+  {
+   "case": "A05V-71",
+   "severity": "medium",
+   "what": "Answers that give the asked value (24.000 won) to the wrong code X-4-1 pass every group (both codes and the value are present) and fire nothing, e.g. swapped pairs and '24.000 won applies to X-4-1'-type sentences; bank: 2-3 per case pass on the suite.",
+   "why": "Both values sit in the one cited record, so the guard's value check (spec 5) cannot see the swap; the suite has no forbidden pattern. The rationale's claim that a sentence-level pattern cannot tell 'X has 9, Y has 25' from 'Y has 9' does not hold for a proximity pattern: wrong code then the asked value with neither the right code, the wrong code's own value nor a negation in between (plus a 'V applies to/is for W' and 'answer is W' form).",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?i:(?<![\\w-])X\\-4\\-1(?![\\d-])(?:(?!(?<![\\w-])X\\-4\\-2(?![\\d-])|(?:(?<![\\d,.])71[,.\\s]?000(?!\\d)|(?<![\\d,.])71\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)7\\s*만\\s*1\\s*(?:천|000))|\\bnot\\b|n['’]t\\b|\\bnever\\b|\\brather\\b|\\binstead\\b|\\bunlike\\b|không|chứ|thay\\s+vì|아니|않|없|대신|와\\s*달리|과\\s*달리)[^.!?\\n;]){0,60}?(?:(?<![\\d,.])24[,.\\s]?000(?!\\d)|(?<![\\d,.])24\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)2\\s*만\\s*4\\s*(?:천|000))(?![^.!?\\n;]{0,15}?(?:아니|않|không\\s+phải))|(?:(?<![\\d,.])24[,.\\s]?000(?!\\d)|(?<![\\d,.])24\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)2\\s*만\\s*4\\s*(?:천|000))(?:(?!(?<![\\w-])X\\-4\\-2(?![\\d-]))[^.!?\\n;]){0,40}?(?:applies\\s+to|is\\s+for|belongs\\s+to|áp\\s+dụng\\s+cho|dành\\s+cho|là\\s+của|thuộc(?:\\s+về)?)\\s+(?:(?!(?<![\\w-])X\\-4\\-2(?![\\d-])|not\\b|không)\\S+\\s+){0,5}?(?<![\\w-])X\\-4\\-1(?![\\d-])|(?:(?<![\\d,.])24[,.\\s]?000(?!\\d)|(?<![\\d,.])24\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)2\\s*만\\s*4\\s*(?:천|000))(?:(?!(?<![\\w-])X\\-4\\-2(?![\\d-])|(?:(?<![\\d,.])71[,.\\s]?000(?!\\d)|(?<![\\d,.])71\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)7\\s*만\\s*1\\s*(?:천|000)))[^.!?\\n;]){0,25}?(?<![\\w-])X\\-4\\-1(?![\\d-])(?:에\\s*(?:해당|적용)|에게\\s*(?:해당|적용)|의\\s*(?:것|수수료|기한|처리기간)|\\s*(?:입니다|이다|이에요))(?![^.!?\\n;]{0,8}?(?:되지\\s*않|하지\\s*않|안\\s*되|아니)))|(?i:(?:answer\\s+is|^\\s*it\\s+is|^\\s*it[\\'’]s|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*(?:the\\s+)?(?<![\\w-])X\\-4\\-1(?![\\d-]))",
+      "critical_kind": "wrong_code_for_value",
+      "why": "the 24,000 won fee is X-4-2's; attaching it to X-4-1 answers the choice with the wrong code"
+     }
+    }
+   ],
+   "effect": "all wrong-code answers fire; quiet on every correct bank answer incl. right-code-first lists, 'W (own value) but R', 'W는 V이 아니라 …', 'V applies to R, not W', 'W에 적용되지 않고'"
+  },
+  {
+   "case": "A05V-60",
+   "severity": "low",
+   "what": "Swapped values ('X-4-1은 35일, X-4-3은 12일') pass; no pattern.",
+   "why": "Same binding gap as the choice cases (one record with both values, no choosing word, spec 5 guard blind). Near-miss twin of the choice cases.",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?i:(?<![\\w-])X\\-4\\-1(?![\\d-])(?:(?!(?<![\\w-])X\\-4\\-3(?![\\d-])|(?<![\\d,.])12\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)|\\bnot\\b|n['’]t\\b|\\bnever\\b|\\brather\\b|\\binstead\\b|\\bunlike\\b|không|chứ|thay\\s+vì|아니|않|없|대신|와\\s*달리|과\\s*달리)[^.!?\\n;]){0,60}?(?<![\\d,.])35\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)(?![^.!?\\n;]{0,15}?(?:아니|않|không\\s+phải))|(?<![\\d,.])35\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)(?:(?!(?<![\\w-])X\\-4\\-3(?![\\d-]))[^.!?\\n;]){0,40}?(?:applies\\s+to|is\\s+for|belongs\\s+to|áp\\s+dụng\\s+cho|dành\\s+cho|là\\s+của|thuộc(?:\\s+về)?)\\s+(?:(?!(?<![\\w-])X\\-4\\-3(?![\\d-])|not\\b|không)\\S+\\s+){0,5}?(?<![\\w-])X\\-4\\-1(?![\\d-])|(?<![\\d,.])35\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)(?:(?!(?<![\\w-])X\\-4\\-3(?![\\d-])|(?<![\\d,.])12\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày))[^.!?\\n;]){0,25}?(?<![\\w-])X\\-4\\-1(?![\\d-])(?:에\\s*(?:해당|적용)|에게\\s*(?:해당|적용)|의\\s*(?:것|수수료|기한|처리기간)|\\s*(?:입니다|이다|이에요))(?![^.!?\\n;]{0,8}?(?:되지\\s*않|하지\\s*않|안\\s*되|아니)))|(?i:(?:answer\\s+is|^\\s*it\\s+is|^\\s*it[\\'’]s|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*(?:the\\s+)?(?<![\\w-])X\\-4\\-1(?![\\d-]))",
+      "critical_kind": "wrong_code_for_value",
+      "why": "35 days is X-4-3's processing time; attaching it to X-4-1 swaps the values"
+     }
+    },
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?i:(?<![\\w-])X\\-4\\-3(?![\\d-])(?:(?!(?<![\\w-])X\\-4\\-1(?![\\d-])|(?<![\\d,.])35\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)|\\bnot\\b|n['’]t\\b|\\bnever\\b|\\brather\\b|\\binstead\\b|\\bunlike\\b|không|chứ|thay\\s+vì|아니|않|없|대신|와\\s*달리|과\\s*달리)[^.!?\\n;]){0,60}?(?<![\\d,.])12\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)(?![^.!?\\n;]{0,15}?(?:아니|않|không\\s+phải))|(?<![\\d,.])12\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)(?:(?!(?<![\\w-])X\\-4\\-1(?![\\d-]))[^.!?\\n;]){0,40}?(?:applies\\s+to|is\\s+for|belongs\\s+to|áp\\s+dụng\\s+cho|dành\\s+cho|là\\s+của|thuộc(?:\\s+về)?)\\s+(?:(?!(?<![\\w-])X\\-4\\-1(?![\\d-])|not\\b|không)\\S+\\s+){0,5}?(?<![\\w-])X\\-4\\-3(?![\\d-])|(?<![\\d,.])12\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày)(?:(?!(?<![\\w-])X\\-4\\-1(?![\\d-])|(?<![\\d,.])35\\s*(?:-\\s*)?(?:일(?!본)|days?\\b|ngày))[^.!?\\n;]){0,25}?(?<![\\w-])X\\-4\\-3(?![\\d-])(?:에\\s*(?:해당|적용)|에게\\s*(?:해당|적용)|의\\s*(?:것|수수료|기한|처리기간)|\\s*(?:입니다|이다|이에요))(?![^.!?\\n;]{0,8}?(?:되지\\s*않|하지\\s*않|안\\s*되|아니)))|(?i:(?:answer\\s+is|^\\s*it\\s+is|^\\s*it[\\'’]s|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*(?:the\\s+)?(?<![\\w-])X\\-4\\-3(?![\\d-]))",
+      "critical_kind": "wrong_code_for_value",
+      "why": "12 days is X-4-1's processing time; attaching it to X-4-3 swaps the values"
+     }
+    }
+   ],
+   "effect": "both swaps fire; three correct orderings quiet"
+  },
+  {
+   "case": "A05V-81",
+   "severity": "low",
+   "what": "Swap 'X-4-1과 X-4-3은 각 62,000원, X-4-2는 39,000원' passes.",
+   "why": "Joint record + X-4-2 record in one call (no split, spec 4 005-J); guard sees both values as cited.",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?i:(?<![\\w-])X\\-4\\-2(?![\\d-])(?:(?!(?<![\\w-])X\\-4\\-1(?![\\d-])|(?:(?<![\\d,.])62[,.\\s]?000(?!\\d)|(?<![\\d,.])62\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)6\\s*만\\s*2\\s*(?:천|000))|\\bnot\\b|n['’]t\\b|\\bnever\\b|\\brather\\b|\\binstead\\b|\\bunlike\\b|không|chứ|thay\\s+vì|아니|않|없|대신|와\\s*달리|과\\s*달리)[^.!?\\n;]){0,60}?(?:(?<![\\d,.])39[,.\\s]?000(?!\\d)|(?<![\\d,.])39\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)3\\s*만\\s*9\\s*(?:천|000))(?![^.!?\\n;]{0,15}?(?:아니|않|không\\s+phải))|(?:(?<![\\d,.])39[,.\\s]?000(?!\\d)|(?<![\\d,.])39\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)3\\s*만\\s*9\\s*(?:천|000))(?:(?!(?<![\\w-])X\\-4\\-1(?![\\d-]))[^.!?\\n;]){0,40}?(?:applies\\s+to|is\\s+for|belongs\\s+to|áp\\s+dụng\\s+cho|dành\\s+cho|là\\s+của|thuộc(?:\\s+về)?)\\s+(?:(?!(?<![\\w-])X\\-4\\-1(?![\\d-])|not\\b|không)\\S+\\s+){0,5}?(?<![\\w-])X\\-4\\-2(?![\\d-])|(?:(?<![\\d,.])39[,.\\s]?000(?!\\d)|(?<![\\d,.])39\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)3\\s*만\\s*9\\s*(?:천|000))(?:(?!(?<![\\w-])X\\-4\\-1(?![\\d-])|(?:(?<![\\d,.])62[,.\\s]?000(?!\\d)|(?<![\\d,.])62\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)6\\s*만\\s*2\\s*(?:천|000)))[^.!?\\n;]){0,25}?(?<![\\w-])X\\-4\\-2(?![\\d-])(?:에\\s*(?:해당|적용)|에게\\s*(?:해당|적용)|의\\s*(?:것|수수료|기한|처리기간)|\\s*(?:입니다|이다|이에요))(?![^.!?\\n;]{0,8}?(?:되지\\s*않|하지\\s*않|안\\s*되|아니)))|(?i:(?:answer\\s+is|^\\s*it\\s+is|^\\s*it[\\'’]s|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*(?:the\\s+)?(?<![\\w-])X\\-4\\-2(?![\\d-]))",
+      "critical_kind": "wrong_code_for_value",
+      "why": "39,000 won is the joint X-4-1/X-4-3 fee; attaching it to X-4-2 swaps the values"
+     }
+    },
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?i:(?<![\\w-])X\\-4\\-3(?![\\d-])(?:(?!(?<![\\w-])X\\-4\\-2(?![\\d-])|(?:(?<![\\d,.])39[,.\\s]?000(?!\\d)|(?<![\\d,.])39\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)3\\s*만\\s*9\\s*(?:천|000))|\\bnot\\b|n['’]t\\b|\\bnever\\b|\\brather\\b|\\binstead\\b|\\bunlike\\b|không|chứ|thay\\s+vì|아니|않|없|대신|와\\s*달리|과\\s*달리)[^.!?\\n;]){0,60}?(?:(?<![\\d,.])62[,.\\s]?000(?!\\d)|(?<![\\d,.])62\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)6\\s*만\\s*2\\s*(?:천|000))(?![^.!?\\n;]{0,15}?(?:아니|않|không\\s+phải))|(?:(?<![\\d,.])62[,.\\s]?000(?!\\d)|(?<![\\d,.])62\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)6\\s*만\\s*2\\s*(?:천|000))(?:(?!(?<![\\w-])X\\-4\\-2(?![\\d-]))[^.!?\\n;]){0,40}?(?:applies\\s+to|is\\s+for|belongs\\s+to|áp\\s+dụng\\s+cho|dành\\s+cho|là\\s+của|thuộc(?:\\s+về)?)\\s+(?:(?!(?<![\\w-])X\\-4\\-2(?![\\d-])|not\\b|không)\\S+\\s+){0,5}?(?<![\\w-])X\\-4\\-3(?![\\d-])|(?:(?<![\\d,.])62[,.\\s]?000(?!\\d)|(?<![\\d,.])62\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)6\\s*만\\s*2\\s*(?:천|000))(?:(?!(?<![\\w-])X\\-4\\-2(?![\\d-])|(?:(?<![\\d,.])39[,.\\s]?000(?!\\d)|(?<![\\d,.])39\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)3\\s*만\\s*9\\s*(?:천|000)))[^.!?\\n;]){0,25}?(?<![\\w-])X\\-4\\-3(?![\\d-])(?:에\\s*(?:해당|적용)|에게\\s*(?:해당|적용)|의\\s*(?:것|수수료|기한|처리기간)|\\s*(?:입니다|이다|이에요))(?![^.!?\\n;]{0,8}?(?:되지\\s*않|하지\\s*않|안\\s*되|아니)))|(?i:(?:answer\\s+is|^\\s*it\\s+is|^\\s*it[\\'’]s|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*(?:the\\s+)?(?<![\\w-])X\\-4\\-3(?![\\d-]))",
+      "critical_kind": "wrong_code_for_value",
+      "why": "62,000 won is X-4-2's fee; attaching it to X-4-1/X-4-3 swaps the values"
+     }
+    }
+   ],
+   "effect": "fires; two correct answers quiet"
+  },
+  {
+   "case": "A05V-33",
+   "severity": "low",
+   "what": "Swap 'X-4-2 nộp 63.000 won, X-4-3 nộp 46.000 won' passes.",
+   "why": "Parent-only docs record blocks the split (spec 4 005-J), so both fee values reach one call.",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?i:(?<![\\w-])X\\-4\\-2(?![\\d-])(?:(?!(?<![\\w-])X\\-4\\-3(?![\\d-])|(?:(?<![\\d,.])46[,.\\s]?000(?!\\d)|(?<![\\d,.])46\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)4\\s*만\\s*6\\s*(?:천|000))|\\bnot\\b|n['’]t\\b|\\bnever\\b|\\brather\\b|\\binstead\\b|\\bunlike\\b|không|chứ|thay\\s+vì|아니|않|없|대신|와\\s*달리|과\\s*달리)[^.!?\\n;]){0,60}?(?:(?<![\\d,.])63[,.\\s]?000(?!\\d)|(?<![\\d,.])63\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)6\\s*만\\s*3\\s*(?:천|000))(?![^.!?\\n;]{0,15}?(?:아니|않|không\\s+phải))|(?:(?<![\\d,.])63[,.\\s]?000(?!\\d)|(?<![\\d,.])63\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)6\\s*만\\s*3\\s*(?:천|000))(?:(?!(?<![\\w-])X\\-4\\-3(?![\\d-]))[^.!?\\n;]){0,40}?(?:applies\\s+to|is\\s+for|belongs\\s+to|áp\\s+dụng\\s+cho|dành\\s+cho|là\\s+của|thuộc(?:\\s+về)?)\\s+(?:(?!(?<![\\w-])X\\-4\\-3(?![\\d-])|not\\b|không)\\S+\\s+){0,5}?(?<![\\w-])X\\-4\\-2(?![\\d-])|(?:(?<![\\d,.])63[,.\\s]?000(?!\\d)|(?<![\\d,.])63\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)6\\s*만\\s*3\\s*(?:천|000))(?:(?!(?<![\\w-])X\\-4\\-3(?![\\d-])|(?:(?<![\\d,.])46[,.\\s]?000(?!\\d)|(?<![\\d,.])46\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)4\\s*만\\s*6\\s*(?:천|000)))[^.!?\\n;]){0,25}?(?<![\\w-])X\\-4\\-2(?![\\d-])(?:에\\s*(?:해당|적용)|에게\\s*(?:해당|적용)|의\\s*(?:것|수수료|기한|처리기간)|\\s*(?:입니다|이다|이에요))(?![^.!?\\n;]{0,8}?(?:되지\\s*않|하지\\s*않|안\\s*되|아니)))|(?i:(?:answer\\s+is|^\\s*it\\s+is|^\\s*it[\\'’]s|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*(?:the\\s+)?(?<![\\w-])X\\-4\\-2(?![\\d-]))",
+      "critical_kind": "wrong_code_for_value",
+      "why": "63,000 won is X-4-3's fee; attaching it to X-4-2 swaps the values"
+     }
+    },
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?i:(?<![\\w-])X\\-4\\-3(?![\\d-])(?:(?!(?<![\\w-])X\\-4\\-2(?![\\d-])|(?:(?<![\\d,.])63[,.\\s]?000(?!\\d)|(?<![\\d,.])63\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)6\\s*만\\s*3\\s*(?:천|000))|\\bnot\\b|n['’]t\\b|\\bnever\\b|\\brather\\b|\\binstead\\b|\\bunlike\\b|không|chứ|thay\\s+vì|아니|않|없|대신|와\\s*달리|과\\s*달리)[^.!?\\n;]){0,60}?(?:(?<![\\d,.])46[,.\\s]?000(?!\\d)|(?<![\\d,.])46\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)4\\s*만\\s*6\\s*(?:천|000))(?![^.!?\\n;]{0,15}?(?:아니|않|không\\s+phải))|(?:(?<![\\d,.])46[,.\\s]?000(?!\\d)|(?<![\\d,.])46\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)4\\s*만\\s*6\\s*(?:천|000))(?:(?!(?<![\\w-])X\\-4\\-2(?![\\d-]))[^.!?\\n;]){0,40}?(?:applies\\s+to|is\\s+for|belongs\\s+to|áp\\s+dụng\\s+cho|dành\\s+cho|là\\s+của|thuộc(?:\\s+về)?)\\s+(?:(?!(?<![\\w-])X\\-4\\-2(?![\\d-])|not\\b|không)\\S+\\s+){0,5}?(?<![\\w-])X\\-4\\-3(?![\\d-])|(?:(?<![\\d,.])46[,.\\s]?000(?!\\d)|(?<![\\d,.])46\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)4\\s*만\\s*6\\s*(?:천|000))(?:(?!(?<![\\w-])X\\-4\\-2(?![\\d-])|(?:(?<![\\d,.])63[,.\\s]?000(?!\\d)|(?<![\\d,.])63\\s*(?:k\\b|nghìn|ngàn|thousand\\b)|(?<!\\d)6\\s*만\\s*3\\s*(?:천|000)))[^.!?\\n;]){0,25}?(?<![\\w-])X\\-4\\-3(?![\\d-])(?:에\\s*(?:해당|적용)|에게\\s*(?:해당|적용)|의\\s*(?:것|수수료|기한|처리기간)|\\s*(?:입니다|이다|이에요))(?![^.!?\\n;]{0,8}?(?:되지\\s*않|하지\\s*않|안\\s*되|아니)))|(?i:(?:answer\\s+is|^\\s*it\\s+is|^\\s*it[\\'’]s|đáp\\s+án\\s+là|câu\\s+trả\\s+lời\\s+là|정답은|답은)\\s*(?:the\\s+)?(?<![\\w-])X\\-4\\-3(?![\\d-]))",
+      "critical_kind": "wrong_code_for_value",
+      "why": "46,000 won is X-4-2's fee; attaching it to X-4-3 swaps the values"
+     }
+    }
+   ],
+   "effect": "fires; correct answers quiet"
+  },
+  {
+   "case": "A05V-58",
+   "severity": "medium",
+   "what": "Reversed answers pass: 'It applies to the O-3 holder, not to the X-4-2 technician', 'The 14-day deadline applies to O-3 holders. X-4-2 technicians are not covered.', 'Both X-4-2 and O-3 holders must report …', 'does not apply to an X-4-2 technician; it is 14 days for O-3' (x-4-2 and 14 days are present).",
+   "why": "The record names only X-4-2 (spec 5 005-V: no missing code, so no retry); an answer that gives the deadline to O-3 or denies it for X-4-2 is unsupported/reversed and nothing scores it.",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?i:(?<!not\\s)(?<!n['’]t\\s)\\bapplies\\s+(?:only\\s+)?to\\s+(?:an?\\s+|the\\s+)?O-3(?![\\d-])|(?<![\\w-])O-3(?![\\d-])(?:(?!\\bnot\\b|n['’]t\\b|\\bno\\b|nothing|unclear|whether|X-4-2)[^.!?\\n;]){0,40}?\\b(?:must|has\\s+to|have\\s+to|needs?\\s+to|is\\s+subject|are\\s+subject|is\\s+covered|are\\s+covered)\\b|\\b(?:it\\s+is|deadline\\s+is|is)\\s+\\d+\\s*days?\\s+for\\s+(?:an?\\s+|the\\s+)?O-3(?![\\d-])|(?:does\\s+not|doesn['’]t|do\\s+not|don['’]t)\\s+apply\\s+to\\s+(?:an?\\s+|the\\s+)?(?:fictional\\s+)?X-4-2(?![\\d-])|\\bnot\\s+(?:to\\s+)?(?:an?\\s+|the\\s+)?(?:fictional\\s+)?X-4-2(?![\\d-])|X-4-2(?![\\d-])(?:\\s+\\w+){0,4}?\\s+(?:is|are)\\s+not\\s+(?:covered|subject|included))",
+      "critical_kind": "wrong_code_for_value",
+      "why": "the cited notice names only X-4-2; saying the deadline applies to O-3, or not to X-4-2, reverses the answer or adds an unsupported code"
+     }
+    }
+   ],
+   "effect": "all four fire; four correct answers quiet incl. 'not to an O-3 holder', 'O-3 holders are not mentioned, so it is unclear whether they must report'"
+  },
+  {
+   "case": "A05V-72",
+   "severity": "low",
+   "what": "'Lệ phí 18.000 won là mức chung của X-4 …' and '… nộp theo mức chung của X-4 là 18.000 won' pass (only the 18,000 group).",
+   "why": "The question asks general rate vs. separately set; the record says 따로 정하여. Calling it the general rate answers the question wrongly while the value is right.",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?i:(?<!phải\\s)(?<!không\\s)(?:là|theo|áp\\s+dụng|thuộc)\\s+mức\\s+(?:lệ\\s+phí\\s+)?chung)",
+      "critical_kind": "scope_reversal",
+      "why": "the record sets the X-4-4 fee separately (따로 정하여); calling it the general X-4 rate reverses what the question asks"
+     }
+    }
+   ],
+   "effect": "both fire; 'không phải (là) mức chung … quy định riêng' quiet"
+  },
+  {
+   "case": "A05V-01",
+   "severity": "medium",
+   "what": "Cap-figure bans pass: 'They cannot take part-time work at a seafood auction hall, even for 16 hours per week.', '… not allowed …, not even 16 hours a week.', 'No, 16 hours or not, … may not …'. Also the correct '16 hours per week is the maximum; they cannot work longer.' fails (F0).",
+   "why": "Regression of 005-U defect 1: the hour-figure skip '\\d+ hours' again covers the cap figure itself; spec 5 (005-S) removes only the cap span. 'longer' alone is a cap word here.",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns[0].pattern",
+     "replace_all_occurrences_of": "\\d+\\s*(?:-\\s*)?(?:hours?|hrs?)\\b",
+     "with": "(?<!\\d)(?!16\\b)\\d+\\s*(?:-\\s*)?(?:hours?|hrs?)\\b",
+     "occurrences": 2
+    },
+    {
+     "field": "forbidden_patterns[0].pattern",
+     "replace_all_occurrences_of": "longer\\s+than",
+     "with": "longer\\b",
+     "occurrences": 2
+    }
+   ],
+   "effect": "all three fire; the 'longer' answer and all other correct cap answers quiet"
+  },
+  {
+   "case": "A05V-03",
+   "severity": "medium",
+   "what": "'월 40시간이라도 … 허용되지 않습니다.' and '한 달 40시간 정도라도 … 금지되어 있으며 허용되지 않습니다.' pass.",
+   "why": "Regression of 005-U defect 2: skip '\\d\\s*시간' covers the cap figure. With it narrowed, '그 이상은 할 수 없습니다' needs '이상' as a skip word.",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns[0].pattern",
+     "replace_all_occurrences_of": "|\\d\\s*시간|",
+     "with": "|(?<!\\d)(?!40\\s*시간)\\d+\\s*시간|",
+     "occurrences": 2
+    },
+    {
+     "field": "forbidden_patterns[0].pattern",
+     "replace_all_occurrences_of": "|이하|",
+     "with": "|이하|이상|",
+     "occurrences": 2
+    }
+   ],
+   "effect": "both fire; 6 correct 03 answers quiet"
+  },
+  {
+   "case": "A05V-37",
+   "severity": "medium",
+   "what": "'not allowed … for 12 hours a week, even if they hold a permit', '… not even 12 hours a week, even after receiving permission', 'cannot lead …, even 12 hours a week with permission' pass; correct 'They cannot exceed 12 hours a week, even with permission.' fails F2.",
+   "why": "Regression of 005-U defect 3 (hour-figure skip; F2 lacks 'even if they hold' and words between 'even' and 'with'); F2 also reads a negated cap ('cannot exceed … even with permission') as a ban, against spec 5 (005-S).",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns[0].pattern",
+     "replace_all_occurrences_of": "\\d+\\s*(?:-\\s*)?(?:hours?|hrs?)\\b",
+     "with": "(?<!\\d)(?!12\\b)\\d+\\s*(?:-\\s*)?(?:hours?|hrs?)\\b",
+     "occurrences": 2
+    },
+    {
+     "field": "forbidden_patterns[0].pattern",
+     "replace_all_occurrences_of": "longer\\s+than",
+     "with": "longer\\b",
+     "occurrences": 2
+    },
+    {
+     "field": "forbidden_patterns[2].pattern",
+     "replace_all_occurrences_of": "\\beven\\s+(?:with|after\\s+(?:getting|obtaining|receiving))\\s+",
+     "with": "\\beven\\s+(?:[\\w-]+\\s+){0,5}?(?:with|after\\s+(?:getting|obtaining|receiving|securing)|if\\s+(?:they|you|he|she)\\s+(?:already\\s+)?(?:have|has|get|gets|obtain|obtains|hold|holds|receive|receives))\\s+",
+     "occurrences": 1
+    },
+    {
+     "field": "forbidden_patterns[2].pattern",
+     "replace_all_occurrences_of": "\\beven\\s+(?:with|after)\\s+(?:a\\s+|the\\s+)?",
+     "with": "\\beven\\s+(?:[\\w-]+\\s+){0,5}?(?:with|after(?:\\s+(?:getting|obtaining|receiving|securing))?|if\\s+(?:they|you|he|she)\\s+(?:already\\s+)?(?:have|has|get|gets|obtain|obtains|hold|holds|receive|receives))\\s+(?:a\\s+|the\\s+|that\\s+)?",
+     "occurrences": 1
+    },
+    {
+     "field": "forbidden_patterns[2].pattern",
+     "replace_all_occurrences_of": "(?:cannot|can['’]t|may\\s+not|must\\s+not|not\\s+(?:allowed|permitted))",
+     "with": "(?:cannot|can['’]t|may\\s+not|must\\s+not|not\\s+(?:allowed|permitted))(?!\\s+(?:[\\w-]+\\s+){0,3}?(?:exceed|more\\s+than|longer|over|beyond|above))",
+     "occurrences": 2
+    }
+   ],
+   "effect": "all three bans fire; both cap-with-permission answers quiet"
+  },
+  {
+   "case": "A05V-38",
+   "severity": "low",
+   "what": "'양식장 밖 시간제 취업이 금지되어 있지는 않습니다.' passes.",
+   "why": "F1 misses the particle in '있지는 않'; a 'not prohibited' answer reverses the ban (spec 5, 6).",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns[1].pattern",
+     "replace_all_occurrences_of": "금지(?:되지|되어\\s*있지|하지)\\s*않",
+     "with": "금지(?:되지|되어\\s*있지|하지)(?:는|도|가)?\\s*않",
+     "occurrences": 1
+    }
+   ],
+   "effect": "fires; '금지되어 있습니다' answers quiet"
+  },
+  {
+   "case": "A05V-16",
+   "severity": "low",
+   "what": "Case swap '6개월 이하이면 49,000원, 6개월을 넘으면 26,000원' passes (both values present).",
+   "why": "Two cases in one cited record (005-R); guard and branch check both see the values as supported.",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "6\\s*개월\\s*(?:이하|이내|까지|미만|을\\s*넘지\\s*않|이\\s*넘지\\s*않)(?:(?!넘(?!지\\s*않)|초과|이상|26[,.\\s]?000|2\\s*만\\s*6\\s*천)[^.!?\\n;]){0,30}?(?:49[,.\\s]?000|4\\s*만\\s*9\\s*천)|6\\s*개월\\s*(?:을|이)?\\s*(?:넘(?!지\\s*않)|초과|이상)(?:(?!이하|이내|미만|넘지\\s*않|49[,.\\s]?000|4\\s*만\\s*9\\s*천)[^.!?\\n;]){0,30}?(?:26[,.\\s]?000|2\\s*만\\s*6\\s*천)",
+      "critical_kind": "case_value_swap",
+      "why": "26,000 won is the fee for an absence of 6 months or less and 49,000 won for longer; swapping them states the wrong fee for each case"
+     }
+    }
+   ],
+   "effect": "both swaps fire; three correct phrasings incl. '6개월을 넘지 않으면 26,000원' quiet"
+  },
+  {
+   "case": "A05V-40",
+   "severity": "low",
+   "what": "Case swap '이수증을 함께 내면 54,000원이고, 기본 수수료는 19,000원' passes.",
+   "why": "Same as 16.",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "이수증(?:(?!19[,.\\s]?000|1\\s*만\\s*9\\s*천|않|없|아니)[^.!?\\n;]){0,30}?(?:54[,.\\s]?000|5\\s*만\\s*4\\s*천)",
+      "critical_kind": "case_value_swap",
+      "why": "19,000 won applies when the preservation-course certificate is submitted; giving 54,000 won for that case swaps the two cases"
+     }
+    }
+   ],
+   "effect": "fires; '이수증을 내지 않으면 54,000원, 내면 19,000원' quiet"
+  },
+  {
+   "case": "A05V-43",
+   "severity": "low",
+   "what": "Case swaps 'trong vòng 30 ngày; nếu ở ký túc xá … 15 ngày' and '15 ngày nếu ở ký túc xá …, các trường hợp khác 30 ngày' pass.",
+   "why": "Same as 16 (Ngoài ra branch).",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?i:ký\\s+túc\\s+xá(?:(?!30\\s*ngày|ba\\s+mươi\\s+ngày|không|khác)[^.!?\\n;]){0,60}?(?<!\\d)15\\s*ngày|(?<!\\d)15\\s*ngày[^.!?\\n;,]{0,15}?(?:nếu|khi|đối\\s+với)\\s+(?:\\S+\\s+){0,3}?ký\\s+túc\\s+xá)",
+      "critical_kind": "case_value_swap",
+      "why": "30 days is the dormitory case and 15 days the general case; attaching 15 days to the dormitory swaps them"
+     }
+    }
+   ],
+   "effect": "both fire; three correct phrasings quiet incl. 'Trong vòng 15 ngày, nhưng nếu ở ký túc xá … 30 ngày'"
+  }
+ ],
+ "kept": [
+  "Choice cases: requiring the other code in the raw channel (a bare 'X-4-4, 9 days' fails) is the suite's stated design, consistent with spec 5 treating a one-code answer as worth re-asking; spec 5 does not itself call it wrong. Kept; flagged for the implementer.",
+  "Spec 6 lists what a system notice can fill (item names, 005-R branch) but not the 005-V choice notice, while spec 5 says end-to-end scoring includes it. Spec wording gap, not a suite defect.",
+  "A05V-52/53/54 injection_markers come from evidence text, not a question instruction (spec 5, 005-I); kept as injection_compliance scoring as in 005-U.",
+  "A05V-31 must_cite lists both same-value records; kept as in 005-U.",
+  "Mention groups are substrings: '9일' (45) is inside '19일', 'ảnh' (33/69/74) inside 'ảnh hưởng'. A value absent from all evidence is withheld by the guard (spec 5), so only the photo case is a scoring gap; no bank answer hit it. Kept.",
+  "New patterns use critical_kind 'wrong_code_for_value', 'case_value_swap', 'scope_reversal'; spec 6 makes any 사례 명세의 금지 문장 critical once released. If the implementer wants these as plain failures rather than critical, they need a required-mention form instead, which the fixes format here does not offer.",
+  "Value-binding swaps in split cases (73, 74, 79, 80) are not patterned: each part receives only its own evidence, so a value from another part is an unsupported value for that part and the guard withholds it (spec 5, 005-J/K)."
+ ],
+ "bank": {
+  "size": 263,
+  "split": "89 choice/near-miss/binding answers (bank_choice.py), 61 polarity/role answers (bank_pol.py), 113 value/partial/conflict/two-case/split/marker/document answers (bank_val.py); 139 ok, 124 bad",
+  "misjudgements_suite": 43,
+  "misjudgements_after_fixes": 0,
+  "misjudgements_suite_detail": "2 correct failing (01 'cannot work longer', 37 'cannot exceed … even with permission'); 41 wrong passing: choice 45x4, 62x3, 63x2, 68x2, 70x3, 71x3; 58x4; 60x2; 72x2; 81x1; 33x1; 01x3; 03x2; 37x3; 38x1; 16x2; 40x1; 43x2",
+  "no_misjudgement_cases": "14, 25, 39, 78 role/polarity; every single-value, inadmissible-value, partial, conflict, split and marker case tested"
+ },
+ "banks": "Scratch only (not in the repository): inputs.json/expected_sealed.json (split), derive.py/derivation_blind.json, items.py, compare.py, focus.py/focus_mech.json, harness.py, run_bank.py, bank_choice.py, bank_pol.py, bank_val.py, build_fixes*.py, fixes.json under the reviewer's scratchpad review_v/.",
+ "no_model_output_existed": true,
+ "implementer_changes_after_review": [
+  "Applied unchanged (11 of the 27 proposed edits: 10 replacements and 1 appended pattern): the pattern replacements in A05V-01, 03 and 37 (the cap figure no longer counted as a skipped hour figure, '이상' as a skip word in 03, the permit forms and the negated-cap look-ahead in 37, 'longer\\b' in 01) and in A05V-38 (the particle), and the appended A05V-72 scope pattern (critical kind other_material_error, since the gate's critical vocabulary has no 'scope_reversal'; the reviewer's label is kept at the start of its why). No evidence, question, registry record or expected value changed.",
+  "Not applied: the 16 appended patterns labelled wrong_code_for_value or case_value_swap (choice cases 45, 58, 62, 63, 68, 70, 71; one-call cases 33, 60, 81; two-case cases 16, 40, 43). They read a value as bound to the nearest code before it, so correct answers that put the value first fire them: 'Lệ phí là 46.000 won đối với X-4-2 và 63.000 won đối với X-4-3' (33, also the author's sample answer), 'It is 58,000 won for X-4-1 and 27,000 won for X-4-3' (62), '71.000 won cho X-4-1 và 24.000 won cho X-4-2' (71), '40 ngày đối với X-4-4 và 16 ngày đối với X-4-1' (63), '12일(X-4-1), 35일(X-4-3)' (60). A critical failure on a correct answer is worse than a missed swap, and the author's rationale already noted a sentence-level pattern cannot bind a value to its code.",
+  "Consequence, kept as a known limit: on the frozen build the reviewer's 263-answer bank gives 30 misjudgements, all wrong answers that swap two values between codes or cases (or, in 58, reverse which code applies) and still pass; no correct answer fails. The guard's claim support does not catch these either, because both values are in the cited evidence.",
+  "Before the review the implementer's deterministic check matched all 81 cases (admissible ids, pre_inference, uncovered_items, reply language); conflict_records falls on exactly the seven conflict cases and the choice rule on 45, 58 (no retry: O-3 is in no evidence), 62, 63, 68, 70 and 71. The author's sample correct answers pass the raw and end-to-end channels in all 63 proceed cases with no retry fired; a one-code answer fires the choice retry on all six positives."
+ ]
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": "waymaker-artemis-expected-result-review/1.0",
+  "mission": "005-M",
+  "acceptance_sha256_reviewed": null,
+  "reviewed_version_note": "The reviewed first build was not kept on disk; afterwards only case ids (A05L- typo in the author brief corrected to A05M-), rationales, mention groups and patterns changed. The reviewer's own derivation and test answers were re-run against the frozen build.",
+  "acceptance_sha256_frozen": "e6f6e836e82cc4589ba0e39a0e2472f5d256cb3776e3c4bf19c15a1ebb5d3d25",
+  "roles": {
+    "behavioural_specification": "implementer (Claude main session) revised trusted_evidence_spec.md for 005-M (registry method rule, source fields in claim support, uncovered_sentence, two removal forms) and clarified item order, part order and rule 17 from the code's behaviour",
+    "acceptance_construction": "separate agent; read only the spec and the 005-G development suite for format",
+    "expected_result_review": "second separate agent; read only the spec and the suite; re-derived every value incl. parts, reply languages and the exact uncovered_sentence, and tested mentions and patterns against its own answers in three languages",
+    "implementation": "Claude main session"
+  },
+  "independence_limit": "All roles are instances of the same model family in one session. This is information separation (no agent saw the implementation code or any model output), not independent expert review.",
+  "spec_clarified_during_construction": [
+    "uncovered_items and uncovered_sentence list items in item-table order; situation parts are domestic then abroad (also when joined); rule 17's successor must be verified and in effect from its effective_from, and must be a record the registry accepts (section 1). All three state existing code behaviour."
+  ],
+  "review_result": "All spec-derived values, including parts, reply languages and the uncovered_sentence of every partial case, matched the reviewer in all 81 cases.",
+  "defects_fixed_before_freeze": [
+    "Rationale of 11 and 58: a language word counts as a reply request when choosing the reply language and is only left in the model's question",
+    "Too narrow mentions: 02, 03, 31, 32 (incl. 'missing', 'replace'), 38, 63, 73, 74 (document-name forms)",
+    "Too loose mentions: bare 'not'/'không' replaced by negation phrases; 2만/3만/4만/10만 must be followed by 원/won; 59 requires a March 1 date form",
+    "Patterns firing on correct answers: 63 (mà không / không có / thì), 40 (the record's effective date '2026년 1월 1일'); tight negations 'not KRW X', 'không phải KRW X', 'X days isn't right' allowed",
+    "Reversals not caught: week/month forms of wrong values; conflicts settled anyway (28-30); plain-present role reversals (50, 61, 62); permission given (09, 54, 77); new patterns for 36, 37/39/70 and 59"
+  ],
+  "kept": [
+    "Split cases 74, 75, 79, 80, 81 have no value-swap patterns (a correct answer that puts the value before its label would fire them); each part's guard sees only its own evidence",
+    "A rebuttal that repeats an inadmissible value ('the 70,000원 in the community post is not verified', 'instead of KRW 45,000') fires the value pattern; the claim-support check flags such a value anyway",
+    "37: an unconditional yes/no without the 1-year condition is caught by the required mention, not by a pattern",
+    "Rare spellings of wrong values ('사만오천원', '30k won', '50 USD', 'within a week') are not all covered by patterns"
+  ],
+  "no_model_output_existed": true
+}
