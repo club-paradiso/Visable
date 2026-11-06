@@ -19,7 +19,7 @@ export const DATA_PATHS = Object.freeze({
   procedureEvidenceBindings: './data/procedure_evidence_bindings.json',
   officialWebOverlays: './data/official_web_overlays.json',
   agentRegistry: 'data/agent_registry_2026-04-30.json',
-  designatedMedicalInstitutions: 'data/designated_medical_institutions_2026_04_30.json',
+  designatedMedicalInstitutions: 'data/designated_medical_institutions_2026_11_02.json',
   jobcodeMaster: './data/jobcode_master.json',
   employmentDir: './data/employment/'
 });
