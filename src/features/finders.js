@@ -406,6 +406,7 @@
         loadingEl.hidden = true;
         dataset.meta = json && json._meta ? json._meta : {};
         dataset.institutions = Array.isArray(json && json.institutions) ? json.institutions : [];
+        dataset.regions = Array.isArray(json && json.regions) ? json.regions : [];
         applyFilter();
       })
       .catch(function () {
