@@ -1,0 +1,16 @@
+/* "새 매뉴얼 개정 후보" notice — shared by the search result page (status-guidance) and manual.html. */
+.mu-notice{box-sizing:border-box;margin:18px 0 0;padding:14px 16px;border:1px solid var(--cs-line,var(--line,#d3dad7));border-left:4px solid var(--cs-accent,var(--accent,#0b5d4f));border-radius:12px;background:var(--cs-surface,var(--surface,#f7f9f8));color:var(--cs-ink,var(--ink,#173f39));font-size:14px;line-height:1.6}
+.mu-title{margin:0;font-weight:700;font-size:14.5px}
+.mu-tag{display:inline-block;margin-right:6px;padding:1px 8px;border:1px solid currentColor;border-radius:999px;font-size:11.5px;font-weight:700;vertical-align:1px}
+.mu-body{margin:6px 0 0;font-size:13px;color:var(--cs-muted,var(--muted,#516963))}
+.mu-list{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:10px}
+.mu-item{margin:0;padding:10px 12px;border-radius:10px;background:var(--cs-bg,#fff);border:1px solid var(--cs-line,var(--line,#e2e8e5))}
+.mu-item-title{margin:0;font-weight:650;font-size:13.5px}
+.mu-item-sum{margin:4px 0 0;font-size:13px}
+.mu-lines{margin:8px 0 0;font-size:12.5px}
+.mu-lines summary{cursor:pointer;font-weight:650}
+.mu-lines ul{margin:6px 0 0;padding-left:18px}
+.mu-lines li{margin:3px 0}
+.mu-item-src{margin:8px 0 0;font-size:12px;color:var(--cs-muted,var(--muted,#516963))}
+.mu-item-src a{color:inherit;font-weight:650}
+@media (max-width:480px){.mu-notice{padding:12px}.mu-item{padding:9px 10px}}

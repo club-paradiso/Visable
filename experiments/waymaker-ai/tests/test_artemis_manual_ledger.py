@@ -42,6 +42,15 @@ def test_sources_are_approved_and_their_files_match_the_approval_record():
         assert s["approval_state"] == "approved" and len(s["sha256"]) == 64
 
 
+def test_historical_stay_replay_does_not_reapprove_the_superseded_edition():
+    index = json.loads(ml.APPROVAL_INDEX.read_text(encoding="utf-8"))["documents"]
+    assert index["stay_manual_2026_10_19_pdf"]["approval_state"] == "superseded"
+    history = next(s for s in ml.approved_sources() if s["id"] == "stay_manual_2026_10_19_pdf")
+    assert history["historical_replay_only"] is True
+    assert history["sha256"] == index[history["id"]]["source_sha256"]
+    assert ml._page_text(history["id"], 5)["page"] == 5
+
+
 def test_a_resolved_page_passes_the_gate_and_integrity():
     item = ml.resolve_evidence({"id": "visa_manual_2026_10_19_pdf#p43",
                                 "source_id": "visa_manual_2026_10_19_pdf", "page": 43}, LEDGER)

@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "role": "visa",
+    "old_label": "visa 2026-10-19",
+    "new_label": "visa 2026-11-06",
+    "old_path": "docs/source-manuals/2026-10-19/extracted/full_text/visa_manual_261019.txt",
+    "new_path": "docs/source-manuals/2026-11-06/extracted/full_text/visa_manual_261106.txt",
+    "old_paragraphs": 14561,
+    "new_paragraphs": 14562,
+    "hunks": 2,
+    "added_lines": 1,
+    "removed_lines": 0,
+    "changed_hunks": 1,
+    "changed_ratio": 0.00010301136558733647,
+    "extraction_mismatch_suspected": false,
+    "review_status": "candidates_for_human_review"
+  },
+  "affected_status_codes": [
+    {
+      "parent": "D-4",
+      "codes": [
+        "D-4-3"
+      ],
+      "hunks": 1,
+      "added": 1,
+      "removed": 0,
+      "changed": 0
+    }
+  ],
+  "hunks": [
+    {
+      "kind": "changed",
+      "old_start": 7,
+      "new_start": 7,
+      "anchor": "",
+      "codes": [],
+      "old_lines": [
+        "2026. 10."
+      ],
+      "new_lines": [
+        "2026. 11."
+      ]
+    },
+    {
+      "kind": "added",
+      "old_start": null,
+      "new_start": 2751,
+      "anchor": "3. 고등학교 이하 교육기관 유학생에 대한 일반연수(D-4-3) 자격 사증발급인정서 발급",
+      "codes": [
+        "D-4-3"
+      ],
+      "old_lines": [],
+      "new_lines": [
+        "- ｢제주특별자치도 설치 및 국제자유도시 조성을 위한 특별법｣ 제223조에 따른 국제학교"
+      ]
+    }
+  ]
+}

@@ -1,7 +1,6 @@
 // Golden: registered immigration-agent finder and designated-hospital finder. Both load an
 // official registry snapshot (data/agent_registry_2026-04-30.json,
-// data/designated_medical_institutions_2026_11_02.json — the files src/data/paths.js / src/features/finders.js
-// fetch); expected names and counts come from those files, so a data refresh on the page must update this spec.
+// data/designated_medical_institutions_2026_11_02.json); expected names come from those files.
 import { test, expect } from '@playwright/test';
 import { pack, readJson } from '../helpers/data.mjs';
 import { boot, normalize } from '../helpers/page.mjs';

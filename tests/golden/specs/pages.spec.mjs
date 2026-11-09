@@ -31,6 +31,15 @@ test.describe('manual.html — official manual reader', () => {
     expect(text).toContain(common.s.title);
     expect(text).not.toContain(common.v.title);
     expect(page.url()).toContain('#c-common.s');
+    // An HWP-only current edition must never produce href="undefined" or label an older PDF as current.
+    const source = MANUAL_CATALOG.sources.s;
+    const currentLink = page.locator('.doc .disc a').first();
+    await expect(currentLink).toHaveAttribute('href', source.official_kind === 'pdf' ? source.official_file : source.official_url);
+    await expect(page.locator('.doc .disc a[href="undefined"]')).toHaveCount(0);
+    if (source.previous?.pdf) {
+      await expect(page.locator('.doc .disc a[href="' + source.previous.pdf + '"]')).toHaveCount(1);
+      await expect(page.locator('.doc .disc')).toContainText('이전 판 PDF');
+    }
   });
 });
 

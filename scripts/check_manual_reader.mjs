@@ -37,9 +37,11 @@ for (const [tag, s] of Object.entries(cat.sources)) {
   ok(['v', 's'].includes(tag), `source tag ${tag} is v or s`);
   const md = readFileSync(join(ROOT, s.markdown));
   ok(createHash('sha256').update(md).digest('hex') === s.sha256, `${s.markdown}: sha256 matches catalog (rebuild with python3 scripts/build_manual_reader.py)`);
-  ok(existsSync(join(ROOT, s.pdf)), `${tag}: official PDF ${s.pdf} exists`);
+  ok(existsSync(join(ROOT, s.official_file)), `${tag}: official ${s.official_kind} file ${s.official_file} exists`);
+  ok(existsSync(join(ROOT, s.crosscheck_text)), `${tag}: cross-check text ${s.crosscheck_text} exists`);
+  ok(!s.previous || existsSync(join(ROOT, s.previous.pdf)), `${tag}: previous-edition PDF ${s.previous && s.previous.pdf} exists`);
   ok(s.approval_state === 'needs_review', `${tag}: approval_state stays needs_review until a human content review`);
-  ok(s.pdf_crosscheck && s.pdf_crosscheck.ratio >= 0.97, `${tag}: Markdown matches ≥97% of PDF text probes (got ${s.pdf_crosscheck && s.pdf_crosscheck.ratio})`);
+  ok(s.text_crosscheck && s.text_crosscheck.ratio >= 0.97, `${tag}: Markdown matches ≥97% of the independently extracted text probes (got ${s.text_crosscheck && s.text_crosscheck.ratio})`);
 }
 const keys = new Set(cat.chapters.map((c) => c.key));
 let blocksSeen = 0;
@@ -108,7 +110,14 @@ ok(route.href('', null) === null, 'no code → no deep link');
 // page wiring
 const page = read('manual.html');
 ok(/assets\/js\/manual-reader-route\.js/.test(page) && /assets\/js\/manual-reader\.js/.test(page), 'manual.html loads route + reader scripts');
-ok(/visa_manual_261019\.pdf/.test(page) && /stay_manual_261102\.pdf/.test(page), 'manual.html keeps official PDF fallbacks (noscript)');
+// The static banner (shown before the script runs / without it) must name the same editions as the catalog.
+const koDate = (iso) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso); return `${m[1]}. ${+m[2]}. ${+m[3]}.`; };
+for (const [tag, s] of Object.entries(cat.sources)) {
+  ok(page.includes(`${koDate(s.date)}자`), `manual.html static banner names the ${tag} edition date ${koDate(s.date)} from the catalog`);
+  ok(s.official_kind === 'pdf' || !/\.hwp["']/.test(page), 'manual.html never links an HWP (HWP files are not deployed, see .vercelignore)');
+  if (s.previous) ok(page.includes(s.previous.pdf), `manual.html keeps the previous-edition PDF fallback ${s.previous.pdf} (noscript)`);
+  ok(page.includes(s.official_url.replace(/&/g, '&amp;')), 'manual.html links the HiKorea notice');
+}
 const reader = read('assets/js/manual-reader.js');
 ok(/공식 원문 발췌/.test(reader) && !/검토 전/.test(reader), 'reader labels the text as an official-source excerpt, with no internal review label');
 ok(/법적 요건이 아니며|법적 요건이 아닙니다/.test(reader), 'reader footer separates Visable editorial text from requirements');

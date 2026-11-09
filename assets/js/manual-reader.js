@@ -11,11 +11,58 @@
 const BASE = 'data/manual-reader/';
 const IMG_BASE = 'assets/manual-reader/img/';
 const app = document.getElementById('mr-app');
-let CAT = null, ED = null;            // catalog (sections only) + editorial layer
+let CAT = null, ED = null, MU_DATA = null;            // catalog (sections only) + editorial layer
 let GROUPS, VISAS, EXTRA_CHAPTERS, SEC, TASKS, QUICK, GLOSSARY;
 const CH = {};                         // chapter cache: CH['F-6/s'] = {blocks}
 const ROUTE = () => window.VisableManualReaderRoute;
 function fetchJson(url){ return fetch(url).then(r => { if (!r.ok) throw new Error('HTTP ' + r.status + ' ' + url); return r.json(); }); }
+// Edition text comes from catalog.json (data/manual-reader), so a new edition needs no edit here.
+function koDate(iso){ const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || ''); return m ? `${m[1]}. ${+m[2]}. ${+m[3]}.` : (iso || ''); }
+function srcLinks(tab){
+  // The deployed site ships PDFs only. An edition whose official file is an HWP (not deployed) links to the HiKorea notice,
+  // and the previous edition's PDF stays available for page-level checking.
+  const s = CAT && CAT.sources && CAT.sources[tab];
+  if (!s) return '';
+  const kind = tab === 'v' ? '사증' : '체류';
+  const out = [];
+  if (s.official_kind === 'pdf' && s.official_file) out.push(`<a href="${esc(s.official_file)}" target="_blank" rel="noopener">${kind} 매뉴얼 PDF (${esc(koDate(s.date))})</a>`);
+  if (s.previous && s.previous.pdf) out.push(`<a href="${esc(s.previous.pdf)}" target="_blank" rel="noopener">이전 판 ${kind} PDF (${esc(koDate(s.previous.date))})</a>`);
+  return out.join('');
+}
+function chapterSourceNote(tab){
+  const s = CAT.sources[tab];
+  const isPdf = s.official_kind === 'pdf' && !!s.official_file;
+  const currentUrl = isPdf ? s.official_file : s.official_url;
+  const currentLabel = isPdf ? '해당 판 공식 PDF' : 'HiKorea 공지의 해당 판 HWP 원본';
+  const previous = s.previous && s.previous.pdf
+    ? ` 참고: <a href="${esc(s.previous.pdf)}" target="_blank" rel="noopener">이전 판 PDF (${esc(koDate(s.previous.date))})</a>는 현재 판의 근거가 아닙니다.`
+    : '';
+  return `표·그림과 적용 조건은 <a href="${esc(currentUrl)}" target="_blank" rel="noopener">${currentLabel}</a>에서 확인하세요.${previous}`;
+}
+function chapterNotices(key, tab){
+  const MU = window.VisableManualUpdates;
+  if (!MU || !MU_DATA) return '';
+  const role = tab === 'v' ? 'visa' : 'stay';
+  const esc2 = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp('^c-' + esc2 + '\\.' + tab + '(\\.|$)');
+  return MU.noticeHtml(MU_DATA, MU_DATA.revisions.filter(r => r.role === role && re.test(r.reader_hash)), 'ko', { base: '', idSuffix: '-' + key + tab, variant: 'reader' });
+}
+function homeNotices(){
+  const MU = window.VisableManualUpdates;
+  if (!MU || !MU_DATA || !MU_DATA.revisions.length) return '';
+  return MU.noticeHtml(MU_DATA, MU_DATA.revisions, 'ko', { base: '', idSuffix: '-home', variant: 'all' });
+}
+function renderEditionBanner(){
+  const box = document.querySelector('.mr-pending-source');
+  if (!box || !CAT || !CAT.sources) return;
+  const v = CAT.sources.v, st = CAT.sources.s;
+  const hwpOnly = [v, st].some(x => x.official_kind !== 'pdf');
+  box.innerHTML = `<div class="mr-pending-source__info"><strong>사증 ${esc(koDate(v.date))}자 · 체류 ${esc(koDate(st.date))}자 매뉴얼 (최신 반입 판본)</strong>`
+    + `<p>이 화면은 ${esc(koDate(v.date))}자 사증 안내매뉴얼과 ${esc(koDate(st.date))}자 체류 안내매뉴얼을 변환해 보여 줍니다. 변환된 본문을 사람이 한 줄씩 대조한 것은 아니며, 표·문단의 순서가 원문과 다를 수 있습니다.`
+    + (hwpOnly ? ' 이 판본은 PDF 없이 HWP 원본에서 가져왔기 때문에 쪽 번호가 없고, 쪽 단위 근거(검색·AI 답변)는 아직 이전 판 PDF를 따릅니다.' : '')
+    + ' 확인이 필요하면 HiKorea 공지의 공식 파일을 열어 주세요.</p></div>'
+    + `<div class="mr-pending-source__links"><a href="${esc(v.official_url)}" target="_blank" rel="noopener">HiKorea 공지</a>${srcLinks('v')}${srcLinks('s')}</div>`;
+}
 function chapterData(key, src){
   const id = key + '/' + src;
   if (CH[id]) return Promise.resolve(CH[id]);
@@ -103,10 +150,10 @@ function renderHome(){
   let html = `
   <section class="intro">
     <div>
-      <div class="eyebrow">OFFICIAL MANUALS / 2026.11</div>
+      <div class="eyebrow">OFFICIAL MANUALS / ${esc(CAT.sources.s.version)}</div>
       <h1>매뉴얼 원문을,<br>내 자격과 업무만 골라 읽어요</h1>
-      <p>법무부 「사증발급 안내매뉴얼」(2026. 10. 19.)과 「외국인체류 안내매뉴얼」(2026. 11. 2.) 원문을 고치지 않고 체류자격·업무별로 나눠 보여 드려요. 쉬운 말 제목과 서류 체크리스트는 Visable이 덧붙인 것이에요.</p>
-      <p class="srcline"><span class="state">공식 원문 발췌</span><a href="docs/source-manuals/2026-10-19/visa_manual_261019.pdf" target="_blank" rel="noopener">사증발급 PDF</a><a href="docs/source-manuals/2026-11-02/stay_manual_261102.pdf" target="_blank" rel="noopener">외국인체류 PDF</a><a href="${esc(CAT.sources.v.official_url)}" target="_blank" rel="noopener">HiKorea 공지</a></p>
+      <p>법무부 「사증발급 안내매뉴얼」(${esc(koDate(CAT.sources.v.date))})과 「외국인체류 안내매뉴얼」(${esc(koDate(CAT.sources.s.date))}) 원문을 고치지 않고 체류자격·업무별로 나눠 보여 드려요. 쉬운 말 제목과 서류 체크리스트는 Visable이 덧붙인 것이에요.</p>
+      <p class="srcline"><span class="state">공식 원문 발췌</span>${srcLinks('v')}${srcLinks('s')}<a href="${esc(CAT.sources.v.official_url)}" target="_blank" rel="noopener">HiKorea 공지</a></p>
     </div>
     <ol class="howto" aria-label="이용 방법">
       <li>하려는 일을 고르세요. (선택)</li>
@@ -114,6 +161,7 @@ function renderHome(){
       <li>서류 목록을 눌러 하나씩 체크하세요.</li>
     </ol>
   </section>
+  ${homeNotices()}
   <div class="block-h"><h2 id="taskh">무엇을 하려고 하나요?</h2><span>고르면 자격 카드에서 그 안내로 바로 이동해요</span></div>
   <div class="tasks" role="group" aria-labelledby="taskh">
     ${TASKS.map(x => `<button class="task" type="button" data-task="${x.id}" aria-pressed="${x.id === task}"><small>${x.s}</small><b>${x.t}</b><span>${x.d}</span></button>`).join('')}
@@ -196,7 +244,7 @@ function renderChapter(key, tab, secIdx, opts){
     drawChapter(key, tab, ch, resolved >= 0 ? String(resolved) : null, opts);
   }).catch(err => {
     if (seq !== renderSeq) return;
-    app.innerHTML = `<div class="mr-err" role="alert">원문을 불러오지 못했어요. <button type="button" id="mr-retry">다시 시도</button> 또는 <a href="docs/source-manuals/${tab === 'v' ? '2026-10-19' : '2026-11-02'}/${tab === 'v' ? 'visa_manual_261019' : 'stay_manual_261102'}.pdf" target="_blank" rel="noopener">공식 PDF</a>를 여세요.</div>`;
+    app.innerHTML = `<div class="mr-err" role="alert">원문을 불러오지 못했어요. <button type="button" id="mr-retry">다시 시도</button> 또는 <a href="${esc(CAT.sources.v.official_url)}" target="_blank" rel="noopener">HiKorea 공지</a>에서 공식 파일을 여세요.</div>`;
     $('#mr-retry').onclick = () => renderChapter(key, tab, secIdx, opts);
     console.error(err);
   });
@@ -247,7 +295,8 @@ function drawChapter(key, tab, ch, secIdx, opts){
     <div class="layout">
       <nav class="toc" aria-label="목차"><details class="tocd" ${matchMedia('(max-width:900px)').matches ? '' : 'open'}><summary>이 탭의 목차</summary>${toc}</details></nav>
       <div class="doc">
-        <p class="disc"><span class="state">공식 원문 발췌</span> 아래는 「${SRC_NAME[tab]}」(${esc(CAT.sources[tab].date.replace(/-/g, '. ').replace(/^(\d+)\. 0?(\d+)\. 0?(\d+)$/, '$1. $2. $3.'))}) 원문이에요. 굵은 제목은 Visable이 붙인 쉬운 말이고, 회색 꼬리표가 원문 항목명이에요. 표·그림과 적용 조건은 <a href="${esc(CAT.sources[tab].pdf)}" target="_blank" rel="noopener">공식 PDF</a>에서 확인하세요.</p>
+        <p class="disc"><span class="state">공식 원문 발췌</span> 아래는 「${SRC_NAME[tab]}」(${esc(CAT.sources[tab].date.replace(/-/g, '. ').replace(/^(\d+)\. 0?(\d+)\. 0?(\d+)$/, '$1. $2. $3.'))}) 원문이에요. 굵은 제목은 Visable이 붙인 쉬운 말이고, 회색 꼬리표가 원문 항목명이에요. ${chapterSourceNote(tab)}</p>
+        ${chapterNotices(key, tab)}
         <div id="secs"></div>
       </div>
     </div>${footer()}`;
@@ -528,14 +577,15 @@ $('#mr-q').addEventListener('input', e => {
 });
 $('#mr-q').addEventListener('keydown', e => { if (e.key === 'Enter'){ clearTimeout(st); const v = e.target.value.trim(); if (v) renderSearch(v); } });
 
-Promise.all([fetchJson(BASE + 'catalog.json'), fetchJson(BASE + 'editorial.json')]).then(([cat, ed]) => {
-  CAT = cat; ED = ed;
+Promise.all([fetchJson(BASE + 'catalog.json'), fetchJson(BASE + 'editorial.json'), fetchJson('data/manual-updates/pending_revisions.json').catch(() => null)]).then(([cat, ed, mu]) => {
+  CAT = cat; ED = ed; MU_DATA = mu;
   GROUPS = ed.groups; VISAS = ed.statuses; EXTRA_CHAPTERS = ed.extra_chapters; SEC = ed.section_titles;
   TASKS = ed.tasks; QUICK = ed.quick; GLOSSARY = ed.glossary.map(g => [g.term, g.text]);
   GL_SKIP_IDX = GLOSSARY.map((g, i) => ['사증','체류자격','근무처','약호','TOPIK'].includes(g[0]) ? i : -1).filter(i => i >= 0);
+  renderEditionBanner();
   route();
 }).catch(err => {
   console.error(err);
-  app.innerHTML = '<div class="mr-err" role="alert">매뉴얼 원문을 불러오지 못했어요. 새로고침하거나 공식 PDF를 여세요: <a href="docs/source-manuals/2026-10-19/visa_manual_261019.pdf">사증발급</a> · <a href="docs/source-manuals/2026-11-02/stay_manual_261102.pdf">외국인체류</a></div>';
+  app.innerHTML = '<div class="mr-err" role="alert">매뉴얼 원문을 불러오지 못했어요. 새로고침하거나 HiKorea 공지에서 공식 파일을 여세요: <a href="https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&amp;BBS_GB_CD=BS10&amp;NTCCTT_SEQ=1062&amp;page=1" target="_blank" rel="noopener">HiKorea 공지</a></div>';
 });
 })();

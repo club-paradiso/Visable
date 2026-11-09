@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "note": "사람이 쓴 매핑입니다. scripts/build_manual_update_notices.py 가 audits/manual-refresh-*/ 의 문단 대조(JSON)에서 나온 변경 구간마다 이 매핑을 찾고, 매핑이 없는 구간이 있으면 실패합니다(새 변경이 화면에서 조용히 빠지는 것을 막음). 체류자격·절차는 변경 문구와 앞뒤 문맥을 보고 적었고, 요건·서류·기간을 새로 만들지 않습니다. summary 는 무엇이 바뀌었는지만 설명합니다.",
+  "ignore_cover_month_change": true,
+  "entries": [
+    {
+      "id": "v-d43-cert-jeju-intl-school",
+      "role": "visa",
+      "pair": "visa_hwp_261019_to_261106",
+      "match_new_line_prefix": "- ｢제주특별자치도 설치 및 국제자유도시 조성을 위한 특별법｣ 제223조에 따른 국제학교",
+      "codes": ["D-4-3"],
+      "procedures": ["visa_issuance_confirmation"],
+      "reader_hash": "c-D-4.v.cert",
+      "title_ko": "사증발급인정서: 교육기관 목록에 국제학교 추가",
+      "title_en": "Certificate of visa issuance: international school added to the list of institutions",
+      "summary_ko": "고등학교 이하 유학생(D-4-3)의 교육기관 목록에 「제주특별자치도 설치 및 국제자유도시 조성을 위한 특별법」 제223조에 따른 국제학교가 한 줄 추가됐어요.",
+      "summary_en": "One line was added to the list of eligible institutions for K-12 students (D-4-3): international schools under Article 223 of the Special Act on Jeju Special Self-Governing Province and the Development of a Free International City."
+    },
+    {
+      "id": "s-d2-parttime-restricted-field-violation",
+      "role": "stay",
+      "pair": "stay_hwp_261102_to_261109",
+      "match_new_line_prefix": "❍ (취업 제한 분야 불법취업)",
+      "codes": ["D-2"],
+      "procedures": ["part_time_work"],
+      "reader_hash": "c-D-2.s.parttime",
+      "title_ko": "시간제 취업 허가 위반자 처리 기준: 취업 제한 분야 불법취업 항목 추가",
+      "title_en": "Part-time work violations: new item for illegal work in restricted fields",
+      "summary_ko": "시간제 취업 허가 위반자 처리 기준에 ‘취업 제한 분야 불법취업’ 항목(제한업종, 적용 대상, 적발 시 처리)이 새로 들어갔어요. 처리 방법은 원문 문구를 그대로 확인하세요.",
+      "summary_en": "A new item on illegal work in restricted fields (restricted sectors, who it applies to, how detections are handled) was added to the part-time work violation standards. Read the exact wording in the source."
+    },
+    {
+      "id": "s-d43-change-jeju-intl-school",
+      "role": "stay",
+      "pair": "stay_hwp_261102_to_261109",
+      "match_new_line_prefix": "- ｢제주특별자치도 설치 및 국제자유도시 조성을 위한 특별법｣ 제223조에 따른 국제학교",
+      "codes": ["D-4-3"],
+      "procedures": ["status_change"],
+      "reader_hash": "c-D-4.s.change",
+      "title_ko": "체류자격 변경: 교육기관 목록에 국제학교 추가",
+      "title_en": "Change of status: international school added to the list of institutions",
+      "summary_ko": "고등학교 이하 유학생(D-4-3)으로 변경할 때의 교육기관 목록에 「제주특별자치도 설치 및 국제자유도시 조성을 위한 특별법」 제223조에 따른 국제학교가 한 줄 추가됐어요.",
+      "summary_en": "One line was added to the list of eligible institutions for changing to K-12 student status (D-4-3): international schools under Article 223 of the Special Act on Jeju Special Self-Governing Province and the Development of a Free International City."
+    },
+    {
+      "id": "s-g13-change-paternity-suit-target",
+      "role": "stay",
+      "pair": "stay_hwp_261102_to_261109",
+      "match_new_line_prefix": "- 한국인 부 또는 모를 특정하여 인지청구소송을 진행 중인 외국인",
+      "codes": ["G-1-3"],
+      "procedures": ["status_change"],
+      "reader_hash": "c-G-1.s.change",
+      "title_ko": "각종 소송 진행 중인 사람(G-1-3): 대상자에 인지청구소송 진행 중인 외국인 추가",
+      "title_en": "Persons in litigation (G-1-3): foreigners pursuing a paternity (affiliation) suit added",
+      "summary_ko": "G-1-3 대상자 목록에 한국인 부 또는 모를 특정하여 인지청구소송을 진행 중인 외국인(혼외자녀 및 양육자) 등이 추가됐어요.",
+      "summary_en": "The G-1-3 target list now includes foreigners (a child born out of wedlock and the caregiver) pursuing a paternity (affiliation) suit naming a Korean father or mother."
+    },
+    {
+      "id": "s-g13-change-paternity-suit-documents",
+      "role": "stay",
+      "pair": "stay_hwp_261102_to_261109",
+      "match_new_line_prefix": "유전자 감정결과서, 한국인 부 또는 모와 촬영한 사진 등",
+      "codes": ["G-1-3"],
+      "procedures": ["status_change"],
+      "reader_hash": "c-G-1.s.change",
+      "title_ko": "각종 소송 진행 중인 사람(G-1-3): 인지청구소송 관련 제출서류 추가",
+      "title_en": "Persons in litigation (G-1-3): documents added for paternity (affiliation) suits",
+      "summary_ko": "G-1-3 제출서류에 인지청구소송을 진행 중인 외국인의 경우 낼 서류 한 줄(유전자 감정결과서, 한국인 부 또는 모와 촬영한 사진 등)이 추가됐어요.",
+      "summary_en": "A line was added to the G-1-3 document list for foreigners pursuing a paternity (affiliation) suit (genetic test result, photos with the Korean father or mother, etc.)."
+    }
+  ]
+}

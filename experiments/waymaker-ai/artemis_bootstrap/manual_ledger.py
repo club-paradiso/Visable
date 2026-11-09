@@ -41,6 +41,24 @@ APPROVAL_INDEX = REPO_ROOT / "data" / "manual_approval_index.json"
 LEDGER = Path(__file__).resolve().parent / "ledgers" / "manual_2026_10_19_pages.jsonl"
 SOURCE_IDS = ("visa_manual_2026_10_19_pdf", "stay_manual_2026_10_19_pdf")
 
+# Frozen October experiments are historical replays. The current corpus catalog intentionally
+# lists only the latest approved edition (November stay), but these cases and their
+# cryptographic page ledger refer to the then-approved October edition. Never
+# add this historical source to the live catalog or the live trust gate.
+HISTORICAL_REPLAY_SOURCES = {
+    "stay_manual_2026_10_19_pdf": {
+        "id": "stay_manual_2026_10_19_pdf",
+        "domain": "stay",
+        "version": "2026.10",
+        "file": "docs/source-manuals/2026-10-19/stay_manual_261019.pdf",
+        "sections": "data/manual-corpus/stay_manual_2026_10_19_pdf.json",
+        "sha256": "4b176173f4c09ca1522f74e9a3e58cc0477a69aa6a28142bd675ca103f60397d",
+        "approval_state": "approved",  # Historical approval at the time of the October runs only.
+        "historical_replay_only": True,
+    },
+}
+
+
 
 def page_id(source_id: str, page: int) -> str:
     return f"{source_id}#p{page}"
@@ -61,10 +79,19 @@ def approved_sources(source_ids: Iterable[str] = SOURCE_IDS) -> List[Dict[str, A
     out = []
     for sid in source_ids:
         entry, record = catalog.get(sid), index.get(sid)
+        # The October stay source was once approved but is now superseded. It is
+        # permitted only for replay of the frozen October cases, with its exact
+        # archived source digest; live callers still use the current catalog.
+        if entry is None and sid in HISTORICAL_REPLAY_SOURCES:
+            entry = HISTORICAL_REPLAY_SOURCES[sid]
         if not entry or not record:
             raise SystemExit(f"{sid}: missing from catalog or approval index")
-        if entry.get("approval_state") != "approved" or record.get("approval_state") not in trust_gate.DIRECT_EVIDENCE_STATES:
-            raise SystemExit(f"{sid}: not approved (catalog {entry.get('approval_state')}, index {record.get('approval_state')})")
+        historical = bool(entry.get("historical_replay_only"))
+        historical_approved = (historical and record.get("approval_state") == "superseded"
+                               and record.get("reviewed_at") == "2026-10-23"
+                               and record.get("superseded_by") == "stay_manual_2026_11_02_pdf")
+        if entry.get("approval_state") != "approved" or not (record.get("approval_state") in trust_gate.DIRECT_EVIDENCE_STATES or historical_approved):
+            raise SystemExit(f"{sid}: not approved for this replay (catalog {entry.get('approval_state')}, index {record.get('approval_state')})")
         actual = _sha256_file(REPO_ROOT / entry["file"])
         if not (actual == entry["sha256"] == record.get("source_sha256")):
             raise SystemExit(f"{sid}: source file hash {actual[:12]} does not match the approval record")
@@ -109,6 +136,10 @@ _PAGE_CACHE: Dict[str, Dict[int, Dict[str, Any]]] = {}
 def _page_text(source_id: str, page: int) -> Optional[Dict[str, Any]]:
     if source_id not in _PAGE_CACHE:
         catalog = {s["id"]: s for s in json.loads(CATALOG.read_text(encoding="utf-8"))["sources"]}
+        # Historical cases keep their original PDF page numbers and hashes;
+        # they must not silently resolve against the newer current edition.
+        if source_id not in catalog and source_id in HISTORICAL_REPLAY_SOURCES:
+            catalog[source_id] = HISTORICAL_REPLAY_SOURCES[source_id]
         _PAGE_CACHE[source_id] = {p["page"]: p for p in _pages(catalog[source_id])}
     return _PAGE_CACHE[source_id].get(page)
 

@@ -1563,6 +1563,18 @@
     return html;
   }
 
+  // Revisions found in a newer, not yet reviewed manual edition (data/manual-updates). Shown only for the matching
+  // status code and only inside the same manual domain (visa vs stay); the reviewed guidance above is not changed.
+  function renderManualUpdates(model, step, lang, bundle) {
+    var MU = root.VisableManualUpdates;
+    if (!MU || !bundle || !bundle.manual_updates || !model || !model.procedure) return '';
+    if (['resolved', 'procedure', 'source-only'].indexOf(step.kind) < 0) return '';
+    var proc = procedureMeta(bundle, model.procedure);
+    if (!proc || (proc.domain !== 'visa' && proc.domain !== 'stay')) return '';
+    var items = MU.forStatus(bundle.manual_updates, proc.domain, [model.status, model.target], model.procedure);
+    return MU.noticeHtml(bundle.manual_updates, items, lang);
+  }
+
   function renderDisclaimer(lang, bundle) {
     var vars = { edition: editionLabel(bundle, lang) };
     return '<div class="sg-disclaimer"><p>' + esc(tr(lang, 'disclaimer')) + ' <details class="sg-disclaimer-more"><summary>' + esc(tr(lang, 'disclaimerMore')) + '</summary><ul>' + tr(lang, 'disclaimerDetail').map(function (t) { return '<li>' + esc(fmt(t, vars)) + '</li>'; }).join('') + '</ul></details></p></div>';
@@ -1592,6 +1604,7 @@
       var open = !!state.fullOpen;
       html += '<div class="sg-full" id="sgFull"' + (open ? '' : ' hidden') + '>' + body + '</div>';
     } else html += body;
+    html += renderManualUpdates(model, step, lang, bundle);
     html += renderDisclaimer(lang, bundle);
     model.quick = quick ? quick.model : null;
     return { html: html, model: model };
@@ -1659,7 +1672,11 @@
       bundle = applySchedules(b, Date.now());
       watchSchedules();
       // Local practice is optional: the national baseline never waits for it.
-      return fetch('data/local-practice-202609.json').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (lp) { if (lp) bundle.local_practice = lp; return bundle; });
+      return fetch('data/local-practice-202609.json').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (lp) {
+        if (lp) bundle.local_practice = lp;
+        // Newer-manual notices are optional too: the reviewed guidance never waits for them.
+        return fetch('data/manual-updates/pending_revisions.json').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (mu) { if (mu) bundle.manual_updates = mu; return bundle; });
+      });
     }).catch(function (e) { loadPromise = null; throw e; });
     return loadPromise;
   }
