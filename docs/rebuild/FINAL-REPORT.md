@@ -80,3 +80,7 @@ ADR-001 single harness branch · ADR-002 pre-installed Chromium 1243 · ADR-003 
 - **`experiments` workflow**: red on this PR's Phase 6 commit (98 tests, `KeyError: 'stay_manual_2026_10_19_pdf'` in the experiments package's manual ledger) and red on `main` since the manual edition promotion of 2026-11-02 (run 171 on main at bd03d59 and PR #756 fail the same way). The rebuild changed no manual, catalog or experiments file; the job ran because its path filter includes `backend/paradiso_backend.py`. Not this PR's; noted on the PR.
 - **Pre-existing check failures**: `check_preview_mvp.mjs` and `check_doc_master_id_migration.py` fail at the merge-base; both are data/content questions outside a structural rebuild (CLAUDE.md), logged for manual review.
 - **Preview-only verification gap**: until decision 1, the golden suite never runs against a Vercel deployment; `dist/` is verified locally only.
+
+## 7. Follow-up (2026-11-09)
+The owner asked for decisions 1–6 to be handled. Outcome per item is recorded in `docs/rebuild/STATUS.md` ("Follow-up"): 4 and 6 done; 2 and 5 implemented as mechanisms (CI baseline commit-back; per-skin visual states + empirical `!important` pass); 1 blocked by Vercel/GitHub permissions available to this session (production golden run executed instead, its two environment-only failures fixed); 3 blocked by Railway's isolated root directory (findings recorded); 7 identified as an experiments-data migration.
+

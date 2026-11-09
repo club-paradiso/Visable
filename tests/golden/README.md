@@ -62,3 +62,8 @@ local static server, against the Vercel preview when a deployment becomes ready
 `boot()` waits for the search field, for `#civicLanding[data-cs-hydrated]` to leave `static`, and for the first `paradiso-language-applied` event (the bootstrap fires it after the i18n packs load; civic-search re-renders the landing in its handler). Typing before that event can hit the element being replaced — this was the only flake the suite has shown.
 
 `boot()` also pins `Math.random` to a seeded generator (mulberry32) before any page script runs. The home's example chips are four random picks from a pool (`selectExamples` in `assets/js/civic-search.js`); different picks wrap onto a different number of rows in some themes and shifted the full-page visual baselines. Element and viewport shots did not need this; it is applied uniformly so every run renders the same chips.
+
+## Baseline sets (ci / local)
+
+`snapshotPathTemplate` puts screenshots under `tests/golden/__screenshots__/<set>/…` where `<set>` is `ci` when `CI` is set and `local` otherwise (`GOLDEN_SNAPSHOT_SET` overrides). The `ci` set is generated on the GitHub runner's Chromium the first time the `golden-visual` job runs on a branch of this repository and is committed back to the PR branch by that job; from then on it is compared, never regenerated. The `local` set belongs to the machine that made it (a different Chromium renders text a few pixels apart) and is git-ignored. Local workflow for a CSS step: generate the `local` set from a pristine worktree of the base commit, apply the change, compare.
+
