@@ -43,12 +43,12 @@
 /* Six tasks in reading order; document preparation keeps the accent colours. */
 :root[data-vt="default"] #civicLanding .cs-tools-core .cs-tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 :root[data-vt="default"] #civicLanding .cs-tools-core .cs-tool { flex-direction: column; align-items: flex-start; gap: 12px; padding: 20px; min-height: 120px; }
-:root[data-vt="default"] #civicLanding .cs-tools-core .cs-tool:nth-child(1):not(#vt-a) { background: #4E5FBA !important; border-color: #4E5FBA !important; }
-:root[data-vt="default"] #civicLanding .cs-tools-core .cs-tool:nth-child(2):not(#vt-a) { background: #0F1218 !important; border-color: #0F1218 !important; }
-:root[data-vt="default"] body[data-theme="dark"] #civicLanding .cs-tools-core .cs-tool:nth-child(2):not(#vt-a) { background: #23284A !important; border-color: #3A4796 !important; }
-:root[data-vt="default"] #civicLanding .cs-tools-core .cs-tool:nth-child(-n+2) :is(strong, small) { color: #FFFFFF !important; }
-:root[data-vt="default"] #civicLanding .cs-tools-core .cs-tool:nth-child(-n+2) small { color: #E7E9F8 !important; }
-:root[data-vt="default"] #civicLanding .cs-tools-core .cs-tool:nth-child(-n+2) .cs-icon-circle:not(#vt-a) { background: rgba(255,255,255,.16) !important; }
+:root[data-vt="default"] #civicLanding .cs-tools-core .cs-tool:nth-child(1):not(#vt-a) { background: #4E5FBA; border-color: #4E5FBA; }
+:root[data-vt="default"] #civicLanding .cs-tools-core .cs-tool:nth-child(2):not(#vt-a) { background: #0F1218; border-color: #0F1218; }
+:root[data-vt="default"] body[data-theme="dark"] #civicLanding .cs-tools-core .cs-tool:nth-child(2):not(#vt-a) { background: #23284A; border-color: #3A4796; }
+:root[data-vt="default"] #civicLanding .cs-tools-core .cs-tool:nth-child(-n+2) :is(strong, small) { color: #FFFFFF; }
+:root[data-vt="default"] #civicLanding .cs-tools-core .cs-tool:nth-child(-n+2) small { color: #E7E9F8; }
+:root[data-vt="default"] #civicLanding .cs-tools-core .cs-tool:nth-child(-n+2) .cs-icon-circle:not(#vt-a) { background: rgba(255,255,255,.16); }
 :root[data-vt="default"] #civicLanding .cs-tools-core .cs-tool:nth-child(-n+2) .cs-icon { filter: brightness(0) invert(1); }
 @media (min-width: 1024px) {
   :root[data-vt="default"] #civicLanding .cs-tools-core .cs-tool-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: minmax(160px, auto); gap: 14px; }
@@ -65,8 +65,8 @@
 :root[data-vt="default"] #statusGuidance .sg-answer .sg-code { color: #9BA3E8; font-family: var(--vs-mono); font-weight: 600; letter-spacing: -.05em; }
 :root[data-vt="default"] #statusGuidance .sg-answer .sg-facts { border-color: rgba(242,241,236,.16); }
 :root[data-vt="default"] #statusGuidance .sg-answer a:not(.sg-btn) { color: #C3C8F2; }
-:root[data-vt="default"] #statusGuidance .sg-answer .sg-btn-primary:not(#vt-a) { background: #9BA3E8 !important; color: #0F1218 !important; }
-:root[data-vt="default"] #statusGuidance .sg-answer .sg-btn:not(.sg-btn-primary):not(#vt-a) { background: transparent !important; color: #F2F1EC !important; border: 1px solid rgba(242,241,236,.4) !important; }
+:root[data-vt="default"] #statusGuidance .sg-answer .sg-btn-primary:not(#vt-a) { background: #9BA3E8; color: #0F1218; }
+:root[data-vt="default"] #statusGuidance .sg-answer .sg-btn:not(.sg-btn-primary):not(#vt-a) { background: transparent; color: #F2F1EC; border: 1px solid rgba(242,241,236,.4); }
 @media (min-width: 1024px) {
   :root[data-vt="default"] #statusGuidance .sg-answer { padding: 40px 44px; }
   :root[data-vt="default"] #statusGuidance .sg-answer .sg-answer-title { font-size: clamp(40px, 4.4vw, 60px); }
@@ -85,21 +85,21 @@
 :root[data-vt="stamp"] #civicLanding .cs-examples-label { text-align: left; }
 :root[data-vt="stamp"] #civicLanding .cs-hero > .cs-basis { margin-inline: 0; text-align: left; }
 /* the two manual dates become round passport stamps */
-:root[data-vt="stamp"] #civicLanding .cs-source-strip:not(#vt-a) { background: transparent !important; flex-direction: row !important; flex-wrap: wrap; justify-content: center; align-items: center; gap: 18px 28px; padding: 8px 0 24px; }
+:root[data-vt="stamp"] #civicLanding .cs-source-strip:not(#vt-a) { background: transparent; flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center; gap: 18px 28px; padding: 8px 0 24px; }
 :root[data-vt="stamp"] #civicLanding .cs-source-strip-label { flex-basis: 100%; text-align: center; font-family: var(--vs-mono); font-size: 12px; letter-spacing: .08em; color: var(--vs-ink3); }
-:root[data-vt="stamp"] #civicLanding .cs-source-strip a:not(#vt-a) { flex: 0 0 auto; width: 132px; height: 132px; padding: 18px !important; border: 2.5px solid var(--vs-ac) !important; border-radius: 50%; box-shadow: inset 0 0 0 5px var(--vs-bg), inset 0 0 0 6.5px var(--vs-ac); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center; color: var(--vs-ac-text) !important; font-family: var(--vs-mono); font-weight: 600; font-size: 13px; line-height: 1.3; letter-spacing: .02em; text-decoration: none !important; transform: rotate(-8deg); animation: vt-stamp-in .55s cubic-bezier(.2,1.5,.4,1) both; }
-:root[data-vt="stamp"] #civicLanding .cs-source-strip a + a:not(#vt-a) { border-left: 2.5px solid var(--vs-ac) !important; transform: rotate(7deg); animation-delay: .12s; }
+:root[data-vt="stamp"] #civicLanding .cs-source-strip a:not(#vt-a) { flex: 0 0 auto; width: 132px; height: 132px; padding: 18px; border: 2.5px solid var(--vs-ac); border-radius: 50%; box-shadow: inset 0 0 0 5px var(--vs-bg), inset 0 0 0 6.5px var(--vs-ac); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center; color: var(--vs-ac-text); font-family: var(--vs-mono); font-weight: 600; font-size: 13px; line-height: 1.3; letter-spacing: .02em; text-decoration: none; transform: rotate(-8deg); animation: vt-stamp-in .55s cubic-bezier(.2,1.5,.4,1) both; }
+:root[data-vt="stamp"] #civicLanding .cs-source-strip a + a:not(#vt-a) { border-left: 2.5px solid var(--vs-ac); transform: rotate(7deg); animation-delay: .12s; }
 :root[data-vt="stamp"] #civicLanding .cs-source-strip a > .cs-icon:last-child { margin: 0; }
 :root[data-vt="stamp"] #civicLanding .cs-source-strip a:hover { transform: rotate(-3deg) scale(1.04); }
 /* tools: a table of contents on a booklet page */
-:root[data-vt="stamp"] #civicLanding .cs-tools-core:not(#vt-a) { background: var(--vs-surface); border: 1.5px solid var(--vs-ac) !important; border-radius: 6px; box-shadow: 5px 5px 0 var(--vs-ac); padding: 26px 22px 18px; margin-top: 8px; counter-reset: vtoc; }
+:root[data-vt="stamp"] #civicLanding .cs-tools-core:not(#vt-a) { background: var(--vs-surface); border: 1.5px solid var(--vs-ac); border-radius: 6px; box-shadow: 5px 5px 0 var(--vs-ac); padding: 26px 22px 18px; margin-top: 8px; counter-reset: vtoc; }
 :root[data-vt="stamp"] #civicLanding .cs-tools-core h2 { font-family: var(--vs-display); font-size: clamp(22px, 2.4vw, 30px); font-weight: 700; color: var(--vs-ink); letter-spacing: -.02em; margin-bottom: 14px; }
 :root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 :root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool { counter-increment: vtoc; position: relative; flex-direction: column; align-items: flex-start; gap: 8px; padding: 30px 14px 14px; min-height: 104px; }
 :root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool::before { content: "p." counter(vtoc, decimal-leading-zero); position: absolute; top: 10px; left: 14px; font-family: var(--vs-mono); font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--vs-ac-text); }
 html[dir="rtl"]:root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool::before { left: auto; right: 14px; }
-:root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool:not(#vt-a) { background: transparent !important; border: 1.5px dashed var(--vs-ac) !important; box-shadow: none !important; }
-:root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool:not(#vt-a):hover { background: var(--vs-bg2) !important; border-style: solid !important; transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--vs-ac) !important; }
+:root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool:not(#vt-a) { background: transparent; border: 1.5px dashed var(--vs-ac); box-shadow: none; }
+:root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool:not(#vt-a):hover { background: var(--vs-bg2); border-style: solid; transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--vs-ac); }
 :root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool .cs-icon-circle { display: none; }
 :root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool strong { font-family: var(--vs-display); font-size: 17px; }
 @media (min-width: 1024px) {
@@ -112,9 +112,9 @@ html[dir="rtl"]:root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool::bef
   :root[data-vt="stamp"] #civicLanding .cs-tools-core:not(#vt-a) { padding: 34px 44px 22px; }
   :root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
   :root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool { flex-direction: row; align-items: baseline; min-height: 0; padding: 16px 8px 16px 72px; }
-  :root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool:not(#vt-a) { border: 0 !important; border-bottom: 1.5px dashed rgba(46,77,167,.45) !important; border-radius: 0 !important; }
-  :root[data-vt="stamp"] body[data-theme="dark"] #civicLanding .cs-tools-core .cs-tool:not(#vt-a) { border-bottom-color: rgba(217,184,101,.45) !important; }
-  :root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool:not(#vt-a):hover { transform: none; box-shadow: none !important; }
+  :root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool:not(#vt-a) { border: 0; border-bottom: 1.5px dashed rgba(46,77,167,.45); border-radius: 0; }
+  :root[data-vt="stamp"] body[data-theme="dark"] #civicLanding .cs-tools-core .cs-tool:not(#vt-a) { border-bottom-color: rgba(217,184,101,.45); }
+  :root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool:not(#vt-a):hover { transform: none; box-shadow: none; }
   :root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool::before { top: 20px; left: 8px; font-size: 13px; }
   html[dir="rtl"]:root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool { padding: 16px 72px 16px 8px; }
   :root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool-body { flex-direction: row; align-items: baseline; gap: 24px; width: 100%; }
@@ -134,7 +134,7 @@ html[dir="rtl"]:root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool::bef
   :root[data-vt="stamp"] #statusGuidance[data-vl="spread"] .vl-main { padding: 30px 36px 34px; border-inline-end: 1.5px dashed var(--vs-ac); min-width: 0; }
   :root[data-vt="stamp"] #statusGuidance[data-vl="spread"] .vl-side { padding: 30px 36px 34px; min-width: 0; }
   :root[data-vt="stamp"] #statusGuidance[data-vl="spread"] .vl-grid > .vl-col > :first-child { margin-top: 0; }
-  :root[data-vt="stamp"] #statusGuidance[data-vl="spread"] .vl-grid > .vl-col > :first-child:not(#vt-a) { border-top: 0 !important; padding-top: 0; }
+  :root[data-vt="stamp"] #statusGuidance[data-vl="spread"] .vl-grid > .vl-col > :first-child:not(#vt-a) { border-top: 0; padding-top: 0; }
   :root[data-vt="stamp"] #statusGuidance[data-vl="spread"] .vl-tail { margin-top: 30px; }
 }
 
@@ -149,23 +149,23 @@ html[dir="rtl"]:root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool::bef
 :root[data-vt="chrome"] #civicLanding .cs-examples-label { text-align: left; }
 :root[data-vt="chrome"] #civicLanding .cs-hero > .cs-basis { margin-inline: 0; text-align: left; }
 /* glass panels */
-:root[data-vt="chrome"] #civicLanding :is(.cs-tools-core, .cs-source-strip, .cs-footer, .cs-about):not(#vt-a) { background: rgba(255,255,255,.62) !important; border: 1px solid rgba(255,255,255,.95) !important; border-radius: 28px; box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 24px 48px -28px rgba(20,43,122,.35); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); padding: 24px 22px; }
-:root[data-vt="chrome"] body[data-theme="dark"] #civicLanding :is(.cs-tools-core, .cs-source-strip, .cs-footer, .cs-about):not(#vt-a) { background: rgba(26,32,51,.74) !important; border-color: rgba(255,255,255,.1) !important; box-shadow: 0 1px 0 rgba(255,255,255,.08) inset, 0 24px 48px -28px rgba(0,0,0,.8); }
+:root[data-vt="chrome"] #civicLanding :is(.cs-tools-core, .cs-source-strip, .cs-footer, .cs-about):not(#vt-a) { background: rgba(255,255,255,.62); border: 1px solid rgba(255,255,255,.95); border-radius: 28px; box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 24px 48px -28px rgba(20,43,122,.35); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); padding: 24px 22px; }
+:root[data-vt="chrome"] body[data-theme="dark"] #civicLanding :is(.cs-tools-core, .cs-source-strip, .cs-footer, .cs-about):not(#vt-a) { background: rgba(26,32,51,.74); border-color: rgba(255,255,255,.1); box-shadow: 0 1px 0 rgba(255,255,255,.08) inset, 0 24px 48px -28px rgba(0,0,0,.8); }
 :root[data-vt="chrome"] #civicLanding .cs-tools-core h2 { font-size: clamp(22px, 2.4vw, 30px); font-weight: 850; letter-spacing: -.04em; color: var(--vs-ink); margin-bottom: 18px; }
 /* app-icon grid */
 :root[data-vt="chrome"] #civicLanding .cs-tools-core .cs-tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; }
 :root[data-vt="chrome"] #civicLanding .cs-tools-core .cs-tool { flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 8px 4px; }
-:root[data-vt="chrome"] #civicLanding .cs-tools-core .cs-tool:not(#vt-a) { background: transparent !important; border: 0 !important; box-shadow: none !important; }
+:root[data-vt="chrome"] #civicLanding .cs-tools-core .cs-tool:not(#vt-a) { background: transparent; border: 0; box-shadow: none; }
 :root[data-vt="chrome"] #civicLanding .cs-tools-core .cs-tool:not(#vt-a):hover { transform: translateY(-3px); }
 :root[data-vt="chrome"] #civicLanding .cs-tools-core .cs-tool .cs-icon-circle { width: 60px; height: 60px; }
-:root[data-vt="chrome"] #civicLanding .cs-tools-core .cs-tool .cs-icon-circle:not(#vt-a) { border-radius: 18px !important; }
+:root[data-vt="chrome"] #civicLanding .cs-tools-core .cs-tool .cs-icon-circle:not(#vt-a) { border-radius: 18px; }
 :root[data-vt="chrome"] #civicLanding .cs-tools-core .cs-tool .cs-icon-circle .cs-icon { width: 24px; height: 24px; }
 :root[data-vt="chrome"] #civicLanding .cs-tools-core .cs-tool-body { align-items: center; }
 :root[data-vt="chrome"] #civicLanding .cs-tools-core .cs-tool strong { justify-content: center; font-size: 15px; }
 :root[data-vt="chrome"] #civicLanding .cs-tools-core .cs-tool strong .cs-icon { display: none; }
 :root[data-vt="chrome"] #civicLanding .cs-tools-core .cs-tool small { font-size: 13px; }
 :root[data-vt="chrome"] #civicLanding .cs-source-strip:not(#vt-a) { flex-direction: column; gap: 6px; }
-:root[data-vt="chrome"] #civicLanding .cs-source-strip a + a { border-left: 0 !important; padding-left: 0 !important; }
+:root[data-vt="chrome"] #civicLanding .cs-source-strip a + a { border-left: 0; padding-left: 0; }
 :root[data-vt="chrome"] #civicLanding .cs-source-strip-label { font-family: var(--vs-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--vs-ink3); }
 :root[data-vt="chrome"] #civicLanding .cs-footer:not(#vt-a) { margin-top: 16px; }
 @media (min-width: 1024px) {
@@ -193,7 +193,7 @@ html[dir="rtl"]:root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool::bef
   :root[data-vt] #statusGuidance[data-vl="aside"] .vl-grid { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 32px; align-items: start; margin-top: 8px; }
   :root[data-vt] #statusGuidance[data-vl="aside"] .vl-main { min-width: 0; }
   :root[data-vt] #statusGuidance[data-vl="aside"] .vl-side { position: sticky; top: 92px; display: flex; flex-direction: column; gap: 14px; min-width: 0; padding-top: 34px; }
-  :root[data-vt] #statusGuidance[data-vl="aside"] .vl-side > *:not(#vt-a) { margin: 0; border-top: 0 !important; background: var(--vf-card-bg, var(--vs-surface)); border: var(--vf-card-bd, 1px solid var(--vs-line)) !important; border-radius: var(--vf-r-card, 20px); box-shadow: var(--vf-card-sh, none); padding: 20px 20px 18px; }
+  :root[data-vt] #statusGuidance[data-vl="aside"] .vl-side > *:not(#vt-a) { margin: 0; border-top: 0; background: var(--vf-card-bg, var(--vs-surface)); border: var(--vf-card-bd, 1px solid var(--vs-line)); border-radius: var(--vf-r-card, 20px); box-shadow: var(--vf-card-sh, none); padding: 20px 20px 18px; }
   :root[data-vt="chrome"] #statusGuidance[data-vl="aside"] .vl-side > * { -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
   :root[data-vt] #statusGuidance[data-vl="aside"] .vl-side .sg-actions { display: flex; flex-direction: column; gap: 8px; }
   :root[data-vt] #statusGuidance[data-vl="aside"] .vl-side .sg-actions > li { width: 100%; }
@@ -205,8 +205,8 @@ html[dir="rtl"]:root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool::bef
 /* ======================================================================= */
 /* home: a sign menu (the tools) beside one centred question */
 :root[data-vt="neon"] #civicLanding .cs-tools-core h2 { font-family: var(--vs-mono); font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--vs-ink3); }
-:root[data-vt="neon"] #civicLanding .cs-tools-core .cs-tool:not(#vt-a) { border-radius: 12px !important; }
-:root[data-vt="neon"] body[data-theme="dark"] #civicLanding .cs-tools-core .cs-tool:not(#vt-a):hover { border-color: #7FE8FF !important; box-shadow: 0 0 16px rgba(127,232,255,.35) !important; }
+:root[data-vt="neon"] #civicLanding .cs-tools-core .cs-tool:not(#vt-a) { border-radius: 12px; }
+:root[data-vt="neon"] body[data-theme="dark"] #civicLanding .cs-tools-core .cs-tool:not(#vt-a):hover { border-color: #7FE8FF; box-shadow: 0 0 16px rgba(127,232,255,.35); }
 @media (max-width: 1023.98px) {
   /* phones and tablets: the menu becomes a row of signs to swipe */
   :root[data-vt="neon"] #civicLanding .cs-tools-core .cs-tool-grid { display: flex; gap: 10px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; padding: 2px 2px 12px; margin-inline: -2px; }
@@ -216,7 +216,7 @@ html[dir="rtl"]:root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool::bef
 @media (min-width: 1024px) {
   :root[data-vt="neon"] #civicLanding .cs-home { display: grid; grid-template-columns: 272px minmax(0, 1fr); column-gap: 48px; align-items: start; }
   :root[data-vt="neon"] #civicLanding .cs-home > * { grid-column: 2; }
-  :root[data-vt="neon"] #civicLanding .cs-home > .cs-tools-core:not(#vt-a) { grid-column: 1; grid-row: 1 / span 8; position: sticky; top: 16px; padding: 28px 22px 28px 0 !important; border-top: 0 !important; border-inline-end: 1px solid var(--vs-line) !important; min-height: calc(100vh - 140px); }
+  :root[data-vt="neon"] #civicLanding .cs-home > .cs-tools-core:not(#vt-a) { grid-column: 1; grid-row: 1 / span 8; position: sticky; top: 16px; padding: 28px 22px 28px 0; border-top: 0; border-inline-end: 1px solid var(--vs-line); min-height: calc(100vh - 140px); }
   :root[data-vt="neon"] #civicLanding .cs-tools-core .cs-tool-grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
   :root[data-vt="neon"] #civicLanding .cs-tools-core .cs-tool { padding: 12px 14px; gap: 12px; align-items: center; }
   :root[data-vt="neon"] #civicLanding .cs-tools-core .cs-tool .cs-icon-circle { width: 34px; height: 34px; }
@@ -229,14 +229,14 @@ html[dir="rtl"]:root[data-vt="stamp"] #civicLanding .cs-tools-core .cs-tool::bef
 
 /* result: one centred conversation — your question as a bubble, then answer cards */
 :root[data-vt="neon"] #statusGuidance.sg { max-width: 760px; margin-inline: auto; }
-:root[data-vt="neon"] #statusGuidance .sg-interp:not(#vt-a) { justify-content: flex-end; border-bottom: 0 !important; padding-bottom: 6px; }
+:root[data-vt="neon"] #statusGuidance .sg-interp:not(#vt-a) { justify-content: flex-end; border-bottom: 0; padding-bottom: 6px; }
 :root[data-vt="neon"] #statusGuidance .sg-interp-text { background: var(--vs-ac); color: var(--vs-ac-ink); border-radius: 22px 22px 6px 22px; padding: 10px 18px; }
-:root[data-vt="neon"] #statusGuidance .sg-interp-text :is(.sg-interp-name, .sg-interp-code, .sg-interp-proc, .sg-interp-sep):not(#vt-a) { color: inherit !important; }
+:root[data-vt="neon"] #statusGuidance .sg-interp-text :is(.sg-interp-name, .sg-interp-code, .sg-interp-proc, .sg-interp-sep):not(#vt-a) { color: inherit; }
 html[dir="rtl"]:root[data-vt="neon"] #statusGuidance .sg-interp-text { border-radius: 22px 22px 22px 6px; }
-:root[data-vt="neon"] #statusGuidance :is(.sg-answer, .sg-overview, .sg-docs, .sg-fee, .sg-cond-section, .sg-local, .sg-next, .sg-evidence, .sg-program, .sg-transition, .sg-question):not(#vt-a) { background: var(--vf-card-bg); border: var(--vf-card-bd) !important; border-radius: 20px; box-shadow: var(--vf-card-sh); padding: 20px 20px 18px; margin-top: 14px; }
+:root[data-vt="neon"] #statusGuidance :is(.sg-answer, .sg-overview, .sg-docs, .sg-fee, .sg-cond-section, .sg-local, .sg-next, .sg-evidence, .sg-program, .sg-transition, .sg-question):not(#vt-a) { background: var(--vf-card-bg); border: var(--vf-card-bd); border-radius: 20px; box-shadow: var(--vf-card-sh); padding: 20px 20px 18px; margin-top: 14px; }
 :root[data-vt="neon"] #statusGuidance .sg-answer .sg-code { font-family: var(--vs-mono); color: var(--vs-ac-text); }
 :root[data-vt="neon"] body[data-theme="dark"] #statusGuidance .sg-answer .sg-code { text-shadow: 0 0 12px rgba(127,232,255,.75), 0 0 32px rgba(47,123,255,.6); }
-:root[data-vt="neon"] #statusGuidance :is(.sg-related, .sg-disclaimer):not(#vt-a) { border-top: 0 !important; }
+:root[data-vt="neon"] #statusGuidance :is(.sg-related, .sg-disclaimer):not(#vt-a) { border-top: 0; }
 :root[data-vt="neon"] #statusGuidance .sg-related .sg-chips { justify-content: flex-start; }
 @media (min-width: 1024px) {
   :root[data-vt="neon"] #statusGuidance :is(.sg-answer, .sg-overview, .sg-docs, .sg-fee, .sg-cond-section, .sg-local, .sg-next, .sg-evidence, .sg-program, .sg-transition, .sg-question):not(#vt-a) { padding: 24px 28px 22px; }
@@ -244,10 +244,10 @@ html[dir="rtl"]:root[data-vt="neon"] #statusGuidance .sg-interp-text { border-ra
 
 /* ---------- motion ------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  :root[data-vt] #civicLanding .cs-source-strip a { animation: none !important; }
+  :root[data-vt] #civicLanding .cs-source-strip a { animation: none; }
 }
 @media print {
-  #statusGuidance .vl-grid { display: block !important; }
+  #statusGuidance .vl-grid { display: block; }
 }
 
 /* ======================================================================= */
@@ -259,21 +259,21 @@ html[dir="rtl"]:root[data-vt="neon"] #statusGuidance .sg-interp-text { border-ra
 /* ======================================================================= */
 
 /* results header uses the same column as #mainContent (1120px, 24px / 20px gutters) */
-body.civic-refresh.searched #hero.hero-container:not(#vt-a) { padding-left: 0 !important; padding-right: 0 !important; }
-body.civic-refresh.searched #hero .header-inner:not(#vt-a) { box-sizing: border-box !important; width: 100% !important; max-width: 1120px !important; margin-left: auto !important; margin-right: auto !important; padding-left: 24px !important; padding-right: 24px !important; }
-body.civic-refresh.searched #hero .logo-area:not(#vt-a) { justify-content: flex-start !important; margin-left: 0 !important; margin-right: 0 !important; padding-left: 0 !important; padding-right: 0 !important; }
-body.civic-refresh.searched #hero .logo-area .brand-wordmark-img:not(#vt-a) { margin-left: 0 !important; margin-right: 0 !important; }
+body.civic-refresh.searched #hero.hero-container:not(#vt-a) { padding-left: 0; padding-right: 0; }
+body.civic-refresh.searched #hero .header-inner:not(#vt-a) { box-sizing: border-box; width: 100%; max-width: 1120px; margin-left: auto; margin-right: auto; padding-left: 24px; padding-right: 24px; }
+body.civic-refresh.searched #hero .logo-area:not(#vt-a) { justify-content: flex-start; margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; }
+body.civic-refresh.searched #hero .logo-area .brand-wordmark-img:not(#vt-a) { margin-left: 0; margin-right: 0; }
 @media (max-width: 680px) {
-  body.civic-refresh.searched #hero .header-inner:not(#vt-a) { padding-left: 20px !important; padding-right: 20px !important; }
+  body.civic-refresh.searched #hero .header-inner:not(#vt-a) { padding-left: 20px; padding-right: 20px; }
 }
 /* below desktop the mark shrank to 22px tall, a third smaller than the home mark */
 @media (max-width: 1023.98px) {
-  body.civic-refresh.searched #hero .brand-wordmark-img:not(#vt-a) { width: auto !important; height: 30px !important; max-height: 30px !important; }
+  body.civic-refresh.searched #hero .brand-wordmark-img:not(#vt-a) { width: auto; height: 30px; max-height: 30px; }
 }
 
 /* results logo: the same theme-blue wordmark the home page shows (light only;
    dark keeps its own white mark) */
-:root[data-vt] body.civic-refresh.searched:not([data-theme="dark"]) #hero .brand-wordmark-img:not(#vt-a) { content: url("../brand/logos/visable-wordmark-blue.svg") !important; filter: none !important; }
+:root[data-vt] body.civic-refresh.searched:not([data-theme="dark"]) #hero .brand-wordmark-img:not(#vt-a) { content: url("../brand/logos/visable-wordmark-blue.svg"); filter: none; }
 
 /* Visable (default) result: the dark answer card painted the "확인한 내용" answers
    in the same ink as the card (contrast 1.0) and greyed the scenario line */
@@ -284,7 +284,7 @@ body.civic-refresh.searched #hero .logo-area .brand-wordmark-img:not(#vt-a) { ma
 /* side column starts level with the main column */
 @media (min-width: 1024px) {
   :root[data-vt] #statusGuidance[data-vl="aside"] .vl-grid { margin-top: 24px; }
-  :root[data-vt] #statusGuidance[data-vl="aside"] .vl-main > :first-child { margin-top: 0 !important; }
+  :root[data-vt] #statusGuidance[data-vl="aside"] .vl-main > :first-child { margin-top: 0; }
   :root[data-vt] #statusGuidance[data-vl="aside"] .vl-side { padding-top: 0; }
 }
 
@@ -315,10 +315,10 @@ body.civic-refresh.searched #hero .logo-area .brand-wordmark-img:not(#vt-a) { ma
 }
 /* results header: the wordmark is centred on the same 44px line as the
    language and theme buttons instead of riding 6-8px above them */
-body.civic-refresh.searched #hero .logo-area:not(#vt-a) { align-items: center !important; align-self: center !important; min-height: 44px !important; margin-top: 0 !important; margin-bottom: 0 !important; }
+body.civic-refresh.searched #hero .logo-area:not(#vt-a) { align-items: center; align-self: center; min-height: 44px; margin-top: 0; margin-bottom: 0; }
 /* dark only drew a hairline pill around the mark that light never had; with the
    pill's inner padding gone the letters touched it */
-body.civic-refresh.searched #hero .logo-area:not(#vt-a) { border: 0 !important; border-radius: 0 !important; }
+body.civic-refresh.searched #hero .logo-area:not(#vt-a) { border: 0; border-radius: 0; }
 /* phones: the absolutely placed buttons follow the 20px gutter, not the edge */
 @media (max-width: 680px) {
   body.civic-refresh.searched #hero .cs-header-settings:not(#vt-a) { right: 20px; }

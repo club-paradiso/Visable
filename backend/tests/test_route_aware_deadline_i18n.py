@@ -5,7 +5,7 @@ data-* hooks) and assert localized copy against the externalized locale packs in
 ``data/i18n/`` (the inline ``UI_TRANSLATIONS`` object was migrated to per-locale
 JSON files loaded at runtime). They guard:
   - the F-4 route-aware intake wizard (Part B),
-  - the deadline / calendar calculator (Part C/I),
+  - (the deadline / calendar calculator was removed in Nov 2026: it was never mounted; owner decision 5),
   - the redesigned HiKorea Reservation Helper (no blocking gate; LLM-free),
   - procedure-description fallbacks (Part E),
   - site-wide localization coverage for the new surfaces (Part A).
@@ -42,8 +42,6 @@ class _IndexHtml(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
-        # Deadline calculator source (moved out of index.html in Phase 3 of the frontend rebuild).
-        cls.deadline_js = (REPO_ROOT / "src" / "features" / "deadline.js").read_text(encoding="utf-8")
         cls.packs = load_packs()
         cls.blobs = pack_blobs()
 
@@ -144,84 +142,6 @@ class F4RouteWizardFrontendTests(_IndexHtml):
         self.assertIn('<button type="button" class="scenario-choice route-picker-choice"', picker)
 
 
-class DeadlineCalculatorFrontendTests(_IndexHtml):
-    def test_required_labels_present_korean(self):
-        for s in ["기한 계산기", "캘린더에 추가", "ICS 파일 다운로드", "Google Calendar에 추가",
-                  "입국일", "체류만료일", "예상 등록 기한", "연장 준비 알림",
-                  "공식 기한은 개인 상황과 관할 판단에 따라 달라질 수 있습니다."]:
-            self.assertIn(s, self.blobs["ko"], s)
-
-    def test_required_labels_present_english(self):
-        for s in ["Deadline calculator", "Add to calendar", "Download ICS file", "Add to Google Calendar",
-                  "Entry date", "Stay expiry date", "Estimated registration deadline",
-                  "Extension preparation reminders",
-                  "Official deadlines may differ depending on your facts and the competent office."]:
-            self.assertIn(s, self.blobs["en"], s)
-
-    def test_required_labels_present_simplified_chinese(self):
-        for s in ["期限计算器", "添加到日历", "下载 ICS 文件", "添加到 Google Calendar",
-                  "入境日期", "停留期限到期日", "预计外国人登记期限", "延期准备提醒",
-                  "正式期限可能因个人情况和管辖机构判断而不同。"]:
-            self.assertIn(s, self.blobs["zh-CN"], s)
-
-    def test_ninety_day_registration_rule_labeled_as_preparation_aid(self):
-        self.assertIn("paradisoDeadlineAddDays(entry, 90)", self.deadline_js)
-        # The 90-day estimate must be presented as a general preparation aid.
-        self.assertIn("일반 준비용 안내이며 공식 확정 기한이 아닙니다.", self.blobs["ko"])
-        self.assertIn("general preparation aid, not a confirmed official deadline", self.blobs["en"])
-
-    def test_extension_reminder_offsets_present(self):
-        self.assertIn("[60, 30, 7, 0]", self.deadline_js)
-
-    def test_invalid_date_handling_present(self):
-        # The pure date helper guards input with a strict YYYY-MM-DD regex.
-        fn = _extract_function(self.deadline_js, "paradisoDeadlineAddDays")
-        self.assertIn(r"/^(\d{4})-(\d{2})-(\d{2})$/", fn)
-        self.assertIn("return ''", fn)
-
-    def test_ics_generation_contains_dtstart_and_summary(self):
-        fn = _extract_function(self.deadline_js, "buildDeadlineIcs")
-        self.assertIn("DTSTART;VALUE=DATE:", fn)
-        self.assertIn("SUMMARY:", fn)
-        self.assertIn("BEGIN:VEVENT", fn)
-
-    def test_ics_has_no_personal_data_fields(self):
-        fn = _extract_function(self.deadline_js, "buildDeadlineIcs")
-        for forbidden in ("passport", "email", "phone", "nationality", "name:"):
-            self.assertNotIn(forbidden, fn.lower())
-
-    def test_google_calendar_url_encodes_safely(self):
-        fn = _extract_function(self.deadline_js, "deadlineGoogleCalUrl")
-        self.assertIn("https://calendar.google.com/calendar/render?action=TEMPLATE", fn)
-        self.assertIn("encodeURIComponent(title)", fn)
-
-    def test_disclaimer_and_privacy_note_present(self):
-        self.assertIn("입력한 날짜는 브라우저에만 표시되며 저장하거나 AI·서버로 전송하지 않습니다.", self.blobs["ko"])
-        self.assertIn("Dates you enter are shown only in your browser and are not saved or sent to AI or the server.", self.blobs["en"])
-
-    def test_calculator_state_not_in_ai_payload(self):
-        # The /api/ask request body must not carry any calculator/reminder state.
-        start = self.html.find("function submitAiAnalysis")
-        self.assertNotEqual(start, -1)
-        body = self.html[start: start + 3500]
-        # The request is Visable.data.postRaw(`${API_BASE}/api/ask`, { ...body... }, { signal }).
-        send_start = body.find("Visable.data.postRaw(`${API_BASE}/api/ask`")
-        self.assertNotEqual(send_start, -1)
-        send = body[send_start: body.find("signal:", send_start)]
-        for forbidden in ("deadline", "data-deadline", "reminder", "entryDate", "expiryDate"):
-            self.assertNotIn(forbidden, send, f"AI payload must not include {forbidden}")
-
-    def test_calculator_does_not_persist_dates_to_localstorage(self):
-        # Ephemeral by design: the calculator render/compute functions never
-        # touch localStorage.
-        for name in ("renderDeadlineCalculator", "computeDeadlines"):
-            fn = _extract_function(self.deadline_js, name)
-            self.assertNotIn("localStorage", fn)
-
-    def test_calendar_links_use_safe_rel(self):
-        fn = _extract_function(self.deadline_js, "deadlineRowHtml")
-        self.assertIn('target="_blank" rel="noopener noreferrer"', fn)
-
 
 class HiKoreaReservationHelperFrontendTests(_IndexHtml):
     """The HiKorea visit-reservation guide was redesigned into the friendly,
@@ -303,9 +223,6 @@ class RouteAwareI18nCoverageTests(_IndexHtml):
     NEW_KEYS = [
         "f4RouteTitle", "f4RouteIntro", "f4RouteShowAll", "f4RouteSourceNote",
         "f4RouteNoDocsNote", "f4Route1Label", "f4Route5Desc",
-        "deadlineCalcTitle", "deadlineEntryDate", "deadlineExpiryDate",
-        "deadlineRegEstimate", "deadlineExtReminders", "deadlineAddGoogle",
-        "deadlineDisclaimer", "deadlinePrivacyNote", "deadlineDaysBefore",
         "hkPreCheckCaution", "procFallbackInitial", "procFallbackRegistration",
         "procFallbackExtension",
     ]
@@ -315,10 +232,6 @@ class RouteAwareI18nCoverageTests(_IndexHtml):
             pack = self.packs[locale]
             for key in self.NEW_KEYS:
                 self.assertIn(key, pack, f"{key} missing from {locale} pack")
-
-    def test_placeholder_token_present_for_days_before(self):
-        self.assertIn("{days}일 전", self.blobs["ko"])
-        self.assertIn("{days} days before", self.blobs["en"])
 
 
 if __name__ == "__main__":

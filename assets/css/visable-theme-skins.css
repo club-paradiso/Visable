@@ -83,46 +83,46 @@
 
 /* ---- 3. Re-point every token family the site already reads --------------
    Applied on the elements that (re)declare those families: :root, body,
-   .us-layer and .wm-root. !important is required because the legacy layers
+   .us-layer and .wm-root. is required because the legacy layers
    redeclare the same names under higher-specificity selectors. */
 :root[data-vt],:root[data-vt] body,:root[data-vt] .us-layer,:root[data-vt] .wm-root{
   /* legacy index / preview / interview hub */
-  --bg0:var(--vs-bg)!important;--bg1:var(--vs-surface)!important;--bg2:var(--vs-bg2)!important;--bg3:var(--vs-bg2)!important;--bgI:var(--vs-bg2)!important;
-  --bd:var(--vs-line2)!important;--bd2:var(--vs-line)!important;--bd3:var(--vs-line)!important;
-  --t1:var(--vs-ink)!important;--t2:var(--vs-ink2)!important;--t3:var(--vs-ink3)!important;
-  --ac:var(--vs-ac)!important;--ac2:var(--vs-ac-text)!important;--acL:var(--vs-ac-soft)!important;--acG:var(--vs-ac-soft)!important;
-  --k-ink:var(--vs-ink)!important;--k-blue:var(--vs-ac)!important;--k-blue-deep:var(--vs-ac-text)!important;
-  --p-emerald:var(--vs-ac)!important;--p-emerald-deep:var(--vs-ac-text)!important;--pf-emerald:var(--vs-ac)!important;--pf-emerald-deep:var(--vs-ac-text)!important;
-  --p-green:var(--vs-ac)!important;--p-green-deep:var(--vs-ac-text)!important;--p-mint:var(--vs-ac-soft)!important;--p-mint-soft:var(--vs-ac-soft)!important;
-  --p-ink:var(--vs-ink)!important;--p-ink-2:var(--vs-ink2)!important;--p-ink-3:var(--vs-ink3)!important;--p-ink-mute:var(--vs-ink3)!important;
-  --p-line:var(--vs-line)!important;--p-line-2:var(--vs-line2)!important;--p-paper:var(--vs-bg)!important;--p-paper-surface-2:var(--vs-bg2)!important;
-  --color-primary:var(--vs-ac)!important;--color-primary-ink:var(--vs-ac-text)!important;--color-primary-green:var(--vs-ac)!important;--color-primary-green-hover:var(--vs-ac-text)!important;--color-primary-soft:var(--vs-ac-soft)!important;
-  --color-accent:var(--vs-ac)!important;--color-accent-soft:var(--vs-ac-soft)!important;--color-accent-deep:var(--vs-ac-text)!important;--accent-strong:var(--vs-ac-text)!important;
-  --color-border:var(--vs-line)!important;--color-surface:var(--vs-surface)!important;--color-text:var(--vs-ink)!important;--color-text-muted:var(--vs-ink3)!important;
-  --cta:var(--vs-ac)!important;--result-page-bg:var(--vs-bg)!important;--search-suggestion-text:var(--vs-ink2)!important;
-  --us-accent:var(--vs-ac)!important;--us-ink:var(--vs-ink)!important;--us-muted:var(--vs-ink3)!important;--us-line:var(--vs-line)!important;--us-surface:var(--vs-surface)!important;--us-surface-alt:var(--vs-bg2)!important;--us-sug-tint:var(--vs-ac-soft)!important;
+  --bg0:var(--vs-bg);--bg1:var(--vs-surface);--bg2:var(--vs-bg2);--bg3:var(--vs-bg2);--bgI:var(--vs-bg2);
+  --bd:var(--vs-line2);--bd2:var(--vs-line);--bd3:var(--vs-line);
+  --t1:var(--vs-ink);--t2:var(--vs-ink2);--t3:var(--vs-ink3);
+  --ac:var(--vs-ac);--ac2:var(--vs-ac-text);--acL:var(--vs-ac-soft);--acG:var(--vs-ac-soft);
+  --k-ink:var(--vs-ink);--k-blue:var(--vs-ac);--k-blue-deep:var(--vs-ac-text);
+  --p-emerald:var(--vs-ac);--p-emerald-deep:var(--vs-ac-text);--pf-emerald:var(--vs-ac);--pf-emerald-deep:var(--vs-ac-text);
+  --p-green:var(--vs-ac);--p-green-deep:var(--vs-ac-text);--p-mint:var(--vs-ac-soft);--p-mint-soft:var(--vs-ac-soft);
+  --p-ink:var(--vs-ink);--p-ink-2:var(--vs-ink2);--p-ink-3:var(--vs-ink3);--p-ink-mute:var(--vs-ink3);
+  --p-line:var(--vs-line);--p-line-2:var(--vs-line2);--p-paper:var(--vs-bg);--p-paper-surface-2:var(--vs-bg2);
+  --color-primary:var(--vs-ac);--color-primary-ink:var(--vs-ac-text);--color-primary-green:var(--vs-ac);--color-primary-green-hover:var(--vs-ac-text);--color-primary-soft:var(--vs-ac-soft);
+  --color-accent:var(--vs-ac);--color-accent-soft:var(--vs-ac-soft);--color-accent-deep:var(--vs-ac-text);--accent-strong:var(--vs-ac-text);
+  --color-border:var(--vs-line);--color-surface:var(--vs-surface);--color-text:var(--vs-ink);--color-text-muted:var(--vs-ink3);
+  --cta:var(--vs-ac);--result-page-bg:var(--vs-bg);--search-suggestion-text:var(--vs-ink2);
+  --us-accent:var(--vs-ac);--us-ink:var(--vs-ink);--us-muted:var(--vs-ink3);--us-line:var(--vs-line);--us-surface:var(--vs-surface);--us-surface-alt:var(--vs-bg2);--us-sug-tint:var(--vs-ac-soft);
   /* civic search shell (home, form helper) */
-  --cs-green:var(--vs-ac)!important;--cs-ink:var(--vs-ink)!important;--cs-muted:var(--vs-ink3)!important;--cs-line:var(--vs-line)!important;--cs-bg:var(--vs-surface)!important;--cs-row:var(--vs-bg)!important;--cs-soft:var(--vs-ac-soft)!important;
+  --cs-green:var(--vs-ac);--cs-ink:var(--vs-ink);--cs-muted:var(--vs-ink3);--cs-line:var(--vs-line);--cs-bg:var(--vs-surface);--cs-row:var(--vs-bg);--cs-soft:var(--vs-ac-soft);
   /* product 2026 (Waymaker, New Home, form helper, interview hub) */
-  --vp-ink:var(--vs-ink)!important;--vp-ink-2:var(--vs-ink2)!important;--vp-ink-3:var(--vs-ink3)!important;
-  --vp-line:var(--vs-line)!important;--vp-line-soft:var(--vs-line)!important;--vp-line-strong:var(--vs-line2)!important;
-  --vp-green:var(--vs-ac)!important;--vp-green-2:var(--vs-ac-text)!important;--vp-mint:var(--vs-ac-soft)!important;
-  --vp-surface:var(--vs-surface)!important;--vp-paper:var(--vs-bg)!important;--vp-paper-strong:var(--vs-surface)!important;
-  --vp-cta:var(--vs-ac)!important;--vp-on-cta:var(--vs-ac-ink)!important;
+  --vp-ink:var(--vs-ink);--vp-ink-2:var(--vs-ink2);--vp-ink-3:var(--vs-ink3);
+  --vp-line:var(--vs-line);--vp-line-soft:var(--vs-line);--vp-line-strong:var(--vs-line2);
+  --vp-green:var(--vs-ac);--vp-green-2:var(--vs-ac-text);--vp-mint:var(--vs-ac-soft);
+  --vp-surface:var(--vs-surface);--vp-paper:var(--vs-bg);--vp-paper-strong:var(--vs-surface);
+  --vp-cta:var(--vs-ac);--vp-on-cta:var(--vs-ac-ink);
   /* Waymaker navigator */
-  --wm-ac:var(--vs-ac)!important;--wm-ac2:var(--vs-ac-text)!important;--wm-acL:var(--vs-ac-soft)!important;--wm-t1:var(--vs-ink)!important;--wm-t2:var(--vs-ink2)!important;--wm-t3:var(--vs-ink3)!important;
-  --wm-bd:var(--vs-line)!important;--wm-card:var(--vs-surface)!important;--wm-card2:var(--vs-bg2)!important;--wm-bg:var(--vs-bg)!important;
+  --wm-ac:var(--vs-ac);--wm-ac2:var(--vs-ac-text);--wm-acL:var(--vs-ac-soft);--wm-t1:var(--vs-ink);--wm-t2:var(--vs-ink2);--wm-t3:var(--vs-ink3);
+  --wm-bd:var(--vs-line);--wm-card:var(--vs-surface);--wm-card2:var(--vs-bg2);--wm-bg:var(--vs-bg);
   /* knowledge studio */
-  --ks-surface:var(--vs-surface)!important;--ks-paper:var(--vs-bg)!important;--ks-ink:var(--vs-ink)!important;--ks-ink-2:var(--vs-ink2)!important;--ks-ink-3:var(--vs-ink3)!important;
-  --ks-line:var(--vs-line2)!important;--ks-line-soft:var(--vs-line)!important;--ks-green:var(--vs-ac)!important;--ks-mint:var(--vs-ac-soft)!important;--ks-on-cta:var(--vs-ac-ink)!important;
+  --ks-surface:var(--vs-surface);--ks-paper:var(--vs-bg);--ks-ink:var(--vs-ink);--ks-ink-2:var(--vs-ink2);--ks-ink-3:var(--vs-ink3);
+  --ks-line:var(--vs-line2);--ks-line-soft:var(--vs-line);--ks-green:var(--vs-ac);--ks-mint:var(--vs-ac-soft);--ks-on-cta:var(--vs-ac-ink);
   /* content studio */
-  --primary:var(--vs-ac)!important;--text:var(--vs-ink)!important;--text-muted:var(--vs-ink3)!important;--surface-alt:var(--vs-bg2)!important;--border:var(--vs-line)!important;--border-focus:var(--vs-ac)!important;
+  --primary:var(--vs-ac);--text:var(--vs-ink);--text-muted:var(--vs-ink3);--surface-alt:var(--vs-bg2);--border:var(--vs-line);--border-focus:var(--vs-ac);
   /* page-local names (enforcement, checklists, manual reader) */
-  --ink:var(--vs-ink)!important;--ink2:var(--vs-ink2)!important;--muted:var(--vs-ink3)!important;--quiet:var(--vs-ink2)!important;
-  --line:var(--vs-line)!important;--line-strong:var(--vs-line2)!important;--paper:var(--vs-surface)!important;--surface:var(--vs-surface)!important;--canvas:var(--vs-bg)!important;--bg:var(--vs-bg)!important;--tint:var(--vs-bg2)!important;
-  --green:var(--vs-ac)!important;--green-2:var(--vs-ac-text)!important;--green-hover:var(--vs-ac-text)!important;--green-dark:var(--vs-hdr)!important;--mint:var(--vs-ac)!important;--mint-soft:var(--vs-ac-soft)!important;--pale:var(--vs-ac-soft)!important;--pale-light:var(--vs-bg2)!important;
-  --blue:var(--vs-ac)!important;--blue-soft:var(--vs-ac-soft)!important;--navy:var(--vs-ink)!important;
-  --accent:var(--vs-ac)!important;--accent-ink:var(--vs-ac-text)!important;--accent-soft:var(--vs-ac-soft)!important;
+  --ink:var(--vs-ink);--ink2:var(--vs-ink2);--muted:var(--vs-ink3);--quiet:var(--vs-ink2);
+  --line:var(--vs-line);--line-strong:var(--vs-line2);--paper:var(--vs-surface);--surface:var(--vs-surface);--canvas:var(--vs-bg);--bg:var(--vs-bg);--tint:var(--vs-bg2);
+  --green:var(--vs-ac);--green-2:var(--vs-ac-text);--green-hover:var(--vs-ac-text);--green-dark:var(--vs-hdr);--mint:var(--vs-ac);--mint-soft:var(--vs-ac-soft);--pale:var(--vs-ac-soft);--pale-light:var(--vs-bg2);
+  --blue:var(--vs-ac);--blue-soft:var(--vs-ac-soft);--navy:var(--vs-ink);
+  --accent:var(--vs-ac);--accent-ink:var(--vs-ac-text);--accent-soft:var(--vs-ac-soft)!important;
   --hdr:var(--vs-hdr)!important;--hdr-ink:var(--vs-hdr-ink)!important;
 }
 
@@ -143,28 +143,28 @@
 /* Agency directory: its own token names */
 :root[data-vt][data-vt-page="agency-directory"],:root[data-vt][data-vt-page="agency-directory"] body{
   --brand:var(--vs-ac-text)!important;--brand-hover:var(--vs-ac)!important;--soft:var(--vs-ac-soft)!important;--soft-strong:var(--vs-line)!important;
-  --card:var(--vs-surface)!important;--accent:#F2C46F!important;
+  --card:var(--vs-surface)!important;--accent:#F2C46F;
 }
-:root[data-vt][data-vt-page="agency-directory"] :is(.disclaimer,.disclaimer a,.footer-links a){color:var(--vs-ink3)!important}
+:root[data-vt][data-vt-page="agency-directory"] :is(.disclaimer,.disclaimer a,.footer-links a){color:var(--vs-ink3)}
 
-:root[data-vt][data-vt-page="agency-directory"] .staff-link a{color:var(--vs-ink3)!important}
-:root[data-vt] .fh-checklist-link{background:var(--vs-surface)!important;border-color:var(--vs-line2)!important;color:var(--vs-ac-text)!important}
-:root[data-vt] .pv-btn-primary{color:var(--vs-ac-ink)!important}
+:root[data-vt][data-vt-page="agency-directory"] .staff-link a{color:var(--vs-ink3)}
+:root[data-vt] .fh-checklist-link{background:var(--vs-surface);border-color:var(--vs-line2);color:var(--vs-ac-text)}
+:root[data-vt] .pv-btn-primary{color:var(--vs-ac-ink)}
 
 /* Interview hub coach band (hard-coded civic green in visable-product-2026.css) */
-:root[data-vt] body.product-nationality-hub .ni-coachband:not(#vt-a){background:var(--vs-hdr)!important}
-:root[data-vt] body.product-nationality-hub .ni-coachband-text strong:not(#vt-a){color:var(--vs-hdr-ink)!important}
-:root[data-vt] body.product-nationality-hub .ni-coachband-text span:not(#vt-a){color:var(--vs-hdr-ink)!important;opacity:.86}
-:root[data-vt] body.product-nationality-hub .ni-coachband-cta:not(#vt-a){background:var(--vs-ac-soft)!important;color:var(--vs-ac-text)!important}
-:root[data-vt] body[data-theme="dark"].product-nationality-hub .ni-coachband-cta:not(#vt-a){background:var(--vs-ac)!important;color:var(--vs-ac-ink)!important}
-:root[data-vt] body.product-nationality-hub{--vp-on-accent:var(--vs-ac-ink)!important;--ac-ink:var(--vs-ac-ink)!important}
-:root[data-vt],:root[data-vt] body{--ks-cta:var(--vs-ac)!important;--primary-border:var(--vs-line2)!important}
+:root[data-vt] body.product-nationality-hub .ni-coachband:not(#vt-a){background:var(--vs-hdr)}
+:root[data-vt] body.product-nationality-hub .ni-coachband-text strong:not(#vt-a){color:var(--vs-hdr-ink)}
+:root[data-vt] body.product-nationality-hub .ni-coachband-text span:not(#vt-a){color:var(--vs-hdr-ink);opacity:.86}
+:root[data-vt] body.product-nationality-hub .ni-coachband-cta:not(#vt-a){background:var(--vs-ac-soft);color:var(--vs-ac-text)}
+:root[data-vt] body[data-theme="dark"].product-nationality-hub .ni-coachband-cta:not(#vt-a){background:var(--vs-ac);color:var(--vs-ac-ink)}
+:root[data-vt] body.product-nationality-hub{--vp-on-accent:var(--vs-ac-ink);--ac-ink:var(--vs-ac-ink)}
+:root[data-vt],:root[data-vt] body{--ks-cta:var(--vs-ac);--primary-border:var(--vs-line2)}
 /* Checklists: muted greys that sat under 4.5:1 */
-:root[data-vt][data-vt-page="immigration-checklists"] :is(.card-provenance,.aside-note,.field small){color:var(--vs-ink3)!important}
+:root[data-vt][data-vt-page="immigration-checklists"] :is(.card-provenance,.aside-note,.field small){color:var(--vs-ink3)}
 :root[data-vt][data-vt-page="immigration-checklists"] .stepper-item:not(.active):not(.completed) .step-num{color:var(--vs-ink)}
 
 /* new-home's old two-way editorial toggle is superseded by the skin picker while a skin is active */
-:root[data-vt] .nh-style-btn[data-action="toggle-theme"]{display:none!important}
+:root[data-vt] .nh-style-btn[data-action="toggle-theme"]{display:none}
 
 /* ---- 5. Theme picker ------------------------------------------------------
    Restores the canvas "logo coins": each theme is chosen by its own round
@@ -231,7 +231,7 @@ body[data-theme="dark"] .vt-mini[data-p="neon"],html[data-theme="dark"] .vt-mini
 .vt-scrim[hidden]{display:none}
 .vt-civic-pop{z-index:1600}
 @media (max-width:600px){
-  .vt-civic-pop{left:0!important;right:0!important;top:auto!important;bottom:0!important;width:100%;max-height:86vh;border-radius:22px 22px 0 0;border-bottom:0;padding:10px 16px calc(16px + env(safe-area-inset-bottom));animation:vt-sheet-up .22s cubic-bezier(.2,.8,.2,1) both}
+  .vt-civic-pop{left:0;right:0;top:auto;bottom:0;width:100%;max-height:86vh;border-radius:22px 22px 0 0;border-bottom:0;padding:10px 16px calc(16px + env(safe-area-inset-bottom));animation:vt-sheet-up .22s cubic-bezier(.2,.8,.2,1) both}
   .vt-civic-pop::before{content:"";display:block;width:40px;height:4px;border-radius:2px;margin:0 auto 10px;background:var(--vs-line2,#CFCCC3)}
 }
 @media (max-width:340px){.vt-picker{grid-template-columns:minmax(0,1fr)}.vt-mini{height:52px}}
@@ -252,9 +252,9 @@ body[data-theme="dark"] .vt-mini[data-p="neon"],html[data-theme="dark"] .vt-mini
 @media (max-width:640px){.vt-fab{padding:6px}.vt-fab .vt-fab-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
 
 /* Theme change: one short cross-fade of ground and ink, never a layout move. */
-:root.vt-switching,:root.vt-switching body,:root.vt-switching body *{transition:background-color .24s ease,color .24s ease,border-color .24s ease,box-shadow .24s ease!important}
-@media (prefers-reduced-motion:reduce){.vt-civic-pop{animation:none!important}:root.vt-switching,:root.vt-switching body,:root.vt-switching body *{transition:none!important}}
-@media print{.vt-fab,.vt-pop{display:none!important}}
+:root.vt-switching,:root.vt-switching body,:root.vt-switching body *{transition:background-color .24s ease,color .24s ease,border-color .24s ease,box-shadow .24s ease}
+@media (prefers-reduced-motion:reduce){.vt-civic-pop{animation:none}:root.vt-switching,:root.vt-switching body,:root.vt-switching body *{transition:none}}
+@media print{.vt-fab,.vt-pop{display:none}}
 @media (prefers-reduced-motion:reduce){:root[data-vt] body{background-attachment:scroll}}
 
 /* ==========================================================================
@@ -356,68 +356,68 @@ body[data-theme="dark"] .vt-mini[data-p="neon"],html[data-theme="dark"] .vt-mini
 
 /* ---- 6.5 Apply: search bar ---------------------------------------------- */
 :root[data-vt] body :is(.cs-searchbar,.civic-refresh .sbar):not(#vt-a){
-  background:var(--vf-bar-bg)!important;border:var(--vf-bar-bd)!important;border-radius:var(--vf-r-bar)!important;box-shadow:var(--vf-bar-sh)!important;
+  background:var(--vf-bar-bg);border:var(--vf-bar-bd);border-radius:var(--vf-r-bar);box-shadow:var(--vf-bar-sh);
 }
-:root[data-vt] body :is(.cs-searchbar,.civic-refresh .sbar):not(#vt-a) input{background:transparent!important}
+:root[data-vt] body :is(.cs-searchbar,.civic-refresh .sbar):not(#vt-a) input{background:transparent}
 :root[data-vt] body :is(.cs-submit,.sg-btn-primary,.fh-btn-primary):not(#vt-a){
-  background:var(--vf-pri-bg)!important;color:var(--vs-ac-ink)!important;border-color:transparent!important;border-radius:var(--vf-r-btn)!important;box-shadow:var(--vf-pri-sh)!important;
+  background:var(--vf-pri-bg);color:var(--vs-ac-ink);border-color:transparent;border-radius:var(--vf-r-btn);box-shadow:var(--vf-pri-sh);
 }
 :root[data-vt="chrome"] body :is(.cs-submit,.sg-btn-primary):hover{filter:brightness(1.08) saturate(1.1)}
 /* Graphite keeps the light-face cobalt gradient, so its label stays white (canvas .dock a.on) */
-:root[data-vt="chrome"] body :is(.cs-submit,.sg-btn-primary,.fh-btn-primary):not(#vt-a){color:#FFFFFF!important}
+:root[data-vt="chrome"] body :is(.cs-submit,.sg-btn-primary,.fh-btn-primary):not(#vt-a){color:#FFFFFF}
 :root[data-vt="chrome"] body .cs-submit:not(#vt-a) .cs-icon{filter:brightness(0) invert(1)}
-:root[data-vt="stamp"] body :is(.cs-submit,.sg-btn-primary):hover{background:var(--vs-ac-text)!important}
-:root[data-vt="stamp"] body[data-theme="dark"] :is(.cs-submit,.sg-btn-primary):hover{background:#F0D98F!important}
-:root[data-vt="neon"] body[data-theme="dark"] :is(.cs-submit,.sg-btn-primary):hover{box-shadow:0 0 0 1px #7FE8FF,0 0 34px rgba(127,232,255,.85)!important}
+:root[data-vt="stamp"] body :is(.cs-submit,.sg-btn-primary):hover{background:var(--vs-ac-text)}
+:root[data-vt="stamp"] body[data-theme="dark"] :is(.cs-submit,.sg-btn-primary):hover{background:#F0D98F}
+:root[data-vt="neon"] body[data-theme="dark"] :is(.cs-submit,.sg-btn-primary):hover{box-shadow:0 0 0 1px #7FE8FF,0 0 34px rgba(127,232,255,.85)}
 
 /* ---- 6.6 Apply: cards and panels ----------------------------------------- */
 :root[data-vt] body :is(.cs-tool,.cs-service,.cs-directory,.sg-question,.sg-overview,.cs-suggest,.auto-list:not(:empty),.cs-lang-dialog,.vt-pop):not(#vt-a){
-  background:var(--vf-card-bg)!important;border:var(--vf-card-bd)!important;border-radius:var(--vf-r-card)!important;box-shadow:var(--vf-card-sh)!important;
+  background:var(--vf-card-bg);border:var(--vf-card-bd);border-radius:var(--vf-r-card);box-shadow:var(--vf-card-sh);
 }
 :root[data-vt="chrome"] body :is(.cs-tool,.cs-service,.cs-directory,.sg-question,.sg-overview,.cs-suggest,.vt-pop):not(#vt-a){-webkit-backdrop-filter:var(--vf-blur);backdrop-filter:var(--vf-blur)}
-:root[data-vt] body :is(a.cs-tool,button.cs-tool,a.cs-service,button.cs-service):not(#vt-a){margin:0!important;transition:transform .16s cubic-bezier(.2,.7,.3,1),box-shadow .16s ease,background-color .16s ease,border-color .16s ease}
-:root[data-vt] body :is(a.cs-tool,button.cs-tool,a.cs-service,button.cs-service):not(#vt-a):hover{transform:var(--vf-card-hover-tf);box-shadow:var(--vf-card-hover-sh)!important;background:var(--vf-card-bg)!important}
-:root[data-vt="stamp"] body :is(a.cs-tool,button.cs-tool,a.cs-service,button.cs-service):not(#vt-a):active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--vs-ac)!important}
+:root[data-vt] body :is(a.cs-tool,button.cs-tool,a.cs-service,button.cs-service):not(#vt-a){margin:0;transition:transform .16s cubic-bezier(.2,.7,.3,1),box-shadow .16s ease,background-color .16s ease,border-color .16s ease}
+:root[data-vt] body :is(a.cs-tool,button.cs-tool,a.cs-service,button.cs-service):not(#vt-a):hover{transform:var(--vf-card-hover-tf);box-shadow:var(--vf-card-hover-sh);background:var(--vf-card-bg)}
+:root[data-vt="stamp"] body :is(a.cs-tool,button.cs-tool,a.cs-service,button.cs-service):not(#vt-a):active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--vs-ac)}
 
 /* ---- 6.7 Apply: controls (examples, options, chips, secondary buttons) --- */
 :root[data-vt] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more,.cs-lang,.cs-theme-toggle,.cs-tool-search):not(#vt-a){
-  background:var(--vf-ctl-bg)!important;border:var(--vf-ctl-bd)!important;border-radius:var(--vf-r-ctl)!important;box-shadow:none!important;
+  background:var(--vf-ctl-bg);border:var(--vf-ctl-bd);border-radius:var(--vf-r-ctl);box-shadow:none;
 }
 :root[data-vt] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn,.cs-more,.cs-submit,.cs-lang,.cs-theme-toggle):not(#vt-a){transition:transform .16s cubic-bezier(.2,.7,.3,1),box-shadow .16s ease,background-color .16s ease,border-color .16s ease,filter .16s ease}
 :root[data-vt] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn,.cs-more,.cs-submit):active{transform:var(--vf-press)}
-:root[data-vt="stamp"] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{background:var(--vs-bg2)!important;border-style:solid!important}
-:root[data-vt="chrome"] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{background:rgba(255,255,255,.96)!important}
-:root[data-vt="chrome"] body[data-theme="dark"] :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{background:rgba(255,255,255,.12)!important}
-:root[data-vt="neon"] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{border-color:var(--vs-ac)!important}
-:root[data-vt="neon"] body[data-theme="dark"] :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{border-color:#7FE8FF!important;color:#FFFFFF!important;box-shadow:0 0 14px rgba(127,232,255,.35)!important}
-:root[data-vt="default"] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{border-color:var(--vs-ink)!important}
+:root[data-vt="stamp"] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{background:var(--vs-bg2);border-style:solid}
+:root[data-vt="chrome"] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{background:rgba(255,255,255,.96)}
+:root[data-vt="chrome"] body[data-theme="dark"] :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{background:rgba(255,255,255,.12)}
+:root[data-vt="neon"] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{border-color:var(--vs-ac)}
+:root[data-vt="neon"] body[data-theme="dark"] :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{border-color:#7FE8FF;color:#FFFFFF;box-shadow:0 0 14px rgba(127,232,255,.35)}
+:root[data-vt="default"] body :is(.cs-example-link,.cs-examples button,.sg-option,.sg-chip,.sg-btn:not(.sg-btn-primary),.cs-more):not(#vt-a):hover{border-color:var(--vs-ink)}
 /* the "잘 모르겠어요" option keeps its dashed outline as its meaning marker */
-:root[data-vt] body .sg-option.sg-option-unsure:not(#vt-a){border-style:dashed!important}
+:root[data-vt] body .sg-option.sg-option-unsure:not(#vt-a){border-style:dashed}
 
 /* ---- 6.8 Apply: code/meta tags (status layer, fee review, document tags) - */
 :root[data-vt] body :is(.sg-doc-tag,.sg-fee-review,.sg-layer,.sg-doc-form):not(#vt-a){
-  border:var(--vf-tag-bd)!important;background:var(--vf-tag-bg)!important;border-radius:var(--vf-r-tag)!important;color:var(--vs-ac-text)!important;font-family:var(--vs-mono);font-weight:600;letter-spacing:0;
+  border:var(--vf-tag-bd);background:var(--vf-tag-bg);border-radius:var(--vf-r-tag);color:var(--vs-ac-text);font-family:var(--vs-mono);font-weight:600;letter-spacing:0;
 }
-:root[data-vt] body .sg-doc-form.sg-doc-form-rec:not(#vt-a){border-style:dashed!important}
+:root[data-vt] body .sg-doc-form.sg-doc-form-rec:not(#vt-a){border-style:dashed}
 
 /* ---- 6.9 Apply: tool icons --------------------------------------------- */
-:root[data-vt] body .cs-icon-circle:not(#vt-a){background:var(--vf-ico-bg)!important;border:var(--vf-ico-bd)!important;border-radius:var(--vf-ico-r)!important;box-shadow:var(--vf-ico-sh)!important}
-:root[data-vt] body :is(.cs-tool,.cs-service):hover .cs-icon-circle:not(#vt-a){background:var(--vs-ac)!important}
+:root[data-vt] body .cs-icon-circle:not(#vt-a){background:var(--vf-ico-bg);border:var(--vf-ico-bd);border-radius:var(--vf-ico-r);box-shadow:var(--vf-ico-sh)}
+:root[data-vt] body :is(.cs-tool,.cs-service):hover .cs-icon-circle:not(#vt-a){background:var(--vs-ac)}
 :root[data-vt="chrome"] body .cs-icon-circle{position:relative;overflow:hidden}
 :root[data-vt="chrome"] body .cs-icon-circle::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 32%,rgba(255,255,255,.9) 48%,transparent 62%);transform:translateX(-130%);transition:transform .7s cubic-bezier(.2,.7,.3,1);pointer-events:none}
 :root[data-vt="chrome"] body[data-theme="dark"] .cs-icon-circle::after{background:linear-gradient(115deg,transparent 32%,rgba(255,255,255,.35) 48%,transparent 62%)}
 :root[data-vt="chrome"] body :is(.cs-tool,.cs-service):hover .cs-icon-circle::after{transform:translateX(130%)}
-:root[data-vt="chrome"] body :is(.cs-tool,.cs-service):hover .cs-icon-circle:not(#vt-a){background:var(--vf-pri-bg)!important}
+:root[data-vt="chrome"] body :is(.cs-tool,.cs-service):hover .cs-icon-circle:not(#vt-a){background:var(--vf-pri-bg)}
 
 /* ---- 6.10 Apply: rules, headings, numerals -------------------------------- */
-:root[data-vt] body :is(.cs-tools,.sg-docs,.sg-fee,.sg-cond-section,.sg-local,.sg-next,.sg-evidence,.sg-related,.sg-disclaimer,.cs-raw):not(#vt-a){border-top:var(--vf-rule)!important}
-:root[data-vt="default"] body .cs-hero h1 em{background:var(--vf-hl);color:inherit!important;border-radius:.14em;padding:0 .08em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
-:root[data-vt="stamp"] body .cs-hero h1 em{color:var(--vs-ac-text)!important;font-style:normal;background:linear-gradient(transparent 62%,rgba(46,77,167,.16) 62%)}
-:root[data-vt="stamp"] body[data-theme="dark"] .cs-hero h1 em{color:#F0D98F!important;background:linear-gradient(transparent 62%,rgba(217,184,101,.22) 62%)}
-:root[data-vt="chrome"] body .cs-hero h1:not(#vt-a){letter-spacing:-.045em!important;font-weight:850!important}
-:root[data-vt="chrome"] body .cs-hero h1 em{background:linear-gradient(180deg,#0B1233 0%,#2F55D4 55%,#0B1233 100%);-webkit-background-clip:text;background-clip:text;color:transparent!important}
+:root[data-vt] body :is(.cs-tools,.sg-docs,.sg-fee,.sg-cond-section,.sg-local,.sg-next,.sg-evidence,.sg-related,.sg-disclaimer,.cs-raw):not(#vt-a){border-top:var(--vf-rule)}
+:root[data-vt="default"] body .cs-hero h1 em{background:var(--vf-hl);color:inherit;border-radius:.14em;padding:0 .08em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+:root[data-vt="stamp"] body .cs-hero h1 em{color:var(--vs-ac-text);font-style:normal;background:linear-gradient(transparent 62%,rgba(46,77,167,.16) 62%)}
+:root[data-vt="stamp"] body[data-theme="dark"] .cs-hero h1 em{color:#F0D98F;background:linear-gradient(transparent 62%,rgba(217,184,101,.22) 62%)}
+:root[data-vt="chrome"] body .cs-hero h1:not(#vt-a){letter-spacing:-.045em;font-weight:850}
+:root[data-vt="chrome"] body .cs-hero h1 em{background:linear-gradient(180deg,#0B1233 0%,#2F55D4 55%,#0B1233 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 :root[data-vt="chrome"] body[data-theme="dark"] .cs-hero h1 em{background:linear-gradient(180deg,#FFFFFF 0%,#8FA8FF 55%,#FFFFFF 100%);-webkit-background-clip:text;background-clip:text}
-:root[data-vt="neon"] body[data-theme="dark"] .cs-hero h1 em{color:#7FE8FF!important;text-shadow:0 0 12px rgba(127,232,255,.75),0 0 32px rgba(47,123,255,.6)}
+:root[data-vt="neon"] body[data-theme="dark"] .cs-hero h1 em{color:#7FE8FF;text-shadow:0 0 12px rgba(127,232,255,.75),0 0 32px rgba(47,123,255,.6)}
 :root[data-vt] body :is(.cs-basis,.cs-source-strip-label,.cs-results-head .cs-count):not(#vt-a){font-family:var(--vs-mono)}
 :root[data-vt="chrome"] body .cs-basis:not(#vt-a){font-size:12px;letter-spacing:-.01em}
 /* Stamp: the hero ends on a perforation, like a booklet page */
@@ -429,9 +429,9 @@ body[data-theme="dark"] .vt-mini[data-p="neon"],html[data-theme="dark"] .vt-mini
 :root[data-vt="neon"] body[data-theme="dark"] :is(.cs-hero h1 em,.cs-searchbar){animation:vt-ignite 1.4s steps(1,end) .15s both}
 :root[data-vt="stamp"] body .cs-searchbar{animation:vt-stamp-in .55s cubic-bezier(.2,1.5,.4,1) both}
 @media (prefers-reduced-motion:reduce){
-  :root[data-vt] body :is(.cs-hero h1 em,.cs-searchbar){animation:none!important}
+  :root[data-vt] body :is(.cs-hero h1 em,.cs-searchbar){animation:none}
   :root[data-vt] body :is(.cs-tool,.cs-service,.cs-example-link,.sg-option,.sg-chip,.sg-btn,.cs-submit,.cs-icon-circle)::after,
-  :root[data-vt] body :is(.cs-tool,.cs-service,.cs-example-link,.sg-option,.sg-chip,.sg-btn,.cs-submit,.cs-icon-circle){transition-duration:.01ms!important;transform:none!important}
+  :root[data-vt] body :is(.cs-tool,.cs-service,.cs-example-link,.sg-option,.sg-chip,.sg-btn,.cs-submit,.cs-icon-circle){transition-duration:.01ms;transform:none}
 }
 
 /* ---- 6.7 Autocomplete rows follow the skin --------------------------------
@@ -453,4 +453,4 @@ body[data-theme="dark"] .vt-mini[data-p="neon"],html[data-theme="dark"] .vt-mini
   --auto-item-mark-text:var(--vs-ac-ink);
 }
 :root[data-vt] body .auto-item.us-sug{--us-sug-tint:var(--vs-ac)}
-:root[data-vt] body .auto-item.us-sug .us-sug-sub{color:var(--vs-ink3)!important}
+:root[data-vt] body .auto-item.us-sug .us-sug-sub{color:var(--vs-ink3)}

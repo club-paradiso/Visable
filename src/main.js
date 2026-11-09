@@ -26,7 +26,6 @@ import * as docTabsEasyMode from './render/cards/doc-tabs-easy-mode.js';
 import * as sections from './render/cards/sections.js';
 import * as jurisdiction from './features/jurisdiction.js';
 import * as jobcode from './features/jobcode.js';
-import * as deadline from './features/deadline.js';
 // Feature modules that run on load (moved legacy IIFEs); order follows their old document order.
 import './features/landing-animation.js';
 import './features/finders.js';
@@ -47,7 +46,7 @@ const bridge = Object.freeze({
   core: Object.freeze({ ...core }),
   // The three DOM-patching shims; index.html registers their install functions for DOMContentLoaded.
   shims: Object.freeze({ ...detailResolver, ...docSectionUnifier, ...docTermFeeUi }),
-  features: Object.freeze({ jurisdiction: Object.freeze({ ...jurisdiction }), jobcode: Object.freeze({ ...jobcode }), deadline: Object.freeze({ ...deadline }) })
+  features: Object.freeze({ jurisdiction: Object.freeze({ ...jurisdiction }), jobcode: Object.freeze({ ...jobcode }), })
 });
 
 if (typeof window !== 'undefined') {

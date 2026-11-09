@@ -27,3 +27,6 @@ artifacts/
 
 # Vite build output (Phase 2); Vercel builds it, never committed
 dist/
+
+# Local visual baselines (tests/golden): per-machine Chromium renders; only the CI set is committed
+tests/golden/__screenshots__/local/

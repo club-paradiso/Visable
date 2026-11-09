@@ -2481,36 +2481,6 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .ai-modal-context-value { font-weight: 700; color: var(--t1); }
 .ai-modal-context-note { display: block; margin-top: 0.35rem; font-size: 0.72rem; color: var(--t3); }
 /* Deadline / grace-period calculator */
-.deadline-calc { border: 1px solid var(--bd2); border-radius: 10px; padding: 0.5rem 0.9rem; background: var(--bg0); }
-.deadline-calc[open] { padding-bottom: 0.9rem; }
-.deadline-calc-summary { cursor: pointer; font-weight: 800; font-size: 0.86rem; color: var(--t1); padding: 0.35rem 0; list-style: none; }
-.deadline-calc-summary::-webkit-details-marker { display: none; }
-.deadline-calc-summary::before { content: ''; display: inline-block; width: 1em; height: 1em; margin-inline-end: .4em; vertical-align: -.1em; background: currentColor; mask: url('../icons/civic/calendar-days.svg') center / contain no-repeat; }
-.deadline-intro { color: var(--t3); font-size: 0.79rem; line-height: 1.55; margin: 0.2rem 0 0.6rem; word-break: keep-all; }
-.deadline-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.55rem; }
-.deadline-field { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.76rem; color: var(--t2); font-weight: 700; }
-.deadline-field input { min-height: 38px; border: 1px solid var(--bd2); border-radius: 8px; padding: 0 0.6rem; font: inherit; font-size: 0.82rem; background: var(--bg1); color: var(--t1); }
-.deadline-field input:focus-visible { outline: 2px solid var(--ac); outline-offset: 1px; }
-.deadline-compute-btn { margin-top: 0.65rem; min-height: 40px; border: 1px solid var(--ac); background: color-mix(in srgb, var(--ac) 14%, var(--bg1)); color: var(--t1); border-radius: 9px; padding: 0 1rem; font: inherit; font-size: 0.82rem; font-weight: 800; cursor: pointer; }
-.deadline-compute-btn:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
-.deadline-results { margin-top: 0.7rem; display: grid; gap: 0.55rem; }
-.deadline-group { border: 1px solid var(--bd2); border-radius: 8px; padding: 0.6rem 0.7rem; display: grid; gap: 0.5rem; }
-.deadline-group-title { font-weight: 800; font-size: 0.8rem; color: var(--t1); }
-.deadline-row { border: 1px solid var(--bd2); border-radius: 8px; padding: 0.55rem 0.65rem; background: var(--bg1); }
-.deadline-group .deadline-row { background: var(--bg0); }
-.deadline-row-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
-.deadline-row-label { font-weight: 750; font-size: 0.8rem; color: var(--t1); word-break: keep-all; }
-.deadline-row-dday { flex: 0 0 auto; font-weight: 850; font-size: 0.74rem; color: var(--ac); }
-.deadline-row-date { font-size: 0.82rem; color: var(--t2); margin-top: 0.15rem; font-variant-numeric: tabular-nums; }
-.deadline-row-source { display: inline-block; margin-top: 0.3rem; padding: 0.1rem 0.5rem; border: 1px solid var(--bd2); border-radius: 999px; background: var(--bg0); color: var(--t3); font-size: 0.7rem; font-weight: 750; }
-.deadline-caution { color: var(--t3); font-size: 0.74rem; line-height: 1.5; margin: 0.35rem 0 0; word-break: keep-all; }
-.deadline-row-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
-.deadline-cal-btn { display: inline-flex; align-items: center; min-height: 34px; border: 1px solid var(--bd2); background: var(--bg0); color: var(--t2); border-radius: 8px; padding: 0 0.65rem; font: inherit; font-size: 0.75rem; font-weight: 700; cursor: pointer; text-decoration: none; }
-.deadline-cal-btn:hover { border-color: var(--ac); }
-.deadline-cal-btn:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
-.deadline-empty { color: var(--t3); font-size: 0.8rem; }
-.deadline-disclaimer { color: var(--t2); font-size: 0.76rem; line-height: 1.55; margin: 0.7rem 0 0; word-break: keep-all; }
-.deadline-privacy { color: var(--t3); font-size: 0.73rem; line-height: 1.5; margin: 0.4rem 0 0; word-break: keep-all; }
 /* Narrow-screen hardening for the core action surfaces added during the recent
    feature expansion (route chips, scenario choices, checklist + deadline action
    buttons, next-action grid). Goal: clean wrapping, comfortable tap targets, and
@@ -2538,9 +2508,6 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
     #scenarioPickerOverlay.active .modal-box { transform: translateY(0); }
     .scenario-checklist-actions { flex-wrap: wrap; }
     .scenario-checklist-actions .scenario-checklist-btn { flex: 1 1 calc(50% - 0.3rem); min-height: 44px; }
-    .deadline-inputs { grid-template-columns: 1fr; }
-    .deadline-row-actions { flex-direction: column; align-items: stretch; }
-    .deadline-row-actions .deadline-cal-btn { justify-content: center; min-height: 44px; }
     .ai-modal-context { font-size: 0.82rem; }
 }
 .manual-preview { color: var(--t2); }
@@ -3844,15 +3811,15 @@ body:not(.searched) .logo-area:focus-visible .brand-wordmark-img {
 .footer-hero-img {
   background-image:
     linear-gradient(135deg, rgba(5, 16, 22, 0.70), rgba(8, 94, 72, 0.34)),
-    var(--jeju-footer-night) !important;
-  background-size: cover !important;
-  background-position: center !important;
+    var(--jeju-footer-night);
+  background-size: cover;
+  background-position: center;
 }
 
 @media (max-width: 768px) {
   body:not(.searched) .brand-wordmark-img {
-    height: clamp(76px, 21vw, 118px) !important;
-    max-width: 92vw !important;
+    height: clamp(76px, 21vw, 118px);
+    max-width: 92vw;
   }
 
   body:not(.searched) .hero-container::before {
@@ -3862,132 +3829,132 @@ body:not(.searched) .logo-area:focus-visible .brand-wordmark-img {
 
 @media (prefers-reduced-motion: reduce) {
   body:not(.searched) .hero-container::before {
-    animation: none !important;
-    transform: none !important;
+    animation: none;
+    transform: none;
   }
 
   body:not(.searched) .brand-wordmark-img {
-    transition: none !important;
+    transition: none;
   }
 
   body:not(.searched) .logo-area:hover .brand-wordmark-img,
   body:not(.searched) .logo-area:focus-visible .brand-wordmark-img {
-    transform: none !important;
+    transform: none;
   }
 }
 
 
 /* Phase 12B: refine remaining lower-section legacy visuals */
 body:not(.searched) .brand-feature {
-  background: #13181f !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.4) !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  background: #13181f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 body:not(.searched) .about-me,
 body:not(.searched) .figma-start-section {
-  background: #0d1117 !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.4) !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  background: #0d1117;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 body:not(.searched) .figma-anagram-section {
-  background: #13181f !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: none !important;
+  background: #13181f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: none;
 }
 
 body:not(.searched) .figma-start-section .figma-start-img,
 body:not(.searched) .intro-img-placeholder {
   background-image:
     linear-gradient(135deg, rgba(13, 17, 23, 0.74), rgba(13, 17, 23, 0.42)),
-    var(--jeju-start-stone) !important;
-  background-size: cover !important;
-  background-position: center !important;
+    var(--jeju-start-stone);
+  background-size: cover;
+  background-position: center;
 }
 
 body:not(.searched) .figma-footer-hero {
-  background-color: #0d1117 !important;
-  background-image: url("../hero/yeonhee-VWLhifg5VMA-unsplash.jpg") !important;
-  background-size: cover !important;
-  background-position: center 40% !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.4) !important;
+  background-color: #0d1117;
+  background-image: url("../hero/yeonhee-VWLhifg5VMA-unsplash.jpg");
+  background-size: cover;
+  background-position: center 40%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
 }
 
 body:not(.searched) .figma-footer-hero-overlay {
-  background: rgba(13, 17, 23, 0.82) !important;
+  background: rgba(13, 17, 23, 0.82);
 }
 
 body:not(.searched) .footer-hero-img {
-  display: none !important;
+  display: none;
 }
 
 body:not(.searched) .stat-card {
-  background: transparent !important;
-  border: none !important;
-  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: none !important;
-  padding: 2.5rem 2rem !important;
+  background: transparent;
+  border: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+  padding: 2.5rem 2rem;
   text-align: center;
 }
 
 body:not(.searched) .stat-card:last-child {
-  border-right: none !important;
+  border-right: none;
 }
 
 body:not(.searched) .figma-stat-grid .stat-card:hover,
 body:not(.searched) .stat-card:hover {
-  transform: none !important;
-  box-shadow: none !important;
+  transform: none;
+  box-shadow: none;
 }
 
 body:not(.searched) .figma-value-card {
-  background: rgba(255, 255, 255, 0.03) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: 12px !important;
-  transition: border-color 0.2s ease !important;
-  transform: none !important;
-  box-shadow: none !important;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  transition: border-color 0.2s ease;
+  transform: none;
+  box-shadow: none;
 }
 
 body:not(.searched) .figma-value-card:hover {
-  border-color: rgba(255, 255, 255, 0.2) !important;
-  transform: none !important;
-  box-shadow: none !important;
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: none;
+  box-shadow: none;
 }
 
 body:not(.searched) .figma-highlight-box {
-  background: rgba(255, 255, 255, 0.04) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 16px !important;
-  box-shadow: none !important;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: none;
 }
 
 body:not(.searched) .figma-highlight-box p {
-  color: #f0ede8 !important;
+  color: #f0ede8;
 }
 
 @media (max-width: 768px) {
   body:not(.searched) .stat-card {
-    border-right: none !important;
-    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
-    padding: 1.5rem 1rem !important;
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 1.5rem 1rem;
   }
 
   body:not(.searched) .stat-card:last-child {
-    border-bottom: none !important;
+    border-bottom: none;
   }
 
   body:not(.searched) .figma-value-card {
-    padding: 1.5rem !important;
+    padding: 1.5rem;
   }
 
   body:not(.searched) .figma-footer-hero {
-    background-position: center center !important;
+    background-position: center center;
   }
 }
 
@@ -4001,7 +3968,7 @@ body:not(.searched) :is(
   .figma-roadmap-section,
   .figma-start-section
 ) {
-  color: rgba(255, 255, 255, 0.88) !important;
+  color: rgba(255, 255, 255, 0.88);
 }
 
 body:not(.searched) :is(
@@ -4029,7 +3996,7 @@ body:not(.searched) :is(
   .roadmap-body,
   .check-list li
 ) {
-  color: rgba(255, 255, 255, 0.90) !important;
+  color: rgba(255, 255, 255, 0.90);
 }
 
 body:not(.searched) :is(
@@ -4049,12 +4016,12 @@ body:not(.searched) :is(
   .about-card
 ) {
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.115), rgba(255, 255, 255, 0.055)) !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
-  color: rgba(255, 255, 255, 0.90) !important;
+    linear-gradient(135deg, rgba(255, 255, 255, 0.115), rgba(255, 255, 255, 0.055));
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.90);
   box-shadow:
     0 18px 54px rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 body:not(.searched) :is(
@@ -4073,7 +4040,7 @@ body:not(.searched) :is(
   .feature-card,
   .about-card
 ) :is(h1, h2, h3, h4, p, li, span, strong) {
-  color: rgba(255, 255, 255, 0.90) !important;
+  color: rgba(255, 255, 255, 0.90);
 }
 
 body:not(.searched) :is(
@@ -4084,7 +4051,7 @@ body:not(.searched) :is(
   .figma-roadmap-section,
   .figma-start-section
 ) :is(.muted, .subtle, .eyebrow, .caption, .figma-muted) {
-  color: rgba(255, 255, 255, 0.68) !important;
+  color: rgba(255, 255, 255, 0.68);
 }
 
 body:not(.searched) :is(
@@ -4095,7 +4062,7 @@ body:not(.searched) :is(
   .figma-roadmap-section,
   .figma-start-section
 ) a {
-  color: rgba(190, 255, 232, 0.96) !important;
+  color: rgba(190, 255, 232, 0.96);
 }
 
 body:not(.searched) :is(
@@ -4106,8 +4073,8 @@ body:not(.searched) :is(
   .figma-roadmap-section,
   .figma-start-section
 ) :is(button, .hero-action-btn, .doc-trigger-btn, .visa-track-btn) {
-  color: rgba(255, 255, 255, 0.92) !important;
-  border-color: rgba(255, 255, 255, 0.20) !important;
+  color: rgba(255, 255, 255, 0.92);
+  border-color: rgba(255, 255, 255, 0.20);
 }
 
 
@@ -4125,12 +4092,12 @@ body:not(.searched) :is(
       rgba(249, 246, 238, 0.96),
       rgba(232, 244, 238, 0.88) 52%,
       rgba(255, 237, 229, 0.78)
-    ) !important;
-  color: var(--color-primary-ink, #132f2a) !important;
-  border: 1px solid rgba(8, 94, 72, 0.10) !important;
+    );
+  color: var(--color-primary-ink, #132f2a);
+  border: 1px solid rgba(8, 94, 72, 0.10);
   box-shadow:
     0 20px 60px rgba(8, 94, 72, 0.075),
-    0 4px 18px rgba(0, 0, 0, 0.035) !important;
+    0 4px 18px rgba(0, 0, 0, 0.035);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
@@ -4151,8 +4118,8 @@ body:not(.searched) :is(
   .figma-roadmap-section,
   .figma-start-section
 )::after {
-  opacity: 0.18 !important;
-  filter: blur(24px) saturate(0.9) !important;
+  opacity: 0.18;
+  filter: blur(24px) saturate(0.9);
 }
 
 body:not(.searched) :is(
@@ -4180,7 +4147,7 @@ body:not(.searched) :is(
   .roadmap-body,
   .check-list li
 ) {
-  color: var(--color-primary-ink, #132f2a) !important;
+  color: var(--color-primary-ink, #132f2a);
 }
 
 body:not(.searched) :is(
@@ -4196,7 +4163,7 @@ body:not(.searched) :is(
   .roadmap-body,
   .brand-hero-subtitle
 ) {
-  color: color-mix(in srgb, var(--color-primary-ink, #132f2a) 74%, white 26%) !important;
+  color: color-mix(in srgb, var(--color-primary-ink, #132f2a) 74%, white 26%);
 }
 
 body:not(.searched) :is(
@@ -4216,12 +4183,12 @@ body:not(.searched) :is(
   .about-card
 ) {
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.48)) !important;
-  border: 1px solid rgba(8, 94, 72, 0.13) !important;
-  color: var(--color-primary-ink, #132f2a) !important;
+    linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.48));
+  border: 1px solid rgba(8, 94, 72, 0.13);
+  color: var(--color-primary-ink, #132f2a);
   box-shadow:
     0 14px 38px rgba(8, 94, 72, 0.075),
-    inset 0 1px 0 rgba(255, 255, 255, 0.62) !important;
+    inset 0 1px 0 rgba(255, 255, 255, 0.62);
 }
 
 body:not(.searched) :is(
@@ -4240,7 +4207,7 @@ body:not(.searched) :is(
   .feature-card,
   .about-card
 ) :is(h1, h2, h3, h4, p, li, span, strong) {
-  color: var(--color-primary-ink, #132f2a) !important;
+  color: var(--color-primary-ink, #132f2a);
 }
 
 body:not(.searched) :is(
@@ -4251,20 +4218,20 @@ body:not(.searched) :is(
   .figma-roadmap-section,
   .figma-start-section
 ) a {
-  color: var(--color-accent, #0EA37B) !important;
+  color: var(--color-accent, #0EA37B);
 }
 
 /* Keep photo-heavy sections atmospheric, but not the whole scrolled UI */
 body:not(.searched) .brand-hero,
 body:not(.searched) .figma-footer-hero,
 body:not(.searched) .footer-hero-img {
-  color: rgba(255, 255, 255, 0.92) !important;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 body:not(.searched) .brand-hero :is(h1, h2, h3, h4, p, span, strong, li),
 body:not(.searched) .figma-footer-hero :is(h1, h2, h3, h4, p, span, strong, li),
 body:not(.searched) .footer-hero-img :is(h1, h2, h3, h4, p, span, strong, li) {
-  color: rgba(255, 255, 255, 0.92) !important;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 /* Neutralize prior Phase 12B/12C black-card feel where it leaks through */
@@ -4283,31 +4250,31 @@ body:not(.searched) :is(
   .stat-card,
   .check-list li
 )[style] {
-  color: var(--color-primary-ink, #132f2a) !important;
+  color: var(--color-primary-ink, #132f2a);
 }
 
 
 /* Phase 13: modernize searched-state header and results interface */
 body.searched .hero-container {
-  min-height: 72px !important;
-  padding: 0 !important;
+  min-height: 72px;
+  padding: 0;
   background:
     linear-gradient(135deg,
       rgba(252, 250, 245, 0.94),
       rgba(232, 244, 238, 0.90)
-    ) !important;
-  border-bottom: 1px solid rgba(8, 94, 72, 0.13) !important;
+    );
+  border-bottom: 1px solid rgba(8, 94, 72, 0.13);
   box-shadow:
     0 10px 30px rgba(8, 94, 72, 0.07),
-    0 1px 0 rgba(255, 255, 255, 0.70) inset !important;
-  backdrop-filter: blur(18px) saturate(1.06) !important;
-  -webkit-backdrop-filter: blur(18px) saturate(1.06) !important;
+    0 1px 0 rgba(255, 255, 255, 0.70) inset;
+  backdrop-filter: blur(18px) saturate(1.06);
+  -webkit-backdrop-filter: blur(18px) saturate(1.06);
 }
 
 body.searched .header-inner {
-  max-width: 1180px !important;
-  padding: 0.65rem 1.2rem !important;
-  gap: 1rem !important;
+  max-width: 1180px;
+  padding: 0.65rem 1.2rem;
+  gap: 1rem;
 }
 
 /* Hide legacy searched-state animated/text logo */
@@ -4315,153 +4282,153 @@ body.searched .logo-svg,
 body.searched .logo-brand,
 body.searched .logo-sub,
 body.searched .logo-text {
-  display: none !important;
+  display: none;
 }
 
 /* Use the brush wordmark in searched state too, with a dark civic capsule for contrast */
 body.searched .logo-area {
-  display: inline-flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-width: 132px !important;
-  height: 42px !important;
-  padding: 0.38rem 0.72rem !important;
-  border-radius: 999px !important;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-width: 132px;
+  height: 42px;
+  padding: 0.38rem 0.72rem;
+  border-radius: 999px;
   background:
-    linear-gradient(135deg, rgba(5, 72, 58, 0.96), rgba(8, 94, 72, 0.88)) !important;
-  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    linear-gradient(135deg, rgba(5, 72, 58, 0.96), rgba(8, 94, 72, 0.88));
+  border: 1px solid rgba(255, 255, 255, 0.22);
   box-shadow:
     0 10px 24px rgba(8, 94, 72, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 body.searched .brand-wordmark-img {
-  display: block !important;
-  height: 26px !important;
-  width: auto !important;
-  max-width: 118px !important;
-  object-fit: contain !important;
+  display: block;
+  height: 26px;
+  width: auto;
+  max-width: 118px;
+  object-fit: contain;
   filter:
     drop-shadow(0 4px 10px rgba(0, 0, 0, 0.25))
-    drop-shadow(0 0 8px rgba(255, 255, 255, 0.12)) !important;
+    drop-shadow(0 0 8px rgba(255, 255, 255, 0.12));
 }
 
 /* Refine searched-state search bar */
 body.searched .search-wrap {
-  max-width: 540px !important;
+  max-width: 540px;
 }
 
 body.searched .sbar {
   background:
-    linear-gradient(135deg, rgba(255,255,255,0.92), rgba(252,250,245,0.82)) !important;
-  border: 1px solid rgba(8, 94, 72, 0.5) !important;
-  border-radius: 999px !important;
+    linear-gradient(135deg, rgba(255,255,255,0.92), rgba(252,250,245,0.82));
+  border: 1px solid rgba(8, 94, 72, 0.5);
+  border-radius: 999px;
   box-shadow:
     0 8px 24px rgba(8, 94, 72, 0.08),
-    inset 0 1px 0 rgba(255,255,255,0.82) !important;
+    inset 0 1px 0 rgba(255,255,255,0.82);
 }
 
 body.searched .sbar:focus-within {
-  border-color: rgba(14, 163, 123, 0.52) !important;
+  border-color: rgba(14, 163, 123, 0.52);
   box-shadow:
     0 0 0 3px rgba(14, 163, 123, 0.16),
-    0 12px 32px rgba(8, 94, 72, 0.12) !important;
+    0 12px 32px rgba(8, 94, 72, 0.12);
 }
 
 body.searched #q {
-  color: var(--color-primary-ink, #085E48) !important;
+  color: var(--color-primary-ink, #085E48);
 }
 
 body.searched #q::placeholder {
-  color: rgba(8, 94, 72, 0.48) !important;
+  color: rgba(8, 94, 72, 0.48);
 }
 
 body.searched .ctrls .cb,
 body.searched .cb {
-  background: rgba(255,255,255,0.72) !important;
-  border: 1px solid rgba(8, 94, 72, 0.62) !important;
-  color: var(--color-primary-ink, #085E48) !important;
-  border-radius: 999px !important;
-  box-shadow: 0 4px 14px rgba(8, 94, 72, 0.055) !important;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(8, 94, 72, 0.62);
+  color: var(--color-primary-ink, #085E48);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(8, 94, 72, 0.055);
 }
 
 body.searched .ctrls .cb:hover,
 body.searched .cb:hover {
-  background: rgba(232, 244, 238, 0.92) !important;
-  border-color: rgba(14, 163, 123, 0.42) !important;
-  color: var(--color-primary, #0EA37B) !important;
+  background: rgba(232, 244, 238, 0.92);
+  border-color: rgba(14, 163, 123, 0.42);
+  color: var(--color-primary, #0EA37B);
 }
 
-/* The blanket "searched .cb" rule above (!important) was flattening the
+/* The blanket "searched .cb" rule above () was flattening the
    AND/OR filter chip's selected state (.cb.on) to the same pale pill as the
    unselected one — users couldn't tell which was active. Restore the solid
-   filled selected state, matching !important so it wins. */
+   filled selected state, matching so it wins. */
 body.searched .ctrls .cb.on,
 body.searched .cb.on {
-  background: var(--ac) !important;
-  border-color: var(--ac) !important;
-  color: #fff !important;
+  background: var(--ac);
+  border-color: var(--ac);
+  color: #fff;
 }
 body.searched .ctrls .cb.on:hover,
 body.searched .cb.on:hover {
-  background: var(--ac2, var(--ac)) !important;
-  border-color: var(--ac2, var(--ac)) !important;
-  color: #fff !important;
+  background: var(--ac2, var(--ac));
+  border-color: var(--ac2, var(--ac));
+  color: #fff;
 }
 /* Dark mode's --ac is a bright mint (#3BE4B8) — white text on it (the
    pre-existing .cb.on rule above and at its base definition) fails contrast.
    Use dark ink instead, same pattern as [data-theme="dark"] .cb below. */
 [data-theme="dark"] .cb.on,
 [data-theme="dark"] body.searched .cb.on {
-  color: #06231C !important;
+  color: #06231C;
 }
 
 /* Make searched results feel less like the old mode */
 body.searched .results-area {
-  padding-top: 1.25rem !important;
+  padding-top: 1.25rem;
 }
 
 body.searched .rlist {
-  gap: 0.9rem !important;
+  gap: 0.9rem;
 }
 
 body.searched .card,
 body.searched .result-card,
 body.searched .r {
   background:
-    linear-gradient(135deg, rgba(255,255,255,0.86), rgba(252,250,245,0.74)) !important;
-  border: 1px solid rgba(8, 94, 72, 0.12) !important;
+    linear-gradient(135deg, rgba(255,255,255,0.86), rgba(252,250,245,0.74));
+  border: 1px solid rgba(8, 94, 72, 0.12);
   box-shadow:
     0 14px 38px rgba(8, 94, 72, 0.07),
-    inset 0 1px 0 rgba(255,255,255,0.68) !important;
+    inset 0 1px 0 rgba(255,255,255,0.68);
 }
 
 @media (max-width: 720px) {
   body.searched .hero-container {
-    min-height: auto !important;
+    min-height: auto;
   }
 
   body.searched .header-inner {
-    align-items: stretch !important;
-    gap: 0.65rem !important;
-    padding: 0.65rem 0.85rem !important;
+    align-items: stretch;
+    gap: 0.65rem;
+    padding: 0.65rem 0.85rem;
   }
 
   body.searched .logo-area {
-    align-self: flex-start !important;
-    min-width: 112px !important;
-    height: 38px !important;
+    align-self: flex-start;
+    min-width: 112px;
+    height: 38px;
   }
 
   body.searched .brand-wordmark-img {
-    height: 23px !important;
-    max-width: 102px !important;
+    height: 23px;
+    max-width: 102px;
   }
 
   body.searched .search-wrap {
-    max-width: none !important;
-    width: 100% !important;
+    max-width: none;
+    width: 100%;
   }
 }
 
@@ -4592,23 +4559,23 @@ body:not(.searched) .figma-anagram-section,
 body:not(.searched) .figma-footer-hero { border-radius: 18px; overflow: clip; }
 @media (max-width: 768px) {
   body:not(.searched) .hero-container { padding-top: 4.2rem; }
-  body:not(.searched) .brand-wordmark-img { max-width: 94vw !important; }
+  body:not(.searched) .brand-wordmark-img { max-width: 94vw; }
 }
 
 /* Review polish: simplify landing art direction and improve contrast */
 body:not(.searched) {
   background:
-    linear-gradient(180deg, #f7f3eb 0%, #eef7f3 42%, #fff8f3 100%) !important;
+    linear-gradient(180deg, #f7f3eb 0%, #eef7f3 42%, #fff8f3 100%);
 }
 body:not(.searched) .brand-hero {
   min-height: clamp(44rem, 92vh, 58rem);
-  padding: clamp(5rem, 10vw, 8rem) clamp(1rem, 5vw, 4rem) clamp(4rem, 8vw, 7rem) !important;
-  border-radius: 0 !important;
+  padding: clamp(5rem, 10vw, 8rem) clamp(1rem, 5vw, 4rem) clamp(4rem, 8vw, 7rem);
+  border-radius: 0;
   background-image:
     linear-gradient(180deg, rgba(3, 24, 22, 0.62), rgba(3, 24, 22, 0.36) 42%, rgba(3, 24, 22, 0.68)),
-    var(--jeju-brand-field) !important;
-  background-position: center 44% !important;
-  background-size: cover !important;
+    var(--jeju-brand-field);
+  background-position: center 44%;
+  background-size: cover;
 }
 body:not(.searched) .brand-hero-headline,
 body:not(.searched) .brand-hero-subtitle {
@@ -4619,7 +4586,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
   min-height: 56px;
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,0.48);
-  color: #fff !important;
+  color: #fff;
   background: rgba(4, 28, 25, 0.44);
   box-shadow: 0 14px 32px rgba(0,0,0,0.24);
   backdrop-filter: blur(12px);
@@ -4630,32 +4597,32 @@ body:not(.searched) .brand-hero-buttons .btn-primary {
   border-color: rgba(255,255,255,0.34);
 }
 body:not(.searched) .brand-hero-stats.figma-stat-grid {
-  background: rgba(255,255,255,0.94) !important;
-  border: 1px solid rgba(255,255,255,0.68) !important;
-  box-shadow: 0 24px 70px rgba(0,0,0,0.18) !important;
+  background: rgba(255,255,255,0.94);
+  border: 1px solid rgba(255,255,255,0.68);
+  box-shadow: 0 24px 70px rgba(0,0,0,0.18);
   transform: translateY(clamp(2rem, 4vw, 3.25rem));
 }
 body:not(.searched) .brand-hero-stats .stat-card {
-  background: transparent !important;
-  border-color: rgba(8, 94, 72, 0.10) !important;
+  background: transparent;
+  border-color: rgba(8, 94, 72, 0.10);
 }
 body:not(.searched) .brand-hero-stats :is(.stat-label, .stat-label span) {
-  color: var(--color-primary-ink, #085E48) !important;
+  color: var(--color-primary-ink, #085E48);
 }
 body:not(.searched) .brand-hero-stats .stat-num {
-  color: var(--color-accent, #FF6B5B) !important;
+  color: var(--color-accent, #FF6B5B);
 }
 body:not(.searched) .brand-hero-stats .stat-code-chip {
-  background: rgba(255,255,255,0.92) !important;
-  border: 1px solid rgba(8, 94, 72, 0.65) !important;
-  color: #0b5f50 !important;
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(8, 94, 72, 0.65);
+  color: #0b5f50;
   box-shadow: 0 2px 8px rgba(8, 94, 72, 0.06);
 }
 body:not(.searched) .figma-stat-note {
-  display: none !important;
+  display: none;
 }
 body:not(.searched) .hero-ai-secondary {
-  display: none !important;
+  display: none;
 }
 .ai-fab {
   min-height: 48px;
@@ -4674,20 +4641,20 @@ body:not(.searched) .hero-ai-secondary {
 }
 body:not(.searched) .figma-anagram-section #anagram-bot .anagram-letter,
 .figma-anagram-section .anagram-letter.anagram-bot {
-  color: var(--color-accent, #FF6B5B) !important;
+  color: var(--color-accent, #FF6B5B);
   text-shadow: 0 8px 22px rgba(255, 107, 91, 0.18);
 }
 body:not(.searched) .figma-anagram-section #anagram-bot .anagram-letter.active,
 .figma-anagram-section .anagram-letter.anagram-bot.active {
-  color: var(--color-accent-deep, #E0513E) !important;
+  color: var(--color-accent-deep, #E0513E);
 }
 body:not(.searched) .figma-anagram-section {
-  padding-bottom: clamp(2rem, 5vw, 3rem) !important;
+  padding-bottom: clamp(2rem, 5vw, 3rem);
 }
 body:not(.searched) .figma-roadmap-section {
   max-width: 980px;
   margin: clamp(1rem, 4vw, 2.5rem) auto 0;
-  padding: clamp(2.5rem, 5vw, 3.5rem) clamp(1.25rem, 4vw, 3rem) !important;
+  padding: clamp(2.5rem, 5vw, 3.5rem) clamp(1.25rem, 4vw, 3rem);
 }
 body:not(.searched) .figma-roadmap-section .exp-heading {
   margin-bottom: 0.4rem;
@@ -4700,9 +4667,9 @@ body:not(.searched) .figma-roadmap-section .exp-row {
   align-items: start;
 }
 body:not(.searched) .figma-footer-chips .footer-chip {
-  background: rgba(255,255,255,0.90) !important;
-  border-color: rgba(255,255,255,0.72) !important;
-  color: var(--color-primary-ink, #085E48) !important;
+  background: rgba(255,255,255,0.90);
+  border-color: rgba(255,255,255,0.72);
+  color: var(--color-primary-ink, #085E48);
   box-shadow: 0 8px 22px rgba(0,0,0,0.16);
 }
 body:not(.searched) .figma-footer-actions .figma-footer-btn,
@@ -4713,21 +4680,21 @@ body:not(.searched) .figma-footer-actions .figma-footer-btn-secondary {
 }
 body:not(.searched) .figma-footer-actions .figma-footer-btn-secondary {
   background: rgba(255,255,255,0.90);
-  color: var(--color-primary-ink, #085E48) !important;
+  color: var(--color-primary-ink, #085E48);
   border-color: rgba(255,255,255,0.66);
 }
 @media (max-width: 720px) {
   body:not(.searched) .brand-hero {
     min-height: auto;
-    padding-top: 5rem !important;
+    padding-top: 5rem;
   }
   body:not(.searched) .brand-hero-stats.figma-stat-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     transform: translateY(1.5rem);
-    padding: 1.25rem 0.8rem !important;
+    padding: 1.25rem 0.8rem;
   }
   body:not(.searched) .brand-hero-stats .stat-card {
-    padding: 1.2rem 0.55rem !important;
+    padding: 1.2rem 0.55rem;
   }
   body:not(.searched) .brand-hero-stats .stat-codes {
     gap: 0.35rem;
@@ -4743,7 +4710,7 @@ body:not(.searched) .figma-footer-actions .figma-footer-btn-secondary {
     font-size: 0.78rem;
   }
   body:not(.searched) .figma-roadmap-section {
-    padding: 2rem 1rem !important;
+    padding: 2rem 1rem;
   }
   body:not(.searched) .figma-footer-chips {
     align-items: stretch;
@@ -4761,43 +4728,43 @@ body:not(.searched) {
      밝아지고 그 위의 면책 문구가 흐려졌다. 라이트 값(#FFFCF5)이 사실상 같은
      --bg1 로 바꿔 테마를 따르게 한다. */
   background:
-    linear-gradient(180deg, var(--p-paper) 0%, var(--p-mint-soft) 48%, var(--bg1) 100%) !important;
+    linear-gradient(180deg, var(--p-paper) 0%, var(--p-mint-soft) 48%, var(--bg1) 100%);
 }
 
 body:not(.searched) .hero-container {
-  min-height: auto !important;
-  padding: clamp(5.4rem, 9vw, 7.5rem) clamp(1rem, 4vw, 3rem) clamp(3rem, 7vw, 5rem) !important;
-  background: var(--p-green-deep) !important;
+  min-height: auto;
+  padding: clamp(5.4rem, 9vw, 7.5rem) clamp(1rem, 4vw, 3rem) clamp(3rem, 7vw, 5rem);
+  background: var(--p-green-deep);
 }
 
 body:not(.searched) .hero-container::before {
   background:
     linear-gradient(126deg, rgba(14, 31, 26, 0.98) 0%, rgba(20, 51, 41, 0.96) 48%, rgba(31, 79, 61, 0.88) 100%),
     linear-gradient(90deg, rgba(244, 238, 224, 0.06) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(244, 238, 224, 0.05) 1px, transparent 1px) !important;
-  background-size: auto, 72px 72px, 72px 72px !important;
-  background-position: center !important;
-  filter: none !important;
-  transform: none !important;
-  opacity: 1 !important;
+    linear-gradient(0deg, rgba(244, 238, 224, 0.05) 1px, transparent 1px);
+  background-size: auto, 72px 72px, 72px 72px;
+  background-position: center;
+  filter: none;
+  transform: none;
+  opacity: 1;
 }
 
 body:not(.searched) .hero-container::after {
   background:
     linear-gradient(180deg, rgba(14, 31, 26, 0.08), rgba(14, 31, 26, 0.42)),
-    linear-gradient(90deg, rgba(201, 84, 64, 0.16), transparent 38%, rgba(183, 217, 200, 0.18)) !important;
+    linear-gradient(90deg, rgba(201, 84, 64, 0.16), transparent 38%, rgba(183, 217, 200, 0.18));
 }
 
 body:not(.searched) .header-inner {
-  align-items: flex-start !important;
-  max-width: min(1120px, 94vw) !important;
-  gap: clamp(1rem, 2vw, 1.45rem) !important;
+  align-items: flex-start;
+  max-width: min(1120px, 94vw);
+  gap: clamp(1rem, 2vw, 1.45rem);
 }
 
 body:not(.searched) .brand-wordmark-img {
-  height: clamp(96px, 14vw, 168px) !important;
-  max-width: min(78vw, 620px) !important;
-  filter: drop-shadow(0 8px 40px rgba(0, 0, 0, 0.40)) !important;
+  height: clamp(96px, 14vw, 168px);
+  max-width: min(78vw, 620px);
+  filter: drop-shadow(0 8px 40px rgba(0, 0, 0, 0.40));
 }
 
 body:not(.searched) .p-hero-copy,
@@ -4808,7 +4775,7 @@ body:not(.searched) .reference-disclaimer,
 body:not(.searched) .hero-actions,
 body:not(.searched) #visaManualSection {
   width: 100%;
-  max-width: min(860px, 100%) !important;
+  max-width: min(860px, 100%);
 }
 
 .p-hero-copy {
@@ -4922,12 +4889,12 @@ body.landing:not([data-theme="dark"]):not(.searched) .hero-container::before {
     radial-gradient(circle at 84% 14%, rgba(59,228,184,.30), transparent 42%),
     radial-gradient(circle at 99% 52%, rgba(116,133,255,.20), transparent 46%),
     radial-gradient(circle at 62% 98%, rgba(255,107,94,.09), transparent 42%),
-    #F4EFE4 !important;
+    #F4EFE4;
 }
 /* de-emphasise the heavy kitsch decor on the clean light hero */
 body.landing:not([data-theme="dark"]):not(.searched) .k-decor,
 body.landing:not([data-theme="dark"]):not(.searched) .k-masthead,
-body.landing:not([data-theme="dark"]):not(.searched) .k-marquee { opacity: 0 !important; }
+body.landing:not([data-theme="dark"]):not(.searched) .k-marquee { opacity: 0; }
 /* hero copy → Ink */
 body.landing:not([data-theme="dark"]):not(.searched) .p-hero-copy { color: #073B32; }
 body.landing:not([data-theme="dark"]):not(.searched) .p-hero-eyebrow { color: #0B7357; }
@@ -5013,7 +4980,7 @@ body.landing:not([data-theme="dark"]):not(.searched) .p-gw-newhome-brand {
    the dark photo hero; on the light hero it becomes a soft lavender bloom */
 body.landing:not([data-theme="dark"]):not(.searched) .hero-container::after {
   background:
-    radial-gradient(circle at 92% 6%, rgba(116,133,255,.10), transparent 38%) !important;
+    radial-gradient(circle at 92% 6%, rgba(116,133,255,.10), transparent 38%);
 }
 /* top-right control pills sit on cream now — keep them light */
 body.landing:not([data-theme="dark"]):not(.searched) .top-ctrls .city-btn,
@@ -5024,7 +4991,7 @@ body.landing:not([data-theme="dark"]):not(.searched) .top-ctrls .language-btn {
 /* the hero-container's own dark background was covering the cream ::before
    aurora (which sits at z-index:-2); make it transparent so the light hero
    surface shows through */
-body.landing:not([data-theme="dark"]):not(.searched) .hero-container { background-color: transparent !important; }
+body.landing:not([data-theme="dark"]):not(.searched) .hero-container { background-color: transparent; }
 /* light hero uses the dark (ink) wordmark; dark mode keeps the white one (HTML default) */
 body.landing:not([data-theme="dark"]):not(.searched) .brand-wordmark-img { content: url("../brand/visable-wordmark.svg"); }
 
@@ -5102,8 +5069,8 @@ body.searching:not(.searched) .p-entry-rail {
 }
 
 body:not(.searched) .landing-hints-section {
-  align-items: stretch !important;
-  margin-top: 0.35rem !important;
+  align-items: stretch;
+  margin-top: 0.35rem;
   padding: 1rem;
   border-radius: var(--p-r-lg);
   border: 1px solid rgba(244, 238, 224, 0.14);
@@ -5111,20 +5078,20 @@ body:not(.searched) .landing-hints-section {
 }
 
 body:not(.searched) .landing-hints-title {
-  color: var(--p-mint) !important;
-  font-size: var(--p-fs-xs) !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.13em !important;
+  color: var(--p-mint);
+  font-size: var(--p-fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.13em;
 }
 
 body:not(.searched) .landing-hints-section .landing-hints {
-  max-width: none !important;
+  max-width: none;
 }
 
 body:not(.searched) .lh {
-  border-color: rgba(244, 238, 224, 0.18) !important;
-  background: rgba(244, 238, 224, 0.10) !important;
-  color: rgba(244, 238, 224, 0.84) !important;
+  border-color: rgba(244, 238, 224, 0.18);
+  background: rgba(244, 238, 224, 0.10);
+  color: rgba(244, 238, 224, 0.84);
 }
 
 body:not(.searched) .lh:hover {
