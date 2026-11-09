@@ -39,6 +39,27 @@ test('home, archive_diary theme (ko)', async ({ page }) => {
   await expect(page).toHaveScreenshot('home-ko-archive-full.png', shot());
 });
 
+// The three optional skins (assets/js/visable-theme.js THEMES, stored under `visable:theme`, applied as
+// html[data-vt]); the default skin is every other state. Added for the design-led CSS pass (owner decision 6).
+for (const skin of ['stamp', 'chrome', 'neon']) {
+  test(`home, ${skin} skin (ko)`, async ({ page }) => {
+    await withStorage(page, [['visable:theme', skin]]);
+    await boot(page, { routes: blockFonts });
+    await expect(page.locator('html')).toHaveAttribute('data-vt', skin);
+    await page.waitForTimeout(500);
+    await expect(page).toHaveScreenshot(`home-ko-${skin}-full.png`, shot());
+  });
+
+  test(`D-2 extension guidance, ${skin} skin (ko)`, async ({ page }) => {
+    await withStorage(page, [['visable:theme', skin]]);
+    await boot(page, { routes: blockFonts });
+    await search(page, 'D-2');
+    await expect(guidanceHeading(page, 'D-2')).toBeVisible();
+    await page.waitForTimeout(500);
+    await expect(page).toHaveScreenshot(`d2-extension-ko-${skin}-full.png`, shot());
+  });
+}
+
 test('global settings overlay open after a search (ko)', async ({ page }) => {
   // Opened through the public window.openGlobalSettings() the data-action dispatcher calls (the trigger
   // button is not rendered visible in this viewport state); the overlay's own styling is what is baselined.
