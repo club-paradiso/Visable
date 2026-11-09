@@ -2481,36 +2481,6 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .ai-modal-context-value { font-weight: 700; color: var(--t1); }
 .ai-modal-context-note { display: block; margin-top: 0.35rem; font-size: 0.72rem; color: var(--t3); }
 /* Deadline / grace-period calculator */
-.deadline-calc { border: 1px solid var(--bd2); border-radius: 10px; padding: 0.5rem 0.9rem; background: var(--bg0); }
-.deadline-calc[open] { padding-bottom: 0.9rem; }
-.deadline-calc-summary { cursor: pointer; font-weight: 800; font-size: 0.86rem; color: var(--t1); padding: 0.35rem 0; list-style: none; }
-.deadline-calc-summary::-webkit-details-marker { display: none; }
-.deadline-calc-summary::before { content: ''; display: inline-block; width: 1em; height: 1em; margin-inline-end: .4em; vertical-align: -.1em; background: currentColor; mask: url('../icons/civic/calendar-days.svg') center / contain no-repeat; }
-.deadline-intro { color: var(--t3); font-size: 0.79rem; line-height: 1.55; margin: 0.2rem 0 0.6rem; word-break: keep-all; }
-.deadline-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.55rem; }
-.deadline-field { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.76rem; color: var(--t2); font-weight: 700; }
-.deadline-field input { min-height: 38px; border: 1px solid var(--bd2); border-radius: 8px; padding: 0 0.6rem; font: inherit; font-size: 0.82rem; background: var(--bg1); color: var(--t1); }
-.deadline-field input:focus-visible { outline: 2px solid var(--ac); outline-offset: 1px; }
-.deadline-compute-btn { margin-top: 0.65rem; min-height: 40px; border: 1px solid var(--ac); background: color-mix(in srgb, var(--ac) 14%, var(--bg1)); color: var(--t1); border-radius: 9px; padding: 0 1rem; font: inherit; font-size: 0.82rem; font-weight: 800; cursor: pointer; }
-.deadline-compute-btn:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
-.deadline-results { margin-top: 0.7rem; display: grid; gap: 0.55rem; }
-.deadline-group { border: 1px solid var(--bd2); border-radius: 8px; padding: 0.6rem 0.7rem; display: grid; gap: 0.5rem; }
-.deadline-group-title { font-weight: 800; font-size: 0.8rem; color: var(--t1); }
-.deadline-row { border: 1px solid var(--bd2); border-radius: 8px; padding: 0.55rem 0.65rem; background: var(--bg1); }
-.deadline-group .deadline-row { background: var(--bg0); }
-.deadline-row-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
-.deadline-row-label { font-weight: 750; font-size: 0.8rem; color: var(--t1); word-break: keep-all; }
-.deadline-row-dday { flex: 0 0 auto; font-weight: 850; font-size: 0.74rem; color: var(--ac); }
-.deadline-row-date { font-size: 0.82rem; color: var(--t2); margin-top: 0.15rem; font-variant-numeric: tabular-nums; }
-.deadline-row-source { display: inline-block; margin-top: 0.3rem; padding: 0.1rem 0.5rem; border: 1px solid var(--bd2); border-radius: 999px; background: var(--bg0); color: var(--t3); font-size: 0.7rem; font-weight: 750; }
-.deadline-caution { color: var(--t3); font-size: 0.74rem; line-height: 1.5; margin: 0.35rem 0 0; word-break: keep-all; }
-.deadline-row-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
-.deadline-cal-btn { display: inline-flex; align-items: center; min-height: 34px; border: 1px solid var(--bd2); background: var(--bg0); color: var(--t2); border-radius: 8px; padding: 0 0.65rem; font: inherit; font-size: 0.75rem; font-weight: 700; cursor: pointer; text-decoration: none; }
-.deadline-cal-btn:hover { border-color: var(--ac); }
-.deadline-cal-btn:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
-.deadline-empty { color: var(--t3); font-size: 0.8rem; }
-.deadline-disclaimer { color: var(--t2); font-size: 0.76rem; line-height: 1.55; margin: 0.7rem 0 0; word-break: keep-all; }
-.deadline-privacy { color: var(--t3); font-size: 0.73rem; line-height: 1.5; margin: 0.4rem 0 0; word-break: keep-all; }
 /* Narrow-screen hardening for the core action surfaces added during the recent
    feature expansion (route chips, scenario choices, checklist + deadline action
    buttons, next-action grid). Goal: clean wrapping, comfortable tap targets, and
@@ -2538,9 +2508,6 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
     #scenarioPickerOverlay.active .modal-box { transform: translateY(0); }
     .scenario-checklist-actions { flex-wrap: wrap; }
     .scenario-checklist-actions .scenario-checklist-btn { flex: 1 1 calc(50% - 0.3rem); min-height: 44px; }
-    .deadline-inputs { grid-template-columns: 1fr; }
-    .deadline-row-actions { flex-direction: column; align-items: stretch; }
-    .deadline-row-actions .deadline-cal-btn { justify-content: center; min-height: 44px; }
     .ai-modal-context { font-size: 0.82rem; }
 }
 .manual-preview { color: var(--t2); }

@@ -452,8 +452,6 @@ async function onDomReady() {
                     actionBtn.setAttribute('aria-expanded', String(expand));
                     body.hidden = !expand;
                 },
-                'compute-deadlines': () => computeDeadlines(actionBtn),
-                'deadline-download-ics': () => downloadDeadlineIcs({ title: actionBtn.dataset.deadlineTitle, date: actionBtn.dataset.deadlineDate, note: actionBtn.dataset.deadlineNote }),
                 'open-scenario-picker': () => openScenarioPicker(actionBtn),
                 'choose-scenario-variant': () => chooseScenarioVariant(actionBtn),
                 'clear-procedure-variant': () => clearScenarioSelection(actionBtn),
