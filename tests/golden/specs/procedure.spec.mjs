@@ -89,8 +89,11 @@ test.describe('외국인등록증 재발급 (status-independent procedure)', () 
   });
 
   test('a fee question answers from the fee registry without any model call', async ({ page }) => {
+    // Count model / AI requests only. The visa catalog load (`/api/visas`, src/boot.js loadVisaData) is a data
+    // request the page makes whenever a backend origin is configured — i.e. on every deployment but not on a
+    // local server — and it falls back to the committed JSON when aborted, so it is not what this test guards.
     let apiCalls = 0;
-    await boot(page, { blockApi: false, routes: [['**/api/**', (route) => { apiCalls += 1; return route.abort(); }]] });
+    await boot(page, { blockApi: false, routes: [['**/api/**', (route) => { if (!/\/api\/visas(\?|$)/.test(route.request().url())) apiCalls += 1; return route.abort(); }]] });
     await search(page, '외국인등록증 재발급 수수료');
     const text = normalize(await mainText(page));
     expect(text).toContain(won(reissueFee.amount));

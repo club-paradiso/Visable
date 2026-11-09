@@ -39,7 +39,8 @@ test('hospital finder lists the designated institutions for a region', async ({ 
   const first = MEDS.institutions.find((m) => m.region === region);
   const chips = page.locator('#medFinderChips');
   await expect(chips).toBeVisible({ timeout: 30_000 });
-  await expect(page.getByText(String(MEDS.institutions.length), { exact: false }).first()).toBeVisible({ timeout: 30_000 });
+  // The total is rendered into #medFinderCount (medTotalCount); a bare substring search could match an address or phone number.
+  await expect(page.locator('#medFinderCount')).toContainText(String(MEDS.institutions.length), { timeout: 30_000 });
   await chips.getByRole('button', { name: region, exact: true }).click();
   await expect(page.getByText(first.institution_name, { exact: false }).first()).toBeVisible({ timeout: 30_000 });
   expect(errors).toEqual([]);

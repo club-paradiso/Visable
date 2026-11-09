@@ -6,12 +6,12 @@ localized copy against the externalized locale packs in ``data/i18n/`` (the inli
 Guards:
   - the law-grounding status row + localized labels (Part C),
   - the partial-language fallback notice + support map (Part F),
-  - deadline calculator source-status labeling + calendar caution (Part H),
+  - (deadline calculator removed Nov 2026: never mounted, owner decision 5) (Part H),
   - site-wide i18n coverage for the new labels across supported languages (Part G),
   - F-4 route-aware follow-through still localized + distinct (Part J).
 
 No browser is executed; functional behavior of the JS date/ICS/Google-Calendar
-helpers is covered separately by scripts/check_deadline_helpers.js. Localized copy
+helpers: the deadline check script was retired with the feature.
 is checked against the three supported locales (ko, en, zh-CN); Traditional Chinese
 (zh-Hant) aliases to zh-CN in the manifest and is no longer a separate display
 locale, so Simplified Chinese is validated against zh-CN.
@@ -39,8 +39,6 @@ class _IndexHtml(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
-        # Deadline calculator source (moved out of index.html in Phase 3 of the frontend rebuild).
-        cls.deadline_js = (REPO_ROOT / "src" / "features" / "deadline.js").read_text(encoding="utf-8")
         cls.packs = load_packs()
         cls.blobs = pack_blobs()
 
@@ -123,60 +121,6 @@ class PartialLanguageNoticeTests(_IndexHtml):
         self.assertIn("공식 문서명은 출입국 매뉴얼과 일치하도록 한국어로 표시됩니다.", self.blobs["ko"])
 
 
-class DeadlineSourceStatusTests(_IndexHtml):
-    def test_common_rule_label_present_all_languages(self):
-        self.assertIn("공통 규칙 기반 준비 참고일", self.blobs["ko"])
-        self.assertIn("Common-rule preparation date", self.blobs["en"])
-        self.assertIn("基于通用规则的准备参考日期", self.blobs["zh-CN"])
-
-    def test_registration_90day_uses_common_rule_not_official(self):
-        fn = _fn(self.deadline_js, "computeDeadlines")
-        # The 90-day registration row is tagged as a common-rule preparation aid.
-        self.assertIn("paradisoDeadlineAddDays(entry, 90)", fn)
-        self.assertRegex(fn, r"deadlineRowHtml\(tx\('deadlineRegEstimate'\),\s*regDate,\s*tx\('deadlineRegCaution'\),\s*tx\('deadlineSourceCommonRule'\)\)")
-        # The reg caution explicitly states it is not an official deadline.
-        self.assertIn("일반 준비용 안내이며 공식 확정 기한이 아닙니다.", self.blobs["ko"])
-        self.assertIn("not a confirmed official deadline", self.blobs["en"])
-
-    def test_custom_reminder_uses_custom_source(self):
-        fn = _fn(self.deadline_js, "computeDeadlines")
-        self.assertIn("tx('deadlineSourceCustom')", fn)
-
-    def test_row_renders_source_badge(self):
-        fn = _fn(self.deadline_js, "deadlineRowHtml")
-        self.assertIn("deadline-row-source", fn)
-        self.assertIn("data-deadline-source", fn)
-
-    def test_ics_description_carries_caution_not_just_summary(self):
-        fn = _fn(self.deadline_js, "buildDeadlineIcs")
-        self.assertIn("DESCRIPTION:", fn)
-        self.assertIn("item.note", fn)
-        self.assertIn("Not an official deadline", fn)
-
-    def test_google_calendar_includes_details_caution(self):
-        fn = _fn(self.deadline_js, "deadlineGoogleCalUrl")
-        self.assertIn("&details=", fn)
-        self.assertIn("encodeURIComponent(note)", fn)
-
-    def test_calendar_caution_label_present_all_languages(self):
-        self.assertIn("Visable 준비용 알림입니다. 공식 기한이 아니며 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요.", self.blobs["ko"])
-        self.assertIn("Visable preparation reminder. Not an official deadline; confirm with HiKorea, 1345, or the competent immigration office.", self.blobs["en"])
-
-    def test_local_reminder_state_not_sent_to_ai(self):
-        start = self.html.find("function submitAiAnalysis")
-        self.assertNotEqual(start, -1)
-        body = self.html[start: start + 3500]
-        # The request is Visable.data.postRaw(`${API_BASE}/api/ask`, { ...body... }, { signal }).
-        send_start = body.find("Visable.data.postRaw(`${API_BASE}/api/ask`")
-        self.assertNotEqual(send_start, -1)
-        send = body[send_start: body.find("signal:", send_start)]
-        for forbidden in ("deadline", "data-deadline", "reminder", "entryDate", "expiryDate"):
-            self.assertNotIn(forbidden, send, forbidden)
-
-    def test_calculator_does_not_persist_dates(self):
-        for name in ("renderDeadlineCalculator", "computeDeadlines"):
-            self.assertNotIn("localStorage", _fn(self.deadline_js, name))
-
 
 class F4RouteFollowThroughTests(_IndexHtml):
     def test_route_labels_still_localized(self):
@@ -208,7 +152,6 @@ class NewKeyI18nParityTests(_IndexHtml):
         "lawGroundingStatusLabel", "lawGroundingStatusNotAttempted",
         "lawGroundingStatusDisabled", "lawGroundingStatusUnavailable",
         "lawGroundingStatusUsed", "partialLanguageNotice", "languagePartialBadge",
-        "deadlineSourceCommonRule", "deadlineSourceCustom", "deadlineCalendarCaution",
     ]
 
     def test_new_keys_in_all_supported_packs(self):

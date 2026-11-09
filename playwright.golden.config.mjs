@@ -38,7 +38,10 @@ export default defineConfig({
   workers: process.env.CI ? 2 : 4,
   reporter: process.env.CI ? [['list'], ['junit', { outputFile: 'test-results/golden-junit.xml' }]] : [['list']],
   outputDir: 'test-results/golden',
-  snapshotPathTemplate: 'tests/golden/__screenshots__/{projectName}/{testFileName}/{arg}{ext}',
+  // Two baseline sets: `ci` (generated on the GitHub runner's Chromium, committed by the golden-visual job)
+  // and `local` (this machine's Chromium, git-ignored). A different Chromium renders text a few pixels
+  // apart, so the sets are never compared with each other. GOLDEN_SNAPSHOT_SET overrides the choice.
+  snapshotPathTemplate: `tests/golden/__screenshots__/${process.env.GOLDEN_SNAPSHOT_SET || (process.env.CI ? 'ci' : 'local')}/{projectName}/{testFileName}/{arg}{ext}`,
   use: {
     baseURL: BASE_URL,
     headless: true,

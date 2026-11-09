@@ -2130,10 +2130,6 @@ function isGenericVisaIssuanceExcluded(...args) { return Visable.cards.isGeneric
 function isVisaIssuanceNotApplicable(...args) { return Visable.cards.isVisaIssuanceNotApplicable(...args); }
 function renderVisaIssuanceSection(...args) { return Visable.cards.renderVisaIssuanceSection(...args); }
 
-// Deadline / grace-period calculator: moved to src/features/deadline.js (Phase 3, ADR-009) and exposed as
-// Visable.features.deadline. The stubs keep the two names the data-action dispatcher calls.
-function downloadDeadlineIcs(item) { return Visable.features.deadline.downloadDeadlineIcs(item); }
-function computeDeadlines(btn) { return Visable.features.deadline.computeDeadlines(btn); }
 
 
 // Moved to src/render/cards/doc-tabs-easy-mode.js (Phase 3, ADR-009) and exposed as Visable.cards; the stubs keep the names

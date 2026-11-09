@@ -35,8 +35,6 @@ class CoreJourneyUxHardeningFrontendTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.html = frontend_source()  # index.html + the modules Phase 3 moved code into (modules first)
-        # Deadline calculator source (moved out of index.html in Phase 3 of the frontend rebuild).
-        cls.deadline_js = (REPO_ROOT / "src" / "features" / "deadline.js").read_text(encoding="utf-8")
         cls.packs = load_packs()
         cls.blobs = pack_blobs()
 
@@ -265,21 +263,11 @@ class CoreJourneyUxHardeningFrontendTests(unittest.TestCase):
             "hardening pass introduced",
         )
 
-    def test_deadline_inputs_stack_on_phones(self):
-        import re
-
-        self.assertTrue(
-            re.search(r"\.deadline-inputs\s*\{[^}]*grid-template-columns:\s*1fr",
-                      self._phone_media_block(), re.S),
-            "date inputs must stack rather than sit side by side on a phone",
-        )
-
     def test_new_surface_focus_visible_styles_exist(self):
-        # Route chips, scenario choices, and deadline buttons remain keyboard
-        # focusable with a visible focus ring (not color-only state).
+        # Route chips and scenario choices remain keyboard focusable with a visible
+        # focus ring (not color-only state). (The deadline calculator was removed in Nov 2026.)
         self.assertIn(".f4-route-chip:focus-visible", self.html)
         self.assertIn(".scenario-choice:focus-visible", self.html)
-        self.assertIn(".deadline-cal-btn:focus-visible", self.html)
 
     # --- HiKorea / official confirmation visibility (Part G) ---------------
     def test_hikorea_action_is_not_gated_by_blocking_checkbox(self):
@@ -290,11 +278,6 @@ class CoreJourneyUxHardeningFrontendTests(unittest.TestCase):
         self.assertIn("openModal('hikoreaGuideOverlay')", guide)
         self.assertNotIn("hikoreaGate", self.html)
         self.assertNotIn("hikoreaAck", self.html)
-
-    def test_external_calendar_links_use_safe_attributes(self):
-        start = self.deadline_js.index("function deadlineRowHtml")
-        row = self.deadline_js[start:self.deadline_js.index("function computeDeadlines", start)]
-        self.assertIn('target="_blank" rel="noopener noreferrer"', row)
 
 
 if __name__ == "__main__":

@@ -39,6 +39,63 @@ test('home, archive_diary theme (ko)', async ({ page }) => {
   await expect(page).toHaveScreenshot('home-ko-archive-full.png', shot());
 });
 
+// The three optional skins (assets/js/visable-theme.js THEMES, stored under `visable:theme`, applied as
+// html[data-vt]); the default skin is every other state. Added for the design-led CSS pass (owner decision 6).
+for (const skin of ['stamp', 'chrome', 'neon']) {
+  test(`home, ${skin} skin (ko)`, async ({ page }) => {
+    await withStorage(page, [['visable:theme', skin]]);
+    await boot(page, { routes: blockFonts });
+    await expect(page.locator('html')).toHaveAttribute('data-vt', skin);
+    await page.waitForTimeout(500);
+    await expect(page).toHaveScreenshot(`home-ko-${skin}-full.png`, shot());
+  });
+
+  // The bare query "D-2" lands on the procedure chooser (what to do with D-2), i.e. the searched layout under the skin.
+  test(`D-2 searched state (procedure chooser), ${skin} skin (ko)`, async ({ page }) => {
+    await withStorage(page, [['visable:theme', skin]]);
+    await boot(page, { routes: blockFonts });
+    await search(page, 'D-2');
+    await expect(guidanceHeading(page, 'D-2')).toBeVisible();
+    await page.waitForTimeout(500);
+    await expect(page).toHaveScreenshot(`d2-extension-ko-${skin}-full.png`, shot());
+  });
+}
+
+// Home sections the service directory reveals (tests/e2e/landing-utilities.spec.mjs covers the behaviour).
+// Added 2026-11-09 after the !important pass stripped the rule that keeps #visaManualSection visible inside
+// the civic browse panel: the oracle had no revealed-section state, so the pass could not see the break.
+async function openDirectoryEntry(page, target) {
+  const entry = page.locator(`.cs-directory [data-action="reveal-home-section"][data-target="${target}"]`);
+  if (!(await entry.isVisible().catch(() => false))) await page.locator('#csTools summary').click();
+  await entry.click();
+}
+
+test('home, browse panel revealed (ko)', async ({ page }) => {
+  await boot(page, { routes: blockFonts });
+  await openDirectoryEntry(page, 'visaManualSection');
+  await expect(page.locator('#visaManualSection')).toBeVisible();
+  await page.waitForTimeout(1200); // the panel smooth-scrolls into view and renders the pre-entry track
+  await expect(page).toHaveScreenshot('home-ko-browse-revealed-full.png', shot());
+});
+
+test('home, pathways revealed (ko)', async ({ page }) => {
+  await boot(page, { routes: blockFonts });
+  await openDirectoryEntry(page, 'pathwaySection');
+  await expect(page.locator('#pathwaySection')).toBeVisible();
+  await page.waitForTimeout(1200);
+  await expect(page).toHaveScreenshot('home-ko-pathways-revealed-full.png', shot());
+});
+
+test('home, reminder dialog open (ko)', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-11-09T09:00:00+09:00')); // the dialog counts days from today
+  await boot(page, { routes: blockFonts });
+  await openDirectoryEntry(page, 'reminderSection');
+  const dialog = page.locator('#reminderDialog');
+  await expect(dialog).toBeVisible();
+  await page.waitForTimeout(800);
+  await expect(dialog).toHaveScreenshot('reminder-dialog-ko.png');
+});
+
 test('global settings overlay open after a search (ko)', async ({ page }) => {
   // Opened through the public window.openGlobalSettings() the data-action dispatcher calls (the trigger
   // button is not rendered visible in this viewport state); the overlay's own styling is what is baselined.

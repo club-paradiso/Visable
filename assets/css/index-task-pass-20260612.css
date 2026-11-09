@@ -86,14 +86,14 @@ a.doc-composer-card:hover .doc-composer-cta { text-decoration: underline; text-u
 [data-theme="dark"] .doc-composer-tag { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.16); color: var(--t2, #C7BFA8); }
 /* kitsch (archive_diary) flourish: sticker sheet */
 :root[data-theme="archive_diary"] body:not(.searched) .doc-composer-card {
-  background: linear-gradient(173deg, #FFFEFA 0%, #FFFAF0 78%, #FDF6EA 100%) !important;
-  border: 2px solid var(--k-ink, #14143C) !important;
-  border-radius: 24px 24px 24px 8px !important;
-  box-shadow: 4px 4px 0 var(--k-blue-2, #9DB8F2) !important;
+  background: linear-gradient(173deg, #FFFEFA 0%, #FFFAF0 78%, #FDF6EA 100%);
+  border: 2px solid var(--k-ink, #14143C);
+  border-radius: 24px 24px 24px 8px;
+  box-shadow: 4px 4px 0 var(--k-blue-2, #9DB8F2);
   transition: transform 0.38s var(--k-spring, ease), box-shadow 0.38s var(--k-spring, ease);
 }
 :root[data-theme="archive_diary"] body:not(.searched) a.doc-composer-card:hover {
-  transform: translateY(-5px) rotate(-0.6deg); box-shadow: 7px 7px 0 var(--k-blue, #2B50C8) !important;
+  transform: translateY(-5px) rotate(-0.6deg); box-shadow: 7px 7px 0 var(--k-blue, #2B50C8);
 }
 :root[data-theme="archive_diary"] body:not(.searched) .doc-composer-card::after { border-color: color-mix(in srgb, var(--k-blue, #2B50C8) 38%, transparent); }
 :root[data-theme="archive_diary"] body:not(.searched) .doc-composer-badge {
@@ -103,11 +103,11 @@ a.doc-composer-card:hover .doc-composer-cta { text-decoration: underline; text-u
 :root[data-theme="archive_diary"] body:not(.searched) .doc-composer-badge.live { background: var(--k-blue, #2B50C8); color: #fff; }
 :root[data-theme="archive_diary"] body:not(.searched) .doc-composer-cta { color: var(--k-blue-deep, #1A2F86); }
 :root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .doc-composer-card {
-  background: linear-gradient(173deg, #1B2541, #141B30 70%) !important;
-  border-color: #44558A !important; box-shadow: 4px 4px 0 #0B1020 !important;
+  background: linear-gradient(173deg, #1B2541, #141B30 70%);
+  border-color: #44558A; box-shadow: 4px 4px 0 #0B1020;
 }
-:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .doc-composer-card :is(h3) { color: #EEF2FF !important; }
-:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .doc-composer-card :is(p, .doc-composer-tag) { color: #BAC5E4 !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .doc-composer-card :is(h3) { color: #EEF2FF; }
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .doc-composer-card :is(p, .doc-composer-tag) { color: #BAC5E4; }
 
 /* ── 3 · Button text readability pass (color · ratio · size, both themes) ──
    Raises undersized type and washed-out contrast on interactive labels without
