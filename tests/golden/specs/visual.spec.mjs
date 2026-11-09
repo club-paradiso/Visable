@@ -144,7 +144,7 @@ test('manual reader home', async ({ page }) => {
   await boot(page, { path: '/manual.html', waitForSearch: false, routes: blockFonts });
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await page.waitForTimeout(500);
-  await expect(page).toHaveScreenshot('manual-home.png', { fullPage: false });
+  await expect(page).toHaveScreenshot('manual-home-20261109.png', { fullPage: false });
 });
 
 test('form helper home', async ({ page }) => {
