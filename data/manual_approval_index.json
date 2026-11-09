@@ -651,6 +651,58 @@
         "Tables are rendered from the converter's HTML/pipe tables as '열이름: 값' or '행 제목: 값' lines, with rowspans carried. Header detection is heuristic (short all-<th> leading rows); multi-level headers can be joined imperfectly, so a table row must be checked against the cited PDF page before it is quoted as a requirement."
       ],
       "approval_note": "Not a new approval. Recorded 2026-11-03 so the derived text is tracked: it inherits the owner's 2026-11-03 edition decision for stay_manual_2026_11_02_pdf only where a chunk is page-mapped to that approved PDF."
+    },
+    "visa_manual_2026_11_06_hwp_text": {
+      "approval_state": "needs_review",
+      "effective_date": "",
+      "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "unreviewed",
+      "has_tables_or_annexes": true,
+      "section_locator": "none_verified",
+      "source_path": "docs/source-manuals/2026-11-06/visa_manual_261106.hwp",
+      "source_sha256": "218394812c890baecc016ba6a70775fe1d219307536eb996f4dc2b24cb33d2b6",
+      "source_original_hwp_sha256": "218394812c890baecc016ba6a70775fe1d219307536eb996f4dc2b24cb33d2b6",
+      "extracted_text_path": "docs/source-manuals/2026-11-06/extracted/full_text/visa_manual_261106.txt",
+      "extracted_text_sha256": "543ea309febf4b0332984de3a920222555b92c199b4bd076d287fe0a0b23e54e",
+      "extraction_warnings": [
+        "Staged 2026-11-09 from an owner-supplied HWP (cover '2026. 11.'). No PDF printout was received, so there are no page numbers and no page corpus.",
+        "The extraction has not been compared against the original by a human. Do not read the filename date as a verified legal effective date.",
+        "Not approved: MUST NOT support direct legal or administrative claims in AI answers."
+      ],
+      "table_extraction_warnings": [
+        "HWP tables may be flattened or out of reading order. Never infer row/column relationships, conditional document requirements or exemptions without checking the original."
+      ],
+      "would_supersede": "visa_manual_2026_10_19_pdf",
+      "manifest_slot": "pending_review_editions",
+      "change_review_artifact": "audits/manual-refresh-20261109/README.md"
+    },
+    "stay_manual_2026_11_09_hwp_text": {
+      "approval_state": "needs_review",
+      "effective_date": "",
+      "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "unreviewed",
+      "has_tables_or_annexes": true,
+      "section_locator": "none_verified",
+      "source_path": "docs/source-manuals/2026-11-09/stay_manual_261109.hwp",
+      "source_sha256": "afe7fc5c59479feb016c928c3ae824fbc3d851196f8fefaf27c213fc0808a954",
+      "source_original_hwp_sha256": "afe7fc5c59479feb016c928c3ae824fbc3d851196f8fefaf27c213fc0808a954",
+      "extracted_text_path": "docs/source-manuals/2026-11-09/extracted/full_text/stay_manual_261109.txt",
+      "extracted_text_sha256": "d2890352df1019921ae35bdcd3df89c37c4f26e6e8c46bf5f873c15f97f92ed2",
+      "extraction_warnings": [
+        "Staged 2026-11-09 from an owner-supplied HWP (cover '2026. 11.'). No PDF printout was received, so there are no page numbers and no page corpus.",
+        "The extraction has not been compared against the original by a human. Do not read the filename date as a verified legal effective date.",
+        "Not approved: MUST NOT support direct legal or administrative claims in AI answers."
+      ],
+      "table_extraction_warnings": [
+        "HWP tables may be flattened or out of reading order. Never infer row/column relationships, conditional document requirements or exemptions without checking the original."
+      ],
+      "would_supersede": "stay_manual_2026_11_02_pdf",
+      "manifest_slot": "pending_review_editions",
+      "change_review_artifact": "audits/manual-refresh-20261109/README.md"
     }
   }
 }
