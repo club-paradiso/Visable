@@ -362,3 +362,13 @@ the options considered, the evidence, and the reason.
   is unchanged by this phase. The dashboard's start-command field still names the legacy stub
   `moonshot_backend_fastapi:app`; config-as-code overrides it, and changing dashboard settings
   is outside this session's scope (owner decision 7).
+
+## ADR-014 — The `!important` pass is empirical: a removal is kept only when every baselined state is pixel-identical
+- ADR-011 addendum 3 stopped the Phase 4 reduction at provably sound removals because a static proof needs
+  the runtime class sets. With the owner's go-ahead the follow-up takes the empirical route the addendum
+  recommended: per-skin baselines first (stamp/chrome/neon), then per file strip → run all 52 shots → keep
+  only on 52/52 → bisect otherwise, 10 rounds per file, everything untested restored. The oracle is the
+  full visual suite plus the functional golden suite; its limits (hover/focus, single-state pages, two
+  viewports) are written next to the numbers in STATUS.md, and the tool stays in scripts/rebuild so the pass
+  can be resumed with a bigger budget or more states instead of being re-argued.
+

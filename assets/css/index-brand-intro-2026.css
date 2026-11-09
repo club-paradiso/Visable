@@ -35,17 +35,17 @@
       color: rgba(255,255,255,0.85); word-break: keep-all; }
     /* .bi-name is a self-contained dark-gradient card with its own light-on-
        dark palette (see .bi-name above). The Phase 12C/12D blanket "readable
-       contrast" rules (both !important) force every p/span/strong inside
+       contrast" rules (both) force every p/span/strong inside
        .about-me to an ink color meant for the surrounding LIGHT paper cards —
        they predate/don't know about this nested dark sub-card, so they were
        clobbering .bi-name-cap, .bi-name-lab and .bi-name-frag span to
        near-invisible ink-on-dark-green. Restore this card's own palette,
-       matching !important so it actually wins the cascade. */
-    body:not(.searched) .about-me span.bi-name-lab { color: rgba(255,255,255,0.78) !important; }
-    body:not(.searched) .about-me .bi-name-eq { color: rgba(255,255,255,0.8) !important; }
-    body:not(.searched) .about-me .bi-name-frag span { color: rgba(255,255,255,0.85) !important; }
-    body:not(.searched) .about-me p.bi-name-cap { color: rgba(255,255,255,0.85) !important; }
-    body:not(.searched) .about-me span.bi-name-op { color: #FFB199 !important; }
+       matching so it actually wins the cascade. */
+    body:not(.searched) .about-me span.bi-name-lab { color: rgba(255,255,255,0.78); }
+    body:not(.searched) .about-me .bi-name-eq { color: rgba(255,255,255,0.8); }
+    body:not(.searched) .about-me .bi-name-frag span { color: rgba(255,255,255,0.85); }
+    body:not(.searched) .about-me p.bi-name-cap { color: rgba(255,255,255,0.85); }
+    body:not(.searched) .about-me span.bi-name-op { color: #FFB199; }
     /* clean up the legacy dotted texture on value cards */
     #aboutMe.bi-upgraded .hobby-card { background-image: none; }
 

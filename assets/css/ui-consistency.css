@@ -14,7 +14,7 @@ svg.vs-pictogram {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.vs-pictogram-source { display: none !important; }
+.vs-pictogram-source { display: none; }
 .vs-brand-home {
   display: inline-flex;
   align-items: center;
@@ -45,7 +45,7 @@ body[data-theme="dark"] .vs-brand-logo { content: url('../brand/visable-wordmark
   .fh-top-right { flex: 1 1 auto; justify-content: flex-end; }
 }
 .brandline:has(.vs-brand-logo) { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; }
-@media print { .vs-brand-logo { content: url('../brand/visable-wordmark.svg') !important; } }
+@media print { .vs-brand-logo { content: url('../brand/visable-wordmark.svg'); } }
 :root.vs-reminder-open { overflow: hidden; scrollbar-gutter: stable; }
 .vs-reminder-dialog {
   box-sizing: border-box;
@@ -71,13 +71,13 @@ body[data-theme="dark"] .vs-brand-logo { content: url('../brand/visable-wordmark
 .vs-reminder-close:hover { background: var(--vs-bg, #f2f1ee); }
 .vs-reminder-close:focus-visible { outline: 3px solid var(--vs-ac, #4e5fba); outline-offset: 2px; }
 .vs-reminder-content { padding: 24px; overflow: auto; overscroll-behavior: contain; min-height: 0; }
-#reminderDialog #reminderSection { display: block !important; margin: 0 !important; padding: 0 !important; width: 100%; max-width: none; border: 0; background: transparent; box-shadow: none; }
-#reminderDialog .p-section-title { font-size: clamp(22px, 3vw, 30px) !important; }
+#reminderDialog #reminderSection { display: block; margin: 0; padding: 0; width: 100%; max-width: none; border: 0; background: transparent; box-shadow: none; }
+#reminderDialog .p-section-title { font-size: clamp(22px, 3vw, 30px); }
 #reminderDialog .p-section-head { display: block; }
 #reminderDialog .p-section-copy { max-width: none; margin-top: 12px; }
 #reminderDialog .p-reminder-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 #reminderDialog .p-reminder-field, #reminderDialog input, #reminderDialog select { min-width: 0; max-width: 100%; }
-#reminderDialog :is(input, select) { background: var(--vs-bg, var(--bg1, #fff)) !important; color: var(--vs-ink, var(--t1, #17231d)) !important; border-color: var(--vs-line, var(--bd, #d9dce2)) !important; color-scheme: light; }
+#reminderDialog :is(input, select) { background: var(--vs-bg, var(--bg1, #fff)); color: var(--vs-ink, var(--t1, #17231d)); border-color: var(--vs-line, var(--bd, #d9dce2)); color-scheme: light; }
 #reminderDialog input::placeholder { color: var(--vs-ink, var(--t1, #17231d)); opacity: .7; }
 body[data-theme="dark"] #reminderDialog :is(input, select) { color-scheme: dark; }
 #reminderDialog .p-reminder-item__actions { flex-wrap: wrap; }

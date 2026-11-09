@@ -83,4 +83,5 @@ ADR-001 single harness branch · ADR-002 pre-installed Chromium 1243 · ADR-003 
 
 ## 7. Follow-up (2026-11-09)
 The owner asked for decisions 1–6 to be handled. Outcome per item is recorded in `docs/rebuild/STATUS.md` ("Follow-up"): 4 and 6 done; 2 and 5 implemented as mechanisms (CI baseline commit-back; per-skin visual states + empirical `!important` pass); 1 blocked by Vercel/GitHub permissions available to this session (production golden run executed instead, its two environment-only failures fixed); 3 blocked by Railway's isolated root directory (findings recorded); 7 identified as an experiments-data migration.
+Update: the `!important` pass ran on 2026-11-09 — index.html stylesheets 2,946 → 975 (all of assets/css 3,278 → 1,307), every kept removal pixel-stable across the 52 visual shots; details and the oracle's limits in STATUS.md "Follow-up", item 5, and ADR-014.
 

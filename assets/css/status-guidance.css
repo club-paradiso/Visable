@@ -113,7 +113,7 @@ body[data-theme="dark"] .sg-state-exception_only, body[data-theme="dark"] .sg-st
 .sg-failed .sg-btn { margin-top: 10px; }
 
 /* shell integration */
-.civic-refresh.searched .ai-fab { display: none !important; }
+.civic-refresh.searched .ai-fab { display: none; }
 
 @media (max-width: 680px) {
   .sg-interp { padding-bottom: 12px; gap: 6px 12px; }
@@ -186,7 +186,7 @@ body[data-theme="dark"] .sg-fee-review-conflict, body[data-theme="dark"] .sg-fee
 .sg-fee-details summary { cursor: pointer; font-size: 14px; min-height: 44px; display: flex; align-items: center; color: var(--cs-green); }
 .sg-fee-details ul { list-style: disc; padding-left: 20px; }
 .sg-fee-details li { font-size: 14px; line-height: 1.6; margin: 6px 0; word-break: keep-all; }
-.sg-fee-hi { background: var(--cs-soft); border-radius: 6px; padding: 6px 8px; list-style: none; margin-left: -20px !important; }
+.sg-fee-hi { background: var(--cs-soft); border-radius: 6px; padding: 6px 8px; list-style: none; margin-left: -20px; }
 .sg-fee-not { color: var(--cs-ink); }
 .sg-fee-variants { font-size: 14px; color: var(--cs-muted); margin-top: 10px; }
 
@@ -225,8 +225,8 @@ body[data-theme="dark"] .sg-layer-unverified_user_report, body[data-theme="dark"
 .sg-disclaimer-more li { margin: 4px 0; word-break: keep-all; }
 
 /* searched-state chrome: the guidance layer carries the caution; the legacy band steps back once guidance is on screen */
-.civic-refresh.searched[data-sg-kind] #hero .reference-disclaimer { display: none !important; }
-.civic-refresh.searched .us-sbar-note { color: var(--cs-muted) !important; font-size: 12px !important; font-weight: 400 !important; }
+.civic-refresh.searched[data-sg-kind] #hero .reference-disclaimer { display: none; }
+.civic-refresh.searched .us-sbar-note { color: var(--cs-muted); font-size: 12px; font-weight: 400; }
 
 @media (max-width: 680px) {
   .sg-quick { padding: 16px 14px 14px; margin-top: 16px; border-radius: 0 8px 8px 0; }
@@ -260,7 +260,7 @@ html[dir="rtl"] .sg:not([dir="ltr"]) .sg-evidence-details > summary::after { mar
 .sg-report-privacy { color: var(--cs-ink); background: var(--cs-soft); border-radius: 8px; padding: 10px 12px; }
 .sg-report-form label { display: grid; gap: 6px; font-size: 14px; font-weight: 600; }
 .sg-report-form input[type="text"], .sg-report-form select, .sg-report-form textarea { font: inherit; font-size: 16px; font-weight: 400; border: 1px solid var(--cs-line); border-radius: 8px; padding: 10px 12px; background: var(--cs-bg); color: var(--cs-ink); min-height: 44px; width: 100%; }
-.sg-report-check { display: flex !important; align-items: center; gap: 10px; font-weight: 500 !important; min-height: 44px; }
+.sg-report-check { display: flex; align-items: center; gap: 10px; font-weight: 500; min-height: 44px; }
 .sg-report-check input { width: 20px; height: 20px; }
 .sg-report-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: end; }
 .sg-report-status { font-size: 14px; line-height: 1.6; margin: 0; min-height: 1em; word-break: keep-all; }
@@ -270,10 +270,10 @@ html[dir="rtl"] .sg:not([dir="ltr"]) .sg-evidence-details > summary::after { mar
 .sg-report-actions { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
 @media (max-width: 680px) { .sg-report { width: 100%; max-width: none; margin: auto 0 0; border-radius: 14px 14px 0 0; } .sg-report-form { padding: 16px 16px 20px; max-height: 92vh; } .sg-report-row { grid-template-columns: 1fr; } }
 /* The report dialog toggles fields with the hidden attribute; block-level label styling must not override it. */
-.sg-report [hidden] { display: none !important; }
+.sg-report [hidden] { display: none; }
 
 /* Legacy status cards under a procedure-first answer collapse instantly on render (status-guidance.js collapseLegacyList). */
-#rlist.sg-legacy-snap .vc-cw, #rlist.sg-legacy-snap .tgl { transition: none !important; }
+#rlist.sg-legacy-snap .vc-cw, #rlist.sg-legacy-snap .tgl { transition: none; }
 
 
 /* ===================================================================== */
@@ -297,7 +297,7 @@ html[dir="rtl"] .sg:not([dir="ltr"]) .sg-evidence-details > summary::after { mar
 .sg-facts { margin-top: 16px; padding: 12px 0; }
 .sg-answer-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .sg-answer-actions .sg-btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; font-size: 15px; }
-.sg-btn-primary { background: var(--cs-green); color: var(--cs-bg) !important; border-color: var(--cs-green); }
+.sg-btn-primary { background: var(--cs-green); color: var(--cs-bg); border-color: var(--cs-green); }
 
 /* procedure picker: compact two-column choices instead of a tall stack */
 .sg-options-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
@@ -352,7 +352,7 @@ html[dir="rtl"] .sg:not([dir="ltr"]) .sg-evidence-details > summary::after { mar
 /* I · Waymaker resolver (only when the answer needs more context) */
 .sg-wm { margin-top: 26px; padding: 16px 18px; border-left: 3px solid var(--cs-green); background: var(--cs-row); border-radius: 0 8px 8px 0; }
 .sg-wm-title { font-weight: 700; font-size: 16px; }
-.sg-wm-body { font-size: 14px; color: var(--cs-muted); margin: 4px 0 10px !important; word-break: keep-all; }
+.sg-wm-body { font-size: 14px; color: var(--cs-muted); margin: 4px 0 10px; word-break: keep-all; }
 .sg-wm .sg-btn { display: inline-flex; align-items: center; text-decoration: none; }
 
 /* J · evidence — "공식 근거 6건 · 근거 보기" */
@@ -411,7 +411,7 @@ body[data-theme="dark"] .sg-ov-conditional dt::before { color: #efdfb1; }
 /* answer head: source-only reads as a clear state, with its page as the action */
 .sg-source-only .sg-lead { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--cs-ink); font-weight: 600; }
 .sg-source-body { margin-top: 6px; font-size: 15px; color: var(--cs-muted); max-width: 640px; word-break: keep-all; }
-.sg-btn-source { flex-direction: column; align-items: flex-start !important; gap: 2px; padding: 10px 18px; text-align: start; }
+.sg-btn-source { flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 18px; text-align: start; }
 .sg-btn-source small { font-size: 12px; font-weight: 500; opacity: .85; }
 
 /* schemes that may apply: collapsed, explicitly conditional */
@@ -421,7 +421,7 @@ body[data-theme="dark"] .sg-ov-conditional dt::before { color: #efdfb1; }
 .sg-program-details > summary::-webkit-details-marker { display: none; }
 .sg-program-details > summary::after { content: ''; position: absolute; right: 8px; top: 50%; width: 8px; height: 8px; margin-top: -6px; border-right: 1.5px solid var(--cs-muted); border-bottom: 1.5px solid var(--cs-muted); transform: rotate(45deg); transition: transform .15s; }
 .sg-program-details[open] > summary::after { transform: rotate(225deg); margin-top: -2px; }
-.sg-program-note { font-size: 14px; color: var(--cs-muted); margin: 0 0 6px !important; }
+.sg-program-note { font-size: 14px; color: var(--cs-muted); margin: 0 0 6px; }
 .sg-program-details > p { font-size: 15px; line-height: 1.65; max-width: 640px; word-break: keep-all; margin-bottom: 10px; }
 .sg-program-details > p.sg-muted { font-size: 13px; }
 
@@ -458,7 +458,7 @@ html[dir="rtl"] .sg:not([dir="ltr"]) .sg-action::after { content: '‹'; }
 /* The F-4 route guide's phone-only fixed band duplicates the structured answer's
    action list and covers it while reading. It stays available from the legacy
    status card (기존 체류자격 카드 보기); the band shows only once that card is open. */
-.civic-refresh.searched[data-sg-state="ready"]:not([data-legacy-card="open"]) #f4gStickyCta { display: none !important; }
+.civic-refresh.searched[data-sg-state="ready"]:not([data-legacy-card="open"]) #f4gStickyCta { display: none; }
 /* Source-only answers: verbatim excerpt of the cited manual page (status-guidance.js fillSourcePreview).
    Colours derive from the answer card's own text colour so the block reads on light and dark faces. */
 .sg-source-preview { margin-top: 18px; padding-top: 14px; border-top: 1px solid color-mix(in srgb, currentColor 22%, transparent); max-width: 680px; color: inherit; }
