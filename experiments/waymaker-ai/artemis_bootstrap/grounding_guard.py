@@ -75,7 +75,10 @@ from waymaker_ai.evidence_admissibility import (ITEM_LABELS, parent_code, reques
 from waymaker_ai.evidence_registry import TrustRegistry
 from waymaker_ai.response_contract import parse_response
 
-CONTRACT_VERSION = "v17"
+CONTRACT_VERSION = "v18"
+#: Mission 005-X: ask a choice question one choice code at a time. False gives the 005-W flow (one call with
+#: choice_codes, then the choice retry); kept for tests and comparison only.
+CHOICE_PARTS = True
 PROVENANCE = ("model_generated", "model_generated_with_system_notice", "system_withheld", "system_clarification",
               "review_required", "post_generation_blocked", "invalid_response")
 #: Mission 005-J: worst guard decision first, for joining per-sub-code parts.
@@ -98,6 +101,10 @@ MAX_QUOTED_CASE = 400
 CHOICE_RETRY = {"ko": "질문은 {codes} 가운데 어느 쪽인지 묻습니다. 앞의 답에는 {code}에 관한 내용이 없습니다. 근거가 {code}에 대해 말하는 것도 쓰세요: “{sentence}”",
                 "en": "The question asks which of {codes} applies. The previous answer did not cover {code}. Also state what the evidence says about {code}: “{sentence}”",
                 "vi": "Câu hỏi hỏi trường hợp nào trong {codes} được áp dụng. Câu trả lời trước chưa nói về {code}. Hãy nêu cả điều căn cứ nói về {code}: “{sentence}”"}
+#: Mission 005-X (contract v18): a part about one choice code gave a value the evidence states only for another code.
+VALUE_RETRY = {"ko": "이번 호출은 {code}만 묻습니다. 앞의 답에 쓴 값({values})은 근거에서 다른 코드의 값이고 {code}의 값이 아닙니다. 근거가 {code}에 대해 말하는 문장: “{sentence}”",
+               "en": "This call asks only about {code}. The value ({values}) in the previous answer is what the evidence states for another code, not for {code}. The evidence says about {code}: “{sentence}”",
+               "vi": "Lần hỏi này chỉ về {code}. Giá trị ({values}) trong câu trả lời trước là giá trị căn cứ ghi cho mã khác, không phải cho {code}. Căn cứ nói về {code}: “{sentence}”"}
 CHOICE_NOTICE = {"ko": "확인된 근거는 {code}에 대해 다음과 같이 적었습니다: “{sentence}”",
                  "en": "The verified evidence states about {code}: “{sentence}”",
                  "vi": "Căn cứ đã xác minh nêu về {code}: “{sentence}”"}
@@ -307,10 +314,14 @@ def prepare(question: str, intake: Optional[Mapping], candidates: list, registry
     if selection["outcome"] == "proceed":
         code = lang["language"]
         split = (selection.get("subcode_parts") or []) + (selection.get("situation_parts") or [])
-        groups = [(p.get("status_code"), p.get("location"), [e for e in selection["admissible"] if e["id"] in p["evidence_ids"]])
-                  for p in split] or [(None, None, selection["admissible"])]
+        groups = [(p.get("status_code"), p.get("location"), None, [e for e in selection["admissible"] if e["id"] in p["evidence_ids"]])
+                  for p in split]
+        # Mission 005-X: a choice question that is not split otherwise is asked one choice code at a time, in question
+        # order. Every part sees all the admissible evidence; the answers are joined as sub-code parts are (005-J).
+        choice = [] if groups or not CHOICE_PARTS else choice_marks(selection.get("context_question", question), selection["admissible"])
+        groups = groups or [(None, None, c, selection["admissible"]) for c in choice] or [(None, None, None, selection["admissible"])]
         ctx = selection["context"] or {}
-        for sub, loc, evidence in groups:
+        for sub, loc, part_code, evidence in groups:
             # v5+ names the uncovered items in the reply language instead of internal keys.
             # 005-N: items are read from the question without the document names it quotes.
             keys = uncovered_items(selection.get("context_question", question), evidence) if (sub or loc) \
@@ -327,11 +338,14 @@ def prepare(question: str, intake: Optional[Mapping], candidates: list, registry
             pairs = conflict_records(evidence)
             if pairs:
                 system["conflict_records"] = pairs
-            codes = choice_marks(selection.get("context_question", question), evidence)
+            codes = choice or choice_marks(selection.get("context_question", question), evidence)
             if codes:
                 system["choice_codes"] = codes
+            if part_code:
+                system["choice_part"] = part_code
             items.append({"question": cleaned["question"], "evidence": evidence, "system": system})
-            parts.append({"status_code": sub, "location": loc, "evidence": evidence, "uncovered_items": keys})
+            parts.append({"status_code": sub, "location": loc, "evidence": evidence, "uncovered_items": keys,
+                          "choice_part": part_code, "choice_codes": codes if part_code else None})
     return {"selection": selection, "reply_language": lang, "question": question,
             "question_directives_removed": cleaned["removed"],
             "question_language_requests_removed": cleaned["language_removed"], "model_items": items, "parts": parts,
@@ -350,7 +364,7 @@ def _quoted(case: str) -> str:
 
 def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates: list,
                               registry: TrustRegistry, part: Optional[int] = None, branch_notice: bool = False,
-                              choice_notice: bool = False) -> dict:
+                              choice_notice: bool = False, value_final: bool = False) -> dict:
     """The guard decision for one model output (trusted_evidence_spec.md section 5).
 
     With `part`, the output answers one sub-code: only that part's evidence is admissible, its own
@@ -358,8 +372,12 @@ def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates:
     A case of the cited evidence that the answer left out (Mission 005-R) never changes the decision: it
     asks for one retry, or with `branch_notice` (after that retry) it adds a system notice quoting the case.
     Mission 005-V: the same for a choice question answered with only one of its codes, with `choice_notice`.
+    Mission 005-X: a part about one choice code is not checked for the other codes (the joined answer covers
+    them); a value it gives that the evidence states only for another choice code asks for one retry, and
+    with `value_final` (after that retry) withholds.
     """
     selection = prepared["selection"]
+    choice_part = prepared["parts"][part].get("choice_part") if part is not None else None
     if part is not None:
         p = prepared["parts"][part]
         context = dict(selection["context"] or {})
@@ -428,7 +446,15 @@ def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates:
         if left_out:
             findings.append({"check": "branches", "kind": "case_omitted", "detail": [c["case"] for c in left_out],
                              "effect": "system_notice" if branch_notice else "branch_retry"})
-        left_codes = choice_coverage.omitted_choices(selection.get("context_question", question), answer, cited_texts)
+        left_codes = [] if choice_part else \
+            choice_coverage.omitted_choices(selection.get("context_question", question), answer, cited_texts)
+        if choice_part:
+            swapped = choice_coverage.swapped_values(choice_part, prepared["parts"][part]["choice_codes"], answer,
+                                                     [e.get("text", "") for e in selection["admissible"]],
+                                                     selection.get("context_question", question))
+            if swapped:
+                findings.append({"check": "choice_value", "kind": "value_of_other_code", "detail": swapped,
+                                 "effect": "withhold" if value_final else "value_retry"})
         if left_codes:
             findings.append({"check": "choice", "kind": "choice_omitted", "detail": left_codes,
                              "effect": "system_notice" if choice_notice else "choice_retry"})
@@ -521,6 +547,19 @@ def _choices_left_out(guard: Mapping) -> list:
     return [c for f in guard["findings"] if f.get("effect") == "choice_retry" for c in f["detail"]]
 
 
+def value_note(swapped: list, lang: str) -> str:
+    """Mission 005-X: the value_retry note for a part that gave another choice code's value, in the reply language."""
+    return " ".join(VALUE_RETRY[lang].format(code=c["code"], values=", ".join(c["values"]), sentence=_quoted(c["sentence"]))
+                    for c in swapped)
+
+
+def _values_swapped(guard: Mapping) -> list:
+    """Mission 005-X: the values a released choice part gave for another code, which ask for one retry."""
+    if guard["decision"] != "release":
+        return []
+    return [c for f in guard["findings"] if f.get("effect") == "value_retry" for c in f["detail"]]
+
+
 def _cases_left_out(guard: Mapping) -> list:
     """Mission 005-R: the evidence cases a released answer left out, which ask for one retry."""
     if guard["decision"] != "release":
@@ -532,7 +571,8 @@ def run_case(question: str, intake: Optional[Mapping], candidates: list, registr
              evaluation_date: str, generate: Callable[[dict], Optional[str]]) -> dict:
     """One question end to end. `generate(model_item)` returns the raw model text; it is called only on proceed,
     once per sub-code part when the evidence splits by sub-code (Mission 005-J), once more for a part the
-    guard holds back only for its reply language (Mission 005-P), once more for a released part that left
+    guard holds back only for its reply language (Mission 005-P), once per choice code of a choice question
+    (Mission 005-X) and once more for a choice part that gave another code's value, once more for a released part that left
     out a case of its evidence (Mission 005-R), once more for a released part that answered a choice question
     with only one of its codes (Mission 005-V), and once more for a released part whose status or form is
     visibly wrong (Mission 005-T)."""
@@ -544,8 +584,8 @@ def run_case(question: str, intake: Optional[Mapping], candidates: list, registr
               "question_directives_removed": prepared["question_directives_removed"],
               "question_language_requests_removed": prepared["question_language_requests_removed"],
               "subcode_parts": sel.get("subcode_parts") or [], "situation_parts": sel.get("situation_parts") or [],
-              "model_called": False, "raw_output": None, "guard": None, "language_retry": None, "branch_retry": None,
-              "choice_retry": None, "status_retry": None}
+              "model_called": False, "raw_output": None, "guard": None, "language_retry": None, "value_retry": None,
+              "branch_retry": None, "choice_retry": None, "status_retry": None}
     if sel["outcome"] == "system_withheld":
         released, provenance = system_response("withheld", lang), "system_withheld"
     elif sel["outcome"] == "review_required":
@@ -575,6 +615,28 @@ def run_case(question: str, intake: Optional[Mapping], candidates: list, registr
             guard, retry_raw = _join_parts(final_guards, final_raws) if split else (final_guards[0], final_raws[0])
             record["language_retry"] = {"parts": retry_parts, "raw_outputs": [final_raws[i] for i in retry_parts],
                                         "raw_output": retry_raw, "guard": guard}
+        # Mission 005-X: one more call for each released choice part that gave a value the evidence states only for
+        # another choice code, in part order. The retried answer is used when the guard releases it; otherwise the
+        # earlier answer is checked again with value_final, so a value still swapped withholds the joined answer.
+        value_parts = [i for i, g in enumerate(final_guards) if _values_swapped(g)]
+        if value_parts:
+            value_raws = []
+            for i in value_parts:
+                note = value_note(_values_swapped(final_guards[i]), lang)
+                item = {**items[i], "system": {**items[i]["system"], "value_retry": note}}
+                retried = generate(item)
+                value_raws.append(retried)
+                record["model_input_sha256s"] = record["model_input_sha256s"] + [_input_sha(item)]
+                retried_guard = validate_generated_answer(retried, prepared, candidates, registry,
+                                                          part=i if split else None, value_final=True)
+                if retried_guard["decision"] == "release":
+                    final_raws[i], final_guards[i] = retried, retried_guard
+                else:
+                    final_guards[i] = validate_generated_answer(final_raws[i], prepared, candidates, registry,
+                                                                part=i if split else None, value_final=True)
+            guard, value_raw = _join_parts(final_guards, final_raws) if split else (final_guards[0], final_raws[0])
+            record["value_retry"] = {"parts": value_parts, "raw_outputs": value_raws, "raw_output": value_raw,
+                                     "guard": guard}
         # Mission 005-R: one more call for each released part that left out a case of its evidence, in part order.
         # The retried answer is released when the guard releases it; otherwise the earlier answer stays. Either
         # way a case still left out is quoted in a system notice.
@@ -588,12 +650,12 @@ def run_case(question: str, intake: Optional[Mapping], candidates: list, registr
                 branch_raws.append(retried)
                 record["model_input_sha256s"] = record["model_input_sha256s"] + [_input_sha(item)]
                 retried_guard = validate_generated_answer(retried, prepared, candidates, registry,
-                                                          part=i if split else None, branch_notice=True)
+                                                          part=i if split else None, branch_notice=True, value_final=True)
                 if retried_guard["decision"] == "release":
                     final_raws[i], final_guards[i] = retried, retried_guard
                 else:
                     final_guards[i] = validate_generated_answer(final_raws[i], prepared, candidates, registry,
-                                                                part=i if split else None, branch_notice=True)
+                                                                part=i if split else None, branch_notice=True, value_final=True)
             guard, branch_raw = _join_parts(final_guards, final_raws) if split else (final_guards[0], final_raws[0])
             record["branch_retry"] = {"parts": branch_parts, "raw_outputs": branch_raws, "raw_output": branch_raw,
                                       "guard": guard}
@@ -610,13 +672,14 @@ def run_case(question: str, intake: Optional[Mapping], candidates: list, registr
                 choice_raws.append(retried)
                 record["model_input_sha256s"] = record["model_input_sha256s"] + [_input_sha(item)]
                 retried_guard = validate_generated_answer(retried, prepared, candidates, registry,
-                                                          part=i if split else None, branch_notice=True, choice_notice=True)
+                                                          part=i if split else None, branch_notice=True, choice_notice=True,
+                                                          value_final=True)
                 if retried_guard["decision"] == "release":
                     final_raws[i], final_guards[i] = retried, retried_guard
                 else:
                     final_guards[i] = validate_generated_answer(final_raws[i], prepared, candidates, registry,
                                                                 part=i if split else None, branch_notice=True,
-                                                                choice_notice=True)
+                                                                choice_notice=True, value_final=True)
             guard, choice_raw = _join_parts(final_guards, final_raws) if split else (final_guards[0], final_raws[0])
             record["choice_retry"] = {"parts": choice_parts, "raw_outputs": choice_raws, "raw_output": choice_raw,
                                       "guard": guard}
@@ -633,7 +696,8 @@ def run_case(question: str, intake: Optional[Mapping], candidates: list, registr
                 status_raws.append(retried)
                 record["model_input_sha256s"] = record["model_input_sha256s"] + [_input_sha(item)]
                 retried_guard = validate_generated_answer(retried, prepared, candidates, registry,
-                                                          part=i if split else None, branch_notice=True, choice_notice=True)
+                                                          part=i if split else None, branch_notice=True, choice_notice=True,
+                                                          value_final=True)
                 if retried_guard["decision"] == "release":
                     final_raws[i], final_guards[i] = retried, retried_guard
             guard, status_raw = _join_parts(final_guards, final_raws) if split else (final_guards[0], final_raws[0])

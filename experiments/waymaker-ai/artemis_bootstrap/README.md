@@ -246,6 +246,15 @@ added the other code in one more (A05W-68) and the notice quoted it in three. Sp
 per category, fixed at the freeze, is why four first-answer misses still pass. All seven conflicts were conflicts
 first. DEV-20 v2: 15/20; 003 now passes with the notice, 004 still misses 숙련기능인력. See the
 [Mission 005-W report](runs/mission005w/MISSION-005-W-REPORT.ko.md).
+Mission 005-X (frozen 2026-11-09, not run yet): a choice question that is not split otherwise is asked one
+choice code at a time (`choice_part`, contract v18) and the answers are joined in question order, as sub-code parts
+are, so the raw channel scores a first answer covering every code. Across DEV-20 v2 and the 005-F..W suites exactly
+the 14 known choice questions split; every other question gets the 005-W model items. A part that gives a value the
+evidence states only for another choice code (`choice_coverage.swapped_values`) is asked once more (`value_retry`)
+and withheld if it still does; a value the question itself quotes counts only when the part states none of its own
+code's values. Gate v19 = gate v18 with the 005-X manifest and the value retry; thresholds unchanged. New locked
+suite (K-3 family): six choice cases, one per category, two each in ko/en/vi, four near-misses; re-derived blind
+(81/81); all 35 review edits applied after checking them against correct, value-first and 62 real-model conflict answers.
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is

@@ -43,7 +43,10 @@ their numbers, which the model states as a conflict. v16 (Mission 005-V) is v15 
 choice_retry: the system's note, in the reply language, that the question asks which of two codes applies
 and the previous answer named only one (the system asks once more only then). v17 (Mission 005-W) is v16 with
 one more input on the first call, choice_codes: the codes a choice question asks between that the evidence
-names, which the model covers each with what the evidence says. See artemis_bootstrap/response_contract_v2_spec.md,
+names, which the model covers each with what the evidence says. v18 (Mission 005-X) is v17 with two more
+inputs: choice_part (the system asks about one of choice_codes at a time and joins the answers in question order)
+and value_retry (the system's note that the previous answer gave a value the evidence states for another code).
+See artemis_bootstrap/response_contract_v2_spec.md,
 response_contract_v3_spec.md and trusted_evidence_spec.md.
 """
 from __future__ import annotations
@@ -51,7 +54,7 @@ from __future__ import annotations
 import hashlib
 import json
 
-CONTRACT_VERSIONS = ("v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "v16", "v17")
+CONTRACT_VERSIONS = ("v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "v16", "v17", "v18")
 DEFAULT_CONTRACT_VERSION = "v1"
 
 SYSTEM_PROMPTS = {
@@ -332,6 +335,23 @@ SYSTEM_PROMPTS["v17"] = (SYSTEM_PROMPTS["v16"]
 assert _V16_INPUTS in SYSTEM_PROMPTS["v16"] and _V16_CONFLICT in SYSTEM_PROMPTS["v16"]
 
 
+#: Mission 005-X: v17 with choice_part and value_retry. In 005-W the choice_codes mark got both codes into the first
+#: answer in two of six choice questions (both Vietnamese), so the system now asks about one code at a time.
+_V17_INPUTS = ("uncovered_sentence, conflict_records, choice_codes, language_retry, branch_retry, choice_retry or status_retry. "
+               "These are inputs. ")
+_V17_CHOICE = ("If choice_codes is given, the question asks which of these codes applies: say which one applies and also "
+               "state what the evidence says about each other code, citing it.\n")
+SYSTEM_PROMPTS["v18"] = (SYSTEM_PROMPTS["v17"]
+                         .replace(_V17_INPUTS, "uncovered_sentence, conflict_records, choice_codes, choice_part, language_retry, "
+                                  "value_retry, branch_retry, choice_retry or status_retry. These are inputs. ", 1)
+                         .replace(_V17_CHOICE, _V17_CHOICE + "If choice_part is given, the system asks about one of choice_codes "
+                                  "at a time: state what the evidence says about choice_part for the question and whether it is "
+                                  "the one the question asks for, name choice_part, cite the evidence, and give no value of another "
+                                  "code. If value_retry is given, your previous answer gave a value that the evidence states for "
+                                  "another code: answer again with what the evidence states for choice_part.\n", 1))
+assert _V17_INPUTS in SYSTEM_PROMPTS["v17"] and _V17_CHOICE in SYSTEM_PROMPTS["v17"]
+
+
 def prompt_sha256(version: str) -> str:
     return hashlib.sha256(SYSTEM_PROMPTS[version].encode("utf-8")).hexdigest()
 
@@ -367,7 +387,7 @@ def parse_response(raw: str, evidence_ids: set[str], version: str = DEFAULT_CONT
         raise ValueError(f"Status {data['status']} requires at least one listed citation")
     if data["status"] in {"answered", "partial"} and not data["answer"].strip():
         raise ValueError(f"Status {data['status']} requires a non-empty answer")
-    if version in ("v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "v16", "v17"):
+    if version in ("v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11", "v12", "v13", "v14", "v15", "v16", "v17", "v18"):
         # Deterministic only: whether a partial answer names its unanswered part, or a
         # clarify answer asks the right question, is a meaning judgement left to review.
         if data["status"] == "conflict" and len(data["citations"]) < 2:

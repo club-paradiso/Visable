@@ -53,7 +53,7 @@ def test_a_code_is_missing_only_when_the_evidence_names_it_and_the_answer_names_
 
 
 def test_v16_adds_only_the_input_name_and_the_choice_retry_line():
-    assert "v16" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v16", "v17")   # 005-W: v17
+    assert "v16" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v16", "v17", "v18")   # 005-W: v17, 005-X: v18
     v15, v16 = SYSTEM_PROMPTS["v15"].splitlines(), SYSTEM_PROMPTS["v16"].splitlines()
     assert len(v16) == len(v15) + 1
     added = [line for line in v16 if line not in v15]
@@ -113,6 +113,12 @@ def test_no_other_recorded_question_is_a_choice():
     assert found == ["ARTEMIS-004-DEV-003", "ARTEMIS-004-DEV-004"]
 
 
+@pytest.fixture
+def one_call(monkeypatch):
+    """Mission 005-X asks a choice question one code at a time; the retry tests below keep one call per question."""
+    monkeypatch.setattr(guard, "CHOICE_PARTS", False)
+
+
 def _run(cid, outputs):
     item, registry = _dev20(cid)
     seen, outs = [], list(outputs)
@@ -130,7 +136,7 @@ BOTH_003 = json.dumps({"status": "answered", "citations": ["EV-DEV-003-A"],
                        "answer": "4년제 학사과정 입학자는 D-2-2로 신청해야 합니다. D-2-1은 전문학사 과정에 해당합니다."}, ensure_ascii=False)
 
 
-def test_the_retried_answer_naming_both_codes_is_released_without_a_notice():
+def test_the_retried_answer_naming_both_codes_is_released_without_a_notice(one_call):
     record, seen = _run("ARTEMIS-004-DEV-003", [FIRST_003, BOTH_003])
     assert len(seen) == 2 and "D-2-1" in seen[1]["system"]["choice_retry"] and "전문학사" in seen[1]["system"]["choice_retry"]
     assert record["choice_retry"]["parts"] == [0] and record["choice_retry"]["raw_output"] == BOTH_003
@@ -138,13 +144,13 @@ def test_the_retried_answer_naming_both_codes_is_released_without_a_notice():
     assert record["released_provenance"] == "model_generated" and not record["released"].get("system_notice")
 
 
-def test_a_retry_that_still_leaves_the_code_out_gets_a_quoting_notice():
+def test_a_retry_that_still_leaves_the_code_out_gets_a_quoting_notice(one_call):
     record, _ = _run("ARTEMIS-004-DEV-003", [FIRST_003, FIRST_003])
     assert record["released_provenance"] == "model_generated_with_system_notice"
     assert "D-2-1" in record["released"]["system_notice"] and "전문학사" in record["released"]["system_notice"]
 
 
-def test_a_retry_the_guard_holds_back_keeps_the_earlier_answer_with_the_notice():
+def test_a_retry_the_guard_holds_back_keeps_the_earlier_answer_with_the_notice(one_call):
     unlisted = json.dumps({"status": "answered", "citations": ["EV-NOT-GIVEN"],
                            "answer": "D-2-2로 신청해야 합니다. D-2-1은 전문학사 과정에 해당합니다."}, ensure_ascii=False)
     record, _ = _run("ARTEMIS-004-DEV-003", [FIRST_003, unlisted])
@@ -153,6 +159,6 @@ def test_a_retry_the_guard_holds_back_keeps_the_earlier_answer_with_the_notice()
     assert record["released_provenance"] == "model_generated_with_system_notice" and "D-2-1" in record["released"]["system_notice"]
 
 
-def test_a_first_answer_naming_both_codes_is_not_asked_again():
+def test_a_first_answer_naming_both_codes_is_not_asked_again(one_call):
     record, seen = _run("ARTEMIS-004-DEV-003", [BOTH_003])
     assert len(seen) == 1 and record["choice_retry"] is None

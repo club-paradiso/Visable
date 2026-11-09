@@ -27,9 +27,12 @@ SOURCE_PROVENANCE_VALUES = frozenset({"official_manual", "official_notice", "com
 # (005-T) adds status_retry (the system's note naming a status or form problem of the previous answer); v15
 # (005-U) adds conflict_records (pairs of evidence IDs whose texts differ only in their numbers); v16 (005-V) adds
 # choice_retry (the system's note that a choice question was answered with only one of its codes); v17 (005-W) adds
-# choice_codes (the codes a choice question asks between that the evidence names).
+# choice_codes (the codes a choice question asks between that the evidence names); v18 (005-X) adds choice_part (the
+# one of choice_codes this call asks about) and value_retry (the system's note that the previous answer gave a value
+# the evidence states for another code).
 SYSTEM_FIELDS = ("reply_language", "uncovered_items", "scope_status_code", "scope_location", "as_of", "uncovered_sentence",
-                 "language_retry", "branch_retry", "status_retry", "conflict_records", "choice_retry", "choice_codes")
+                 "language_retry", "branch_retry", "status_retry", "conflict_records", "choice_retry", "choice_codes",
+                 "choice_part", "value_retry")
 REPLY_LANGUAGES = frozenset({"ko", "en", "vi"})
 
 
@@ -124,4 +127,15 @@ def project_inference_item(item: Mapping) -> dict:
                     isinstance(c, str) and re.fullmatch(r"[A-Z]-\d{1,2}(?:-\d{1,2})?", c) and c in texts for c in codes):
                 raise ValueError("System choice_codes must be two to six different status codes named in this item's evidence")
             projected["system"]["choice_codes"] = list(codes)
+        if "choice_part" in system:
+            code = system["choice_part"]
+            if not isinstance(code, str) or code not in (projected["system"].get("choice_codes") or []):
+                raise ValueError("System choice_part must be one of this item's choice_codes")
+            projected["system"]["choice_part"] = code
+        if "value_retry" in system:
+            text = system["value_retry"]
+            if not isinstance(text, str) or not text.strip() or len(text) > 600 or "\n" in text \
+                    or "choice_part" not in projected["system"]:
+                raise ValueError("System value_retry must be one line of at most 600 characters, with choice_part")
+            projected["system"]["value_retry"] = text
     return projected

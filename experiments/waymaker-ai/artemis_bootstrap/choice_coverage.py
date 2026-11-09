@@ -12,6 +12,14 @@ answer does not, and the answer names another of the question's codes. Codes are
 so the rule works in every reply language. The rule is lexical: an answer that explains the other code
 without writing it gets an unneeded retry. It never judges which code applies to the user. No model is
 called here.
+
+Mission 005-X asks about one choice code at a time (choice_part) and joins the answers. A part could
+then attach the question's value to the wrong code. swapped_values() finds a number in a part's answer
+that the evidence states only in another choice code's own sentence (a sentence naming that code and
+no other choice code) and not in this code's own sentences. An answer sentence that names another choice
+code is left out: it is a contrast about that code. A value the question quotes counts only when the
+answer states none of this code's own values. Status codes are left out of the numbers
+and thousands separators are ignored (46,000 = 46.000 = 46000). A value written in words is not seen.
 """
 from __future__ import annotations
 
@@ -62,3 +70,61 @@ def omitted_choices(question: str, answer: str, cited_texts: list) -> list:
     in_evidence = {c for t in cited_texts for c in _CODE.findall(unicodedata.normalize("NFC", t or ""))}
     return [{"code": c, "codes": codes, "named": named, "sentence": sentence_naming(c, cited_texts)}
             for c in codes if c not in in_answer and c in in_evidence]
+
+
+_NUMBER = re.compile(r"\d+(?:[.,]\d+)*")
+# 005-X: a sentence does not end at a dot between digits (46.000), unlike _SENTENCE used for notices.
+_SENTENCE_X = re.compile(r"(?:[^.!?。]|(?<=\d)\.(?=\d))+(?:[.!?。]|$)")
+
+
+def _written(text: str) -> dict:
+    """Each number of a text (status codes left out) by its value without thousands separators, as first written."""
+    text = _CODE.sub(" ", unicodedata.normalize("NFC", text or ""))
+    out = {}
+    for n in _NUMBER.findall(text):
+        out.setdefault(re.sub(r"[.,]", "", n) if re.fullmatch(r"\d{1,3}(?:[.,]\d{3})+", n) else n, n)
+    return out
+
+
+def _numbers(text: str) -> set:
+    """The numbers of a text with its status codes left out; thousands separators are ignored."""
+    return set(_written(text))
+
+
+def own_sentences(code: str, codes: list, texts: list) -> list:
+    """The evidence sentences that name the code and no other of the choice codes (a leading [title] left out)."""
+    others = [c for c in codes if c != code]
+    out = []
+    for text in texts:
+        body = _TITLE.sub("", unicodedata.normalize("NFC", text or ""), count=1)
+        for sentence in _SENTENCE_X.findall(body):
+            named = set(_CODE.findall(sentence))
+            if code in named and not named & set(others):
+                out.append(sentence.strip())
+    return out
+
+
+def swapped_values(code: str, codes: list, answer: str, texts: list, question: str = "") -> list:
+    """Mission 005-X: numbers in an answer about `code` that the evidence states only for another choice code.
+
+    [{"code", "values" (as the answer writes them), "sentence" (this code's first own sentence)}] or [] when nothing is swapped
+    or when the code has no own sentence (one sentence naming every code, as DEV-20 v2 003)."""
+    mine = own_sentences(code, codes, texts)
+    if not mine:
+        return []
+    own = set().union(*(_numbers(s) for s in mine))
+    other = set().union(*(_numbers(s) for c in codes if c != code for s in own_sentences(c, codes, texts)))
+    # An answer sentence that names another choice code is about that code (a contrast), not this one.
+    others = set(codes) - {code}
+    about = [x for x in _SENTENCE_X.findall(unicodedata.normalize("NFC", answer or "")) if not set(_CODE.findall(x)) & others]
+    written = {}
+    for x in about:
+        for k, v in _written(x).items():
+            written.setdefault(k, v)
+    swapped = (set(written) & other) - own
+    # A value the question itself quotes ("which one pays 46,000 won?") is a contrast when the answer also states
+    # this code's own value ("not 46,000 but 19,000"); it counts only when the answer gives no own value.
+    if set(written) & own:
+        swapped -= _numbers(question)
+    swapped = sorted(swapped)
+    return [{"code": code, "values": [written[v] for v in swapped], "sentence": mine[0]}] if swapped else []

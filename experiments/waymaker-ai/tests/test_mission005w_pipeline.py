@@ -37,7 +37,7 @@ def test_the_mark_names_the_choice_codes_the_evidence_names(question, codes):
 
 
 def test_v17_adds_only_the_input_name_and_the_choice_codes_line():
-    assert CONTRACT_VERSIONS[-1] == "v17" and guard.CONTRACT_VERSION == "v17"
+    assert "v17" in CONTRACT_VERSIONS and guard.CONTRACT_VERSION in ("v17", "v18")   # 005-X: v18
     v16, v17 = SYSTEM_PROMPTS["v16"].splitlines(), SYSTEM_PROMPTS["v17"].splitlines()
     assert len(v17) == len(v16) + 1
     added = [line for line in v17 if line not in v16]
@@ -50,7 +50,7 @@ def test_choice_codes_is_an_allowlisted_v17_input_of_this_item_only():
     assert project_inference_item(item)["system"]["choice_codes"] == ["X-4-1", "X-4-2"]
     assert list(json.loads(build_messages(item, "v17")[1]["content"])) == [
         "question", "reply_language", "uncovered_items", "choice_codes", "evidence"]
-    with pytest.raises(ValueError, match="v17 input"):
+    with pytest.raises(ValueError, match=r"v17\+? input"):
         build_messages(item, "v16")
     for bad in (["X-4-1"], ["X-4-1", "X-4-1"], ["X-4-1", "X-4-3"], ["X-4-1", "x-4-2"], "X-4-1, X-4-2"):
         with pytest.raises(ValueError, match="choice_codes"):
@@ -81,8 +81,10 @@ def test_dev20_003_carries_the_mark_on_the_first_call():
     registry = load_real_world_registry(dev20_v2.REGISTRY_V2)
     item = {i["id"]: i for i in dev20_v2.load_items()[0]}["ARTEMIS-004-DEV-003"]
     _, prepared = _marked(item["question"], None, item["evidence"], registry, "2026-11-02")
-    payload = json.loads(build_messages(prepared["model_item"], guard.CONTRACT_VERSION)[1]["content"])
-    assert payload["choice_codes"] == ["D-2-1", "D-2-2"]
+    # 005-X: the question is asked one code at a time; every call still carries the mark.
+    for item in prepared["model_items"]:
+        payload = json.loads(build_messages(item, guard.CONTRACT_VERSION)[1]["content"])
+        assert payload["choice_codes"] == ["D-2-1", "D-2-2"]
 
 
 def _recorded_005v(cid):
@@ -103,14 +105,20 @@ def _run(case, outputs):
     return record, seen
 
 
-def test_the_choice_retry_is_still_the_second_line():
+@pytest.fixture
+def flow_005w(monkeypatch):
+    """Mission 005-X asks a choice question one code at a time; these tests keep the 005-W flow."""
+    monkeypatch.setattr(guard, "CHOICE_PARTS", False)
+
+
+def test_the_choice_retry_is_still_the_second_line(flow_005w):
     case, rec = _recorded_005v("A05V-63")
     record, seen = _run(case, [rec["raw_output"], rec["choice_retry"]["raw_outputs"][0]])
     assert len(seen) == 2 and seen[0]["system"]["choice_codes"] == ["X-4-1", "X-4-4"] and "choice_retry" in seen[1]["system"]
     assert record["released_provenance"] == "model_generated" and "X-4-4" in record["released"]["answer"]
 
 
-def test_a_first_answer_covering_both_codes_is_not_asked_again():
+def test_a_first_answer_covering_both_codes_is_not_asked_again(flow_005w):
     case, rec = _recorded_005v("A05V-63")
     record, seen = _run(case, [rec["choice_retry"]["raw_outputs"][0]])
     assert len(seen) == 1 and record["choice_retry"] is None
