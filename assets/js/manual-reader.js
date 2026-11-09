@@ -29,6 +29,16 @@ function srcLinks(tab){
   if (s.previous && s.previous.pdf) out.push(`<a href="${esc(s.previous.pdf)}" target="_blank" rel="noopener">이전 판 ${kind} PDF (${esc(koDate(s.previous.date))})</a>`);
   return out.join('');
 }
+function chapterSourceNote(tab){
+  const s = CAT.sources[tab];
+  const isPdf = s.official_kind === 'pdf' && !!s.official_file;
+  const currentUrl = isPdf ? s.official_file : s.official_url;
+  const currentLabel = isPdf ? '해당 판 공식 PDF' : 'HiKorea 공지의 해당 판 HWP 원본';
+  const previous = s.previous && s.previous.pdf
+    ? ` 참고: <a href="${esc(s.previous.pdf)}" target="_blank" rel="noopener">이전 판 PDF (${esc(koDate(s.previous.date))})</a>는 현재 판의 근거가 아닙니다.`
+    : '';
+  return `표·그림과 적용 조건은 <a href="${esc(currentUrl)}" target="_blank" rel="noopener">${currentLabel}</a>에서 확인하세요.${previous}`;
+}
 function chapterNotices(key, tab){
   const MU = window.VisableManualUpdates;
   if (!MU || !MU_DATA) return '';
@@ -285,7 +295,7 @@ function drawChapter(key, tab, ch, secIdx, opts){
     <div class="layout">
       <nav class="toc" aria-label="목차"><details class="tocd" ${matchMedia('(max-width:900px)').matches ? '' : 'open'}><summary>이 탭의 목차</summary>${toc}</details></nav>
       <div class="doc">
-        <p class="disc"><span class="state">공식 원문 발췌</span> 아래는 「${SRC_NAME[tab]}」(${esc(CAT.sources[tab].date.replace(/-/g, '. ').replace(/^(\d+)\. 0?(\d+)\. 0?(\d+)$/, '$1. $2. $3.'))}) 원문이에요. 굵은 제목은 Visable이 붙인 쉬운 말이고, 회색 꼬리표가 원문 항목명이에요. 표·그림과 적용 조건은 <a href="${esc(CAT.sources[tab].pdf)}" target="_blank" rel="noopener">공식 PDF</a>에서 확인하세요.</p>
+        <p class="disc"><span class="state">공식 원문 발췌</span> 아래는 「${SRC_NAME[tab]}」(${esc(CAT.sources[tab].date.replace(/-/g, '. ').replace(/^(\d+)\. 0?(\d+)\. 0?(\d+)$/, '$1. $2. $3.'))}) 원문이에요. 굵은 제목은 Visable이 붙인 쉬운 말이고, 회색 꼬리표가 원문 항목명이에요. ${chapterSourceNote(tab)}</p>
         ${chapterNotices(key, tab)}
         <div id="secs"></div>
       </div>
