@@ -371,4 +371,18 @@ the options considered, the evidence, and the reason.
   full visual suite plus the functional golden suite; its limits (hover/focus, single-state pages, two
   viewports) are written next to the numbers in STATUS.md, and the tool stays in scripts/rebuild so the pass
   can be resumed with a bigger budget or more states instead of being re-argued.
+- **Addendum 1 (2026-11-09, same day).** The oracle's completeness is the whole proof, and it was incomplete: no
+  baselined state had a home section revealed through the service directory, so the pass removed the flag on the
+  rule that keeps `#visaManualSection` visible inside the civic browse panel and every shot still matched. The
+  repo's own e2e suite (`landing-utilities`, run by CI, not by the pass) caught it. Decision: (a) restore that one
+  flag, (b) add the reveal paths to the visual suite (browse panel, pathways, reminder dialog with a pinned clock),
+  (c) treat the landing e2e specs as part of the oracle for any future CSS pass — `important_pass.py` should be
+  run with them in the keep-condition, not only the 52 shots. A behaviour-preserving claim is only as strong as the
+  states that were actually rendered; the new states are listed in STATUS.md so the next pass starts from them.
+- **Addendum 2 (2026-11-09).** Adding the three reveal states exposed two further misses (mobile layout of the
+  revealed pathways section and the reminder dialog; the focus ring the search bar must suppress). Instead of
+  reasoning about the cascade, the inverse of the pass was run: `scripts/rebuild/restore_bisect.py` restores the
+  removed flags line by line in an isolated worktree and finds the minimal set the new states need (7 lines,
+  63 runs). Net: 12 flags on 10 declarations came back out of 1,971. The pass's method is sound; its oracle was
+  the weak point, and both tools now stay in `scripts/rebuild/` so the next pass can grow the oracle first.
 

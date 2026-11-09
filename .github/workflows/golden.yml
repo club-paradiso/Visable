@@ -83,17 +83,21 @@ jobs:
           CI: '1'
           GOLDEN_SERVE_DIR: dist
         run: |
-          if [ -d tests/golden/__screenshots__/ci ]; then
-            echo "created=false" >> "$GITHUB_OUTPUT"
-            ./node_modules/.bin/playwright test -c playwright.golden.config.mjs --project=visual-desktop --project=visual-mobile
-          else
+          # Committed baselines are compared; a state without one (a new test, or the very first run)
+          # is generated on this runner and committed back by the next step. Mismatches still fail.
+          if [ ! -d tests/golden/__screenshots__/ci ]; then
             echo "::notice::No committed CI baselines yet — generating tests/golden/__screenshots__/ci on this runner."
+          fi
+          ./node_modules/.bin/playwright test -c playwright.golden.config.mjs --project=visual-desktop --project=visual-mobile --update-snapshots missing
+          if [ -n "$(git status --porcelain -- tests/golden/__screenshots__/ci)" ]; then
+            echo "::notice::New visual baselines were generated: $(git status --porcelain -- tests/golden/__screenshots__/ci | wc -l) file(s)."
             echo "created=true" >> "$GITHUB_OUTPUT"
-            ./node_modules/.bin/playwright test -c playwright.golden.config.mjs --project=visual-desktop --project=visual-mobile --update-snapshots
+          else
+            echo "created=false" >> "$GITHUB_OUTPUT"
           fi
       - name: Commit the generated CI baselines to the PR branch
-        # Only the first generation, only for branches of this repository (a fork's PR cannot be pushed to).
-        # The next run of this job then compares against them instead of generating, so there is no loop.
+        # Only when this run generated baselines (first run, or a new visual state), only for branches of this
+        # repository (a fork's PR cannot be pushed to). The next run compares against them, so there is no loop.
         if: steps.visual.outputs.created == 'true' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         run: |
           git config user.name "github-actions[bot]"

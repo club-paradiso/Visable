@@ -71,8 +71,8 @@ body[data-theme="dark"] .vs-brand-logo { content: url('../brand/visable-wordmark
 .vs-reminder-close:hover { background: var(--vs-bg, #f2f1ee); }
 .vs-reminder-close:focus-visible { outline: 3px solid var(--vs-ac, #4e5fba); outline-offset: 2px; }
 .vs-reminder-content { padding: 24px; overflow: auto; overscroll-behavior: contain; min-height: 0; }
-#reminderDialog #reminderSection { display: block; margin: 0; padding: 0; width: 100%; max-width: none; border: 0; background: transparent; box-shadow: none; }
-#reminderDialog .p-section-title { font-size: clamp(22px, 3vw, 30px); }
+#reminderDialog #reminderSection { display: block !important; margin: 0 !important; padding: 0 !important; width: 100%; max-width: none; border: 0; background: transparent; box-shadow: none; }
+#reminderDialog .p-section-title { font-size: clamp(22px, 3vw, 30px) !important; }
 #reminderDialog .p-section-head { display: block; }
 #reminderDialog .p-section-copy { max-width: none; margin-top: 12px; }
 #reminderDialog .p-reminder-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }

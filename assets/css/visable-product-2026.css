@@ -96,8 +96,12 @@ a,
 input,
 select,
 textarea):focus-visible {
-  outline: 0;
-  box-shadow: var(--vp-focus);
+  /* Flagged on purpose: visable-mobile-qa-hardening-20260905.css draws a flagged 2px
+     currentcolor outline on every focused control under 820px; this product-wide ring
+     (and the civic search bar's `--vp-focus: 0 0 0 0 transparent` override) must still
+     win there. Stripped by the 2026-11-09 pass, caught by tests/e2e/search-first-home. */
+  outline: 0 !important;
+  box-shadow: var(--vp-focus) !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -404,12 +408,17 @@ body.product-visable:not(.searched) .reference-disclaimer {
 body.product-visable:not(.searched) .ctrls,
 body.product-visable:not(.searched) .hero-ai-secondary { display: none; }
 
-/* Journey hub restores every hidden path in one clearly structured surface. */
+/* Journey hub restores every hidden path in one clearly structured surface.
+   The priority flag is load-bearing: index-base.css hides these sections on
+   the landing with a flagged `display: none`, and the civic browse panel mounts
+   #visaManualSection (still `.in-hero`) while the body is not `.searched`.
+   The visual oracle has no revealed-section state, so the 2026-11-09 pass
+   stripped this and broke the directory's reveal (tests/e2e/landing-utilities). */
 body.product-visable:not(.searched) #visaManualSection.in-hero,
 body.product-visable:not(.searched) .p-pathway-section,
 body.product-visable:not(.searched) .p-tools-section,
 body.product-visable:not(.searched) .p-reminder-section {
-  display: block;
+  display: block !important;
 }
 
 body.product-visable:not(.searched) #visaManualSection.in-hero {
@@ -451,7 +460,7 @@ body.product-visable .brand-feature,
 body.product-visable .about-me {
   width: min(calc(100% - 48px), 1200px);
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto !important;
   padding: 64px 0;
   background: transparent;
   border: 0;
@@ -487,8 +496,8 @@ body.product-visable .p-section + .p-footer-cta {
 
 body.product-visable .p-section-head {
   align-items: end;
-  gap: 24px;
-  margin-bottom: 24px;
+  gap: 24px !important;
+  margin-bottom: 24px !important;
 }
 body.product-visable .p-kicker,
 body.product-visable .brand-hero-kicker,
@@ -503,7 +512,7 @@ body.product-visable .p-section-title,
 body.product-visable .brand-hero-headline,
 body.product-visable .feature-headline {
   color: var(--vp-ink);
-  font: 760 clamp(28px, 3vw, 38px)/1.1 var(--vp-font);
+  font: 760 clamp(28px, 3vw, 38px)/1.1 var(--vp-font) !important;
   letter-spacing: -0.045em;
   text-shadow: none;
 }
@@ -889,7 +898,7 @@ body.product-nationality-hub .ni-btn-primary { background: var(--vp-green-2); bo
   body.product-visable .top-ctrls {
     position: absolute;
     top: 12px;
-    left: 12px;
+    left: 12px !important;
     right: 12px;
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
