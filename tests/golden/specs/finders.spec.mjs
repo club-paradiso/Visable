@@ -1,13 +1,13 @@
 // Golden: registered immigration-agent finder and designated-hospital finder. Both load an
 // official registry snapshot (data/agent_registry_2026-04-30.json,
-// data/designated_medical_institutions_2026_04_30.json); expected names come from those files.
+// data/designated_medical_institutions_2026_11_02.json); expected names come from those files.
 import { test, expect } from '@playwright/test';
 import { pack, readJson } from '../helpers/data.mjs';
 import { boot, normalize } from '../helpers/page.mjs';
 
 const c = pack('ko').civic;
 const AGENTS = readJson('data/agent_registry_2026-04-30.json');
-const MEDS = readJson('data/designated_medical_institutions_2026_04_30.json');
+const MEDS = readJson('data/designated_medical_institutions_2026_11_02.json');
 
 async function openTool(page, label) {
   // The tool directory is a <details> whose <summary> reads "전체 도구 보기"; its tiles are buttons.
