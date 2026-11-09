@@ -15,6 +15,15 @@ The 2026.9 PDF/HWP pairs (`2026-09/`, `2026-09-01/`) are recorded as each role's
 
 The 2026-07-31 HWP pair (`2026-07-31/`) is recorded as each role's `archived_previous_current`. The 2026.6 PDFs (`backend/data/sources/manuals/260617_visa_manual_exported.pdf`, `260623_stay_manual_exported.pdf`) stay in the repository and in the manifest history; their 2026-06-17 section extracts stay in the search index as `superseded`, never as direct evidence. `2026-09-01/stay_manual_260901.hwp` is the earlier 2026-09-01 stay edition, superseded by 2026-09-18 (`data/manual_approval_index.json`).
 
+### Pending review: 2026-11-06 visa and 2026-11-09 stay (HWP only)
+
+The owner supplied newer HWPs on 2026-11-09 (cover "2026. 11." on both). They are staged, hash-pinned in `source_manifest.json` `pending_review_editions`, and **not current**: no PDF printout was received, so there are no page numbers, no page corpus and no AI-grounding use. Current stays visa 2026-10-19 and stay 2026-11-02.
+
+- `2026-11-06/visa_manual_261106.hwp` (+ `extracted/full_text/`, `markdown/`)
+- `2026-11-09/stay_manual_261109.hwp` (+ `extracted/full_text/`, `markdown/`)
+- Change review: `audits/manual-refresh-20261109/README.md` (visa 2 hunks, stay 4 hunks; D-2 part-time violation item, D-4-3 institution list, G-1-3 paternity-suit item).
+- The manual reader (`manual.html`) is built from these Markdown files; its notices for the changed passages come from `data/manual-updates/`. See `docs/MANUAL_READER.md`.
+
 ### Markdown derived texts (2026.10)
 
 The owner supplied HWP→Markdown conversions of both current editions (`incoming/261019_hikorea_markdown_2.zip`, 2026-10-22). They keep headings and tables, which the PDF text layer flattens, but they have no page numbers.

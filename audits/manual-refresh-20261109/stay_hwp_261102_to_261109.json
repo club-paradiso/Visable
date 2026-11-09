@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "role": "stay",
+    "old_label": "stay 2026-11-02",
+    "new_label": "stay 2026-11-09",
+    "old_path": "docs/source-manuals/2026-11-02/extracted/full_text/stay_manual_261102.txt",
+    "new_path": "docs/source-manuals/2026-11-09/extracted/full_text/stay_manual_261109.txt",
+    "old_paragraphs": 22193,
+    "new_paragraphs": 22200,
+    "hunks": 4,
+    "added_lines": 7,
+    "removed_lines": 0,
+    "changed_hunks": 0,
+    "changed_ratio": 0.0001576825175140225,
+    "extraction_mismatch_suspected": false,
+    "review_status": "candidates_for_human_review"
+  },
+  "affected_status_codes": [
+    {
+      "parent": "D-2",
+      "codes": [
+        "D-2"
+      ],
+      "hunks": 1,
+      "added": 1,
+      "removed": 0,
+      "changed": 0
+    },
+    {
+      "parent": "D-4",
+      "codes": [
+        "D-4-3"
+      ],
+      "hunks": 1,
+      "added": 1,
+      "removed": 0,
+      "changed": 0
+    },
+    {
+      "parent": "E-1",
+      "codes": [
+        "E-1"
+      ],
+      "hunks": 1,
+      "added": 1,
+      "removed": 0,
+      "changed": 0
+    },
+    {
+      "parent": "E-7",
+      "codes": [
+        "E-7"
+      ],
+      "hunks": 1,
+      "added": 1,
+      "removed": 0,
+      "changed": 0
+    },
+    {
+      "parent": "E-9",
+      "codes": [
+        "E-9"
+      ],
+      "hunks": 1,
+      "added": 1,
+      "removed": 0,
+      "changed": 0
+    },
+    {
+      "parent": "G-1",
+      "codes": [
+        "G-1-3"
+      ],
+      "hunks": 2,
+      "added": 2,
+      "removed": 0,
+      "changed": 0
+    }
+  ],
+  "hunks": [
+    {
+      "kind": "added",
+      "old_start": null,
+      "new_start": 1128,
+      "anchor": "- 유학생(D-2): 체류기간 내에서 최장 1년, 시간제 취업허가 허용 시간 범위 내 동시에 취업할 수 있는 장소 2곳으로 한정",
+      "codes": [
+        "D-2",
+        "E-1",
+        "E-7",
+        "E-9"
+      ],
+      "old_lines": [],
+      "new_lines": [
+        "❍ (취업 제한 분야 불법취업) 취업제한 분야 중 국민 일자리 및 풍속침해 분야 적발 시 원칙적으로 출국조치",
+        "※제한업종: 단란주점·노래연습장 등 유흥업소, 전문 분야(E-1~E-7) 활동, 비전문 취업(E-9)의 제조업·건설업, 택배기사·라이더 등 특수형태근로종사자 등",
+        "- (적용 대상) 건설업, 배달업, 유흥업 분야에서 적발된 경우",
+        "- (적발시 처리) 적발 횟수와 무관하게 원칙적으로 강제퇴거(One-strike out) 또는 출국명령"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_start": null,
+      "new_start": 2325,
+      "anchor": "3. 고등학교 이하 외국인유학생(D-4-3) 자격으로 변경",
+      "codes": [
+        "D-4-3"
+      ],
+      "old_lines": [],
+      "new_lines": [
+        "- ｢제주특별자치도 설치 및 국제자유도시 조성을 위한 특별법｣ 제223조에 따른 국제학교"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_start": null,
+      "new_start": 14702,
+      "anchor": "3. 각종 소송 진행 중인 사람(G-1-3)",
+      "codes": [
+        "G-1-3"
+      ],
+      "old_lines": [],
+      "new_lines": [
+        "- 한국인 부 또는 모를 특정하여 인지청구소송을 진행 중인 외국인(혼외자녀 및 양육자) 등"
+      ]
+    },
+    {
+      "kind": "added",
+      "old_start": null,
+      "new_start": 14713,
+      "anchor": "3. 각종 소송 진행 중인 사람(G-1-3)",
+      "codes": [
+        "G-1-3"
+      ],
+      "old_lines": [],
+      "new_lines": [
+        "유전자 감정결과서, 한국인 부 또는 모와 촬영한 사진 등 (한국인 부 또는 모를 특정하여 인지청구소송을 진행 중인 외국인의 경우)"
+      ]
+    }
+  ]
+}

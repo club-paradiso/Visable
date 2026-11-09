@@ -52,6 +52,9 @@ docs/source-manuals/2026-10-19/stay_manual_261019.pdf
 docs/source-manuals/2026-11-02/extracted
 docs/source-manuals/2026-11-02/markdown
 docs/source-manuals/2026-11-02/*.hwp
+# 2026-11-06 visa / 2026-11-09 stay editions are HWP-only (no PDF); nothing under them is linked by the site
+docs/source-manuals/2026-11-06
+docs/source-manuals/2026-11-09
 
 # --- Python backend (deployed on Railway, not Vercel) except the JSON api/enforcement requires ---
 backend/*.py

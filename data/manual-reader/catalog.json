@@ -1,45 +1,59 @@
 {
  "schema_version": 1,
- "edition": "2026.10 (visa) / 2026.11 (stay)",
+ "edition": "2026.11 (visa 2026-11-06 / stay 2026-11-09)",
  "generated_by": "scripts/build_manual_reader.py",
  "note": "원문 문장은 바꾸지 않음. 쪽 넘김 때문에 반복된 항목명·목차 링크·장 제목 줄·표지 이미지만 제외.",
  "sources": {
   "v": {
-   "id": "visa_manual_2026_10_19_reader_md",
-   "file": "visa_manual_261019.md",
+   "id": "visa_manual_2026_11_06_reader_md",
+   "file": "visa_manual_261106.md",
    "title": "사증발급 안내매뉴얼",
    "title_en": "Visa Issuance Guide Manual",
-   "date": "2026-10-19",
-   "version": "2026.10",
-   "pdf": "docs/source-manuals/2026-10-19/visa_manual_261019.pdf",
-   "pdf_text": "docs/source-manuals/2026-10-19/extracted/visa_manual_2026_10_19_pdf.txt",
-   "markdown": "docs/source-manuals/2026-10-19/markdown/visa_manual_261019.md",
-   "sha256": "87b1c9568d98cbf4111e020d7152d28c4ed30815da40c39fe10fd1fb82f6bb3f",
+   "date": "2026-11-06",
+   "version": "2026.11",
+   "official_file": "docs/source-manuals/2026-11-06/visa_manual_261106.hwp",
+   "official_kind": "hwp",
+   "crosscheck_text": "docs/source-manuals/2026-11-06/extracted/full_text/visa_manual_261106.txt",
+   "crosscheck_kind": "hwp_viewtext",
+   "previous": {
+    "date": "2026-10-19",
+    "version": "2026.10",
+    "pdf": "docs/source-manuals/2026-10-19/visa_manual_261019.pdf"
+   },
+   "markdown": "docs/source-manuals/2026-11-06/markdown/visa_manual_261106.md",
+   "sha256": "c6861774a2a52270852d3f7024ab4d48b06b55a0eecf19e1c3a9f5c67218054e",
    "official_url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
    "approval_state": "needs_review",
-   "pdf_crosscheck": {
-    "probes": 6309,
-    "matched": 6207,
-    "ratio": 0.9838
+   "text_crosscheck": {
+    "probes": 6310,
+    "matched": 6300,
+    "ratio": 0.9984
    }
   },
   "s": {
-   "id": "stay_manual_2026_11_02_reader_md",
-   "file": "stay_manual_261102.md",
+   "id": "stay_manual_2026_11_09_reader_md",
+   "file": "stay_manual_261109.md",
    "title": "외국인체류 안내매뉴얼",
    "title_en": "Foreigner Stay/Residence Guide Manual",
-   "date": "2026-11-02",
+   "date": "2026-11-09",
    "version": "2026.11",
-   "pdf": "docs/source-manuals/2026-11-02/stay_manual_261102.pdf",
-   "pdf_text": "docs/source-manuals/2026-11-02/extracted/stay_manual_2026_11_02_pdf.txt",
-   "markdown": "docs/source-manuals/2026-11-02/markdown/stay_manual_261102.md",
-   "sha256": "adace2cea4ad705d393fd8ff58494d19edfad5cbf0e29a4b46d9958331cfdda1",
+   "official_file": "docs/source-manuals/2026-11-09/stay_manual_261109.hwp",
+   "official_kind": "hwp",
+   "crosscheck_text": "docs/source-manuals/2026-11-09/extracted/full_text/stay_manual_261109.txt",
+   "crosscheck_kind": "hwp_viewtext",
+   "previous": {
+    "date": "2026-11-02",
+    "version": "2026.11",
+    "pdf": "docs/source-manuals/2026-11-02/stay_manual_261102.pdf"
+   },
+   "markdown": "docs/source-manuals/2026-11-09/markdown/stay_manual_261109.md",
+   "sha256": "2eaee2ae493729063c8eafa298f65ba45af9f3c12b722eed63966e4c6b3e8fc4",
    "official_url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
    "approval_state": "needs_review",
-   "pdf_crosscheck": {
-    "probes": 10015,
-    "matched": 9873,
-    "ratio": 0.9858
+   "text_crosscheck": {
+    "probes": 10022,
+    "matched": 9996,
+    "ratio": 0.9974
    }
   }
  },
@@ -799,7 +813,7 @@
    },
    "s": {
     "title": "유학(D-2)",
-    "bytes": 34023,
+    "bytes": 34416,
     "sections": [
      {
       "t": "sec",
@@ -963,7 +977,7 @@
    "key": "D-4",
    "v": {
     "title": "일반연수(D-4)",
-    "bytes": 27441,
+    "bytes": 27515,
     "sections": [
      {
       "t": "sec",
@@ -994,7 +1008,7 @@
    },
    "s": {
     "title": "일반연수(D-4)",
-    "bytes": 31523,
+    "bytes": 31597,
     "sections": [
      {
       "t": "sec",
@@ -3084,7 +3098,7 @@
    },
    "s": {
     "title": "기타(G-1)",
-    "bytes": 23538,
+    "bytes": 23713,
     "sections": [
      {
       "t": "sec",
@@ -3454,7 +3468,7 @@
   {
    "src": "v",
    "key": "D-4",
-   "chars": 10994,
+   "chars": 11030,
    "missing": 98,
    "added": 0
   },
@@ -3720,7 +3734,7 @@
   {
    "src": "s",
    "key": "D-2",
-   "chars": 10897,
+   "chars": 11061,
    "missing": 96,
    "added": 0
   },
@@ -3734,7 +3748,7 @@
   {
    "src": "s",
    "key": "D-4",
-   "chars": 12241,
+   "chars": 12277,
    "missing": 54,
    "added": 0
   },
@@ -3888,7 +3902,7 @@
   {
    "src": "s",
    "key": "G-1",
-   "chars": 8322,
+   "chars": 8408,
    "missing": 67,
    "added": 0
   },

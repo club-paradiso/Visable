@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
-"""Build the readable manual reader (manual.html) from the current Markdown sources (visa 2026.10, stay 2026.11).
+"""Build the readable manual reader (manual.html) from the newest Markdown sources (visa 2026.11 / 2026-11-06, stay 2026.11 / 2026-11-09).
 
 Sources (digest-pinned in data/manual-reader/catalog.json):
-  docs/source-manuals/2026-10-19/markdown/visa_manual_261019.md  사증발급 안내매뉴얼 2026.10 (2026-10-19)
-  docs/source-manuals/2026-11-02/markdown/stay_manual_261102.md  외국인체류 안내매뉴얼 2026.11 (2026-11-02)
+  docs/source-manuals/2026-11-06/markdown/visa_manual_261106.md  사증발급 안내매뉴얼 2026.11 (2026-11-06)
+  docs/source-manuals/2026-11-09/markdown/stay_manual_261109.md  외국인체류 안내매뉴얼 2026.11 (2026-11-09)
 
-The two Markdown files are `npx kordoc@^4` (4.24.1) conversions of the 배포용 HWPs
-(docs/source-manuals/2026-10-19/*.hwp, docs/source-manuals/2026-11-02/*.hwp), made the same way as the 2026.9 ones: same
-images, same layout (only the changed passages differ; the stay chapter start lines move down where text was added). `npx kordoc@4.24.1` reproduces the committed 2026.10
-stay Markdown byte for byte (image folder renamed), which is how the 2026.11 file was checked.
+The two Markdown files are `npx kordoc@4.24.1` conversions of the 배포용 HWPs
+(docs/source-manuals/2026-11-06/*.hwp, docs/source-manuals/2026-11-09/*.hwp). The same command reproduces the committed
+2026-11-02 stay Markdown byte for byte (only the image folder name differs), which is how the method was checked.
+Line-level comparison with the previous Markdown (2026-10-19 visa, 2026-11-02 stay): same line counts, so the chapter start
+lines below did not move.
+
+There is no PDF printout for these two editions. The provenance cross-check below therefore runs against the
+same-method HWP text extraction (scripts/decrypt_hwp_distribution.py), not against a PDF text layer. The reader stays a
+reading aid with approval_state needs_review; it is not a grounding source.
 
 What this does: split each manual into status chapters, turn the HWP layout tables
 (label cell | content cell) into labelled sections, classify each <br>-line by its
@@ -20,7 +25,7 @@ removed text is page-break noise (repeated row labels, "목차" back-links, a ch
 own title line) and decorative cover/logo images. `--check` rebuilds in memory and
 fails if (a) committed outputs differ, (b) any chapter loses more characters than
 the duplicate labels account for, or (c) the Markdown no longer matches the
-independently extracted PDF text of the same edition.
+independently extracted text (HWP ViewText) of the same edition.
 
 Requires: pip install markdown-it-py beautifulsoup4 html5lib Pillow
 """
@@ -31,16 +36,20 @@ from bs4 import BeautifulSoup, NavigableString, Tag
 from markdown_it import MarkdownIt
 
 ROOT = Path(__file__).resolve().parents[1]
-SRC_DIRS = {'v': ROOT / 'docs/source-manuals/2026-10-19/markdown', 's': ROOT / 'docs/source-manuals/2026-11-02/markdown'}
+SRC_DIRS = {'v': ROOT / 'docs/source-manuals/2026-11-06/markdown', 's': ROOT / 'docs/source-manuals/2026-11-09/markdown'}
 OUT_DIR = ROOT / 'data/manual-reader'
 IMG_OUT = ROOT / 'assets/manual-reader/img'
 SOURCES = {
-    'v': {'id': 'visa_manual_2026_10_19_reader_md', 'file': 'visa_manual_261019.md', 'images': 'images/261019-visa',
-          'title': '사증발급 안내매뉴얼', 'title_en': 'Visa Issuance Guide Manual', 'date': '2026-10-19', 'version': '2026.10',
-          'pdf': 'docs/source-manuals/2026-10-19/visa_manual_261019.pdf', 'pdf_text': 'docs/source-manuals/2026-10-19/extracted/visa_manual_2026_10_19_pdf.txt'},
-    's': {'id': 'stay_manual_2026_11_02_reader_md', 'file': 'stay_manual_261102.md', 'images': 'images/261102-stay',
-          'title': '외국인체류 안내매뉴얼', 'title_en': 'Foreigner Stay/Residence Guide Manual', 'date': '2026-11-02', 'version': '2026.11',
-          'pdf': 'docs/source-manuals/2026-11-02/stay_manual_261102.pdf', 'pdf_text': 'docs/source-manuals/2026-11-02/extracted/stay_manual_2026_11_02_pdf.txt'},
+    'v': {'id': 'visa_manual_2026_11_06_reader_md', 'file': 'visa_manual_261106.md', 'images': 'images/261106-visa',
+          'title': '사증발급 안내매뉴얼', 'title_en': 'Visa Issuance Guide Manual', 'date': '2026-11-06', 'version': '2026.11',
+          'official_file': 'docs/source-manuals/2026-11-06/visa_manual_261106.hwp', 'official_kind': 'hwp',
+          'crosscheck_text': 'docs/source-manuals/2026-11-06/extracted/full_text/visa_manual_261106.txt', 'crosscheck_kind': 'hwp_viewtext',
+          'previous': {'date': '2026-10-19', 'version': '2026.10', 'pdf': 'docs/source-manuals/2026-10-19/visa_manual_261019.pdf'}},
+    's': {'id': 'stay_manual_2026_11_09_reader_md', 'file': 'stay_manual_261109.md', 'images': 'images/261109-stay',
+          'title': '외국인체류 안내매뉴얼', 'title_en': 'Foreigner Stay/Residence Guide Manual', 'date': '2026-11-09', 'version': '2026.11',
+          'official_file': 'docs/source-manuals/2026-11-09/stay_manual_261109.hwp', 'official_kind': 'hwp',
+          'crosscheck_text': 'docs/source-manuals/2026-11-09/extracted/full_text/stay_manual_261109.txt', 'crosscheck_kind': 'hwp_viewtext',
+          'previous': {'date': '2026-11-02', 'version': '2026.11', 'pdf': 'docs/source-manuals/2026-11-02/stay_manual_261102.pdf'}},
 }
 OFFICIAL_URL = 'https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1'
 # Chapter starts (1-based line numbers in each Markdown file). A chapter runs to the next start.
@@ -618,16 +627,16 @@ def build():
         text_all = raw.decode('utf-8')
         lines = text_all.split('\n')
         spec = CHAPTERS_V if tag == 'v' else CHAPTERS_S
-        # provenance cross-check against the independently extracted PDF text of the same edition
-        pdf_compact = compact((ROOT / meta['pdf_text']).read_text(encoding='utf-8'))
+        # provenance cross-check against the independently extracted text (HWP ViewText) of the same edition
+        ref_compact = compact((ROOT / meta['crosscheck_text']).read_text(encoding='utf-8'))
         md_plain = BeautifulSoup(md.render(text_all), 'html5lib').get_text('\n')
         probes = [c for c in (compact(l) for l in md_plain.split('\n')) if len(c) >= 15]
-        matched = sum(1 for c in probes if c[:15] in pdf_compact)
+        matched = sum(1 for c in probes if c[:15] in ref_compact)
         sources[tag] = dict({k: v for k, v in meta.items() if k not in ('images',)},
                             markdown=f'{SRC_DIRS[tag].relative_to(ROOT).as_posix()}/{meta["file"]}',
                             sha256=hashlib.sha256(raw).hexdigest(), official_url=OFFICIAL_URL,
                             approval_state='needs_review',
-                            pdf_crosscheck={'probes': len(probes), 'matched': matched,
+                            text_crosscheck={'probes': len(probes), 'matched': matched,
                                             'ratio': round(matched / len(probes), 4)})
         for key, text in split_chapters(lines, spec):
             rendered = md.render(text)
@@ -668,7 +677,7 @@ def dumps(v):
 def outputs():
     sources, chapters, reports, search = build()
     files = {}
-    catalog = {'schema_version': 1, 'edition': '2026.10 (visa) / 2026.11 (stay)', 'generated_by': 'scripts/build_manual_reader.py',
+    catalog = {'schema_version': 1, 'edition': '2026.11 (visa 2026-11-06 / stay 2026-11-09)', 'generated_by': 'scripts/build_manual_reader.py',
                'note': '원문 문장은 바꾸지 않음. 쪽 넘김 때문에 반복된 항목명·목차 링크·장 제목 줄·표지 이미지만 제외.',
                'sources': sources, 'chapters': []}
     for key, by in chapters.items():
@@ -696,8 +705,8 @@ def main():
         if r['missing'] > max(40, min(400, r['chars'] * 0.02)) or r['added'] > 0:
             problems.append(f"{r['src']}/{r['key']}: missing {r['missing']} added {r['added']} of {r['chars']}")
     for tag, s in catalog['sources'].items():
-        if s['pdf_crosscheck']['ratio'] < 0.97:
-            problems.append(f"{tag}: Markdown matches only {s['pdf_crosscheck']['ratio']:.2%} of PDF text probes")
+        if s['text_crosscheck']['ratio'] < 0.97:
+            problems.append(f"{tag}: Markdown matches only {s['text_crosscheck']['ratio']:.2%} of text probes")
     if args.check:
         for rel, content in files.items():
             p = OUT_DIR / rel
@@ -724,8 +733,8 @@ def main():
     total = sum(r['chars'] for r in catalog['preservation'])
     lost = sum(r['missing'] for r in catalog['preservation'])
     print(f"manual reader: {len(catalog['chapters'])} chapters, {total} letters, {lost} removed as page-break noise "
-          f"({lost / total:.3%}); PDF cross-check " +
-          ', '.join(f"{t} {s['pdf_crosscheck']['ratio']:.2%}" for t, s in catalog['sources'].items()))
+          f"({lost / total:.3%}); text cross-check " +
+          ', '.join(f"{t} {s['text_crosscheck']['ratio']:.2%}" for t, s in catalog['sources'].items()))
     if problems:
         print('\n'.join('FAIL ' + p for p in problems))
         sys.exit(1)

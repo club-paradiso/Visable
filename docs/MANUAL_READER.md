@@ -1,6 +1,6 @@
 # 매뉴얼 원문 읽기 (`manual.html`)
 
-법무부 「사증발급 안내매뉴얼」(2026. 9. 1.)과 「외국인체류 안내매뉴얼」(2026. 9. 18.) 원문을
+법무부 「사증발급 안내매뉴얼」과 「외국인체류 안내매뉴얼」(판본·날짜는 `data/manual-reader/catalog.json` 기준) 원문을
 체류자격(장)과 업무(항목)별로 나눠 보여 주는 화면이다. 기존 `관련 원문` 검색(PDF 쪽 단위 발췌)이
 "어느 쪽에 있나"를 찾는 도구라면, 이 화면은 그 장·항목을 처음부터 끝까지 읽는 도구다.
 
@@ -42,5 +42,13 @@ civic 검색의 `관련 원문` 패널은 안내가 해석한 체류자격·업�
 
 ## 판본이 바뀌면
 
-1. 새 Markdown·그림을 `docs/source-manuals/<판>/markdown/`에 넣고 `SOURCES`·장 시작 줄(`CHAPTERS_V/S`)을 갱신한다.
-2. `python3 scripts/build_manual_reader.py` → `npm run test:manual-reader` → e2e.
+1. HWP를 `docs/source-manuals/<날짜>/`에 넣고 `python3 scripts/decrypt_hwp_distribution.py`로 추출본을, `npx kordoc@4.24.1`로 Markdown(이미지 폴더 `images/<날짜>-visa|stay`)을 만든다. 이전 판 Markdown과 줄 단위로 비교해 장 시작 줄이 움직였는지 본다.
+2. `scripts/build_manual_reader.py`의 `SRC_DIRS`·`SOURCES`(날짜·파일·`official_file`·`crosscheck_text`·`previous`)를 갱신하고, 줄이 움직였으면 `CHAPTERS_V/S`도 갱신한다. 화면의 판본 안내·날짜·링크는 `catalog.json`에서 읽으므로 JS는 고치지 않는다. `manual.html`의 정적 안내(스크립트 전/없음)는 날짜가 카탈로그와 같아야 하며 검사가 확인한다.
+3. 변경 비교: `python3 scripts/diff_manual_paragraph_editions.py … --out-json audits/<날짜>/*.json`. 비교 결과의 변경 구간마다 `data/manual-updates/hunk_mapping.json`에 자격·절차·리더 링크를 적는다(없으면 빌드가 실패한다).
+4. `python3 scripts/build_manual_reader.py && python3 scripts/build_manual_update_notices.py` → `npm run test:manual-reader`.
+
+### 새 판 개정 알림 (`data/manual-updates/`)
+
+아직 검토하지 않은 새 판에서 바뀐 곳을 화면에 알리는 층이다. 원문 줄을 그대로 싣고, 해당 자격·해당 절차(사증/체류 분리, 하위 코드는 그 코드에만)에서만 "새 매뉴얼에서 바뀐 곳 (검토 전)"으로 보여 준다. 첫 화면, 해당 장, 검색 결과 화면(`status-guidance.js`)이 같은 파일(`assets/js/manual-updates.js`)을 쓴다. 판을 승격하고 안내 데이터를 갱신하면 이 알림은 비운다. 검사: `node scripts/check_manual_updates.mjs`.
+
+판본 PDF가 없는 판(HWP만 받은 경우)은 `official_kind: "hwp"`로 두고, 쪽 인용은 이전 판 PDF를 따른다는 문구가 배너에 자동으로 붙는다. HWP는 배포하지 않으므로(`.vercelignore`) 링크하지 않는다.

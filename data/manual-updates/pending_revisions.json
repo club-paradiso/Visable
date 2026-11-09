@@ -1,0 +1,136 @@
+{
+ "schema_version": 1,
+ "generated_by": "scripts/build_manual_update_notices.py",
+ "state": "pending_review",
+ "note": "새로 반입된 매뉴얼(사증 2026-11-06, 체류 2026-11-09)에서 바뀐 곳입니다. 아직 사람이 검토하지 않았고, Visable의 자격별 안내·AI 답변은 이전 판을 따릅니다. 신청 전에 원문을 확인하세요.",
+ "editions": {
+  "stay": {
+   "source_date": "2026-11-09",
+   "version": "2026.11",
+   "status": "pending_review",
+   "hwp_sha256": "afe7fc5c59479feb016c928c3ae824fbc3d851196f8fefaf27c213fc0808a954",
+   "diff": "audits/manual-refresh-20261109/stay_hwp_261102_to_261109.md",
+   "reader_markdown": "docs/source-manuals/2026-11-09/markdown/stay_manual_261109.md",
+   "compared_with": "stay 2026-11-02"
+  },
+  "visa": {
+   "source_date": "2026-11-06",
+   "version": "2026.11",
+   "status": "pending_review",
+   "hwp_sha256": "218394812c890baecc016ba6a70775fe1d219307536eb996f4dc2b24cb33d2b6",
+   "diff": "audits/manual-refresh-20261109/visa_hwp_261019_to_261106.md",
+   "reader_markdown": "docs/source-manuals/2026-11-06/markdown/visa_manual_261106.md",
+   "compared_with": "visa 2026-10-19"
+  }
+ },
+ "revisions": [
+  {
+   "id": "v-d43-cert-jeju-intl-school",
+   "role": "visa",
+   "kind": "added",
+   "codes": [
+    "D-4-3"
+   ],
+   "procedures": [
+    "visa_issuance_confirmation"
+   ],
+   "reader_hash": "c-D-4.v.cert",
+   "title_ko": "사증발급인정서: 교육기관 목록에 국제학교 추가",
+   "title_en": "Certificate of visa issuance: international school added to the list of institutions",
+   "summary_ko": "고등학교 이하 유학생(D-4-3)의 교육기관 목록에 「제주특별자치도 설치 및 국제자유도시 조성을 위한 특별법」 제223조에 따른 국제학교가 한 줄 추가됐어요.",
+   "summary_en": "One line was added to the list of eligible institutions for K-12 students (D-4-3): international schools under Article 223 of the Special Act on Jeju Special Self-Governing Province and the Development of a Free International City.",
+   "manual_lines": [
+    "- ｢제주특별자치도 설치 및 국제자유도시 조성을 위한 특별법｣ 제223조에 따른 국제학교"
+   ],
+   "manual_line_no": 2751,
+   "state": "pending_review"
+  },
+  {
+   "id": "s-d2-parttime-restricted-field-violation",
+   "role": "stay",
+   "kind": "added",
+   "codes": [
+    "D-2"
+   ],
+   "procedures": [
+    "part_time_work"
+   ],
+   "reader_hash": "c-D-2.s.parttime",
+   "title_ko": "시간제 취업 허가 위반자 처리 기준: 취업 제한 분야 불법취업 항목 추가",
+   "title_en": "Part-time work violations: new item for illegal work in restricted fields",
+   "summary_ko": "시간제 취업 허가 위반자 처리 기준에 ‘취업 제한 분야 불법취업’ 항목(제한업종, 적용 대상, 적발 시 처리)이 새로 들어갔어요. 처리 방법은 원문 문구를 그대로 확인하세요.",
+   "summary_en": "A new item on illegal work in restricted fields (restricted sectors, who it applies to, how detections are handled) was added to the part-time work violation standards. Read the exact wording in the source.",
+   "manual_lines": [
+    "❍ (취업 제한 분야 불법취업) 취업제한 분야 중 국민 일자리 및 풍속침해 분야 적발 시 원칙적으로 출국조치",
+    "※제한업종: 단란주점·노래연습장 등 유흥업소, 전문 분야(E-1~E-7) 활동, 비전문 취업(E-9)의 제조업·건설업, 택배기사·라이더 등 특수형태근로종사자 등",
+    "- (적용 대상) 건설업, 배달업, 유흥업 분야에서 적발된 경우",
+    "- (적발시 처리) 적발 횟수와 무관하게 원칙적으로 강제퇴거(One-strike out) 또는 출국명령"
+   ],
+   "manual_line_no": 1128,
+   "state": "pending_review"
+  },
+  {
+   "id": "s-d43-change-jeju-intl-school",
+   "role": "stay",
+   "kind": "added",
+   "codes": [
+    "D-4-3"
+   ],
+   "procedures": [
+    "status_change"
+   ],
+   "reader_hash": "c-D-4.s.change",
+   "title_ko": "체류자격 변경: 교육기관 목록에 국제학교 추가",
+   "title_en": "Change of status: international school added to the list of institutions",
+   "summary_ko": "고등학교 이하 유학생(D-4-3)으로 변경할 때의 교육기관 목록에 「제주특별자치도 설치 및 국제자유도시 조성을 위한 특별법」 제223조에 따른 국제학교가 한 줄 추가됐어요.",
+   "summary_en": "One line was added to the list of eligible institutions for changing to K-12 student status (D-4-3): international schools under Article 223 of the Special Act on Jeju Special Self-Governing Province and the Development of a Free International City.",
+   "manual_lines": [
+    "- ｢제주특별자치도 설치 및 국제자유도시 조성을 위한 특별법｣ 제223조에 따른 국제학교"
+   ],
+   "manual_line_no": 2325,
+   "state": "pending_review"
+  },
+  {
+   "id": "s-g13-change-paternity-suit-target",
+   "role": "stay",
+   "kind": "added",
+   "codes": [
+    "G-1-3"
+   ],
+   "procedures": [
+    "status_change"
+   ],
+   "reader_hash": "c-G-1.s.change",
+   "title_ko": "각종 소송 진행 중인 사람(G-1-3): 대상자에 인지청구소송 진행 중인 외국인 추가",
+   "title_en": "Persons in litigation (G-1-3): foreigners pursuing a paternity (affiliation) suit added",
+   "summary_ko": "G-1-3 대상자 목록에 한국인 부 또는 모를 특정하여 인지청구소송을 진행 중인 외국인(혼외자녀 및 양육자) 등이 추가됐어요.",
+   "summary_en": "The G-1-3 target list now includes foreigners (a child born out of wedlock and the caregiver) pursuing a paternity (affiliation) suit naming a Korean father or mother.",
+   "manual_lines": [
+    "- 한국인 부 또는 모를 특정하여 인지청구소송을 진행 중인 외국인(혼외자녀 및 양육자) 등"
+   ],
+   "manual_line_no": 14702,
+   "state": "pending_review"
+  },
+  {
+   "id": "s-g13-change-paternity-suit-documents",
+   "role": "stay",
+   "kind": "added",
+   "codes": [
+    "G-1-3"
+   ],
+   "procedures": [
+    "status_change"
+   ],
+   "reader_hash": "c-G-1.s.change",
+   "title_ko": "각종 소송 진행 중인 사람(G-1-3): 인지청구소송 관련 제출서류 추가",
+   "title_en": "Persons in litigation (G-1-3): documents added for paternity (affiliation) suits",
+   "summary_ko": "G-1-3 제출서류에 인지청구소송을 진행 중인 외국인의 경우 낼 서류 한 줄(유전자 감정결과서, 한국인 부 또는 모와 촬영한 사진 등)이 추가됐어요.",
+   "summary_en": "A line was added to the G-1-3 document list for foreigners pursuing a paternity (affiliation) suit (genetic test result, photos with the Korean father or mother, etc.).",
+   "manual_lines": [
+    "유전자 감정결과서, 한국인 부 또는 모와 촬영한 사진 등 (한국인 부 또는 모를 특정하여 인지청구소송을 진행 중인 외국인의 경우)"
+   ],
+   "manual_line_no": 14713,
+   "state": "pending_review"
+  }
+ ]
+}

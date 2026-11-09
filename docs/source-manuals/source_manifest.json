@@ -667,6 +667,74 @@
         "audits/manual-refresh-20261019/stay_hwp_260918_to_261019.json"
       ],
       "review_record": "audits/manual-refresh-20261019/same-method-review.md"
+    },
+    {
+      "role": "visa_issuance_manual",
+      "file": "docs/source-manuals/2026-11-06/visa_manual_261106.hwp",
+      "file_sha256": "218394812c890baecc016ba6a70775fe1d219307536eb996f4dc2b24cb33d2b6",
+      "extracted_text_file": "docs/source-manuals/2026-11-06/extracted/full_text/visa_manual_261106.txt",
+      "extracted_text_sha256": "543ea309febf4b0332984de3a920222555b92c199b4bd076d287fe0a0b23e54e",
+      "version": "2026.11",
+      "source_date": "2026-11-06",
+      "source_date_basis": "filename date; not verified as legal effective date",
+      "status": "pending_review",
+      "registry_id_when_promoted": "visa_manual_2026_11_06_hwp_text",
+      "verification_status": "user_supplied_unreviewed_text_extraction",
+      "original_hwp_sha256": "218394812c890baecc016ba6a70775fe1d219307536eb996f4dc2b24cb33d2b6",
+      "original_file_stored": true,
+      "warning": "Parsed HWP text is NOT an approved, page-faithful edition. No PDF printout was received, so there are no page numbers. Do not promote to runtime legal grounding or use table relationships without checking source.",
+      "change_review_artifact": "audits/manual-refresh-20261109/README.md",
+      "original_file": "docs/source-manuals/2026-11-06/visa_manual_261106.hwp",
+      "same_method_extraction": {
+        "file": "docs/source-manuals/2026-11-06/extracted/full_text/visa_manual_261106.txt",
+        "file_sha256": "543ea309febf4b0332984de3a920222555b92c199b4bd076d287fe0a0b23e54e",
+        "method": "scripts/decrypt_hwp_distribution.py (same script that reproduces the committed 2026-10-19 visa extraction byte for byte)"
+      },
+      "same_method_diff": [
+        "audits/manual-refresh-20261109/visa_hwp_261019_to_261106.md",
+        "audits/manual-refresh-20261109/visa_hwp_261019_to_261106.json"
+      ],
+      "derived_reader_markdown": {
+        "file": "docs/source-manuals/2026-11-06/markdown/visa_manual_261106.md",
+        "file_sha256": "c6861774a2a52270852d3f7024ab4d48b06b55a0eecf19e1c3a9f5c67218054e",
+        "method": "npx kordoc@4.24.1 (reproduces the committed 2026-11-02 stay Markdown byte for byte, image folder name aside)",
+        "use": "manual reader only; not a grounding source"
+      },
+      "review_record": "audits/manual-refresh-20261109/README.md"
+    },
+    {
+      "role": "stay_residence_manual",
+      "file": "docs/source-manuals/2026-11-09/stay_manual_261109.hwp",
+      "file_sha256": "afe7fc5c59479feb016c928c3ae824fbc3d851196f8fefaf27c213fc0808a954",
+      "extracted_text_file": "docs/source-manuals/2026-11-09/extracted/full_text/stay_manual_261109.txt",
+      "extracted_text_sha256": "d2890352df1019921ae35bdcd3df89c37c4f26e6e8c46bf5f873c15f97f92ed2",
+      "version": "2026.11",
+      "source_date": "2026-11-09",
+      "source_date_basis": "filename date; not verified as legal effective date",
+      "status": "pending_review",
+      "registry_id_when_promoted": "stay_manual_2026_11_09_hwp_text",
+      "verification_status": "user_supplied_unreviewed_text_extraction",
+      "original_hwp_sha256": "afe7fc5c59479feb016c928c3ae824fbc3d851196f8fefaf27c213fc0808a954",
+      "original_file_stored": true,
+      "warning": "Parsed HWP text is NOT an approved, page-faithful edition. No PDF printout was received, so there are no page numbers. Do not promote to runtime legal grounding or use table relationships without checking source.",
+      "change_review_artifact": "audits/manual-refresh-20261109/README.md",
+      "original_file": "docs/source-manuals/2026-11-09/stay_manual_261109.hwp",
+      "same_method_extraction": {
+        "file": "docs/source-manuals/2026-11-09/extracted/full_text/stay_manual_261109.txt",
+        "file_sha256": "d2890352df1019921ae35bdcd3df89c37c4f26e6e8c46bf5f873c15f97f92ed2",
+        "method": "scripts/decrypt_hwp_distribution.py (same script that reproduces the committed 2026-11-02 stay extraction byte for byte)"
+      },
+      "same_method_diff": [
+        "audits/manual-refresh-20261109/stay_hwp_261102_to_261109.md",
+        "audits/manual-refresh-20261109/stay_hwp_261102_to_261109.json"
+      ],
+      "derived_reader_markdown": {
+        "file": "docs/source-manuals/2026-11-09/markdown/stay_manual_261109.md",
+        "file_sha256": "2eaee2ae493729063c8eafa298f65ba45af9f3c12b722eed63966e4c6b3e8fc4",
+        "method": "npx kordoc@4.24.1 (reproduces the committed 2026-11-02 stay Markdown byte for byte, image folder name aside)",
+        "use": "manual reader only; not a grounding source"
+      },
+      "review_record": "audits/manual-refresh-20261109/README.md"
     }
   ]
 }

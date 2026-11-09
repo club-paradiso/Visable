@@ -66,6 +66,7 @@
 <link rel="stylesheet" href="assets/css/civic-search.css?v=20261026-theme-ui1">
 <link rel="stylesheet" href="assets/css/pictograms.css?v=20261102-pg2">
 <link rel="stylesheet" href="assets/css/status-guidance.css">
+<link rel="stylesheet" href="assets/css/manual-updates.css">
 <style id="civic-critical">
 /* First-paint contract for the civic landing (see scripts/check_landing_shell.mjs).
    The static <body> already carries civic-refresh, so these rules — inline so they
@@ -2415,6 +2416,7 @@ document.addEventListener("DOMContentLoaded", () => Visable.shims.installDocTerm
      (derived from the guidance bundle by scripts/build_search_suggest_index.mjs). -->
 <script defer src="assets/js/search-suggest.js"></script>
 <script defer src="assets/js/manual-reader-route.js"></script>
+<script defer src="assets/js/manual-updates.js"></script>
 <script defer src="assets/js/civic-search.js?v=20261028-anchor" onerror="document.body.classList.add('civic-boot-failed')"></script>
 <!-- Post-search guidance, procedure-first. Load order matters: the router
      (VisableSearchRouter) is consulted by status-guidance.js when present; the
