@@ -50,7 +50,8 @@ for (const skin of ['stamp', 'chrome', 'neon']) {
     await expect(page).toHaveScreenshot(`home-ko-${skin}-full.png`, shot());
   });
 
-  test(`D-2 extension guidance, ${skin} skin (ko)`, async ({ page }) => {
+  // The bare query "D-2" lands on the procedure chooser (what to do with D-2), i.e. the searched layout under the skin.
+  test(`D-2 searched state (procedure chooser), ${skin} skin (ko)`, async ({ page }) => {
     await withStorage(page, [['visable:theme', skin]]);
     await boot(page, { routes: blockFonts });
     await search(page, 'D-2');
