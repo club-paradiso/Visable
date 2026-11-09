@@ -76,9 +76,14 @@ def _dev20(cid):
     return items[cid], load_real_world_registry(dev20_v2.REGISTRY_V2)
 
 
+AFTER_005V = {"mission005w"}
+
+
 def _recorded_answers(cid):
     out = []
     for path in sorted(BOOT.glob("runs/**/generations.jsonl")):
+        if path.relative_to(BOOT / "runs").parts[0] in AFTER_005V:   # these runs carry the 005-W mark
+            continue
         for line in path.read_text().splitlines():
             x = json.loads(line)
             if x.get("case_id") == cid:

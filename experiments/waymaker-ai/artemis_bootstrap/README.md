@@ -191,7 +191,7 @@ only one of its two cases; the branch retry quoted the other, and the retried an
 released and passes, the first time the retry fired on the real model. All nine cap cases and three
 cap-negatives passed. Remaining: 005 (unasked item added), 020 (literal 내야), 003, and 002/010 withheld
 before the model. See the [Mission 005-S report](runs/mission005s/MISSION-005-S-REPORT.ko.md).
-Mission 005-T (frozen 2026-11-03, not run yet): a released answer whose status or form is visibly wrong
+Mission 005-T (frozen 2026-11-03, run 2026-11-03): a released answer whose status or form is visibly wrong
 is asked once more with `status_retry` (contract v14; `status_check.py`): two cited records that differ
 only in their numbers answered as answered/partial (A05M/N-28·29, A05Q/R/S-28), partial with nothing
 uncovered (A05P/R/S-60), or an input field name in the answer (A05K-41, A05R/S-60). Across the recorded
@@ -200,6 +200,11 @@ decision request (spec 2; the new suite's A05T-35 found the gap; no recorded res
 gate v14 with the 005-T manifest; thresholds unchanged. New locked 81-case suite (J-7 family) with seven
 conflict-template cases, three not-conflicts and three partial traps, re-derived blind (81/81).
 DEV-20 item 005 is not this habit: the question-item reader put 'method' in uncovered_items.
+Free T4 run (commit 83f5f27): gate v15 **failed** on raw true_conflict 0/3 alone; end to end was 81/81
+for the first time, with no critical, no unsafe release and no trust bypass. In five conflict cases
+asking what each record says the first answer was status answered; the status retry turned all five
+into released conflict answers, but the raw channel scores first answers. DEV-20 v2 did not run. See
+the [Mission 005-T report](runs/mission005t/MISSION-005-T-REPORT.ko.md).
 Mission 005-U (frozen 2026-11-03, run 2026-11-03): the first model call names the records in conflict as
 `conflict_records` (contract v15): each pair of a part's admissible records whose texts differ only in their
 numbers (status_check's rule). In 005-T five conflict cases asking what each record says were answered first
@@ -226,7 +231,7 @@ end to end 81/81, zero critical. All six choice questions got a first answer nam
 choice retry added the other code in two (Vietnamese) and the notice quoted it in four. Raw scores the first
 answer, as in 005-T, so DEV-20 v2 did not run. All seven conflict cases were again conflicts first. See the
 [Mission 005-V report](runs/mission005v/MISSION-005-V-REPORT.ko.md).
-Mission 005-W (frozen 2026-11-06, not run yet): the first model call names the codes a choice question asks
+Mission 005-W (frozen 2026-11-06, run 2026-11-09): the first model call names the codes a choice question asks
 between as `choice_codes` (contract v17): the question's sibling codes that the part's admissible evidence names,
 two or more, in question order. Across DEV-20 v2 and the 005-F..V suites the mark falls on exactly DEV-20 003/004
 and A05V-45/62/63/68/70/71. The choice retry stays as the second line. The new suite (I-5 family) found that the
@@ -234,11 +239,13 @@ first-person reader took the "I" of I-5-1 for the pronoun; a status code letter 
 replaying 1,401 recorded cases changes no earlier result. Gate v18 = gate v17 with the 005-W manifest; thresholds
 unchanged. Six choice cases, one per category; re-derived blind (81/81); all 19 review edits applied after checking
 them against correct, value-first and real-model conflict answers.
-Free T4 run (commit 83f5f27): gate v15 **failed** on raw true_conflict 0/3 alone; end to end was 81/81
-for the first time, with no critical, no unsafe release and no trust bypass. In five conflict cases
-asking what each record says the first answer was status answered; the status retry turned all five
-into released conflict answers, but the raw channel scores first answers. DEV-20 v2 did not run. See
-the [Mission 005-T report](runs/mission005t/MISSION-005-T-REPORT.ko.md).
+Free T4 run (code e4464b0; notebook f1ab8b7 installs the pinned torch 2.11.0+cu130 because Colab's image moved
+to 2.14.1 and the preflight blocked it): gate v18 **passed**, raw 57/63 with no critical, end to end 81/81. The
+mark made the first answer name both codes in two of six choice questions (both Vietnamese); the choice retry
+added the other code in one more (A05W-68) and the notice quoted it in three. Spreading the six choice cases one
+per category, fixed at the freeze, is why four first-answer misses still pass. All seven conflicts were conflicts
+first. DEV-20 v2: 15/20; 003 now passes with the notice, 004 still misses 숙련기능인력. See the
+[Mission 005-W report](runs/mission005w/MISSION-005-W-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
