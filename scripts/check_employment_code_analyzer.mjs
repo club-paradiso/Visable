@@ -120,6 +120,27 @@ const sc = sample.occupationCandidates[0];
 for (const key of ['code', 'officialName', 'classificationType', 'level', 'score', 'confidence', 'matchedTerms', 'reasonKo', 'caveats', 'source'])
   if (sc && !(key in sc)) fail('api-shape', `Candidate missing field "${key}"`);
 
+// --- Regression: "용접" must not list unrelated 제조업 rows as industry candidates ---
+// The lexicon hint "제조" is inside 687 KSIC11 names; rows reached only through
+// it all tie, so the first rows of section C (10211 수산동물 훈제, 조리 및 유사
+// 조제식품 제조업 …) used to follow the real match as "비슷함".
+{
+  const weld = analyzer.analyze('용접');
+  const ind = weld.industryCandidates;
+  if (!ind.length || ind[0].code !== '25995')
+    fail('weld-regression', `expected industry top-1 25995, got ${ind.map((c) => c.code).join(', ') || '(none)'}`);
+  const noise = ind.filter((c) => !c.officialName.includes('용접'));
+  if (noise.length)
+    fail('weld-regression', `industry candidates unrelated to 용접: ${noise.map((c) => `${c.code} ${c.officialName}`).join(' | ')}`);
+  if (ind.some((c) => c.code === '10211')) fail('weld-regression', '10211 (수산동물 훈제…) listed for "용접"');
+  const occ = weld.occupationCandidates.map((c) => c.code);
+  if (occ[0] !== '7406' || !occ.includes('8413'))
+    fail('weld-regression', `expected occupations 7406 then 8413, got ${occ.join(', ')}`);
+  // A generic word the person typed themselves still searches the section.
+  if (!analyzer.analyze('제조업').industryCandidates.length)
+    fail('weld-regression', 'typing "제조업" directly returned no industry candidates');
+}
+
 console.log(`\nEmployment code analyzer: ${passed}/${fixtures.cases.length} fixtures passed, ${failures} assertion failure(s).`);
 if (failures > 0) process.exit(1);
 console.log('OK — no hallucinated codes, tracks separated, entertainment/tattoo decomposition + legal cautions verified, source metadata present.');
