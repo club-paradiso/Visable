@@ -246,7 +246,7 @@ added the other code in one more (A05W-68) and the notice quoted it in three. Sp
 per category, fixed at the freeze, is why four first-answer misses still pass. All seven conflicts were conflicts
 first. DEV-20 v2: 15/20; 003 now passes with the notice, 004 still misses 숙련기능인력. See the
 [Mission 005-W report](runs/mission005w/MISSION-005-W-REPORT.ko.md).
-Mission 005-X (frozen 2026-11-09, not run yet): a choice question that is not split otherwise is asked one
+Mission 005-X (frozen 2026-11-09, run 2026-11-11): a choice question that is not split otherwise is asked one
 choice code at a time (`choice_part`, contract v18) and the answers are joined in question order, as sub-code parts
 are, so the raw channel scores a first answer covering every code. Across DEV-20 v2 and the 005-F..W suites exactly
 the 14 known choice questions split; every other question gets the 005-W model items. A part that gives a value the
@@ -255,6 +255,12 @@ and withheld if it still does; a value the question itself quotes counts only wh
 code's values. Gate v19 = gate v18 with the 005-X manifest and the value retry; thresholds unchanged. New locked
 suite (K-3 family): six choice cases, one per category, two each in ko/en/vi, four near-misses; re-derived blind
 (81/81); all 35 review edits applied after checking them against correct, value-first and 62 real-model conflict answers.
+Free T4 run (commit 7c09062, pinned torch): gate v19 **passed**, raw 61/63 with no critical, end to end 81/81. All
+six synthetic choice questions got a joined first answer naming both codes with their values (6/6; 005-W 2/6), but
+10 of 12 parts compared both codes instead of keeping to their own, so the answer repeats the comparison; no value
+retry fired. DEV-20 v2: 14/20. Items 003 and 004 got the same one-code answer from both parts, and the 005-V check,
+switched off for choice parts, no longer added the notice, so 003 fails; 006 lost a phrase and 020 now passes. See
+the [Mission 005-X report](runs/mission005x/MISSION-005-X-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
