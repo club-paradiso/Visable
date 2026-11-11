@@ -51,7 +51,7 @@ def load_items(path: Path = build_dev20_v2.DEV20_V2) -> tuple[list, str]:
 
 
 def run(prepared, out_dir: Path, decision_path: Path, registry_path: Path = REGISTRY_V2,
-        session_label: str = "colab-t4", gate_version: str = "v19") -> dict:
+        session_label: str = "colab-t4", gate_version: str = "v20") -> dict:
     """DEV-20 v2 through the guarded pipeline, only after a passing decision of the named gate (its run_dev20 steps)."""
     import importlib
     import artemis_runner
@@ -60,7 +60,8 @@ def run(prepared, out_dir: Path, decision_path: Path, registry_path: Path = REGI
     gate = importlib.import_module({"v12": "synthetic_safety_gate_v12", "v13": "synthetic_safety_gate_v13",
                                    "v14": "synthetic_safety_gate_v14", "v15": "synthetic_safety_gate_v15",
                                    "v16": "synthetic_safety_gate_v16", "v17": "synthetic_safety_gate_v17",
-                                   "v18": "synthetic_safety_gate_v18", "v19": "synthetic_safety_gate_v19"}[gate_version])
+                                   "v18": "synthetic_safety_gate_v18", "v19": "synthetic_safety_gate_v19",
+                                   "v20": "synthetic_safety_gate_v20"}[gate_version])
     from waymaker_ai.evidence_registry import load_real_world_registry
     gate.require_passing_gate(decision_path, gate.load_manifest(gate.MANIFEST)["contract_version"], prepared, gate.MANIFEST)
     items, digest = load_items()

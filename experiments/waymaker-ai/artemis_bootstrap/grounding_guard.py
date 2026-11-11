@@ -373,7 +373,7 @@ def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates:
     asks for one retry, or with `branch_notice` (after that retry) it adds a system notice quoting the case.
     Mission 005-V: the same for a choice question answered with only one of its codes, with `choice_notice`.
     Mission 005-X: a part about one choice code is not checked for the other codes (the joined answer covers
-    them); a value it gives that the evidence states only for another choice code asks for one retry, and
+    them); Mission 005-Y: it is checked for its own code, as a whole answer is for the question's codes (005-V); a value it gives that the evidence states only for another choice code asks for one retry, and
     with `value_final` (after that retry) withholds.
     """
     selection = prepared["selection"]
@@ -449,6 +449,16 @@ def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates:
         left_codes = [] if choice_part else \
             choice_coverage.omitted_choices(selection.get("context_question", question), answer, cited_texts)
         if choice_part:
+            # Mission 005-Y: a part that does not name its own choice code, though the cited evidence does, is asked
+            # once more (choice_retry) and, with `choice_notice`, gets a notice quoting the code's evidence sentence.
+            in_answer = set(choice_coverage._CODE.findall(unicodedata.normalize("NFC", answer)))
+            in_cited = {c for t in cited_texts for c in choice_coverage._CODE.findall(unicodedata.normalize("NFC", t or ""))}
+            codes = prepared["parts"][part]["choice_codes"]
+            if choice_part not in in_answer and choice_part in in_cited:
+                findings.append({"check": "choice", "kind": "choice_part_omitted",
+                                 "detail": [{"code": choice_part, "codes": codes, "named": [c for c in codes if c in in_answer],
+                                             "sentence": choice_coverage.sentence_naming(choice_part, cited_texts)}],
+                                 "effect": "system_notice" if choice_notice else "choice_retry"})
             swapped = choice_coverage.swapped_values(choice_part, prepared["parts"][part]["choice_codes"], answer,
                                                      [e.get("text", "") for e in selection["admissible"]],
                                                      selection.get("context_question", question))
@@ -477,7 +487,8 @@ def validate_generated_answer(raw: Optional[str], prepared: Mapping, candidates:
 def _join_parts(guards: list, raws: list) -> tuple[dict, Optional[str]]:
     """Mission 005-J: one guard result and one composed raw output from per-sub-code parts (deterministic).
 
-    The worst decision wins. When every part is released, the answers are joined in sub-code order,
+    The worst decision wins. When every part is released, the answers are joined in sub-code order (an
+    identical answer text only once, Mission 005-Y),
     citations are united, and the status is answered (all answered), conflict (any conflict) or partial.
     The composed raw output joins the parsed raw parts the same way, so the raw channel scores what the
     model wrote; if a part did not parse, that part's raw text is the composed output.
@@ -491,8 +502,9 @@ def _join_parts(guards: list, raws: list) -> tuple[dict, Optional[str]]:
         status = "answered" if all(s == "answered" for s in statuses) else "conflict" if "conflict" in statuses else "partial"
         substantive = [x for x in items if x["status"] in SUBSTANTIVE] or items
         cites = list(dict.fromkeys(c for x in items for c in x["citations"]))
+        # Mission 005-Y: an answer text two parts both gave is joined once (DEV-20 v2 003/004 in 005-X).
         return {"status": status if any(x["status"] in SUBSTANTIVE for x in items) else items[0]["status"],
-                "answer": "\n".join(x["answer"] for x in substantive), "citations": cites}
+                "answer": "\n".join(dict.fromkeys(x["answer"] for x in substantive)), "citations": cites}
     composed_raw = next((r for r, x in zip(raws, parsed) if x is None), None)
     if composed_raw is None:
         composed_raw = json.dumps(joined(parsed), ensure_ascii=False)
