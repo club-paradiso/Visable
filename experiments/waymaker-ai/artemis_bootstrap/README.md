@@ -261,7 +261,7 @@ six synthetic choice questions got a joined first answer naming both codes with 
 retry fired. DEV-20 v2: 14/20. Items 003 and 004 got the same one-code answer from both parts, and the 005-V check,
 switched off for choice parts, no longer added the notice, so 003 fails; 006 lost a phrase and 020 now passes. See
 the [Mission 005-X report](runs/mission005x/MISSION-005-X-REPORT.ko.md).
-Mission 005-Y (frozen 2026-11-11, not run yet): each choice part is also checked for its own code: a part answer
+Mission 005-Y (frozen 2026-11-11, run 2026-11-11): each choice part is also checked for its own code: a part answer
 that does not name its `choice_part`, though the cited evidence does, is asked once more with the 005-V
 `choice_retry` and then gets the notice quoting that code's evidence sentence; an answer text two parts both gave is
 joined once. Contract v18 unchanged. Replaying the 005-X records, the check fires only on DEV-20 v2 003 and 004
@@ -270,6 +270,12 @@ answer of that run is released unchanged. Gate v20 = gate v19 with the 005-Y man
 locked suite (N-4 family): six choice cases, one per category, two each in ko/en/vi, two with one sentence listing
 both codes; re-derived blind (81/81); all 27 review edits applied after checking them against correct, value-first
 and 69 real-model conflict answers.
+Free T4 run (commit 37f1938): gate v20 **failed** on one critical release: in A05Y-45 the N-4-1 part answered
+correctly and the N-4-3 part said N-4-3 has the lower fee, and the self-contradicting joined answer was released;
+raw 56/63, end to end 79/81, DEV-20 v2 did not run. The own-code check fired on 22, 62 and 70; in 22 the retried
+part filled in the missing code and value, in 62 and 70 the notice did, and all three were correct end to end.
+A05Y-51 misses a mention group only through a correct Vietnamese term it does not list. See the
+[Mission 005-Y report](runs/mission005y/MISSION-005-Y-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
