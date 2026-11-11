@@ -50,7 +50,79 @@
 
 ---
 
-## §2. 페이지 목록 (30개)
+## §2. 페이지 목록 (2026-11-10 기준)
+
+파일 이름: **Visable by Paradiso · UX Workspace** (fileKey `pInhK8Oyg04lpL4PMSCB4l`).
+아래 표는 2026-11-10에 오너가 전달한 현재 작업 구조다. v3 시안과 테마 3종이 이 파일 하나에 모여 있다.
+
+| 페이지 | page node id | 내용 |
+|--------|--------------|------|
+| START HERE | `730:4` | 안내 보드. 맨 아래에 2026-11-10 업데이트 메모 |
+| A0 로고 | `732:32` | 로고 컴포넌트 |
+| A0 토큰 | `732:33` | 변수 견본 |
+| A1 컴포넌트 · v3 | `925:4` | 버튼, 코드 탭, 태그, 칩 버튼, 안내 띠, 출처 줄, 목록 줄 컴포넌트 |
+| B★ v3 | `751:4` | v3 기본 시안 (Results·도구·대화상자·모바일) |
+| C★ v3 | `751:5` | Waymaker 1440·390 |
+| D★ v3 | `751:6` | New Home, 귀화면접 허브, New Home 하단, 각 모바일 |
+| T1★ Stamp | `780:4` | 38프레임, `809:2`~`846:2` |
+| T2★ Chrome | `802:4` | 38프레임, `847:2`~`884:2` |
+| T3★ Neon | `802:5` | 38프레임, `885:2`~`922:2` |
+| B0 · C0 · D0 | `733:4` · `733:5` · `733:6` | 라이브 기준 캡처. **건드리지 말 것** |
+
+- 테마 페이지 하나에는 화면 34개(데스크톱 12, 대화상자 7, 모바일 15)와 반대 밝기 화면 4개
+  (홈, 최종 안내, Waymaker, New Home)가 있다.
+- 프레임 이름 형식: `Stamp · B-home-1440`, `Chrome Graphite · D-newhome-1440`.
+  프레임마다 해당 테마 모드가 명시돼 있다.
+- 라이브 사이트의 테마는 `localStorage`의 `visable:theme`(`default` · `stamp` · `chrome` · `neon`)로 바뀐다.
+
+### 변수
+
+- **Visable · Color** (`VariableCollectionId:732:4`)
+  - 모드 8개: Default Light `732:0`, Default Dark `732:1`, Stamp Light `732:2`, Stamp Dark `732:3`,
+    Chrome Light `732:4`, Chrome Dark `732:5`, Neon Light `732:6`, Neon Dark `732:7`
+  - 변수 17개: `bg/page`, `bg/sunken`, `bg/surface`, `border/default`, `border/strong`,
+    `text/primary`, `text/secondary`, `text/tertiary`, `accent/default`, `accent/on-accent`,
+    `accent/text`, `accent/soft-bg`, `header/bg`, `header/text`, `inverse/bg`, `inverse/text`,
+    `inverse/text-muted`
+- **Visable · Size** (`VariableCollectionId:732:19`): `space/1`~`space/8`, radius `sm` / `md` / `lg` / `full`
+
+### 컴포넌트 (A1 컴포넌트 · v3, page `925:4`)
+
+| 컴포넌트 | node id | 변형 |
+|----------|---------|------|
+| 버튼 세트 | `925:9` | 종류=주 버튼 / 보조 버튼 × 테마=기본 / Stamp / Chrome / Neon × 크기 (35종) |
+| 체류자격 코드 탭 세트 | `962:4` (기본형 `925:10`) | 테마=기본 / Chrome / Neon × 크기 (7종) |
+| 태그 세트 | `925:16` | 상태=기본 / 선택됨 × 테마 × 크기 (7종) |
+| 칩 버튼 세트 | `962:8` | 상태=기본 × 테마=기본 / Stamp / Chrome / Neon × 크기 (14종) |
+| 안내 띠 세트 | `981:4` | 테마=기본 / Stamp / Chrome / Neon |
+| 출처 줄 세트 | `925:26` | 근거=직접 / 맥락 / 후보 |
+| 목록 줄 | `925:27` | — |
+
+변형 메모 (2026-11-11):
+
+- 변형은 시안에 실제로 있던 모양을 그대로 본떠 만든 것이다. 새 모양은 없다.
+- `크기` 값은 높이(px)다. `고정폭`은 칸 너비에 맞춘 왼쪽 정렬형, `·2` `·3`은 같은 높이에서 좌우 여백만 다른 형이다.
+- 시안(B★·C★·D★·T1~T3)에서 변형과 모양이 완전히 같은 프레임은 인스턴스로 교체했다 (총 436개). 한 번만 나오는 모양, 아이콘이 붙은 버튼, 여러 줄 상자는 프레임 그대로다.
+- 색은 전부 `Visable · Color` 변수다. 테마 변형이 바꾸는 것은 모서리, 그림자, 그라데이션, 빛 번짐 같은 모양뿐이다.
+
+### 디자인 방향 "창구"
+
+- 카드 격자 대신 왼쪽 정렬과 줄 목록·표를 쓴다.
+- 고유 요소 셋: 기준일 전표(mono 출처 줄), 체류자격 코드 탭, 마침표 점 상태(● 직접 · ◐ 맥락 · ○ 후보).
+- 테마 모양
+  - Stamp: 명조 제목(Gowun Batang), 2px 모서리, 어긋난 그림자, 둥근 기준일 도장. 반대 밝기는 Cover(남색+금색)
+  - Chrome: 반투명 유리판, 알약 모양 금속 광택 버튼, 푸른 빛 번짐. 반대 밝기는 Graphite
+  - Neon: 짙은 남색 바탕, 청록 선과 빛 번짐. 반대 밝기는 Day
+
+> 페이지의 `children.length`가 0으로 보이면 그건 Figma의 지연 로딩 때문입니다. 실제 내용을
+> 보려면 `await figma.setCurrentPageAsync(page)`로 그 페이지로 전환해야 합니다.
+
+### 이전 구조 (2026-07 세션 기록, 30개 페이지)
+
+> 아래 표와 §0·§1·§3~§5·§8의 "Aurora Live" 히어로 설명·노드 ID는 2026-07 세션 시점의 기록이다.
+> 위 현재 구조로 바뀐 뒤 이 페이지와 노드가 파일에 남아 있는지는 **이 문서 갱신 시 확인하지 않았다.**
+> 쓰기 전에 `use_figma` 읽기 전용 호출로 페이지 목록부터 확인할 것.
+> (§1의 Inter 폰트, §3의 "로컬 변수 컬렉션은 없음"도 당시 기준이며, 지금은 위 변수 컬렉션이 있다.)
 
 | # | 이름 | page node id |
 |---|------|--------------|
@@ -85,9 +157,6 @@
 | 27 | **Proposal · Visable 히어로 (Aura)** | `142:4` |
 | 28 | **Proposal · New Home 히어로 (Aurora Live)** | `194:4` |
 | 29 | **Proposal · Waymaker 히어로 (Dark Aurora)** | `198:4` |
-
-> 페이지의 `children.length`가 0으로 보이면 그건 Figma의 지연 로딩 때문입니다. 실제 내용을
-> 보려면 `await figma.setCurrentPageAsync(page)`로 그 페이지로 전환해야 합니다.
 
 ---
 

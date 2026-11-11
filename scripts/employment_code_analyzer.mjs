@@ -905,6 +905,22 @@ function ownWordsBonus(index, entry, ownWords) {
   return bonus;
 }
 
+/**
+ * A lexicon HINT term is "track-generic" when it sits inside the official name
+ * of a large share of the track: "제조" is in 687 of 2,038 KSIC11 names. Such a
+ * term names a whole section, not a class — every one of those rows gets the
+ * same score, so the "best" one is just the first row of the table. Typing
+ * "용접" used to list 10211 수산동물 훈제, 조리 및 유사 조제식품 제조업 as the
+ * second industry candidate for exactly that reason (act_assemble's hint "제조").
+ */
+const TRACK_GENERIC_NAME_SHARE = 0.2;
+function isTrackGenericTerm(index, type, term) {
+  if (!term || /^[0-9]+$/.test(term)) return false;
+  nameIdf(index, type, term); // fills the document-frequency cache
+  const n = index._df.n[type];
+  return n > 0 && index._df[type].get(term) / n > TRACK_GENERIC_NAME_SHARE;
+}
+
 export function searchTrack(index, classificationType, rawQuery, terms, options = {}) {
   const limit = options.limit || 5;
   const sourceMeta = options.sourceMeta || null;
@@ -915,8 +931,10 @@ export function searchTrack(index, classificationType, rawQuery, terms, options 
   for (const entry of index.indexed) {
     if (entry.type !== classificationType) continue;
     const scored = scoreRow(entry, rawQuery, terms, normalizedQuery);
+    let ownBonus = 0;
     if (ownWords.length) {
       const bonus = ownWordsBonus(index, entry, ownWords);
+      ownBonus = bonus;
       if (bonus > 0) {
         // A row reached only through the person's own words still gets the
         // same level/leaf preference as one reached through hint terms.
@@ -924,7 +942,18 @@ export function searchTrack(index, classificationType, rawQuery, terms, options 
         scored.score += bonus;
       }
     }
-    if (scored.score > 0) scoredRows.push({ entry, scored });
+    if (scored.score > 0) scoredRows.push({ entry, scored, own: ownBonus > 0 });
+  }
+  // When something matched on a distinctive word, rows reached ONLY through a
+  // track-generic hint the person did not type are noise, not candidates: drop
+  // them instead of padding the list with the first rows of a whole section.
+  // (With no distinctive match at all the list is left as is — the product
+  // question, e.g. "공장이 주로 무엇을 만드나요?", is what narrows it then.)
+  const typedIt = (t) => normalizedQuery.includes(t) || ownWords.includes(t);
+  const distinctive = (s) => s.own || !s.scored.matchedTerms.length
+    || s.scored.matchedTerms.some((t) => typedIt(t) || !isTrackGenericTerm(index, classificationType, t));
+  if (scoredRows.some(distinctive)) {
+    for (let i = scoredRows.length - 1; i >= 0; i--) if (!distinctive(scoredRows[i])) scoredRows.splice(i, 1);
   }
   // A strong broad (non-leaf) match pulls its own detailed child codes up just
   // behind it (below anything that matched on its own). The person can only

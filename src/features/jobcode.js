@@ -232,7 +232,41 @@ function scoreJobcodeRow(row, query, terms, normalizedQuery) {
     }
     return score;
 }
-function getScoredJobcodeRows(type, query, terms, limit = 60) {
+// 힌트 키워드가 그 분류표 공식 명칭의 20% 넘게 들어 있으면(예: ‘제조’ — 업종 2,038건 중
+// 687건) 그 키워드는 대분류 하나를 통째로 가리킬 뿐, 특정 코드를 가리키지 못한다.
+// 그런 키워드만으로 걸린 행은 전부 동점이라 표의 첫 행들이 그대로 올라온다
+// ("용접" → 10211 수산동물 훈제, 조리 및 유사 조제식품 제조업). 분석기의
+// isTrackGenericTerm(scripts/employment_code_analyzer.mjs)과 같은 규칙.
+const JC_TRACK_GENERIC_NAME_SHARE = 0.2;
+function jcIsTrackGenericTerm(type, term) {
+    if (!_jobcodeData || !term || /^[0-9]+$/.test(term)) return false;
+    const cache = _jobcodeData._jcNameShare || (_jobcodeData._jcNameShare = {});
+    const key = type + '\u0000' + term;
+    if (cache[key] === undefined) {
+        let n = 0; let df = 0;
+        _jobcodeData.data.forEach(r => {
+            if (jcType(r) !== type) return;
+            n++;
+            if (jcNormalizedRow(r).name.includes(term)) df++;
+        });
+        cache[key] = n ? df / n : 0;
+    }
+    return cache[key] > JC_TRACK_GENERIC_NAME_SHARE;
+}
+// 이 행이 ‘구별되는’ 근거로 걸렸는가: 검색어 자체, 또는 사용자가 직접 적은 단어이거나
+// 분류 전반에 퍼져 있지 않은 키워드.
+function jcRowHasDistinctiveMatch(row, type, q, terms, typedText) {
+    const { name, code, synonyms, nameWords } = jcNormalizedRow(row);
+    if (q && (code.startsWith(q) || name.includes(q) || synonyms.includes(q))) return true;
+    return terms.some(term => {
+        if (!term) return false;
+        const hit = code === term || (/^[0-9]+$/.test(term) && code.startsWith(term))
+            || name.includes(term) || synonyms.includes(term)
+            || (term.length >= 3 && nameWords.some(w => w !== term && term.includes(w)));
+        return hit && (typedText.includes(term) || !jcIsTrackGenericTerm(type, term));
+    });
+}
+function getScoredJobcodeRows(type, query, terms, limit = 60, typedText = '') {
     if (!_jobcodeData) return [];
     const q = normalizeJobcodeText(query);
     let pool = _jobcodeData.data.filter(r => jcType(r) === type);
@@ -247,9 +281,14 @@ function getScoredJobcodeRows(type, query, terms, limit = 60) {
         return pool.filter(r => (r.level ? r.level === 'major' : jcCode(r).length === 1))
             .sort((a, b) => jcCode(a).localeCompare(jcCode(b)));
     }
-    return pool
+    const typed = normalizeJobcodeText(`${query || ''} ${typedText || ''}`);
+    let scored = pool
         .map(r => ({ row: r, score: scoreJobcodeRow(r, query, terms || [], q) }))
-        .filter(x => x.score > 0)
+        .filter(x => x.score > 0);
+    // 구별되는 근거로 걸린 행이 하나라도 있으면, 분류 전반에 퍼진 힌트만으로 걸린 행은 뺀다.
+    const distinctive = scored.filter(x => jcRowHasDistinctiveMatch(x.row, type, q, terms || [], typed));
+    if (distinctive.length) scored = distinctive;
+    return scored
         // 점수 동률이면 더 구체적인 단계(세세분류)를 먼저 노출.
         .sort((a, b) => b.score - a.score || jcLevelRank(b.row) - jcLevelRank(a.row) || jcCode(a.row).localeCompare(jcCode(b.row)))
         .slice(0, limit)
@@ -1262,10 +1301,10 @@ async function searchJobcodeWithAI() {
         // legacy keyword fallback after the analyzer has recognized that the
         // person's actual job is administering teacher staffing.
         const occupationFallback = scopedRelation
-            ? [] : getScoredJobcodeRows('occupation', '', jobKw, 60);
+            ? [] : getScoredJobcodeRows('occupation', '', jobKw, 60, searchText);
         const jobRows = jcRowsFromAnalysis(analysis && analysis.occupationCandidates, occupationFallback);
         const indRows = jcRowsFromAnalysis(analysis && analysis.industryCandidates,
-            scopedRelation ? [] : getScoredJobcodeRows('industry', '', indKw, 60));
+            scopedRelation ? [] : getScoredJobcodeRows('industry', '', indKw, 60, searchText));
         // Guided AI layout: top recommendation vs alternatives. When the analyzer
         // is still clarifying, show "몇 가지 가능성이 있어요" (no false "closest").
         const ambiguous = !!(analysis && analysis.clarificationRequired && !_jcClarificationAnswered);

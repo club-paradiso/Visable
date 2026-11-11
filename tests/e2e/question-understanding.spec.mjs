@@ -53,3 +53,18 @@ test('structured multilingual interpretation reaches official classification sea
   await expect(page.locator('#jcJobResults')).toContainText(/과수|농업|채소/);
   expect(requested).toBe(true);
 });
+
+// "용접" used to list 10211 수산동물 훈제, 조리 및 유사 조제식품 제조업 as the second
+// industry candidate ("비슷함"): the lexicon hint "제조" is inside a third of all
+// KSIC11 names, so every 제조업 row tied and the first rows of the table won.
+test('a welding search does not list unrelated manufacturing industries', async ({ page }) => {
+  await boot(page);
+  await page.route('**/api/employment/interpret', (route) => route.fulfill({ json: { status: 'unavailable', reason: 'rate_limited' } }));
+  await openEmployment(page);
+  await page.locator('#jcSearchInput').fill('용접');
+  await page.locator('#jcSearchInput').press('Enter');
+  await expect(page.locator('#jcJobResults .jc2-card').first()).toContainText('용접원');
+  await expect(page.locator('#jcIndResults .jc2-card').first()).toContainText('피복 및 충전 용접봉 제조업');
+  await expect(page.locator('#jcIndResults')).not.toContainText('수산동물');
+  await expect(page.locator('#jcIndResults .jc2-card')).toHaveCount(1);
+});
