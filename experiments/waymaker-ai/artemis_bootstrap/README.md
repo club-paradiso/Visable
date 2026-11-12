@@ -276,6 +276,16 @@ raw 56/63, end to end 79/81, DEV-20 v2 did not run. The own-code check fired on 
 part filled in the missing code and value, in 62 and 70 the notice did, and all three were correct end to end.
 A05Y-51 misses a mention group only through a correct Vietnamese term it does not list. See the
 [Mission 005-Y report](runs/mission005y/MISSION-005-Y-REPORT.ko.md).
+Mission 005-Z (frozen 2026-11-12, not run yet): when the choice parts of a comparison question (lower, higher, shorter,
+longer) claim different codes, or claim a code that does not hold the lowest/highest own value
+(`choice_conclusion.py`), the question is asked once more as one call (the 005-W item, no `choice_part`); a
+consistent single answer is released, otherwise nothing is. Contract v18 unchanged. Across 42 recorded choice
+answers of every run the check flags only A05Y-45 (the 005-Y critical release), and none of 122 correct author and
+reviewer answers; "covers" questions are left out because two correct parts can name different groups. Every other
+recorded answer of 005-X and 005-Y is released unchanged. Gate v21 = gate v20 with the 005-Z manifest and the
+conclusion retry; thresholds unchanged. New locked suite (P-2 family): four comparison choice cases covering all four
+directions and two "covers" cases, two per language; re-derived blind (81/81); all 10 review edits applied after
+checking them against correct, value-first, contrast and 76 real-model conflict answers.
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is

@@ -66,6 +66,7 @@ BOOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(BOOT.parent))
 sys.path.insert(0, str(BOOT))
 import branch_coverage
+import choice_conclusion
 import choice_coverage
 import claim_support_validation
 import status_check
@@ -584,7 +585,8 @@ def run_case(question: str, intake: Optional[Mapping], candidates: list, registr
     """One question end to end. `generate(model_item)` returns the raw model text; it is called only on proceed,
     once per sub-code part when the evidence splits by sub-code (Mission 005-J), once more for a part the
     guard holds back only for its reply language (Mission 005-P), once per choice code of a choice question
-    (Mission 005-X) and once more for a choice part that gave another code's value, once more for a released part that left
+    (Mission 005-X) and once more for a choice part that gave another code's value, once more as a single call when the
+    choice parts of a comparison question disagree (Mission 005-Z), once more for a released part that left
     out a case of its evidence (Mission 005-R), once more for a released part that answered a choice question
     with only one of its codes (Mission 005-V), and once more for a released part whose status or form is
     visibly wrong (Mission 005-T)."""
@@ -597,7 +599,7 @@ def run_case(question: str, intake: Optional[Mapping], candidates: list, registr
               "question_language_requests_removed": prepared["question_language_requests_removed"],
               "subcode_parts": sel.get("subcode_parts") or [], "situation_parts": sel.get("situation_parts") or [],
               "model_called": False, "raw_output": None, "guard": None, "language_retry": None, "value_retry": None,
-              "branch_retry": None, "choice_retry": None, "status_retry": None}
+              "branch_retry": None, "choice_retry": None, "status_retry": None, "conclusion_retry": None}
     if sel["outcome"] == "system_withheld":
         released, provenance = system_response("withheld", lang), "system_withheld"
     elif sel["outcome"] == "review_required":
@@ -715,6 +717,37 @@ def run_case(question: str, intake: Optional[Mapping], candidates: list, registr
             guard, status_raw = _join_parts(final_guards, final_raws) if split else (final_guards[0], final_raws[0])
             record["status_retry"] = {"parts": status_parts, "raw_outputs": status_raws, "raw_output": status_raw,
                                       "guard": guard}
+        # Mission 005-Z: the choice parts of a comparison question claim different codes, or claim a code that does
+        # not hold the lowest/highest own value. The question is asked once more as one call (choice_codes, no
+        # choice_part, the 005-W item); a single answer the guard releases and that claims one code consistent with
+        # the values is released, otherwise nothing is.
+        if split and guard["decision"] == "release" and all(p.get("choice_part") for p in prepared["parts"]):
+            question_c = sel.get("context_question", question)
+            codes = prepared["parts"][0]["choice_codes"]
+            texts = [e.get("text", "") for e in sel["admissible"]]
+            answers = [g["parsed"]["answer"] for g in final_guards]
+            reason = {"conflict": choice_conclusion.conflict(question_c, answers, codes),
+                      "against_values": choice_conclusion.against_values(question_c, answers, codes, texts)}
+            if reason["conflict"] or reason["against_values"]:
+                item = {**items[0], "system": {k: v for k, v in items[0]["system"].items() if k != "choice_part"}}
+                retried = generate(item)
+                record["model_input_sha256s"] = record["model_input_sha256s"] + [_input_sha(item)]
+                single = validate_generated_answer(retried, prepared, candidates, registry, part=None, branch_notice=True,
+                                                   choice_notice=True, value_final=True)
+                after = {}
+                if single["decision"] == "release":
+                    one = [single["parsed"]["answer"]]
+                    after = {"conflict": choice_conclusion.conflict(question_c, one, codes),
+                             "against_values": choice_conclusion.against_values(question_c, one, codes, texts)}
+                if single["decision"] == "release" and not after["conflict"] and not after["against_values"]:
+                    guard = single
+                else:
+                    guard = {"decision": "withhold", "parsed": None, "language": single.get("language"), "system_notice": None,
+                             "findings": [{"check": "conclusion", "kind": "choice_parts_disagree", "detail": reason,
+                                           "effect": "withhold"},
+                                          {"check": "conclusion", "kind": "single_answer_not_released_or_disagrees",
+                                           "detail": {"decision": single["decision"], **after}, "effect": "withhold"}]}
+                record["conclusion_retry"] = {"reason": reason, "raw_output": retried, "guard": guard}
         if guard["decision"] == "release" and guard.get("system_notice"):
             released = {**guard["parsed"], "system_notice": guard["system_notice"]}
             provenance = "model_generated_with_system_notice"
