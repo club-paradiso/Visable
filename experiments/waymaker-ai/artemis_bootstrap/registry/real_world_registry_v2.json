@@ -1,0 +1,537 @@
+{
+ "schema_version": "waymaker-artemis-real-world-registry/1.0",
+ "kind": "real_world",
+ "evidence_set": "DEV-20 (artemis_eval_dev_20_v2.json)",
+ "decided_by": "Claude (rule-based check) under owner delegation",
+ "records": {
+  "EV-DEV-001-A2": {
+   "evidence_id": "EV-DEV-001-A2",
+   "source_locator": "체류민원 자격별 안내 매뉴얼(261019) · 유학(D-2) 체류자격 변경허가 가. 기본원칙",
+   "issuing_organization": "법무부 출입국·외국인정책본부",
+   "document_type": "official_manual",
+   "retrieved_at": "2026-11-03T00:00:00Z",
+   "content_sha256": "f1e0c509b12fceebf7177f5a31eacdd4871f42bd2612cd79a97eef02f3e50eea",
+   "verification": {
+    "method": "authorized_review",
+    "verified_at": "2026-11-03T15:00:00Z",
+    "result": "verified"
+   },
+   "authority": "official",
+   "jurisdiction": [
+    "national"
+   ],
+   "subject": "D-2",
+   "status_scope": [
+    "B-1",
+    "B-2",
+    "D-2"
+   ],
+   "all_subcategories_of": [],
+   "procedures": [
+    "change",
+    "issuance"
+   ],
+   "applicant_scope": [
+    "domestic"
+   ],
+   "published": null,
+   "effective_from": "2026-10-19",
+   "effective_until": null,
+   "superseded_by": null,
+   "review_state": "approved",
+   "decision_provenance": "Decided by Claude under the owner's explicit delegation (2026-11-03, '너가 알아서 해줘') by a stated rule: approve only items whose concrete claims match current statute text or the 261019 manuals, reject contradictions, leave out what cannot be checked. Text comparison, not independent legal review."
+  },
+  "EV-DEV-002-A": {
+   "evidence_id": "EV-DEV-002-A",
+   "source_locator": "출입국관리법 제9조(사증발급인정서)",
+   "issuing_organization": "법무부 출입국·외국인정책본부",
+   "document_type": "statute",
+   "retrieved_at": "2026-11-03T00:00:00Z",
+   "content_sha256": "3fb08a5554cde3c63afd159184881955547971d234b9ec81ca273a3929c6127c",
+   "verification": {
+    "method": "authorized_review",
+    "verified_at": "2026-11-03T12:00:00Z",
+    "result": "verified"
+   },
+   "authority": "official",
+   "jurisdiction": [
+    "national"
+   ],
+   "subject": null,
+   "status_scope": [],
+   "all_subcategories_of": [],
+   "procedures": [
+    "issuance",
+    "extension"
+   ],
+   "applicant_scope": [
+    "any"
+   ],
+   "published": null,
+   "effective_from": "2026-10-02",
+   "effective_until": null,
+   "superseded_by": null,
+   "review_state": "approved",
+   "decision_provenance": "Decided by Claude under the owner's explicit delegation (2026-11-03, '너가 알아서 해줘') by a stated rule: approve only items whose concrete claims match current statute text or the 261019 manuals, reject contradictions, leave out what cannot be checked. Text comparison, not independent legal review."
+  },
+  "EV-DEV-003-A": {
+   "evidence_id": "EV-DEV-003-A",
+   "source_locator": "외국인 유학생 사증발급 및 체류관리지침 · D-2 세부자격",
+   "issuing_organization": "법무부 출입국·외국인정책본부",
+   "document_type": "official_manual",
+   "retrieved_at": "2026-11-03T00:00:00Z",
+   "content_sha256": "02dec9c7c875f5b4767aeedd1727805e6478962d96d737185aa7a34d2e9d980f",
+   "verification": {
+    "method": "authorized_review",
+    "verified_at": "2026-11-03T12:00:00Z",
+    "result": "verified"
+   },
+   "authority": "official",
+   "jurisdiction": [
+    "national"
+   ],
+   "subject": "D-2",
+   "status_scope": [
+    "D-2-1",
+    "D-2-2",
+    "D-2-3",
+    "D-2-4"
+   ],
+   "all_subcategories_of": [
+    "D-2"
+   ],
+   "procedures": [
+    "any"
+   ],
+   "applicant_scope": [
+    "any"
+   ],
+   "published": null,
+   "effective_from": "2026-03-01",
+   "effective_until": null,
+   "superseded_by": null,
+   "review_state": "approved",
+   "decision_provenance": "Decided by Claude under the owner's explicit delegation (2026-11-03, '너가 알아서 해줘') by a stated rule: approve only items whose concrete claims match current statute text or the 261019 manuals, reject contradictions, leave out what cannot be checked. Text comparison, not independent legal review."
+  },
+  "EV-DEV-004-A": {
+   "evidence_id": "EV-DEV-004-A",
+   "source_locator": "특정활동(E-7) 사증발급 및 체류관리지침",
+   "issuing_organization": "법무부 출입국·외국인정책본부",
+   "document_type": "official_manual",
+   "retrieved_at": "2026-11-03T00:00:00Z",
+   "content_sha256": "67fc93cd929d489b8bb26678d8724b80669003a433bb4fe06ad122ec3a946d47",
+   "verification": {
+    "method": "authorized_review",
+    "verified_at": "2026-11-03T12:00:00Z",
+    "result": "verified"
+   },
+   "authority": "official",
+   "jurisdiction": [
+    "national"
+   ],
+   "subject": "E-7",
+   "status_scope": [
+    "E-7-1",
+    "E-7-4",
+    "E-9"
+   ],
+   "all_subcategories_of": [],
+   "procedures": [
+    "any"
+   ],
+   "applicant_scope": [
+    "any"
+   ],
+   "published": null,
+   "effective_from": "2026-01-01",
+   "effective_until": null,
+   "superseded_by": null,
+   "review_state": "approved",
+   "decision_provenance": "Decided by Claude under the owner's explicit delegation (2026-11-03, '너가 알아서 해줘') by a stated rule: approve only items whose concrete claims match current statute text or the 261019 manuals, reject contradictions, leave out what cannot be checked. Text comparison, not independent legal review."
+  },
+  "EV-DEV-005-A2": {
+   "evidence_id": "EV-DEV-005-A2",
+   "source_locator": "출입국관리법 시행규칙 제72조 6호·10호(수수료)",
+   "issuing_organization": "법무부 출입국·외국인정책본부",
+   "document_type": "statute",
+   "retrieved_at": "2026-11-03T00:00:00Z",
+   "content_sha256": "4fa91b1a0cacf43b290725a269997d7e4035f5d1089db8206b2b511b6fceb1d8",
+   "verification": {
+    "method": "authorized_review",
+    "verified_at": "2026-11-03T15:00:00Z",
+    "result": "verified"
+   },
+   "authority": "official",
+   "jurisdiction": [
+    "national"
+   ],
+   "subject": null,
+   "status_scope": [],
+   "all_subcategories_of": [],
+   "procedures": [
+    "extension",
+    "registration"
+   ],
+   "applicant_scope": [
+    "any"
+   ],
+   "published": null,
+   "effective_from": "2026-10-23",
+   "effective_until": null,
+   "superseded_by": null,
+   "review_state": "approved",
+   "decision_provenance": "Decided by Claude under the owner's explicit delegation (2026-11-03, '너가 알아서 해줘') by a stated rule: approve only items whose concrete claims match current statute text or the 261019 manuals, reject contradictions, leave out what cannot be checked. Text comparison, not independent legal review."
+  },
+  "EV-DEV-006-A": {
+   "evidence_id": "EV-DEV-006-A",
+   "source_locator": "외국인 결핵검진 의무제출 지침",
+   "issuing_organization": "법무부 출입국·외국인정책본부",
+   "document_type": "official_manual",
+   "retrieved_at": "2026-11-03T00:00:00Z",
+   "content_sha256": "2c1080025025b1f4e00d836167d7f025f0f2c8951b59c4059af9856ee590f220",
+   "verification": {
+    "method": "authorized_review",
+    "verified_at": "2026-11-03T12:00:00Z",
+    "result": "verified"
+   },
+   "authority": "official",
+   "jurisdiction": [
+    "national"
+   ],
+   "subject": "D-2",
+   "status_scope": [
+    "D-2"
+   ],
+   "all_subcategories_of": [],
+   "procedures": [
+    "registration",
+    "change"
+   ],
+   "applicant_scope": [
+    "any"
+   ],
+   "published": null,
+   "effective_from": "2026-01-01",
+   "effective_until": null,
+   "superseded_by": null,
+   "review_state": "approved",
+   "decision_provenance": "Decided by Claude under the owner's explicit delegation (2026-11-03, '너가 알아서 해줘') by a stated rule: approve only items whose concrete claims match current statute text or the 261019 manuals, reject contradictions, leave out what cannot be checked. Text comparison, not independent legal review."
+  },
+  "EV-DEV-008-A": {
+   "evidence_id": "EV-DEV-008-A",
+   "source_locator": "국가법령정보센터 · 출입국관리법 시행규칙 연혁",
+   "issuing_organization": "법무부 출입국·외국인정책본부",
+   "document_type": "statute",
+   "retrieved_at": "2026-11-03T00:00:00Z",
+   "content_sha256": "c20c05f87a3474eb88dbeb1ad80cd2216bf5882c0ac6ade1c24141487251adcd",
+   "verification": {
+    "method": "authorized_review",
+    "verified_at": "2026-11-03T12:00:00Z",
+    "result": "verified"
+   },
+   "authority": "official",
+   "jurisdiction": [
+    "national"
+   ],
+   "subject": null,
+   "status_scope": [],
+   "all_subcategories_of": [],
+   "procedures": [
+    "any"
+   ],
+   "applicant_scope": [
+    "any"
+   ],
+   "published": null,
+   "effective_from": "2026-09-15",
+   "effective_until": null,
+   "superseded_by": null,
+   "review_state": "approved",
+   "decision_provenance": "Decided by Claude under the owner's explicit delegation (2026-11-03, '너가 알아서 해줘') by a stated rule: approve only items whose concrete claims match current statute text or the 261019 manuals, reject contradictions, leave out what cannot be checked. Text comparison, not independent legal review."
+  },
+  "EV-DEV-010-A": {
+   "evidence_id": "EV-DEV-010-A",
+   "source_locator": "출입국관리법 제20조(체류자격 외 활동)",
+   "issuing_organization": "법무부 출입국·외국인정책본부",
+   "document_type": "statute",
+   "retrieved_at": "2026-11-03T00:00:00Z",
+   "content_sha256": "7bf8f5e70f62dfd5902f14b0530309db05360e67b63c78fb2091b6872c710644",
+   "verification": {
+    "method": "authorized_review",
+    "verified_at": "2026-11-03T12:00:00Z",
+    "result": "verified"
+   },
+   "authority": "official",
+   "jurisdiction": [
+    "national"
+   ],
+   "subject": "F-3",
+   "status_scope": [
+    "F-3"
+   ],
+   "all_subcategories_of": [],
+   "procedures": [
+    "activity"
+   ],
+   "applicant_scope": [
+    "any"
+   ],
+   "published": null,
+   "effective_from": "2026-10-02",
+   "effective_until": null,
+   "superseded_by": null,
+   "review_state": "approved",
+   "decision_provenance": "Decided by Claude under the owner's explicit delegation (2026-11-03, '너가 알아서 해줘') by a stated rule: approve only items whose concrete claims match current statute text or the 261019 manuals, reject contradictions, leave out what cannot be checked. Text comparison, not independent legal review."
+  },
+  "EV-DEV-011-A2": {
+   "evidence_id": "EV-DEV-011-A2",
+   "source_locator": "출입국관리법 제21조 제1항 · 시행령 제26조의2 제1항",
+   "issuing_organization": "법무부 출입국·외국인정책본부",
+   "document_type": "statute",
+   "retrieved_at": "2026-11-03T00:00:00Z",
+   "content_sha256": "4cbc13816077cf60d42bd43556dfa5b3e7eebc1276fff16e2011b33acd714d40",
+   "verification": {
+    "method": "authorized_review",
+    "verified_at": "2026-11-03T15:00:00Z",
+    "result": "verified"
+   },
+   "authority": "official",
+   "jurisdiction": [
+    "national"
+   ],
+   "subject": "E-7",
+   "status_scope": [
+    "E-1",
+    "E-2",
+    "E-3",
+    "E-4",
+    "E-5",
+    "E-6",
+    "E-7",
+    "E-7-1"
+   ],
+   "all_subcategories_of": [
+    "E-1",
+    "E-2",
+    "E-3",
+    "E-4",
+    "E-5",
+    "E-6",
+    "E-7"
+   ],
+   "procedures": [
+    "workplace"
+   ],
+   "applicant_scope": [
+    "domestic"
+   ],
+   "published": null,
+   "effective_from": "2026-10-02",
+   "effective_until": null,
+   "superseded_by": null,
+   "review_state": "approved",
+   "decision_provenance": "Decided by Claude under the owner's explicit delegation (2026-11-03, '너가 알아서 해줘') by a stated rule: approve only items whose concrete claims match current statute text or the 261019 manuals, reject contradictions, leave out what cannot be checked. Text comparison, not independent legal review."
+  },
+  "EV-DEV-012-A": {
+   "evidence_id": "EV-DEV-012-A",
+   "source_locator": "출입국관리법 시행규칙 제72조 6호(체류기간 연장 허가 수수료)",
+   "issuing_organization": "법무부 출입국·외국인정책본부",
+   "document_type": "statute",
+   "retrieved_at": "2026-11-03T00:00:00Z",
+   "content_sha256": "434f2f0361fddb66cb660616853c187e8454b325260b93c989332ba17cf73a0a",
+   "verification": {
+    "method": "authorized_review",
+    "verified_at": "2026-11-03T12:00:00Z",
+    "result": "verified"
+   },
+   "authority": "official",
+   "jurisdiction": [
+    "national"
+   ],
+   "subject": "D-2",
+   "status_scope": [
+    "D-2"
+   ],
+   "all_subcategories_of": [],
+   "procedures": [
+    "extension"
+   ],
+   "applicant_scope": [
+    "any"
+   ],
+   "published": null,
+   "effective_from": "2026-10-23",
+   "effective_until": null,
+   "superseded_by": null,
+   "review_state": "approved",
+   "decision_provenance": "Decided by Claude under the owner's explicit delegation (2026-11-03, '너가 알아서 해줘') by a stated rule: approve only items whose concrete claims match current statute text or the 261019 manuals, reject contradictions, leave out what cannot be checked. Text comparison, not independent legal review."
+  },
+  "EV-DEV-015-A": {
+   "evidence_id": "EV-DEV-015-A",
+   "source_locator": "출입국관리법 시행규칙 제76조·별표 5의2(첨부서류)",
+   "issuing_organization": "법무부 출입국·외국인정책본부",
+   "document_type": "statute",
+   "retrieved_at": "2026-11-03T00:00:00Z",
+   "content_sha256": "946bb846f9ec5414deb623430f799d8a7efe229d53b654f3b96043f19bc1412c",
+   "verification": {
+    "method": "authorized_review",
+    "verified_at": "2026-11-03T12:00:00Z",
+    "result": "verified"
+   },
+   "authority": "official",
+   "jurisdiction": [
+    "national"
+   ],
+   "subject": null,
+   "status_scope": [],
+   "all_subcategories_of": [],
+   "procedures": [
+    "extension"
+   ],
+   "applicant_scope": [
+    "any"
+   ],
+   "published": null,
+   "effective_from": "2026-10-23",
+   "effective_until": null,
+   "superseded_by": null,
+   "review_state": "approved",
+   "decision_provenance": "Decided by Claude under the owner's explicit delegation (2026-11-03, '너가 알아서 해줘') by a stated rule: approve only items whose concrete claims match current statute text or the 261019 manuals, reject contradictions, leave out what cannot be checked. Text comparison, not independent legal review."
+  },
+  "EV-DEV-016-A": {
+   "evidence_id": "EV-DEV-016-A",
+   "source_locator": "출입국관리법 제18조(외국인 고용의 제한)",
+   "issuing_organization": "법무부 출입국·외국인정책본부",
+   "document_type": "statute",
+   "retrieved_at": "2026-11-03T00:00:00Z",
+   "content_sha256": "a84c6e0fe8a441e73506613bfd6447a627ed31cb0cb0f7af897549c8ee78ca31",
+   "verification": {
+    "method": "authorized_review",
+    "verified_at": "2026-11-03T12:00:00Z",
+    "result": "verified"
+   },
+   "authority": "official",
+   "jurisdiction": [
+    "national"
+   ],
+   "subject": null,
+   "status_scope": [],
+   "all_subcategories_of": [],
+   "procedures": [
+    "any"
+   ],
+   "applicant_scope": [
+    "any"
+   ],
+   "published": null,
+   "effective_from": "2026-10-02",
+   "effective_until": null,
+   "superseded_by": null,
+   "review_state": "approved",
+   "decision_provenance": "Decided by Claude under the owner's explicit delegation (2026-11-03, '너가 알아서 해줘') by a stated rule: approve only items whose concrete claims match current statute text or the 261019 manuals, reject contradictions, leave out what cannot be checked. Text comparison, not independent legal review."
+  },
+  "EV-DEV-017-A2": {
+   "evidence_id": "EV-DEV-017-A2",
+   "source_locator": "체류민원 자격별 안내 매뉴얼(261019) · 유학(D-2) 체류기간 상한",
+   "issuing_organization": "법무부 출입국·외국인정책본부",
+   "document_type": "official_manual",
+   "retrieved_at": "2026-11-03T00:00:00Z",
+   "content_sha256": "4735d32b59d885e114a6bb3884128149dbd400be61b157da59eb5af3eab2825b",
+   "verification": {
+    "method": "authorized_review",
+    "verified_at": "2026-11-03T15:00:00Z",
+    "result": "verified"
+   },
+   "authority": "official",
+   "jurisdiction": [
+    "national"
+   ],
+   "subject": "D-2",
+   "status_scope": [
+    "D-2",
+    "D-2-1",
+    "D-2-2"
+   ],
+   "all_subcategories_of": [
+    "D-2"
+   ],
+   "procedures": [
+    "any"
+   ],
+   "applicant_scope": [
+    "any"
+   ],
+   "published": null,
+   "effective_from": "2026-10-19",
+   "effective_until": null,
+   "superseded_by": null,
+   "review_state": "approved",
+   "decision_provenance": "Decided by Claude under the owner's explicit delegation (2026-11-03, '너가 알아서 해줘') by a stated rule: approve only items whose concrete claims match current statute text or the 261019 manuals, reject contradictions, leave out what cannot be checked. Text comparison, not independent legal review."
+  },
+  "EV-DEV-018-A": {
+   "evidence_id": "EV-DEV-018-A",
+   "source_locator": "출입국관리법 시행규칙 제72조 5호·6호(수수료)",
+   "issuing_organization": "법무부 출입국·외국인정책본부",
+   "document_type": "statute",
+   "retrieved_at": "2026-11-03T00:00:00Z",
+   "content_sha256": "b297a3b09d4f3d3152d88487db40e333e33c894986f207a9eba8c4b37f148c3c",
+   "verification": {
+    "method": "authorized_review",
+    "verified_at": "2026-11-03T12:00:00Z",
+    "result": "verified"
+   },
+   "authority": "official",
+   "jurisdiction": [
+    "national"
+   ],
+   "subject": null,
+   "status_scope": [],
+   "all_subcategories_of": [],
+   "procedures": [
+    "extension",
+    "change"
+   ],
+   "applicant_scope": [
+    "any"
+   ],
+   "published": null,
+   "effective_from": "2026-10-23",
+   "effective_until": null,
+   "superseded_by": null,
+   "review_state": "approved",
+   "decision_provenance": "Decided by Claude under the owner's explicit delegation (2026-11-03, '너가 알아서 해줘') by a stated rule: approve only items whose concrete claims match current statute text or the 261019 manuals, reject contradictions, leave out what cannot be checked. Text comparison, not independent legal review."
+  },
+  "EV-DEV-020-OFFICIAL-A2": {
+   "evidence_id": "EV-DEV-020-OFFICIAL-A2",
+   "source_locator": "출입국관리법 시행규칙 제72조 10호 · 통합신청서 사진 규격(사증민원 자격별 안내 매뉴얼 261019)",
+   "issuing_organization": "법무부 출입국·외국인정책본부",
+   "document_type": "statute",
+   "retrieved_at": "2026-11-03T00:00:00Z",
+   "content_sha256": "ef05a922ecced9b64b3b098d7b13fe78d626184700e727756108318f0b00d926",
+   "verification": {
+    "method": "authorized_review",
+    "verified_at": "2026-11-03T15:00:00Z",
+    "result": "verified"
+   },
+   "authority": "official",
+   "jurisdiction": [
+    "national"
+   ],
+   "subject": null,
+   "status_scope": [],
+   "all_subcategories_of": [],
+   "procedures": [
+    "registration"
+   ],
+   "applicant_scope": [
+    "any"
+   ],
+   "published": null,
+   "effective_from": "2026-10-23",
+   "effective_until": null,
+   "superseded_by": null,
+   "review_state": "approved",
+   "decision_provenance": "Decided by Claude under the owner's explicit delegation (2026-11-03, '너가 알아서 해줘') by a stated rule: approve only items whose concrete claims match current statute text or the 261019 manuals, reject contradictions, leave out what cannot be checked. Text comparison, not independent legal review."
+  }
+ }
+}

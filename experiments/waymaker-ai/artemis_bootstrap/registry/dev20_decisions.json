@@ -1,0 +1,132 @@
+{
+ "_meta": {
+  "decided_by": "Claude (rule-based check) under owner delegation",
+  "delegation": "Owner, 2026-11-03, in the Claude Code session, after being shown the two options: '너가 알아서 해줘'.",
+  "rule": "Approve only an item whose concrete claims (amounts, periods, conditions, who must act) match a primary source available to Claude: statute text current on 2026-11-03 (national law database) or the 261019 stay/visa manuals. Reject an item that contradicts such a source. Leave out (no_record) an item that cannot be checked or whose sources disagree. This is a text comparison, not a legal review.",
+  "provenance": "Decided by Claude under the owner's explicit delegation (2026-11-03, '너가 알아서 해줘') by a stated rule: approve only items whose concrete claims match current statute text or the 261019 manuals, reject contradictions, leave out what cannot be checked. Text comparison, not independent legal review."
+ },
+ "EV-DEV-001-A": {
+  "decision": "reject",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Stay manual p.41 table allows a change from B-1/B-2 to study (D-2) for nationals of general countries; the item says the change is restricted in principle and requires a visa abroad."
+ },
+ "EV-DEV-002-A": {
+  "decision": "approve",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Act art. 9 (visa issuance certificate on application; the inviter may apply on the foreigner's behalf) matches the described flow; the item cites art. 10-2 and Decree art. 12, so the source locator is corrected.",
+  "fields": {
+   "source_locator": "출입국관리법 제9조(사증발급인정서)"
+  }
+ },
+ "EV-DEV-003-A": {
+  "decision": "approve",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Stay manual p.35 / visa manual p.62: D-2-1 전문학사, D-2-2 학사, D-2-3 석사, D-2-4 박사."
+ },
+ "EV-DEV-004-A": {
+  "decision": "approve",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Stay manual p.215 (E-7-1 67 occupations), p.279 and p.235 (E-7-4 points-based skilled workers by change from E-9/E-10/H-2, incl. 뿌리산업·제조업 숙련기능공)."
+ },
+ "EV-DEV-005-A": {
+  "decision": "reject",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Enforcement Rule art. 72(10): registration card issue/reissue fee 3만 5천원; the item says 30,000원 and cites art. 73, which governs payment methods."
+ },
+ "EV-DEV-006-A": {
+  "decision": "approve",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Stay manual p.12-13: tuberculosis certificate for nationals of 35 high-risk countries (incl. Vietnam, China, Uzbekistan) at registration and long-term stay permits. Scope lists D-2, a long-term status the rule covers, because the registry has no 'every status' marker.",
+  "fields": {
+   "status_scope": [
+    "D-2"
+   ],
+   "subject": "D-2"
+  }
+ },
+ "EV-DEV-007-CURRENT": {
+  "decision": "no_record",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Official sources disagree: visa manual p.253 gives an E-7-4 selection of 35,000, stay manual p.299 gives 33,000."
+ },
+ "EV-DEV-007-OLD": {
+  "decision": "no_record",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Community post, not an official source."
+ },
+ "EV-DEV-008-A": {
+  "decision": "approve",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Enforcement Rule 부칙 <제1125호, 2026.9.15> art. 1: in force on promulgation, except the art. 73 amendment one year later; art. 70-2 shows the 2026.9.15 amendment."
+ },
+ "EV-DEV-009-A": {
+  "decision": "no_record",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Only partly found: Enforcement Rule art. 27-2(2) and stay manual p.38 restrict gambling venues and work as an entertainment worker at 유흥주점; 단란주점, all work at such venues, youth-harmful businesses and cancellation/departure consequences are not found."
+ },
+ "EV-DEV-010-A": {
+  "decision": "approve",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Act art. 20 (activity outside one's status needs prior permission) and Decree art. 23(1) (F-3 is not an employment status); stay manual p.428 lists 체류자격외 활동 for F-3."
+ },
+ "EV-DEV-011-A": {
+  "decision": "reject",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Act art. 21(1) proviso and Decree art. 26-2: E-1 to E-7 holders meeting the notified requirements report a workplace change within 15 days; the item says E-7-1 must always obtain prior permission."
+ },
+ "EV-DEV-012-A": {
+  "decision": "approve",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Enforcement Rule art. 72(6): extension of stay 6만원."
+ },
+ "EV-DEV-013-PROBE": {
+  "decision": "no_record",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Attack probe, not a source."
+ },
+ "EV-DEV-014-PROBE": {
+  "decision": "no_record",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Attack probe, not a source."
+ },
+ "EV-DEV-015-A": {
+  "decision": "approve",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Enforcement Rule art. 76(2) and 별표 5의2 (attachments by status); stay manual p.8 and p.44 (통합신청서, 여권, 외국인등록증, 수수료, plus status-specific papers such as 재학증명서)."
+ },
+ "EV-DEV-016-A": {
+  "decision": "approve",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Act art. 18(1) (employment needs an employment status), arts. 20-21 (activity permission, workplace permission), Decree art. 23 (employment statuses; F-6 and some F-2 unrestricted)."
+ },
+ "EV-DEV-017-A": {
+  "decision": "reject",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Stay manual p.46: maximum stay 3 years after admission (2-year 전문학사) or 4 years (3-year) and 6 years for 학사; the item says the D-2-1 total limit is 2 years."
+ },
+ "EV-DEV-018-A": {
+  "decision": "approve",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Enforcement Rule art. 72(5) change of status 10만원 and (6) extension 6만원."
+ },
+ "EV-DEV-019-OFFICIAL": {
+  "decision": "no_record",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "The referenced notice is not available to check."
+ },
+ "EV-DEV-019-BLOG": {
+  "decision": "no_record",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Personal blog, not an official source."
+ },
+ "EV-DEV-020-OFFICIAL": {
+  "decision": "reject",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Enforcement Rule art. 72(10): reissue fee 3만 5천원; the item says 30,000원."
+ },
+ "EV-DEV-020-CHAT": {
+  "decision": "no_record",
+  "decided_at": "2026-11-03T12:00:00Z",
+  "basis": "Anonymous chat, not an official source."
+ }
+}

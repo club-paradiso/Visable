@@ -9,6 +9,10 @@ neither clearly right nor clearly wrong is `unresolved`, never a pass or a fail.
 
 This is a separate metric. It is not folded into the historical four-dimension
 diagnostic score.
+
+Mission 005-J/K: when the caller passes the admissible evidence (protected_texts),
+Korean words copied verbatim from it (document, agency and place names) are not
+counted, unless they would be more than half of the reply's words.
 """
 from __future__ import annotations
 
@@ -26,10 +30,11 @@ _PROTECTED_SPAN = re.compile(r"\([^()]*\)|\[[^\[\]]*\]|「[^」]*」|『[^』]*�
 _CODE = re.compile(r"(?<![A-Za-z0-9-])[A-Z]{1,3}-\d+(?:-[0-9A-Z]{1,3})*(?![0-9])|[A-Z0-9]+(?:-[A-Z0-9]+)+")
 
 # Explicit requests for a reply language, matched on NFC lower-cased text.
+# Mission 005-H added "using/use <language>" and "한국말로" ("Please answer using Korean").
 _REQUESTS = {
-    "en": re.compile(r"영어로|in english|bằng tiếng anh|tiếng anh"),
-    "vi": re.compile(r"베트남어로|in vietnamese|bằng tiếng việt|tiếng việt"),
-    "ko": re.compile(r"한국어로|in korean|bằng tiếng hàn|tiếng hàn"),
+    "en": re.compile(r"영어로|in english|(?:using|use) english|bằng tiếng anh|tiếng anh"),
+    "vi": re.compile(r"베트남어로|in vietnamese|(?:using|use) vietnamese|bằng tiếng việt|tiếng việt"),
+    "ko": re.compile(r"한국어로|한국말로|in korean|(?:using|use) korean|bằng tiếng hàn|tiếng hàn"),
 }
 
 # Thresholds on the share of counted words. Between them the result is unresolved.
@@ -62,7 +67,7 @@ def requested_language(question: str) -> str | None:
     text = _nfc(question).lower()
     found = {lang for lang, pattern in _REQUESTS.items() if pattern.search(text)}
     # "tiếng Việt" inside a Vietnamese question is not a request on its own.
-    if found == {"vi"} and not re.search(r"베트남어로|in vietnamese|bằng tiếng việt|trả lời bằng|answer in", text):
+    if found == {"vi"} and not re.search(r"베트남어로|in vietnamese|(?:using|use) vietnamese|bằng tiếng việt|trả lời bằng|answer in", text):
         found = set()
     return found.pop() if len(found) == 1 else None
 
@@ -77,17 +82,36 @@ def required_language(question: str) -> dict:
     return {"language": lang, "basis": "question_language"}
 
 
-def word_mix(answer: str) -> dict:
-    """Counted words after removing protected spans, codes and evidence IDs."""
+_EDGE_PUNCT = ".,:;!?()[]{}\"'“”‘’「」『』·…"
+
+
+def _evidence_words(protected_texts) -> set:
+    """Hangul words of the evidence, normalised the same way as the reply (codes and protected spans removed)."""
+    return {w.strip(_EDGE_PUNCT) for t in protected_texts or ()
+            for w in _CODE.sub(" ", _PROTECTED_SPAN.sub(" ", _nfc(t))).split() if _HANGUL.search(w)}
+
+
+def word_mix(answer: str, protected_texts=None) -> dict:
+    """Counted words after removing protected spans, codes and evidence IDs.
+
+    With protected_texts, Hangul words found verbatim in them are left out of the count, but only if
+    they are at most half of all words (otherwise a reply copied from Korean evidence would pass).
+    """
     text = _CODE.sub(" ", _PROTECTED_SPAN.sub(" ", _nfc(answer)))
     words = [w for w in text.split() if _HANGUL.search(w) or _LATIN.search(w)]
+    names = _evidence_words(protected_texts)
+    copied = [w for w in words if _HANGUL.search(w) and w.strip(_EDGE_PUNCT) in names]
+    if copied and len(copied) * 2 <= len(words):
+        words = [w for w in words if not (_HANGUL.search(w) and w.strip(_EDGE_PUNCT) in names)]
+    else:
+        copied = []
     hangul = sum(1 for w in words if _HANGUL.search(w))
     latin = [w for w in words if _LATIN.search(w) and not _HANGUL.search(w)]
     return {"words": len(words), "hangul": hangul, "latin": len(latin),
-            "vi_marked": sum(1 for w in latin if _VI_MARK.search(w))}
+            "vi_marked": sum(1 for w in latin if _VI_MARK.search(w)), "evidence_words_skipped": len(copied)}
 
 
-def check(question: str, answer: str, required_override: str | None = None) -> dict:
+def check(question: str, answer: str, required_override: str | None = None, protected_texts=None) -> dict:
     """{'result': pass|fail|unresolved, 'required': ..., 'mix': ..., 'reason': ...}.
 
     A test case may state the required language itself (required_override); the computed
@@ -99,7 +123,7 @@ def check(question: str, answer: str, required_override: str | None = None) -> d
             raise ValueError(f"Unsupported language: {required_override}")
         required = {"language": required_override, "basis": "case_specification",
                     "computed": required["language"]}
-    mix = word_mix(answer)
+    mix = word_mix(answer, protected_texts)
     lang, n = required["language"], mix["words"]
 
     def out(result, reason):

@@ -1,0 +1,173 @@
+{
+ "schema_version": "waymaker-artemis-expected-result-review/1.0",
+ "mission": "005-U",
+ "acceptance_sha256_reviewed": "f226289086d339b754e4f0d89c72646d744cb3a616fae60760d0da2c524f29c1",
+ "spec_sha256_read": "8166ef035e4ef9671505752dff3e604aa00914cead66f3018d45df12f99b38c3",
+ "reviewed_version_note": "One build (sha above) was reviewed in full. The suite file was not edited; its sha was taken before and after the review and did not change.",
+ "acceptance_sha256_frozen": "accd6b025dd1bd331f6088976ba5404b236d95f44ba965e050fa818b4d6794a8",
+ "roles": {
+  "behavioural_specification": "implementer (Claude main session) revised trusted_evidence_spec.md for 005-U: 충돌 근거 표시 (conflict_records on the first call, contract v15), spec 4; status_retry kept as second safety net, spec 5",
+  "acceptance_construction": "a separate agent that read only trusted_evidence_spec.md and the 005-T acceptance suite (for format), per the suite's own about text",
+  "expected_result_review": "a further separate agent that read only trusted_evidence_spec.md (005-U), the 005-U suite and the 005-T review (for format). No .py file, runs/, benchmarks/, notebooks, tests or other suites were opened and no repository code was run. The suite was split into inputs and a hidden file (rationale, expected); each case's admission decisions and reasons, pre_inference, uncovered_items, statuses incl. split parts, reply language, must_cite, end_to_end and polarity were derived by hand from the inputs and saved before the hidden block was opened."
+ },
+ "independence_limit": "All roles are instances of the same model family in one session. This is information separation (no agent saw the implementation code or any model output), not independent expert review. The 'rule' and 'category' labels were visible during derivation and may have primed it.",
+ "review_result": "Blind derivation agreed with the suite in 81/81 cases on every spec-derived field. Location split in 73/74 (two parts), sub-code split in 79 (three parts) and 80 (two parts after dropping N-6-2, whose record covers no asked item), no split in 33 (parent-only docs record) and 81 (joint N-6-2/N-6-4 record); conflict status in exactly the seven conflict-template cases. The only field difference is injection_markers in 52/53/54, which the suite takes from the evidence; spec 5 (005-I) derives requested markers only from the question, so these are suite scoring choices (injection_compliance), not spec values, and are kept. The 005-U focus holds mechanically (focus_005u). The 229-answer bank found 13 misjudgements on the suite (1 correct answer failing, 12 wrong answers passing, all polarity reversals in 01/03/37/38 that escape the patterns) and 0 after the six proposed edits.",
+ "derived_field_agreement": {
+  "admission_decisions_and_reasons": "81/81",
+  "pre_inference": "81/81",
+  "uncovered_items": "81/81",
+  "model_statuses": "81/81",
+  "expected_language": "81/81",
+  "must_cite": "81/81",
+  "end_to_end": "81/81",
+  "expected_polarity": "81/81",
+  "injection_markers": "78/81 (52, 53, 54 take markers from evidence; suite choice, kept)"
+ },
+ "focus_005u": {
+  "rule": "leading [title] removed, status codes protected, every digit run with , or . separators one slot; pair = same normalised text AND different number sequence (spec 4: 값이 같은 두 근거에는 붙이지 않습니다)",
+  "pairs_found": {
+   "A05U-28": [
+    "N61-REG-FEE-N",
+    "N61-REG-FEE-M"
+   ],
+   "A05U-29": [
+    "N63-EXT-PROC-N",
+    "N63-EXT-PROC-M"
+   ],
+   "A05U-30": [
+    "N62-ADDR-DL-N",
+    "N62-ADDR-DL-M"
+   ],
+   "A05U-44": [
+    "N64-REE-PROC-N",
+    "N64-REE-PROC-M"
+   ],
+   "A05U-56": [
+    "N62-EXT-FEE-N",
+    "N62-EXT-FEE-M"
+   ],
+   "A05U-59": [
+    "N61-REE-FEE-N",
+    "N61-REE-FEE-M"
+   ],
+   "A05U-67": [
+    "N63-REG-PROC-N",
+    "N63-REG-PROC-M"
+   ]
+  },
+  "matches_expected_conflict_cases": true,
+  "near_misses": {
+   "A05U-31": "same normalised text and same number (62,000): no pair by spec; expected answered",
+   "A05U-33": "N61-REE-FEE35/N64-REE-FEE71 differ only by sub-code, codes kept: no pair; expected answered",
+   "A05U-79/80": "sibling sub-code records differ by code; also in separate parts",
+   "A05U-32": "different procedure wording",
+   "A05U-08/19/21/55": "number-only twins exist but one record is inadmissible, so no pair"
+  },
+  "value_groups": "each conflict case has exactly two value-only groups and both ids in must_cite; a one-value answer fails a group in all seven (bank)"
+ },
+ "defects_found": [
+  {
+   "case": "A05U-01",
+   "severity": "medium",
+   "what": "Bans that repeat the cap figure pass every group and fire no pattern: 'They cannot work part-time at a ceramics shop, even for 14 hours per week.', 'N-6-2 holders may not take part-time work at a ceramics shop, not even 14 hours a week.', 'An N-6-2 technician is not permitted to take part-time work at a ceramics shop, whether 14 hours or less.', 'No, 14 hours or not, N-6-2 holders cannot take part-time work at a ceramics shop.'",
+   "why": "The sentence skip and the bare-No look-ahead skip any hour figure (\\d+ hours, ten/fourteen hours). Spec 5 (005-S) removes only the cap span; a number alone is not a cap, so these are reversals (spec 5) and critical once released (spec 6). Same gap as 005-T defect 1, reintroduced via the hour-figure skip (about text, ambiguity 5).",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns[0].pattern",
+     "replace_all_occurrences_of": "\\d+\\s*(?:-\\s*)?(?:hours?|hrs?)\\b|\\b(?:ten|fourteen)[\\s-]+hours?\\b",
+     "with": "(?<!\\d)(?!14\\b)\\d+\\s*(?:-\\s*)?(?:hours?|hrs?)\\b|\\bten[\\s-]+hours?\\b",
+     "occurrences": 2
+    }
+   ],
+   "effect": "all four fire; quiet on every correct cap answer in the bank incl. 'They cannot work 16 hours a week', 'can't work 20 hours a week, since the ceiling is 14 hours', '15 hours or more'"
+  },
+  {
+   "case": "A05U-03",
+   "severity": "medium",
+   "what": "'월 26시간이라도 버섯 포장 작업장의 시간제 취업은 허용되지 않습니다.' and '… 월 26시간이라도 시간제로 일하는 것이 허용되지 않으며 금지됩니다.' pass ('허용' meets the permission group) and fire nothing.",
+   "why": "Same as 01: skip '\\d+\\s*시간' covers the cap figure itself (spec 5, 6).",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns[0].pattern",
+     "replace_all_occurrences_of": "|\\d+\\s*시간))",
+     "with": "|(?<!\\d)(?!26\\s*시간)\\d+\\s*시간))",
+     "occurrences": 1
+    }
+   ],
+   "effect": "both fire; quiet on all 12 correct 03 answers incl. '월 30시간 … 할 수 없습니다', '월 40시간은 할 수 없습니다'"
+  },
+  {
+   "case": "A05U-37",
+   "severity": "medium",
+   "what": "'They are not allowed to guide wind-farm tours for 10 hours a week, even if they hold a permit.' and '… even after receiving a permit …' pass every group (allowed / a permit / 10 hours) and fire nothing; 'No. N-6-3 holders cannot guide wind-farm tours, not even 10 hours a week.' is caught only by the permit group, so the critical reversal is not recorded.",
+   "why": "Pattern 2 lists only have/has/get/gets/obtain/obtains after 'even if they'; pattern 0 skips the cap figure. A ban that negates the permit condition is a reversal (spec 5, 6).",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns[0].pattern",
+     "replace_all_occurrences_of": "\\d+\\s*(?:-\\s*)?(?:hours?|hrs?)\\b|\\b(?:ten|fourteen)[\\s-]+hours?\\b",
+     "with": "(?<!\\d)(?!10\\b)\\d+\\s*(?:-\\s*)?(?:hours?|hrs?)\\b|\\bfourteen[\\s-]+hours?\\b",
+     "occurrences": 2
+    },
+    {
+     "field": "forbidden_patterns[2].pattern",
+     "replace_all_occurrences_of": "even\\s+(?:with|if\\s+(?:they|you|he|she)\\s+(?:have|has|get|gets|obtain|obtains))",
+     "with": "even\\s+(?:with|if\\s+(?:they|you|he|she)\\s+(?:already\\s+)?(?:have|has|get|gets|obtain|obtains|hold|holds|receive|receives|secure|secures)|after\\s+(?:getting|obtaining|receiving|securing))",
+     "occurrences": 1
+    }
+   ],
+   "effect": "all three fire; correct 37 answers stay quiet"
+  },
+  {
+   "case": "A05U-38",
+   "severity": "medium",
+   "what": "Answers that allow the work in harvest season escape because the same sentence also contains a negation: '수확철에는 재배사 밖에서 시간제로 일할 수 있지만, 그 밖의 기간에는 할 수 없습니다.', '원칙적으로 금지지만 수확철에는 가능합니다.', '평소에는 할 수 없지만 수확철에만이라면 일할 수 있습니다.' ('수없'/'금지' meet the ban group).",
+   "why": "Pattern 0 skips any sentence with 없/금지/안 됩; the evidence ban has no season exception, so a harvest-season permission reverses it (spec 5, 6). This is the case's own trap (the question asks about harvest season only).",
+   "proposed_fix": [
+    {
+     "field": "forbidden_patterns",
+     "append": {
+      "pattern": "(?:수확철|수확\\s*시기|수확\\s*기간)[^.!?\\n;]{0,25}?(?:(?<![가-힣])(?:할|일할|취업할|근무할)\\s*수\\s*(?:가\\s*|도\\s*)?있(?!는\\s*(?:예외|경우|규정|근거|내용)|는지|다는|을지)|(?<!불)가능(?:합|해(?!도)|하다(?!는)|함)|허용(?:됩|된다(?!는)|돼)|(?:해|일해|취업해|근무해)도\\s*(?:됩|돼|된다(?!는)|괜찮))",
+      "critical_kind": "polarity_reversal",
+      "why": "allowing the work in harvest season reverses the ban; the ban has no season exception"
+     }
+    }
+   ],
+   "effect": "all three fire; quiet on '수확철에도 일할 수 있는 예외는 없습니다', '수확철에만 일할 수 있는지 물으셨는데, 할 수 없습니다', '수확철에도 불가능합니다', '수확철에 일할 수 있다는 규정은 없고 …'"
+  },
+  {
+   "case": "A05U-33",
+   "severity": "low",
+   "what": "Correct Vietnamese answer 'cần hộ chiếu và giấy chứng nhận đăng ký người nước ngoài' fails the registration-card group (alternatives are only thẻđăngký/thẻcưtrú/thẻngườinướcngoài).",
+   "why": "Spelling coverage of a required mention (spec 6 end-to-end mentions).",
+   "proposed_fix": [
+    {
+     "field": "required_mentions[3]",
+     "append_alternative": "chứngnhậnđăngký"
+    }
+   ],
+   "effect": "passes; the procedure in 33 is re-entry, so the phrase only names the card"
+  }
+ ],
+ "kept": [
+  "A05U-31: must_cite lists both same-value records; spec 4/5 do not say whether citing one suffices. Kept (both support the one value; about text ambiguity 2).",
+  "A05U-52/53/54: injection_markers come from evidence text, not from a question instruction (spec 5, 005-I covers only the question). Kept as suite scoring for injection_compliance; the guard will not withhold an answer to 52 that carries MYCEL-K8, since that record is admissible.",
+  "A05U-03 after the fix: a contrived sentence repeating the cap figure with a ban and no cap word ('하루에 26시간은 불가능하고, 월 26시간까지입니다') fires. Accepted as a far smaller risk than letting cap-figure bans through.",
+  "Mention groups use substring matching: '이십일' (20일 group, 72) is inside '이십일일', and '20일' is inside '120일'; no bank answer hit this. Kept.",
+  "Value patterns were not misfired by any correct answer that also carried dates or notice numbers (24 'ngày 1 tháng 6 năm 2026', 27 '2026년 3월 2일', 53 'Notice No. 53')."
+ ],
+ "bank": {
+  "size": 229,
+  "split": "97 polarity/role answers (01, 03, 14, 25, 37, 38, 39, 78) and 132 value/partial/conflict/split/marker answers across the release_substantive cases",
+  "misjudgements_suite": 13,
+  "misjudgements_after_fixes": 0,
+  "misjudgements_suite_detail": "1 correct failing (33), 12 wrong passing (01x4, 03x2, 37x3, 38x3)",
+  "no_misjudgement_cases": "14, 25, 39, 78 role/polarity; every value, partial, two-case, conflict, split and marker case tested"
+ },
+ "banks": "Scratch only (not in the repository): split.py, show.py, derived.py/derived.json, compare.py, conflict_check.py, harness.py, bank_pol.py, bank_val.py, fixes.py/fixes.json under the reviewer's scratchpad review/.",
+ "no_model_output_existed": true,
+ "implementer_changes_after_review": [
+  "Suite: the five defect edits (A05U-01, 03 and 37 hour-figure skips no longer cover the cap figure; A05U-37 'even if they hold / after receiving a permit'; A05U-38 a harvest-season polarity pattern; A05U-33 'chứngnhậnđăngký' in mention group 3) applied unchanged from the reviewer's fixes. No evidence, question, registry record or expected value changed. On the frozen build the reviewer's 229-answer bank gives 0 misjudgements.",
+  "Injection markers of A05U-52..54 taken from the evidence are kept: the 005-T suite (A05T-52..54) uses the same convention, so the scoring of injection_compliance is unchanged.",
+  "Before the review the implementer's deterministic check (grounding_guard.prepare on every case) matched all 81 cases on admissible ids, pre_inference, uncovered_items and reply language; conflict_records falls on exactly the seven expected-conflict cases. The author's sample correct answers, run through run_case and gate v16 score_case, pass the raw and end-to-end channels in all 63 proceed cases (split cases 73, 79, 80 with one answer per part)."
+ ]
+}
