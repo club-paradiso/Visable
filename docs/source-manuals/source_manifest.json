@@ -734,7 +734,45 @@
         "method": "npx kordoc@4.24.1 (reproduces the committed 2026-11-02 stay Markdown byte for byte, image folder name aside)",
         "use": "manual reader only; not a grounding source"
       },
-      "review_record": "audits/manual-refresh-20261109/README.md"
+      "review_record": "audits/manual-refresh-20261109/README.md",
+      "superseded_by_pending": "2026-11-16",
+      "note": "Superseded on 2026-11-16 by the newer staged stay edition (docs/source-manuals/2026-11-16/). Kept for the change history; the manual reader and notices now use 2026-11-16."
+    },
+    {
+      "role": "stay_residence_manual",
+      "file": "docs/source-manuals/2026-11-16/stay_manual_261116.hwp",
+      "file_sha256": "289c249d0fdbf87871ba74f7c97551e7ab1e8d89a7a22822c28ec51aae1c0e95",
+      "extracted_text_file": "docs/source-manuals/2026-11-16/extracted/full_text/stay_manual_261116.txt",
+      "extracted_text_sha256": "5ff4926379edd2402c39dbe2b8d36a9a9121d594fd918c531584593b90657684",
+      "version": "2026.11",
+      "source_date": "2026-11-16",
+      "source_date_basis": "filename date; not verified as legal effective date",
+      "status": "pending_review",
+      "registry_id_when_promoted": "stay_manual_2026_11_16_hwp_text",
+      "verification_status": "user_supplied_unreviewed_text_extraction",
+      "original_hwp_sha256": "289c249d0fdbf87871ba74f7c97551e7ab1e8d89a7a22822c28ec51aae1c0e95",
+      "original_file_stored": true,
+      "warning": "Parsed HWP text is NOT an approved, page-faithful edition. No PDF printout was received, so there are no page numbers. Do not promote to runtime legal grounding or use table relationships without checking source.",
+      "change_review_artifact": "audits/manual-refresh-20261116/README.md",
+      "original_file": "docs/source-manuals/2026-11-16/stay_manual_261116.hwp",
+      "same_method_extraction": {
+        "file": "docs/source-manuals/2026-11-16/extracted/full_text/stay_manual_261116.txt",
+        "file_sha256": "5ff4926379edd2402c39dbe2b8d36a9a9121d594fd918c531584593b90657684",
+        "method": "scripts/decrypt_hwp_distribution.py (same script that reproduces the committed 2026-11-09 stay extraction byte for byte)"
+      },
+      "same_method_diff": [
+        "audits/manual-refresh-20261116/stay_hwp_261109_to_261116.md",
+        "audits/manual-refresh-20261116/stay_hwp_261109_to_261116.json",
+        "audits/manual-refresh-20261116/stay_hwp_261102_to_261116.md",
+        "audits/manual-refresh-20261116/stay_hwp_261102_to_261116.json"
+      ],
+      "derived_reader_markdown": {
+        "file": "docs/source-manuals/2026-11-16/markdown/stay_manual_261116.md",
+        "file_sha256": "d69c511cba7b680005c4ee7f641d191146418309f218b9f80f3b7fd86551bfbe",
+        "method": "npx kordoc@4.24.1 (reproduces the committed 2026-11-09 stay Markdown byte for byte, images included)",
+        "use": "manual reader only; not a grounding source"
+      },
+      "review_record": "audits/manual-refresh-20261116/README.md"
     }
   ]
 }

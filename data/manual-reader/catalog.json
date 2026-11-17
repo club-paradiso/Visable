@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "edition": "2026.11 (visa 2026-11-06 / stay 2026-11-09)",
+ "edition": "2026.11 (visa 2026-11-06 / stay 2026-11-16)",
  "generated_by": "scripts/build_manual_reader.py",
  "note": "원문 문장은 바꾸지 않음. 쪽 넘김 때문에 반복된 항목명·목차 링크·장 제목 줄·표지 이미지만 제외.",
  "sources": {
@@ -31,28 +31,28 @@
    }
   },
   "s": {
-   "id": "stay_manual_2026_11_09_reader_md",
-   "file": "stay_manual_261109.md",
+   "id": "stay_manual_2026_11_16_reader_md",
+   "file": "stay_manual_261116.md",
    "title": "외국인체류 안내매뉴얼",
    "title_en": "Foreigner Stay/Residence Guide Manual",
-   "date": "2026-11-09",
+   "date": "2026-11-16",
    "version": "2026.11",
-   "official_file": "docs/source-manuals/2026-11-09/stay_manual_261109.hwp",
+   "official_file": "docs/source-manuals/2026-11-16/stay_manual_261116.hwp",
    "official_kind": "hwp",
-   "crosscheck_text": "docs/source-manuals/2026-11-09/extracted/full_text/stay_manual_261109.txt",
+   "crosscheck_text": "docs/source-manuals/2026-11-16/extracted/full_text/stay_manual_261116.txt",
    "crosscheck_kind": "hwp_viewtext",
    "previous": {
     "date": "2026-11-02",
     "version": "2026.11",
     "pdf": "docs/source-manuals/2026-11-02/stay_manual_261102.pdf"
    },
-   "markdown": "docs/source-manuals/2026-11-09/markdown/stay_manual_261109.md",
-   "sha256": "2eaee2ae493729063c8eafa298f65ba45af9f3c12b722eed63966e4c6b3e8fc4",
+   "markdown": "docs/source-manuals/2026-11-16/markdown/stay_manual_261116.md",
+   "sha256": "d69c511cba7b680005c4ee7f641d191146418309f218b9f80f3b7fd86551bfbe",
    "official_url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
    "approval_state": "needs_review",
    "text_crosscheck": {
-    "probes": 10022,
-    "matched": 9996,
+    "probes": 10025,
+    "matched": 9999,
     "ratio": 0.9974
    }
   }
@@ -1553,7 +1553,7 @@
    },
    "s": {
     "title": "구직(D-10)",
-    "bytes": 42429,
+    "bytes": 42375,
     "sections": [
      {
       "t": "sec",
@@ -3277,7 +3277,7 @@
    },
    "s": {
     "title": "알기쉬운 외국국적동포 업무 매뉴얼",
-    "bytes": 89625,
+    "bytes": 89702,
     "sections": [
      {
       "t": "html",
@@ -3341,7 +3341,7 @@
    "key": "regional",
    "s": {
     "title": "지역특화형비자 체류제도 주요내용 알림",
-    "bytes": 98393,
+    "bytes": 98836,
     "sections": [
      {
       "t": "html",
@@ -3790,7 +3790,7 @@
   {
    "src": "s",
    "key": "D-10",
-   "chars": 15068,
+   "chars": 15033,
    "missing": 29,
    "added": 0
   },
@@ -3916,14 +3916,14 @@
   {
    "src": "s",
    "key": "dongpo",
-   "chars": 33712,
+   "chars": 33763,
    "missing": 0,
    "added": 0
   },
   {
    "src": "s",
    "key": "regional",
-   "chars": 36535,
+   "chars": 36767,
    "missing": 0,
    "added": 0
   },

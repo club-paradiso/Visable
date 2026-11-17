@@ -2,16 +2,16 @@
  "schema_version": 1,
  "generated_by": "scripts/build_manual_update_notices.py",
  "state": "pending_review",
- "note": "새로 반입된 매뉴얼(사증 2026-11-06, 체류 2026-11-09)에서 바뀐 곳입니다. 아직 사람이 검토하지 않았고, Visable의 자격별 안내·AI 답변은 이전 판을 따릅니다. 신청 전에 원문을 확인하세요.",
+ "note": "새로 반입된 매뉴얼(사증 2026-11-06, 체류 2026-11-16)에서 바뀐 곳입니다. 아직 사람이 검토하지 않았고, Visable의 자격별 안내·AI 답변은 이전 판을 따릅니다. 신청 전에 원문을 확인하세요.",
  "editions": {
   "stay": {
-   "source_date": "2026-11-09",
+   "source_date": "2026-11-16",
    "version": "2026.11",
    "status": "pending_review",
-   "hwp_sha256": "afe7fc5c59479feb016c928c3ae824fbc3d851196f8fefaf27c213fc0808a954",
-   "diff": "audits/manual-refresh-20261109/stay_hwp_261102_to_261109.md",
-   "reader_markdown": "docs/source-manuals/2026-11-09/markdown/stay_manual_261109.md",
-   "compared_with": "stay 2026-11-02"
+   "hwp_sha256": "289c249d0fdbf87871ba74f7c97551e7ab1e8d89a7a22822c28ec51aae1c0e95",
+   "diff": "audits/manual-refresh-20261116/stay_hwp_261102_to_261116.md",
+   "reader_markdown": "docs/source-manuals/2026-11-16/markdown/stay_manual_261116.md",
+   "compared_with": "261102"
   },
   "visa": {
    "source_date": "2026-11-06",
@@ -108,7 +108,7 @@
    "manual_lines": [
     "- 한국인 부 또는 모를 특정하여 인지청구소송을 진행 중인 외국인(혼외자녀 및 양육자) 등"
    ],
-   "manual_line_no": 14702,
+   "manual_line_no": 14703,
    "state": "pending_review"
   },
   {
@@ -129,7 +129,201 @@
    "manual_lines": [
     "유전자 감정결과서, 한국인 부 또는 모와 촬영한 사진 등 (한국인 부 또는 모를 특정하여 인지청구소송을 진행 중인 외국인의 경우)"
    ],
-   "manual_line_no": 14713,
+   "manual_line_no": 14714,
+   "state": "pending_review"
+  },
+  {
+   "id": "s-d101-intern-restriction-narrowed",
+   "role": "stay",
+   "kind": "changed",
+   "codes": [
+    "D-10-1"
+   ],
+   "procedures": [
+    "registration_info_report"
+   ],
+   "reader_hash": "c-D-10.s.11",
+   "title_ko": "연수 개시 신고: 인턴활동 불가 대상에서 전문직종 취업 경력자 삭제",
+   "title_en": "Internship start report: former professional-status workers removed from those barred from internships",
+   "summary_ko": "인턴활동을 할 수 없는 사람에서 ‘전문직종(E-1~E-7) 취업 경력자로 구직(D-10-1) 체류자격으로 변경허가를 받은 자’가 빠지고, 기술창업(D-10-2) 자격 소지자만 남았어요.",
+   "summary_en": "The line on who may not do internships no longer lists people who changed to job seeker (D-10-1) status after working in a professional status (E-1 to E-7). Only holders of technology start-up status (D-10-2) remain on it.",
+   "manual_lines": [
+    "※ 기술창업(D-10-2) 자격 소지자는 인턴활동 불가"
+   ],
+   "manual_line_no": 4613,
+   "state": "pending_review"
+  },
+  {
+   "id": "s-f4-adaptation-program-targets",
+   "role": "stay",
+   "kind": "changed",
+   "codes": [
+    "F-4"
+   ],
+   "procedures": [
+    "status_change",
+    "registration"
+   ],
+   "reader_hash": "c-dongpo.s",
+   "title_ko": "재외동포(F-4): 조기적응프로그램 이수 대상과 제출 유예 범위 문구 변경",
+   "title_en": "Overseas Korean (F-4): wording on who must complete the early adaptation program and on the deferral",
+   "summary_ko": "조기적응프로그램 이수 대상이 ‘F-4 자격변경을 신청하는 사람, 재외공관에서 F-4 사증을 발급받아 입국 후 거소신고를 하는 사람’으로 적혔어요. 1회 제출 유예는 F-4 자격변경 신청 때만 허용되고 거소신고자는 한시적 유예 대상이 아니라는 문구가 들어갔고, 면제 대상의 ‘장기체류 자격으로 국내에서 3년 이상 체류한 사람’ 앞에 ‘현재’가 붙었어요.",
+   "summary_en": "Those who must complete the early adaptation program are now stated as people applying to change to F-4 and people who entered on an F-4 visa issued abroad and report their residence. The one-time deferral is now limited to F-4 change-of-status applications (residence reporters are not eligible), and the exemption for people who have stayed 3+ years on a long-term status now reads \"currently\" on such a status.",
+   "manual_lines": [
+    "* (조기적응프로그램 이수 대상) 재외동포(F-4) 자격변경을 신청하는 사람, 재외공관에서 재외동포(F-4) 사증을 발급받아 입국 후 거소신고를 하는 사람",
+    "- 재외동포(F-4) 자격변경 신청 시 과거 범죄 경력이 없는 경우에 1회에 한해 제출 유예를 허용(거소신고자는 한시적 유예 대상에 해당하지 않음)",
+    "※ (이수 면제대상) 국내 초‧중‧고교에 재학 중이거나 졸업한 사람, 만 6세 이하 또는 만 65세 이상인 사람, 현재 장기체류 자격으로 국내에서 3년 이상 체류한 사람, 이전에 조기적응프로그램을 이수한 사람, 사회통합프로그램 1단계 이상 이수 중이거나 이수한 사람, 중증장애인"
+   ],
+   "manual_line_no": 15254,
+   "state": "pending_review"
+  },
+  {
+   "id": "s-f4-residence-report-exemption-wording",
+   "role": "stay",
+   "kind": "changed",
+   "codes": [
+    "F-4"
+   ],
+   "procedures": [
+    "registration"
+   ],
+   "reader_hash": "c-dongpo.s",
+   "title_ko": "재외동포(F-4) 거소신고: 조기적응프로그램 이수증 각주 문구 변경",
+   "title_en": "Overseas Korean (F-4) residence report: footnote on the early adaptation program certificate reworded",
+   "summary_ko": "거소신고 제출서류의 조기적응프로그램 이수증 각주가 ‘이수 기준은 F-4 자격변경과 동일’에서 ‘이수 면제 대상은 F-4 자격변경 시 이수 면제 대상과 동일’로 바뀌었어요.",
+   "summary_en": "The footnote on the early adaptation program certificate in the residence-report documents changed from \"same completion standard as the F-4 change of status\" to \"same exemptions as for the F-4 change of status\".",
+   "manual_lines": [
+    "* 조기적응프로그램 이수 면제 대상은 재외동포(F-4) 자격변경 시 조기적응프로그램 이수 면제 대상과 동일함"
+   ],
+   "manual_line_no": 15264,
+   "state": "pending_review"
+  },
+  {
+   "id": "s-e74r-depop-jobseeker-registration-cert",
+   "role": "stay",
+   "kind": "added",
+   "codes": [
+    "E-7-4R"
+   ],
+   "procedures": [
+    "status_change"
+   ],
+   "reader_hash": "c-regional.s",
+   "title_ko": "지역특화 숙련기능인력(E-7-4R): 구직 중인 E-9·E-10·H-2의 구직등록필증 문구 추가",
+   "title_en": "Regional skilled worker (E-7-4R): job-seeker registration certificate line added for E-9/E-10/H-2 job seekers",
+   "summary_ko": "인구감소지역 특례의 ‘구직 중인 E-9, E-10, H-2’ 항목에 ‘자격변경 신청일을 기준으로 유효한 구직등록필증을 소지하여야 함’이 추가됐어요.",
+   "summary_en": "Under the depopulation-area exception for E-9, E-10 and H-2 holders who are looking for work, a line was added: they must hold a job-seeker registration certificate that is valid on the date of the change-of-status application.",
+   "manual_lines": [
+    "※ 자격변경 신청일을 기준으로 유효한 구직등록필증을 소지하여야 함"
+   ],
+   "manual_line_no": 17205,
+   "state": "pending_review"
+  },
+  {
+   "id": "s-e74r-employer-recommendation-depop-exception",
+   "role": "stay",
+   "kind": "changed",
+   "codes": [
+    "E-7-4R"
+   ],
+   "procedures": [
+    "status_change"
+   ],
+   "reader_hash": "c-regional.s",
+   "title_ko": "E-7-4R 기업 추천: 인구감소지역 특례 범위와 경과 규정",
+   "title_en": "E-7-4R employer recommendation: scope of the depopulation-area exception and a transitional rule",
+   "summary_ko": "기업 추천을 근무 예정 기업 추천으로 갈음하는 인구감소지역 특례가 ‘인구감소지역이 아닌 지역(인구감소관심지역 포함)에서 인구감소지역으로 근무처를 변경함과 동시에 자격변경을 신청하는 경우에 한하여’로 적혔어요. 현재 인구감소지역에서 근무 중인 E-9 외국인 등은 원칙대로 1년 이상 근무 중인 기업의 추천이 필요하다는 문구와, ’26. 12. 31.까지 신청된 건은 예외 적용이 가능하다는 경과 규정이 들어갔어요.",
+   "summary_en": "The depopulation-area exception (a recommendation from the future employer instead of the current one) now applies only when the person moves to a workplace in a depopulation area from outside one (including areas of concern) and applies for the change at the same time. E-9 workers already working in a depopulation area still need a recommendation from an employer they have worked for 1+ year. A transitional rule allows exceptions for applications filed by 31 Dec 2026.",
+   "manual_lines": [
+    "- (인구감소지역 특례) 인구감소지역이 아닌 지역(인구감소관심지역 포함)에서 인구감소지역으로 근무처를 변경함과 동시에 자격변경을 신청하는 경우에 한하여 근무 예정인 기업의 추천으로 갈음할 수 있음",
+    "※ 현재 인구감소지역에서 체류 및 근무 중인 비전문취업(E-9) 외국인 등은 원칙대로 1년 이상 근무중인 기업 추천 필요",
+    "※ (경과 규정) 단, 민원인 신뢰 보호 및 현장 혼선 방지를 위해 ’25-’26년도 지역특화형 비자 사업 종료일인 ’26. 12. 31.(목)까지 신청된 건은 예외 적용 가능"
+   ],
+   "manual_line_no": 17331,
+   "state": "pending_review"
+  },
+  {
+   "id": "s-e74r-agri-fishery-contract-salary",
+   "role": "stay",
+   "kind": "changed",
+   "codes": [
+    "E-7-4R"
+   ],
+   "procedures": [
+    "status_change"
+   ],
+   "reader_hash": "c-regional.s",
+   "title_ko": "E-7-4R 점수제 소득: 농·축산업, 어업·내항상선 지급 예정 연봉 금액 변경",
+   "title_en": "E-7-4R points (income): contract salary figure for agriculture/livestock and fishery/coastal shipping changed",
+   "summary_ko": "점수제 기본 항목(소득)의 지급 예정 연봉 기준에서 농·축산업, 어업·내항상선 종사자 금액이 2,500만원에서 2,589만원으로 바뀌었어요. 같은 판의 ‘취업 활동(급여)’ 항목에는 여전히 2,500만원으로 적혀 있어 두 곳이 다르니, 원문과 관할 기관에 확인하세요.",
+   "summary_en": "In the points-system income item, the expected contract salary for agriculture/livestock and fishery/coastal shipping workers changed from KRW 25,000,000 to KRW 25,890,000. The same edition's employment (salary) item still says KRW 25,000,000, so the two passages differ; check the source and the immigration office.",
+   "manual_lines": [
+    "❍ 지역특화 숙련기능인력(E-7-4R)으로 자격변경이 되면 지급 예정 연봉이 2,600만 원 이상이 되는 것으로 고용계약이 되어 있을 것(농․축산업, 어업․내항상선 종사자는 2,589만원)"
+   ],
+   "manual_line_no": 17348,
+   "state": "pending_review"
+  },
+  {
+   "id": "s-e74r-long-tenure-bonus",
+   "role": "stay",
+   "kind": "added",
+   "codes": [
+    "E-7-4R"
+   ],
+   "procedures": [
+    "status_change"
+   ],
+   "reader_hash": "c-regional.s",
+   "title_ko": "E-7-4R 가점: 현 근무처 5년 이상 근속 시 추가 가점 문구 추가",
+   "title_en": "E-7-4R bonus points: extra points for 5+ years with the current employer",
+   "summary_ko": "가점 항목 ‘현 근무처 근속’에 ‘5년 이상 근속 시 추가 가점 부여’ 한 줄이 추가됐어요. 추가 가점이 몇 점인지는 이 문구에 적혀 있지 않아요.",
+   "summary_en": "One line was added to the bonus item for tenure with the current employer: extra points for 5+ years. The line does not say how many points.",
+   "manual_lines": [
+    "※ 5년 이상 근속 시 추가 가점 부여"
+   ],
+   "manual_line_no": 17391,
+   "state": "pending_review"
+  },
+  {
+   "id": "s-e74r-employer-no-current-e9",
+   "role": "stay",
+   "kind": "added",
+   "codes": [
+    "E-7-4R"
+   ],
+   "procedures": [
+    "status_change"
+   ],
+   "reader_hash": "c-regional.s",
+   "title_ko": "E-7-4R 고용기업 요건: E-9·E-10·H-2 근로자가 숙련기능인력으로 바뀌어 남지 않은 사업장도 허용",
+   "title_en": "E-7-4R employer requirement: also allowed when the employer's E-9/E-10/H-2 workers all changed to skilled-worker status",
+   "summary_ko": "대상 사업장 요건(E-9, E-10, H-2 외국인을 1명 이상 정상 고용)에 ‘이들이 숙련기능인력(E-7-4, E-7-4R)으로 변경되어 현재 E-9, E-10, H-2 근로자가 없게 된 경우에도 허용’한다는 문구가 추가됐어요.",
+   "summary_en": "A line was added to the eligible-workplace requirement (employing at least one E-9, E-10 or H-2 worker): it is also allowed when those workers changed to skilled-worker status (E-7-4, E-7-4R) and the workplace no longer has any E-9, E-10 or H-2 worker.",
+   "manual_lines": [
+    "※ 비전문취업(E-9), 선원취업(E-10), 방문취업(H-2)에서 숙련기능인력(E-7-4, E-7-4R)으로 변경되어 현재 비전문취업(E-9), 선원취업(E-10), 방문취업(H-2) 근로자가 없게된 경우에도 허용"
+   ],
+   "manual_line_no": 17411,
+   "state": "pending_review"
+  },
+  {
+   "id": "s-e74r-employer-quota-minimum",
+   "role": "stay",
+   "kind": "changed",
+   "codes": [
+    "E-7-4R"
+   ],
+   "procedures": [
+    "status_change"
+   ],
+   "reader_hash": "c-regional.s",
+   "title_ko": "E-7-4R 고용 가능 인원: 최소 인원 문구 변경",
+   "title_en": "E-7-4R employer quota: wording of the minimum number changed",
+   "summary_ko": "E-9·E-10 외국인 근로자를 고용 중인 기업의 ‘최소 1명(인구감소지역, 뿌리산업, 농축어업은 2명) 고용 가능’이 ‘내국인 고용인원이 없더라도 1명(…2명) 고용 가능’으로 바뀌었어요.",
+   "summary_en": "For employers that currently employ E-9 or E-10 workers, \"at least 1 (2 in depopulation areas, root industries, agriculture/livestock/fishery) may be hired\" now reads \"1 (…2) may be hired even with no Korean employees\".",
+   "manual_lines": [
+    "- 고용 가능 인원 계산 값의 소수점 이하는 올림하며, 현재 비전문취업(E-9) 및 선원취업(E-10) 외국인 근로자를 고용하고 있는 기업의 경우 내국인 고용인원이 없더라도 1명(인구감소지역, 뿌리산업, 농축어업은 2명) 고용 가능"
+   ],
+   "manual_line_no": 17428,
    "state": "pending_review"
   }
  ]

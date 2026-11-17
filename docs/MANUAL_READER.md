@@ -44,7 +44,7 @@ civic 검색의 `관련 원문` 패널은 안내가 해석한 체류자격·업�
 
 1. HWP를 `docs/source-manuals/<날짜>/`에 넣고 `python3 scripts/decrypt_hwp_distribution.py`로 추출본을, `npx kordoc@4.24.1`로 Markdown(이미지 폴더 `images/<날짜>-visa|stay`)을 만든다. 이전 판 Markdown과 줄 단위로 비교해 장 시작 줄이 움직였는지 본다.
 2. `scripts/build_manual_reader.py`의 `SRC_DIRS`·`SOURCES`(날짜·파일·`official_file`·`crosscheck_text`·`previous`)를 갱신하고, 줄이 움직였으면 `CHAPTERS_V/S`도 갱신한다. 화면의 판본 안내·날짜·링크는 `catalog.json`에서 읽으므로 JS는 고치지 않는다. `manual.html`의 정적 안내(스크립트 전/없음)는 날짜가 카탈로그와 같아야 하며 검사가 확인한다.
-3. 변경 비교: `python3 scripts/diff_manual_paragraph_editions.py … --out-json audits/<날짜>/*.json`. 비교 결과의 변경 구간마다 `data/manual-updates/hunk_mapping.json`에 자격·절차·리더 링크를 적는다(없으면 빌드가 실패한다).
+3. 변경 비교: `python3 scripts/diff_manual_paragraph_editions.py … --out-json audits/<날짜>/*.json`. 알림용 비교는 안내가 따르는 현재 판 → 가장 새 검토 전 판의 누적 비교로 만든다(예: `stay_hwp_261102_to_261116`). 직전 반입판 대비 비교는 검토 기록용으로 같은 폴더에 둔다. 비교 결과의 변경 구간마다 `data/manual-updates/hunk_mapping.json`에 자격·절차·리더 링크를 적는다(없으면 빌드가 실패한다).
 4. `python3 scripts/build_manual_reader.py && python3 scripts/build_manual_update_notices.py` → `npm run test:manual-reader`.
 
 ### 새 판 개정 알림 (`data/manual-updates/`)
