@@ -76,7 +76,7 @@ def _dev20(cid):
     return items[cid], load_real_world_registry(dev20_v2.REGISTRY_V2)
 
 
-AFTER_005V = {"mission005w", "mission005x"}
+AFTER_005V = {"mission005w", "mission005x", "mission005z"}
 
 
 def _recorded_answers(cid):

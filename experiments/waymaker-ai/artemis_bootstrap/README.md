@@ -276,7 +276,7 @@ raw 56/63, end to end 79/81, DEV-20 v2 did not run. The own-code check fired on 
 part filled in the missing code and value, in 62 and 70 the notice did, and all three were correct end to end.
 A05Y-51 misses a mention group only through a correct Vietnamese term it does not list. See the
 [Mission 005-Y report](runs/mission005y/MISSION-005-Y-REPORT.ko.md).
-Mission 005-Z (frozen 2026-11-12, not run yet): when the choice parts of a comparison question (lower, higher, shorter,
+Mission 005-Z (frozen 2026-11-12, run 2026-11-17): when the choice parts of a comparison question (lower, higher, shorter,
 longer) claim different codes, or claim a code that does not hold the lowest/highest own value
 (`choice_conclusion.py`), the question is asked once more as one call (the 005-W item, no `choice_part`); a
 consistent single answer is released, otherwise nothing is. Contract v18 unchanged. Across 42 recorded choice
@@ -286,6 +286,13 @@ recorded answer of 005-X and 005-Y is released unchanged. Gate v21 = gate v20 wi
 conclusion retry; thresholds unchanged. New locked suite (P-2 family): four comparison choice cases covering all four
 directions and two "covers" cases, two per language; re-derived blind (81/81); all 10 review edits applied after
 checking them against correct, value-first, contrast and 76 real-model conflict answers.
+Free T4 run (commit b90aba4): gate v21 **passed**, raw 59/63 with no critical, end to end 79/81 with no critical
+release. Both parts of all four comparison choice questions answered correctly first, so the conclusion check never
+fired on the real model; the two "covers" questions got one-code answers and the own-code notice. End to end two
+answers were incomplete, not critical: A05Z-16 gave only the "다만" touring fee (the two-case check is lexical and
+did not see it) and A05Z-48 transliterated the office name. DEV-20 v2: **16/20**, the best so far; 004 passes for the
+first time since 005-S because the E-7-1 part's own-code retry added the contrast while the E-7-4 part kept
+숙련기능인력. See the [Mission 005-Z report](runs/mission005z/MISSION-005-Z-REPORT.ko.md).
 
 Recovery status, 2026-10-29: checkpoint metadata verified; new MLX-VLM weight
 loading and generation **not executed** on this M1 8GB machine. The runtime is
