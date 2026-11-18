@@ -702,7 +702,34 @@
       ],
       "would_supersede": "stay_manual_2026_11_02_pdf",
       "manifest_slot": "pending_review_editions",
-      "change_review_artifact": "audits/manual-refresh-20261109/README.md"
+      "change_review_artifact": "audits/manual-refresh-20261109/README.md",
+      "superseded_by_pending": "stay_manual_2026_11_16_hwp_text"
+    },
+    "stay_manual_2026_11_16_hwp_text": {
+      "approval_state": "needs_review",
+      "effective_date": "",
+      "parser": "scripts/decrypt_hwp_distribution.py (배포용 HWP ViewText AES)",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "unreviewed",
+      "has_tables_or_annexes": true,
+      "section_locator": "none_verified",
+      "source_path": "docs/source-manuals/2026-11-16/stay_manual_261116.hwp",
+      "source_sha256": "289c249d0fdbf87871ba74f7c97551e7ab1e8d89a7a22822c28ec51aae1c0e95",
+      "source_original_hwp_sha256": "289c249d0fdbf87871ba74f7c97551e7ab1e8d89a7a22822c28ec51aae1c0e95",
+      "extracted_text_path": "docs/source-manuals/2026-11-16/extracted/full_text/stay_manual_261116.txt",
+      "extracted_text_sha256": "5ff4926379edd2402c39dbe2b8d36a9a9121d594fd918c531584593b90657684",
+      "extraction_warnings": [
+        "Staged 2026-11-17 from an owner-supplied HWP (file date 261116, cover '2026. 11.'). No PDF printout was received, so there are no page numbers and no page corpus.",
+        "The extraction has not been compared against the original by a human. Do not read the filename date as a verified legal effective date.",
+        "Not approved: MUST NOT support direct legal or administrative claims in AI answers."
+      ],
+      "table_extraction_warnings": [
+        "HWP tables may be flattened or out of reading order. Never infer row/column relationships, conditional document requirements or exemptions without checking the original."
+      ],
+      "would_supersede": "stay_manual_2026_11_02_pdf",
+      "manifest_slot": "pending_review_editions",
+      "change_review_artifact": "audits/manual-refresh-20261116/README.md"
     }
   }
 }

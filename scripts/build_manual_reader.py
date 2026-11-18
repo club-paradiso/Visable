@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""Build the readable manual reader (manual.html) from the newest Markdown sources (visa 2026.11 / 2026-11-06, stay 2026.11 / 2026-11-09).
+"""Build the readable manual reader (manual.html) from the newest Markdown sources (visa 2026.11 / 2026-11-06, stay 2026.11 / 2026-11-16).
 
 Sources (digest-pinned in data/manual-reader/catalog.json):
   docs/source-manuals/2026-11-06/markdown/visa_manual_261106.md  사증발급 안내매뉴얼 2026.11 (2026-11-06)
-  docs/source-manuals/2026-11-09/markdown/stay_manual_261109.md  외국인체류 안내매뉴얼 2026.11 (2026-11-09)
+  docs/source-manuals/2026-11-16/markdown/stay_manual_261116.md  외국인체류 안내매뉴얼 2026.11 (2026-11-16)
 
 The two Markdown files are `npx kordoc@4.24.1` conversions of the 배포용 HWPs
-(docs/source-manuals/2026-11-06/*.hwp, docs/source-manuals/2026-11-09/*.hwp). The same command reproduces the committed
-2026-11-02 stay Markdown byte for byte (only the image folder name differs), which is how the method was checked.
-Line-level comparison with the previous Markdown (2026-10-19 visa, 2026-11-02 stay): same line counts, so the chapter start
-lines below did not move.
+(docs/source-manuals/2026-11-06/*.hwp, docs/source-manuals/2026-11-16/*.hwp). The same command reproduces the committed
+2026-11-02 and 2026-11-09 stay Markdown byte for byte (only the image folder name differs), which is how the method was checked.
+Line-level comparison with the previous Markdown: visa 2026-10-19 → 2026-11-06 same line count; stay 2026-11-09 → 2026-11-16
+gained 10 lines inside the 지역특화형비자 chapter (E-7-4R), so the four chapters after it (youth, toptier, metro, kstar)
+start 10 lines later. Every other chapter start line is unchanged.
 
 There is no PDF printout for these two editions. The provenance cross-check below therefore runs against the
 same-method HWP text extraction (scripts/decrypt_hwp_distribution.py), not against a PDF text layer. The reader stays a
@@ -36,7 +37,7 @@ from bs4 import BeautifulSoup, NavigableString, Tag
 from markdown_it import MarkdownIt
 
 ROOT = Path(__file__).resolve().parents[1]
-SRC_DIRS = {'v': ROOT / 'docs/source-manuals/2026-11-06/markdown', 's': ROOT / 'docs/source-manuals/2026-11-09/markdown'}
+SRC_DIRS = {'v': ROOT / 'docs/source-manuals/2026-11-06/markdown', 's': ROOT / 'docs/source-manuals/2026-11-16/markdown'}
 OUT_DIR = ROOT / 'data/manual-reader'
 IMG_OUT = ROOT / 'assets/manual-reader/img'
 SOURCES = {
@@ -45,10 +46,10 @@ SOURCES = {
           'official_file': 'docs/source-manuals/2026-11-06/visa_manual_261106.hwp', 'official_kind': 'hwp',
           'crosscheck_text': 'docs/source-manuals/2026-11-06/extracted/full_text/visa_manual_261106.txt', 'crosscheck_kind': 'hwp_viewtext',
           'previous': {'date': '2026-10-19', 'version': '2026.10', 'pdf': 'docs/source-manuals/2026-10-19/visa_manual_261019.pdf'}},
-    's': {'id': 'stay_manual_2026_11_09_reader_md', 'file': 'stay_manual_261109.md', 'images': 'images/261109-stay',
-          'title': '외국인체류 안내매뉴얼', 'title_en': 'Foreigner Stay/Residence Guide Manual', 'date': '2026-11-09', 'version': '2026.11',
-          'official_file': 'docs/source-manuals/2026-11-09/stay_manual_261109.hwp', 'official_kind': 'hwp',
-          'crosscheck_text': 'docs/source-manuals/2026-11-09/extracted/full_text/stay_manual_261109.txt', 'crosscheck_kind': 'hwp_viewtext',
+    's': {'id': 'stay_manual_2026_11_16_reader_md', 'file': 'stay_manual_261116.md', 'images': 'images/261116-stay',
+          'title': '외국인체류 안내매뉴얼', 'title_en': 'Foreigner Stay/Residence Guide Manual', 'date': '2026-11-16', 'version': '2026.11',
+          'official_file': 'docs/source-manuals/2026-11-16/stay_manual_261116.hwp', 'official_kind': 'hwp',
+          'crosscheck_text': 'docs/source-manuals/2026-11-16/extracted/full_text/stay_manual_261116.txt', 'crosscheck_kind': 'hwp_viewtext',
           'previous': {'date': '2026-11-02', 'version': '2026.11', 'pdf': 'docs/source-manuals/2026-11-02/stay_manual_261102.pdf'}},
 }
 OFFICIAL_URL = 'https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1'
@@ -78,8 +79,8 @@ CHAPTERS_S = [
     (2215, 'E-7', None), (5570, 'E-8', None), (5580, 'E-9', None), (5660, 'E-10', None),
     (5680, 'F-1', None), (5728, 'F-2', None), (5904, 'F-3', None), (5937, 'F-5', None),
     (6211, 'F-6', None), (6465, 'G-1', None), (6488, 'H-1', None),
-    (6525, 'dongpo', None), (8007, 'regional', None), (10135, 'youth', None),
-    (10563, 'toptier', None), (11646, 'metro', None), (13631, 'kstar', None),
+    (6525, 'dongpo', None), (8007, 'regional', None), (10145, 'youth', None),
+    (10573, 'toptier', None), (11656, 'metro', None), (13641, 'kstar', None),
 ]
 
 
@@ -677,7 +678,7 @@ def dumps(v):
 def outputs():
     sources, chapters, reports, search = build()
     files = {}
-    catalog = {'schema_version': 1, 'edition': '2026.11 (visa 2026-11-06 / stay 2026-11-09)', 'generated_by': 'scripts/build_manual_reader.py',
+    catalog = {'schema_version': 1, 'edition': '2026.11 (visa 2026-11-06 / stay 2026-11-16)', 'generated_by': 'scripts/build_manual_reader.py',
                'note': '원문 문장은 바꾸지 않음. 쪽 넘김 때문에 반복된 항목명·목차 링크·장 제목 줄·표지 이미지만 제외.',
                'sources': sources, 'chapters': []}
     for key, by in chapters.items():

@@ -24,6 +24,13 @@ The owner supplied newer HWPs on 2026-11-09 (cover "2026. 11." on both). They ar
 - Change review: `audits/manual-refresh-20261109/README.md` (visa 2 hunks, stay 4 hunks; D-2 part-time violation item, D-4-3 institution list, G-1-3 paternity-suit item).
 - The manual reader (`manual.html`) is built from these Markdown files; its notices for the changed passages come from `data/manual-updates/`. See `docs/MANUAL_READER.md`.
 
+### Pending review: 2026-11-16 stay (HWP only)
+
+The owner supplied a newer stay HWP on 2026-11-17 (file date 261116, cover "2026. 11."). It is staged the same way, hash-pinned in `source_manifest.json` `pending_review_editions` (`stay_manual_2026_11_16_hwp_text`, `needs_review`), and **not current**. It replaces 2026-11-09 as the stay edition shown by the manual reader and as the end point of the stay notices; the 2026-11-09 entry stays pinned for history (`superseded_by_pending`). Current stays visa 2026-10-19 and stay 2026-11-02.
+
+- `2026-11-16/stay_manual_261116.hwp` (+ `extracted/full_text/`, `markdown/`)
+- Change review: `audits/manual-refresh-20261116/README.md` (9 hunks vs 2026-11-09: D-10-1 internship restriction, F-4 early adaptation program wording, E-7-4R regional skilled worker items; 13 hunks cumulative vs current 2026-11-02).
+
 ### Markdown derived texts (2026.10)
 
 The owner supplied HWP→Markdown conversions of both current editions (`incoming/261019_hikorea_markdown_2.zip`, 2026-10-22). They keep headings and tables, which the PDF text layer flattens, but they have no page numbers.
