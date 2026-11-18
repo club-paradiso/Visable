@@ -48,12 +48,41 @@ def test_one_model_load_frozen_commit_and_contract():
     assert s["load"]["quantization"]["quantized_decoder_layers"] == 42
 
 
-def test_gate_decision_reproduces_byte_for_byte_and_is_fail():
+RUN_COMMIT_005F = "6f41d0b1b03edbe1ce521e7a0b0622e4db3d6de0"
+
+
+def test_recorded_gate_decision_is_intact_and_fail():
+    record = json.loads((ACC / "gate_decision.json").read_text())
     assert sha(ACC / "gate_decision.json") == COLAB_DECISION_SHA256
-    results, record = gate.score_dir(ACC)
     assert gate.seal_ok(record) and record["decision"] == "fail" and record["dev20_permitted"] is False
-    assert json.dumps(record, ensure_ascii=False, indent=2) + "\n" == (ACC / "gate_decision.json").read_text()
     assert all(c["passed"] for c in record["preconditions"])
+
+
+def test_gate_decision_reproduces_byte_for_byte_with_the_005f_code(tmp_path):
+    """Mission 005-G later changed files the 005-F manifest froze, so the decision is
+    re-derived with the code of the 005-F run commit, extracted from git."""
+    import shutil
+    import subprocess
+    repo = Path(subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=BOOT, capture_output=True, text=True).stdout.strip() or "/nonexistent")
+    if not (repo / ".git").exists() or shutil.which("tar") is None or subprocess.run(
+            ["git", "cat-file", "-e", f"{RUN_COMMIT_005F}^{{commit}}"], cwd=repo, capture_output=True).returncode:
+        pytest.skip("needs git history for the 005-F run commit")
+    archive = subprocess.run(["git", "archive", RUN_COMMIT_005F, "experiments/waymaker-ai"], cwd=repo,
+                             capture_output=True, check=True).stdout
+    subprocess.run(["tar", "-x", "-C", str(tmp_path)], input=archive, check=True)
+    root = tmp_path / "experiments" / "waymaker-ai"
+    run = root / "artemis_bootstrap" / "runs" / "mission005f" / "synthetic_acceptance"
+    (run / "gate_decision.json").unlink()
+    result = subprocess.run([sys.executable, "-I", "artemis_bootstrap/synthetic_safety_gate.py", "score", "--out-dir", str(run)],
+                            cwd=root, capture_output=True, text=True)
+    assert result.returncode == 6, result.stderr[-800:]
+    assert sha(run / "gate_decision.json") == COLAB_DECISION_SHA256
+
+
+def test_current_scoring_logic_gives_the_same_005f_results():
+    results, _ = gate.score_dir(ACC)
+    committed = json.loads((ACC / "synthetic_acceptance_results.json").read_text())
+    assert results["summary"] == committed["summary"]
     s = results["summary"]
     assert (s["executed"], s["passed"], s["failed"], s["unresolved"], s["critical_failures"]) == (48, 28, 20, 0, 12)
     assert s["critical_by_kind"] == {"inadmissible_citation": 4, "failed_to_withhold": 2, "value_from_inadmissible": 6}

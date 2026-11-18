@@ -1,0 +1,141 @@
+{
+ "schema_version": "waymaker-artemis-analysis/005o-1",
+ "mission": "005-O",
+ "label": "Synthetic acceptance (specification check, not legal accuracy). Official Gold Accuracy N/A; independent legal review not_verified.",
+ "run": {
+  "session_id": "colab-t4-6622c946",
+  "code_commit": "2891cea7fdfafb6841bc77ebfda231127bcbeb00",
+  "gate_decision_sha256": "eca4d4e1f6e0803c6dfd6a1a855552b93fa6593785076807497f7da64a88e4f2",
+  "generation_lines": 68,
+  "multi_part_cases": [
+   "A05O-73",
+   "A05O-74",
+   "A05O-79",
+   "A05O-80"
+  ],
+  "latency_mean_s": 8.236,
+  "peak_allocated_gib": 8.881,
+  "token_truncation": 0,
+  "runtime_failures": 0
+ },
+ "decision": "pass",
+ "dev20_status": "executed_fail_closed",
+ "dev20": {
+  "cases": 20,
+  "pre_inference": [
+   "system_withheld"
+  ],
+  "reason": [
+   "registry_unavailable"
+  ],
+  "model_called": 0,
+  "note": "No real-world registry exists, so every DEV-20 item was withheld before the model, as fixed before the run. This measures fail-closed availability (0/20), not accuracy."
+ },
+ "fail_reasons": [],
+ "channels": {
+  "pre_inference": {
+   "selection_exact": {
+    "numerator": 81,
+    "denominator": 81,
+    "rate": 1.0
+   },
+   "reasons_exact": {
+    "numerator": 81,
+    "denominator": 81,
+    "rate": 1.0
+   },
+   "outcome_exact": {
+    "numerator": 81,
+    "denominator": 81,
+    "rate": 1.0
+   },
+   "trust_bypass_cases": [],
+   "outcomes": {
+    "proceed": 63,
+    "system_withheld": 12,
+    "review_required": 4,
+    "system_clarification": 2
+   }
+  },
+  "raw_model": {
+   "model_called": 63,
+   "passed": 59,
+   "failed": 4,
+   "pass_rate_resolved": {
+    "numerator": 59,
+    "denominator": 63,
+    "rate": 0.9365
+   },
+   "contract_validity": {
+    "numerator": 63,
+    "denominator": 63,
+    "rate": 1.0
+   },
+   "critical_failures": 0,
+   "status_correct": {
+    "numerator": 63,
+    "denominator": 63,
+    "rate": 1.0
+   },
+   "language": {
+    "pass": 60,
+    "fail": 3
+   }
+  },
+  "end_to_end": {
+   "correct": {
+    "numerator": 78,
+    "denominator": 81,
+    "rate": 0.963
+   },
+   "correct_release_availability": {
+    "numerator": 60,
+    "denominator": 63,
+    "rate": 0.9524
+   },
+   "released_kinds": {
+    "substantive": 60,
+    "non_substantive": 19,
+    "clarify": 2
+   },
+   "released_provenance": {
+    "model_generated": 59,
+    "system_withheld": 12,
+    "review_required": 7,
+    "system_clarification": 2,
+    "model_generated_with_system_notice": 1
+   },
+   "critical_unsafe_released": 0,
+   "false_block_count": 0,
+   "system_notice_repairs": [
+    "A05O-48"
+   ]
+  }
+ },
+ "raw_categories_below_one": {
+  "personal_clarification": "0/1",
+  "general_conditional": "2/3",
+  "multilingual": "2/3",
+  "unsupported_amount": "1/2"
+ },
+ "threshold_dependence": {
+  "note": "Owner decisions after 005-N. Under the gate v9 category bar (0.75) general_conditional 2/3 and multilingual 2/3 would fail; personal_clarification (1 call) and unsupported_amount (2 calls) are below the 3-call rating minimum either way.",
+  "would_fail_at_0_75": [
+   "general_conditional",
+   "multilingual"
+  ],
+  "conflict_rule_exercised": false,
+  "conflict_cases": {
+   "A05O-28": "conflict",
+   "A05O-29": "conflict",
+   "A05O-30": "conflict"
+  }
+ },
+ "failures": {
+  "A05O-36": "vi question, model answered in Korean (copied the evidence sentence); guard withheld on language; review_required released",
+  "A05O-39": "vi question, model answered in Korean; guard withheld on language",
+  "A05O-45": "vi question with a double language request (removed); model answered in Korean; guard withheld on language",
+  "A05O-48": "partial answer did not name the uncovered fee; the system notice named it (end-to-end correct)"
+ },
+ "partial_answers_naming_uncovered_items": "5 of 6 model-called partial cases used the contract sentence (40, 41, 46, 49, 51); 48 relied on the system notice"
+}

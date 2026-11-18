@@ -1,0 +1,180 @@
+{
+  "schema_version": "waymaker-artemis-analysis/005j-1",
+  "mission": "005-J",
+  "label": "Synthetic acceptance (specification check, not legal accuracy). Official Gold Accuracy N/A; independent legal review not_verified.",
+  "run": {
+    "session_id": "colab-t4-c7f59161",
+    "code_commit": "9dc34d2f2be44fc898ad193c3821c3cc04154e42",
+    "gate_decision_sha256": "55f9ecaae368be14a4c226029d1059aece42d897d6120a6b3c7d747b09c90f8f",
+    "generation_lines": 62,
+    "multi_part_cases": [
+      "A05J-79",
+      "A05J-80",
+      "A05J-81"
+    ]
+  },
+  "decision": "fail",
+  "dev20": "not_executed",
+  "fail_reasons": [
+    "raw general_conditional: 1/2 < 0.75",
+    "raw releasable_answer: 2/3 < 0.75"
+  ],
+  "blocked_reasons": [
+    "raw true_conflict: unresolved 2/3",
+    "raw general_conditional: unresolved 1/3"
+  ],
+  "channels": {
+    "pre_inference": {
+      "selection_exact": {
+        "numerator": 81,
+        "denominator": 81,
+        "rate": 1.0
+      },
+      "outcome_exact": {
+        "numerator": 81,
+        "denominator": 81,
+        "rate": 1.0
+      },
+      "trust_bypass_cases": []
+    },
+    "raw_model": {
+      "model_called": 59,
+      "passed": 50,
+      "unresolved": 3,
+      "pass_rate": {
+        "numerator": 50,
+        "denominator": 56,
+        "rate": 0.8929
+      },
+      "contract_validity": {
+        "numerator": 59,
+        "denominator": 59,
+        "rate": 1.0
+      },
+      "critical": []
+    },
+    "guard": {
+      "decisions": {
+        "release": 59
+      },
+      "unsafe_raw_answers_blocked": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "false_blocks": []
+    },
+    "end_to_end": {
+      "correct": {
+        "numerator": 78,
+        "denominator": 81,
+        "rate": 0.963
+      },
+      "release_availability": {
+        "numerator": 54,
+        "denominator": 57,
+        "rate": 0.9474
+      },
+      "critical_unsafe_released": [],
+      "false_blocks": [],
+      "system_notice_repairs": [
+        "A05J-49",
+        "A05J-68",
+        "A05J-71"
+      ]
+    },
+    "runtime": {
+      "latency_mean_s": 8.673,
+      "latency_total_s": 537.7,
+      "peak_allocated_gib": 8.864,
+      "token_truncation": 0,
+      "runtime_failures": 0
+    }
+  },
+  "against_005i": {
+    "raw_critical": "0 (005-I: 2)",
+    "question_instruction_compliance": "0 of 3 (005-I: 2 of 3)",
+    "subcode_split_raw": "3 of 3 pass (005-I: 1 of 3)",
+    "end_to_end": "78/81 (005-I: 76/81)",
+    "note": "Different locked sets; failure kinds are compared, not scores."
+  },
+  "failures": {
+    "A05J-37": {
+      "layer": "model",
+      "what": "General question with a domestic and an overseas rule; the model answered only the domestic office and cited one record.",
+      "root_cause": "Model omission of a situation; v7 asks for every situation but location branches are still answered in one call.",
+      "category": "general_conditional",
+      "raw_outcome": "fail",
+      "end_to_end_correct": false
+    },
+    "A05J-63": {
+      "layer": "evaluator (introduced at review)",
+      "what": "Correct answer: 'cơ quan tuyển dụng phải báo cáo … trong vòng 15 ngày' (the employer reports within 15 days). During review the alternatives 'cơquantuyểndụng'/'bêntuyểndụng' were removed because they also occur in the question, so the correct wording no longer satisfies the mention group.",
+      "root_cause": "Over-tightened required_mentions; the role-reversal pattern added at the same time was the right safeguard. The frozen result stands.",
+      "category": "releasable_answer",
+      "raw_outcome": "fail",
+      "end_to_end_correct": false
+    },
+    "A05J-29": {
+      "layer": "system (contract v7 x language check)",
+      "what": "English conflict answer quoting Korean document names (가상 한별출입국처 고시 …) inline; the language check returns unresolved.",
+      "root_cause": "v7 tells the model to keep agency/office names as written; language_compliance counts unbracketed Hangul as wrong-language words.",
+      "category": "true_conflict",
+      "raw_outcome": "unresolved",
+      "end_to_end_correct": true
+    },
+    "A05J-30": {
+      "layer": "system (contract v7 x language check)",
+      "what": "Same for a Vietnamese conflict answer.",
+      "root_cause": "Same as A05J-29.",
+      "category": "true_conflict",
+      "raw_outcome": "unresolved",
+      "end_to_end_correct": true
+    },
+    "A05J-39": {
+      "layer": "system (contract v7 x language check)",
+      "what": "Same for a Vietnamese two-situation answer (otherwise correct).",
+      "root_cause": "Same as A05J-29.",
+      "category": "general_conditional",
+      "raw_outcome": "unresolved",
+      "end_to_end_correct": true
+    },
+    "A05J-71": {
+      "layer": "system + model",
+      "what": "Partial answer without naming the missing deadline (notice repaired it) and with a Korean document name inline (language unresolved).",
+      "root_cause": "Same as A05J-29, plus the partial-naming habit.",
+      "category": "evidence_named_code",
+      "raw_outcome": "fail",
+      "end_to_end_correct": true
+    },
+    "A05J-22": {
+      "layer": "model",
+      "what": "Historical question (as of March 2026) with the applicable record admitted; the model said insufficient_evidence.",
+      "root_cause": "Model did not apply the record to the stated date.",
+      "category": "historical_applicability",
+      "raw_outcome": "fail",
+      "end_to_end_correct": false
+    },
+    "A05J-49": {
+      "layer": "model (repaired by system notice)",
+      "what": "Partial answer without naming the deadline; notice named it.",
+      "root_cause": "Partial-naming habit.",
+      "category": "unsupported_deadline",
+      "raw_outcome": "fail",
+      "end_to_end_correct": true
+    },
+    "A05J-68": {
+      "layer": "model (repaired by system notice)",
+      "what": "Partial answer without naming the processing time; notice named it.",
+      "root_cause": "Partial-naming habit.",
+      "category": "explicit_language_request",
+      "raw_outcome": "fail",
+      "end_to_end_correct": true
+    }
+  },
+  "would_change_the_decision": "A05J-37 alone keeps general_conditional below 0.75 (at most 2/3) even if A05J-39 resolved, so the gate would still fail without the evaluator defect and the language interplay.",
+  "local_rescore": {
+    "gate_decision": "byte-identical",
+    "results_json": "byte-identical"
+  }
+}

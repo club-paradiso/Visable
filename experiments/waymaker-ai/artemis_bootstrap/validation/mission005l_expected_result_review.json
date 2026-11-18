@@ -1,0 +1,34 @@
+{
+  "schema_version": "waymaker-artemis-expected-result-review/1.0",
+  "mission": "005-L",
+  "acceptance_sha256_reviewed": null,
+  "reviewed_version_note": "The reviewed first build was not kept on disk (only its mention and pattern fields changed afterwards). The reviewer's own test answers were re-run against the frozen build.",
+  "acceptance_sha256_frozen": "fd3d55bfa6c85b7d0a9ef9d51739e0dd3186da8af2dd151fc487d4b5316cc0db",
+  "roles": {
+    "behavioural_specification": "implementer (Claude main session) revised trusted_evidence_spec.md for 005-L (reply-language requests removed from the question the model receives; the existing request expressions, incl. bare tiếng Anh/tiếng Hàn, written down)",
+    "acceptance_construction": "separate agent; read only the spec and the 005-G development suite for format",
+    "expected_result_review": "second separate agent; read only the spec and the suite; re-derived every value incl. sub-code and situation parts and reply languages, and tested mentions and patterns against its own answers in three languages",
+    "implementation": "Claude main session"
+  },
+  "independence_limit": "All roles are instances of the same model family in one session. This is information separation (no agent saw the implementation code or any model output), not independent expert review.",
+  "spec_and_code_fixed_before_review": [
+    "The spec now states the reply-language request expressions the code has used since 005-H (bare 'tiếng Anh'/'tiếng Hàn' count; bare 'tiếng Việt' needs 'bằng tiếng Việt', 'trả lời bằng' or 'answer in')."
+  ],
+  "spec_clarified_after_review": [
+    "The reviewer noted that the 005-L adjacency condition (a request next to an answer word) could be read as also limiting the reply-language choice. The spec now says it limits only the removal; the reply language is chosen as before. No suite case depends on it."
+  ],
+  "review_result": "All spec-derived values, including sub-code and situation parts and the reply language of every language-request and neighbour case, matched the reviewer in all 81 cases.",
+  "defects_fixed_before_freeze": [
+    "Too narrow mentions: '-day' and spelled-out day counts (05, 11, 21, 28, 30, 33, 44, 56, 69, 77, 80); 38 age forms; 60 negated forms; 75 'invit'; 50 'how long'; 58 'Nam-po'; 31 exemption group added (must_cite already required the exemption record)",
+    "Too loose mentions: 39/66 permit groups now need a permit/approval noun; 60 '0원' and 48 bare 'phí' removed; 75 'holder' group removed (it is in the question)",
+    "Patterns firing on correct or rebutting answers: Korean negation now 아니|아닌|아닙 in all value patterns; 66 conditional answers ('without approval', '없이는'); 23 date echo '3월 10일'; 27/36/53 Vietnamese and English rebuttal forms",
+    "Reversals not caught: resolution words in 28-30; polarity in 32; permission wording in 52; 53 'just/only a passport' (the 'not enough' exception now needs enough/sufficient); 61-63 topic markers, inserted clauses and paraphrases ('the landlord takes care of it', '체류자가 HARAMNET에 등록해야'); invented free/exempt claims in 41/47/48; 57 employment certificate; 60 any non-zero amount"
+  ],
+  "kept": [
+    "01: '4.7만' is not accepted (it normalises to '47만', which a wrong 470,000-won answer would also meet)",
+    "71, 73-75 split into parts: swapped-value and role-swap patterns are left out because a correct answer that puts the value before its label would fire them; each part's guard sees only its own evidence",
+    "22, 27: an answer that repeats the superseded or inadmissible value to say it no longer applies fires the value pattern; the claim-support check flags such a value anyway",
+    "32: an answer that adds a permit condition is not a polarity reversal and is not caught by a pattern"
+  ],
+  "no_model_output_existed": true
+}

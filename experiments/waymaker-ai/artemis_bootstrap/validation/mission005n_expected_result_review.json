@@ -1,0 +1,29 @@
+{
+  "schema_version": "waymaker-artemis-expected-result-review/1.0",
+  "mission": "005-N",
+  "acceptance_sha256_reviewed": null,
+  "reviewed_version_note": "The reviewed first build was not kept on disk. Two fix rounds changed only required_mentions, forbidden_patterns and case 31's critical_rules (author's field-by-field diff); the reviewer re-ran its test answers on the second build, and the implementer re-ran the reviewer's three probe scripts on the frozen build.",
+  "acceptance_sha256_frozen": "0c6e07b507592aee2c4cbd92a26249593d0bc37ed532c6120436572a01122db8",
+  "roles": {
+    "behavioural_specification": "implementer (Claude main session) revised trusted_evidence_spec.md for 005-N (document names and office names out of the question context, the location list as in the code, method questions with one to six words, ages apart from periods, the opening language-request form, contract v11 conflict line)",
+    "acceptance_construction": "a separate agent that read only trusted_evidence_spec.md and the 005-G development suite (for format), not the code or any model output",
+    "expected_result_review": "a second separate agent that read only the spec and the suite, derived every expected value blind before comparing, and tested mention groups and patterns with its own correct, wrong and negated answers in three languages, incl. passive voice and synonyms (the two 005-M review misses)"
+  },
+  "independence_limit": "All roles are instances of the same model family in one session. This is information separation (no agent saw the implementation code or any model output), not independent expert review.",
+  "review_result": "All spec-derived values (decisions and reasons, pre_inference, uncovered_items, parts, statuses, must_cite, reply language, end_to_end) matched the reviewer in all 81 cases.",
+  "defects_fixed_before_freeze": [
+    "Too narrow mentions: age forms (19 or older, 19 and over, 19살) in 01/32/44/58/60, annex/appendix/mẫu 12 in 11/15, 6만2000 in 14, a week / two weeks in 03/16, fee-free forms in 32/49, renew in 36, 한국에 있 in 37, a permit for in 39, ends in 41, trang web in 70, a form and / đơn và in 48, pay nothing in 32",
+    "Too loose mentions: form/đơn in 48 (matched information / đơn giản); under 19 in the age groups of 01/44/58/60; the actor group of 63 dropped (it also matched a reversed answer), the reversal is left to patterns",
+    "Patterns firing on correct or negated answers: 38 (whether … depends), 39 (받지 않으면 … 할 수 없습니다, unauthorized), 53 (면제되지 않, không miễn phí), 19 (Not at the office, 아닙니다), value patterns (rather than, is not correct)",
+    "Reversals slipping past: passive and cleft role reversals in 61/63 in three languages, 38 (need a permit), 39 (banned, 불가, permit not needed), 62 (allowed with a permit), 08 (waived, 면제되며), value step-aside narrowed to explicit rebuttal words (05/26/75 'is not refundable', 'không đúng hạn')",
+    "Conflict 28/29/30: the one-side conflict pattern was removed (it fired on correct answers naming both values and missed one-side answers); a non-conflict status on these cases is scored by the gate as conflict_treated_as_resolved. Case 31 no longer lists conflict_treated_as_resolved (not a conflict case)"
+  ],
+  "kept": [
+    "11: the form-number groups ('no12', 'form12') also accept 'Form No. 120'; substring matching cannot exclude it without rejecting correct forms",
+    "11: the copy-count pattern lets 'Three copies are not required' through (a correct negated answer) in that case only",
+    "38: an answer that only says the requirement depends on the trip length, without the one-year rule, fails a mention group (it leaves out the rule)",
+    "37/73/74: the question names a document that is not among the evidence; the spec makes partial only for non-empty uncovered_items, so only answered is accepted",
+    "Spec ambiguities reported and avoided by the author: year-only dates in document names, several procedure words in one question, how hyphenated codes count as words in the method rule, numbers stated in the question"
+  ],
+  "no_model_output_existed": true
+}

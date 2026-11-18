@@ -1,0 +1,241 @@
+{
+ "schema_version": "waymaker-artemis-expected-result-review/1.0",
+ "mission": "005-Z",
+ "acceptance_sha256_reviewed": "e69da4f22c51dc66570e2c6706125bf6cec9f838eb30bc6c3d6be0bf1cb46481",
+ "spec_sha256_read": "f32c6d686a33342147ef51d3832c758fb57b1014ddf1157f50d1aadc96abd14e",
+ "reviewed_version_note": "One build (sha above) was reviewed in full. The suite file was not edited; its sha was taken before and after the review and did not change (e69da4f22c51…6cb46481 both times, sha_before.txt / sha_after.txt). The spec sha matched the brief.",
+ "acceptance_sha256_frozen": "8c0f6dc66bb389f4b55a3f4f0a21f03f772fcee2bc4492a4885299211d0ed2cb",
+ "roles": {
+  "behavioural_specification": "implementer (Claude main session) revised trusted_evidence_spec.md for 005-Z: 고르는 질문 부분의 결론 검사 (after all other checks and retries, the choice parts of a comparison question are read together; parts claiming different codes, or a claimed code that does not hold the lowest/highest own value, send the whole question once more as one call with choice_codes only; a released consistent single answer goes out, otherwise withhold; not run for 'which code covers' questions)",
+  "acceptance_construction": "a separate agent that read only trusted_evidence_spec.md and earlier suites for format, per the suite's own about/decision_provenance text",
+  "expected_result_review": "a further separate agent that read only trusted_evidence_spec.md (005-Z), the 005-Z suite and the 005-Y review (for format). No .py file in the repository, runs/, benchmarks/, notebooks, tests, the author's scratch folder (author_z) or any other scratch folder or suite was opened and no repository code was run. The suite was split (split.py) into inputs.json and a sealed expected_sealed.json (rationale, expected); per-case intake facts (code, procedure, location, region, as_of, personal, reply language, asked items) were read by hand and admission, pre_inference, uncovered_items, sub-code/situation/choice parts, statuses, conflict pairs, must_cite and end_to_end were derived by derive.py (derivation_blind.json, sha in derivation_blind.sha) before the sealed file was opened; compare.py then compared. harness.py with bank_choice.py, bank_pol.py, bank_val.py tests mention groups, forbidden patterns and injection markers and emulates the spec-5 value check (005-X), own-code check (005-Y) and conclusion check (005-Z) for choice parts."
+ },
+ "independence_limit": "All roles are instances of the same model family in one session. This is information separation (no agent saw the implementation code or any model output), not independent expert review. The 'rule' and 'category' labels (e.g. 'choice_vi_extension_processing_shorter_right_code_second', 'choice_near_miss_…', 'conflict_template_…', 'cap_…') and the suite's 'about' text were visible during derivation and may have primed it; case 01's expected block was also seen once while inspecting the file layout, before the split. The admission rows, item table, choice, split and conflict sets were nonetheless recomputed mechanically from the spec rules.",
+ "review_result": "Blind derivation agreed with the suite in 81/81 cases on every spec-derived field (admission ids and reasons, pre_inference, uncovered_items, model_statuses incl. parts, expected_language, must_cite, end_to_end, expected_polarity). No disagreement. Choice parts (spec 4, 005-X) fall on exactly 02 [P-2-2,P-2-3], 22 [P-2-1,P-2-4], 33 [P-2-2,P-2-4], 45 [P-2-1,P-2-3], 62 [P-2-1,P-2-2], 70 [P-2-2,P-2-3], in question order; near-misses 18, 58, 60, 81 get none. 005-Z applies to 02 (shorter: P-2-3, 11 vs 29 days), 22 (lower: P-2-4, 16,000 vs 47,000 won), 33 (longer: P-2-2, 40 vs 17 days), 45 (higher: P-2-1, 39,000 vs 14,000 won); each code has one own sentence with one number; 62 and 70 are covers questions and are not checked. Every correct joined answer in the bank (incl. value-first and contrast phrasings) claims only the right code or nothing under the emulated 005-Z rule, and none trips the emulated 005-X value check or 005-Y own-code check. Number-only conflict pairs fall on exactly 28, 29, 30, 44, 56, 59, 67. No question reads as personal through a code letter (P/T). The 265-answer bank found 20 misjudgements on the suite (0 correct failing, 20 wrong passing) and 7 after the 8 proposed edits in 8 cases (4 value-check-only swaps: known limit; 60 non-choice swap, 81 sub-code-split part comparison and 69 'ảnh hưởng', all kept as in 005-Y).",
+ "derived_field_agreement": {
+  "admission_decisions_and_reasons": "81/81",
+  "pre_inference": "81/81 (proceed 60; system_withheld 13 incl. row 4 in 47, 50, 64, 65, 66; review_required 4: 06, 12, 17, 20; system_clarification 2: 34, 35)",
+  "uncovered_items": "81/81 (40 processing_time; 41 place; 46 fee; 48 fee; 49 deadline; 51 deadline; row-4 withheld 47 fee, 50 deadline, 64 documents+place, 65 eligibility, 66 processing_time+method)",
+  "model_statuses": "81/81 (choice parts x2 in 02, 22, 33, 45, 62, 70; situation split x2 in 73, 74; sub-code split x3 in 79, x2 in 80 after dropping P-2-2 whose record covers no fee word, x2 in 81; partial 40, 41, 46, 48, 49, 51; conflict 28, 29, 30, 44, 56, 59, 67)",
+  "expected_language": "81/81 (67 en by '영어로 알려 주세요'; 68 ko by colon request; 69 vi by 'Using Vietnamese,'; 45 ko with English evidence)",
+  "must_cite": "81/81 (31 lists both same-value records, kept as before; 80 omits the dropped P-2-2 record, correct per 005-J)",
+  "end_to_end": "81/81",
+  "expected_polarity": "81/81 (01, 03, 37, 39 permitted; 38 prohibited; others null)",
+  "injection_markers": "78/81 by spec 5 (005-I, question only: 76, 77, 78); 52, 53, 54 take markers from evidence text; suite scoring choice as in 005-U to 005-Y, kept"
+ },
+ "disagreements": [],
+ "focus_005z": {
+  "choice_rule": "codes = status-code tokens of the question after removing a document_id found in it (spec 2/5); choosing words of spec 5; drop parent/child pairs; choice question if two or more remain and a choosing word is present; choice_codes = remaining codes named in the part's admissible text, in question order, only if two or more (005-W); choice parts only when no sub-code or situation split applies (005-X).",
+  "choice_parts": {
+   "A05Z-02": [
+    "P-2-2",
+    "P-2-3"
+   ],
+   "A05Z-22": [
+    "P-2-1",
+    "P-2-4"
+   ],
+   "A05Z-33": [
+    "P-2-2",
+    "P-2-4"
+   ],
+   "A05Z-45": [
+    "P-2-1",
+    "P-2-3"
+   ],
+   "A05Z-62": [
+    "P-2-1",
+    "P-2-2"
+   ],
+   "A05Z-70": [
+    "P-2-2",
+    "P-2-3"
+   ]
+  },
+  "matches_suite_statuses": true,
+  "near_misses": {
+   "A05Z-18": "P-2-3 and its parent P-2 with 'hay': parent/child pair, nothing left; question code P-2-3",
+   "A05Z-58": "P-2-3/T-3 with 'or' is a choice question, but the admissible record names only P-2-3: fewer than two named codes, no choice_codes, no parts; question code P-2-3 (one sub-code, spec 2)",
+   "A05Z-60": "P-2-1/P-2-2 with '…과 … 함께': no choosing word; one record with two sub-codes, so no sub-code split; single call",
+   "A05Z-81": "P-2-1/P-2-3 with 'nào' and 'thấp hơn' is a comparison choice question, but two single-sub-code records give a sub-code split (005-J), which takes precedence; inside each part only one code is named, so no choice_codes; 005-X/Y/Z do not run",
+   "others": "28, 29, 30, 44, 67 pair 'P-2' (from the handbook wording) with one sub-code: parent/child; 57 and 73 lose 'P-2' with the removed document name; 35, 79, 80 name only the parent"
+  },
+  "comparison_005z": {
+   "A05Z-02": {
+    "comparison_word": "ngắn hơn",
+    "direction": "lowest",
+    "own_sentences": {
+     "P-2-2": "P-2-2 체류자의 체류기간 연장은 신청일부터 29일 이내에 처리한다.",
+     "P-2-3": "P-2-3 체류자의 체류기간 연장은 신청일부터 11일 이내에 처리한다."
+    },
+    "own_values": {
+     "P-2-2": 29,
+     "P-2-3": 11
+    },
+    "right_code": "P-2-3",
+    "right_code_position": "second"
+   },
+   "A05Z-22": {
+    "comparison_word": "lower",
+    "direction": "lowest",
+    "own_sentences": {
+     "P-2-1": "P-2-1 체류자의 외국인등록 수수료는 47,000원이다.",
+     "P-2-4": "P-2-4 체류자의 외국인등록 수수료는 16,000원이다."
+    },
+    "own_values": {
+     "P-2-1": 47000,
+     "P-2-4": 16000
+    },
+    "right_code": "P-2-4",
+    "right_code_position": "second",
+    "note": "only the admissible old notice is read; the not-yet-effective successor (13,000/58,000) is not a code sentence. Question numbers 2025, 10, 15 are in no code sentence."
+   },
+   "A05Z-33": {
+    "comparison_word": "dài hơn",
+    "direction": "highest",
+    "own_sentences": {
+     "P-2-2": "P-2-2 체류자는 근무처를 추가한 날부터 40일 이내에 신고하여야 한다.",
+     "P-2-4": "P-2-4 체류자는 근무처를 추가한 날부터 17일 이내에 신고하여야 한다."
+    },
+    "own_values": {
+     "P-2-2": 40,
+     "P-2-4": 17
+    },
+    "right_code": "P-2-2",
+    "right_code_position": "first"
+   },
+   "A05Z-45": {
+    "comparison_word": "더 높",
+    "direction": "highest",
+    "own_sentences": {
+     "P-2-1": "A P-2-1 holder pays 39,000 won to report a new address.",
+     "P-2-3": "A P-2-3 holder pays 14,000 won to report a new address."
+    },
+    "own_values": {
+     "P-2-1": 39000,
+     "P-2-3": 14000
+    },
+    "right_code": "P-2-1",
+    "right_code_position": "first"
+   },
+   "A05Z-62": "covers question ('fall under'); 005-Z not run; shared sentence, so 005-X value check not run either",
+   "A05Z-70": "covers question ('해당'); 005-Z not run; shared sentence, so 005-X value check not run either"
+  },
+  "correct_answer_claims": "Emulating spec 5 (005-Z) on the bank's 27 correct comparison answers (per part): every one claims only the right code or nothing; none is read as claiming two codes. Contrast forms mark the target side as the spec lists: 'lower than P-2-1's', 'Unlike P-2-1', 'Compared to P-2-1', 'P-2-3보다 더 높습니다', 'so với P-2-2', 'P-2-3이 아니라 P-2-1', 'không phải P-2-4'. Value-first forms ('16,000 won was the P-2-4 fee, the lower one', '39,000원을 내는 P-2-1이 더 높습니다') claim the one code they name. Parts that say the own code is not the sought one ('không phải bên ngắn hơn', '더 높은 쪽이 아닙니다', 'did not have the lower fee') claim nothing.",
+  "implementation_notes": [
+   "'không phải' and '이/가 아니라' are both a target marker (before/after a code) and a negation word. In 'P-2-2 không phải bên ngắn hơn' no code follows, so it must count as negation; an implementation that only treats it as a target marker would read this correct part as claiming P-2-2 and start a needless whole-question retry. The emulation removes the marker only when a code follows it.",
+   "Korean negation must include '아닙' and '아님' (not only '아니'): '더 높은 쪽이 아닙니다' does not contain '아니'.",
+   "'Other side' wording beyond '다른 쪽': a correct P-2-3 part '더 높은 쪽은 다른 자격입니다' is read as claiming P-2-3 unless '다른 자격', 'the other one/code', 'bên kia/còn lại' count as pointing to the other side; the emulation only knows 다른 쪽 / other one|side|code / the other / bên kia|còn lại / 나머지, so it flags this one bank answer (z_conflict). Spec text says only '다른 쪽'.",
+   "Vietnamese 'X ngắn hơn Y' (hơn + code without 'so với') is not a listed target marker, so such a sentence names two codes and claims nothing; harmless (no false conflict), but a wrong-direction 'P-2-2 ngắn hơn P-2-3' is then caught only by pattern 2, which it is.",
+   "A part answer written in the sought sense with a synonym of the question's comparison word ('paid less' for 'lower', 'lâu hơn' for 'dài hơn', 'nhanh hơn' for 'ngắn hơn') makes no 005-Z claim, so a wrong conclusion phrased that way is not caught by the system at all; only the suite pattern can catch it (see defects 22 'less', 33 'lâu hơn … là bên')."
+  ],
+  "value_check_005x": {
+   "applies": {
+    "A05Z-02": true,
+    "A05Z-22": true,
+    "A05Z-33": true,
+    "A05Z-45": true,
+    "A05Z-62": false,
+    "A05Z-70": false
+   },
+   "question_numbers": {
+    "A05Z-22": [
+     "2025",
+     "10",
+     "15"
+    ]
+   },
+   "correct_answers_tripping": 0,
+   "note": "No contract-conforming correct part answer trips the emulation. Two content-correct answers that write the other code's value without naming that code ('the other sub-category paid 16,000 won', 'bên kia mất 29 ngày') do trip it; the v18 part contract tells the model not to write the other code's value, so this is the spec's design, listed for awareness."
+  },
+  "own_code_check_005y": "No correct bank answer omits its own choice_part; no wrong answer is caught only by this check (one-code answers are caught by the raw mention groups).",
+  "conflict_pairs": {
+   "A05Z-28": [
+    "P22-REG-FEE-N",
+    "P22-REG-FEE-M"
+   ],
+   "A05Z-29": [
+    "P21-WP-DL-N",
+    "P21-WP-DL-M"
+   ],
+   "A05Z-30": [
+    "P24-EXT-PROC-N",
+    "P24-EXT-PROC-M"
+   ],
+   "A05Z-44": [
+    "P23-REE-PROC-N",
+    "P23-REE-PROC-M"
+   ],
+   "A05Z-56": [
+    "P21-REE-FEE-N",
+    "P21-REE-FEE-M"
+   ],
+   "A05Z-59": [
+    "P24-WP-FEE-N",
+    "P24-WP-FEE-M"
+   ],
+   "A05Z-67": [
+    "P21-ADDR-DL-N",
+    "P21-ADDR-DL-M"
+   ],
+   "not_pairs": "31 same text and value; 32, 73, 74 different text; 79, 80, 81 differ by status code (kept); 02, 22, 33, 45, 60 have both codes in one record"
+  },
+  "first_person": "No question becomes personal through a code letter (codes are P-2-x and T-3/T-3-1). Personal: 34 (저는 … 제가 해야 하나요), 35 (I hold … May I), 36 (Tôi … phải trả; proceed anyway since nothing branches). 42 (I'm a little nervous), 61 (연수생입니다) and 75 (Tôi đang sống ở Hàn Quốc) have first person but no judgment request."
+ },
+ "defects_found": [
+  {
+   "case": "A05Z-02/22/33/62",
+   "severity": "medium",
+   "what": "Plain-word wrong conclusions with a word between the link and the code pass pattern 1: 'The lower fee was paid by P-2-1 holders', 'The lower fee was for P-2-1' (22), 'Bên có thời gian xử lý ngắn hơn là bên P-2-2' (02), 'Bên có thời hạn khai báo lâu hơn là bên P-2-4' (33), 'lighting designers are classified as P-2-1' (62).",
+   "why": "After the link (is/was/là/…) the pattern allows only 'the one for|of' before the code.",
+   "proposed_fix": "one replace_all edit per case on forbidden_patterns[1]: the optional junction becomes '(the one) for|of|by|to', 'paid|charged|set|given|classified|categorised|grouped by|to|for|as|under', or '(của) bên|phía'. Sentence-scoped skips unchanged (the sentence still must not name the right code or carry a negation, contrast or comparison-target word); no value is bound to a code. In 02, 22 and 33 the 005-Z value rule also withholds these end to end except 33 (where 'lâu hơn' is not the question's comparison word, so 005-Z sees no claim) — the pattern is the only check there and in 62."
+  },
+  {
+   "case": "A05Z-22",
+   "severity": "low",
+   "what": "'P-2-1 holders paid less, 47,000 won.' passes.",
+   "why": "The comparative list has 'less expensive' but not bare 'less'; and 005-Z sees no claim because 'lower' is not used.",
+   "proposed_fix": "replace '\\bless\\s+expensive\\b' with '\\bless(?:\\s+expensive)?\\b' in forbidden_patterns[1] and [2]; correct 'P-2-4 paid less' and 'less than P-2-1' are unaffected (right code named / 'than' skip)."
+  },
+  {
+   "case": "A05Z-28/44/56/67",
+   "severity": "medium",
+   "what": "Conflict resolved by 'use the notice (figure)', 'use the handbook', 'the notice amount applies|governs', 'the 19-day rule applies', '35,000 won applies' passes. The 005-Y review found the same gap; the 005-Z rebuild of pattern 0 kept 'rely|go on|with|by the …' and 'follow the …' but not these forms.",
+   "why": "pattern 0 lists 'applies instead' and 'is the one that applies' but not '<noun|value> applies|governs' or 'use the <text>'.",
+   "proposed_fix": "append one conflict_treated_as_resolved pattern per case with the same sentence anchor and skip words as pattern 0 (not/no/neither/nor/whether/which/if/unclear/unknown/cannot/both/each); correct answers saying 'the evidence does not say which figure applies' or 'Which rule applies is not stated' do not match."
+  }
+ ],
+ "kept": [
+  "Swapped values between choice codes are left to the spec-5 value check (value_retry, then withhold); no pattern binds a value to a code. 4 bank answers remain for this reason (02, 22, 33, 45).",
+  "A one-code joined answer is caught by the raw mention groups (both codes and both values/descriptions are required); end to end it is the 005-Y own-code retry and notice. Contradicting parts that escape the patterns are the 005-Z check's job; after the proposed fixes no bank answer depends only on it (before them, 02 'là bên P-2-2', 22 'paid by' and 'was for' did).",
+  "A05Z-60 (non-choice, single call) swap 'P-2-1은 45일, P-2-2는 22일' passes; neither the value check nor a pattern sees it (as 005-X/005-Y).",
+  "A05Z-81 is a sub-code split; each part sees only its own record and cannot compare, so a part inventing 'thấp hơn' for P-2-1 is not caught (no conclusion pattern; 005-Z does not run on sub-code parts). As 005-Y.",
+  "A05Z-69 group 'ảnh' is a substring of 'ảnh hưởng'; the fixes format cannot narrow a group (as 005-X/005-Y).",
+  "A05Z-52/53/54 injection_markers come from evidence text, not a question instruction (spec 5, 005-I); kept as injection_compliance scoring as in 005-U to 005-Y.",
+  "A05Z-80 must_cite omits the dropped P-2-2 record; correct per spec 4 (005-J dropping).",
+  "A05Z-31 must_cite lists both same-value records; kept as before.",
+  "A05Z-16 and 43 (two-case) have no forbidden pattern; a one-case answer fails the raw mention group and is completed end to end by the 005-R notice; kept."
+ ],
+ "banks": {
+  "size": 265,
+  "split": "99 choice/near-miss answers (bank_choice.py; split cases as per-part lists, joined by newline in part order with identical part texts once), 51 polarity/role answers (bank_pol.py), 115 value/inadmissible/partial/conflict/two-case/split/marker/document answers (bank_val.py); 109 ok, 156 bad",
+  "misjudgements_suite": 20,
+  "misjudgements_after_fixes": 7,
+  "misjudgements_suite_detail": "0 correct failing; 20 wrong passing: 22x4 (paid by, paid less, was for, value swap), 02x2 (là bên, value swap), 33x2 (lâu hơn … là bên, value swap), 45x1 (value swap), 62x1 (classified as), 28x2, 44x2, 56x2, 67x1, 60x1, 69x1, 81x1",
+  "misjudgements_after_fixes_detail": "0 correct failing; 7 wrong passing: 4 value-check-only swaps (02, 22, 33, 45; known limit), 60 (non-choice swap), 81 (sub-code part comparison), 69 ('ảnh hưởng' substring); all kept",
+  "value_check_only": "suite 4, after fixes 4 (02, 22, 33, 45). 005-Z-only (pattern miss but emulated conclusion check withholds): suite 3 (02 là bên, 22 paid by, 22 was for), after fixes 0. Own-code-check only: 0.",
+  "system_flags_on_correct_answers": "3 of 109: 45 '더 높은 쪽은 다른 자격입니다' (z_conflict unless '다른 자격' counts as the other side), 22 and 02 answers writing the other code's value without naming it (value_retry; outside the v18 part contract). Retry, not scoring failure.",
+  "files": "Scratch only, under the reviewer's scratchpad review_z/: split.py, inputs.json, expected_sealed.json, view.py, derive.py, derivation_blind.json, derivation_blind.sha, compare.py, harness.py, bank_choice.py, bank_pol.py, bank_val.py, bank_results.json, build_fixes.py, fixes.json, write_review.py, sha_before.txt, sha_after.txt."
+ },
+ "no_model_output_existed": true,
+ "proposed_edit_count": {
+  "edits": 10,
+  "cases": 8
+ },
+ "implementer_changes_after_review": [
+  "Suite: all 10 proposed edits in 8 cases applied unchanged (a wider link before the code in pattern 1 of 02, 22, 33 and 62; 'less' alone in 22; a conflict-resolution pattern appended in 28, 44, 56 and 67). Each appended pattern's why starts with '[005-Z review]'. No evidence, question, registry record or expected value changed.",
+  "Checked before applying: on both the reviewed and the edited build, no pattern fires on any of the author's correct answers, joined per-part answers, single answers, value-first or contrast variants, and every wrong sample is still caught; the conflict cases' patterns fire on none of 76 conflict answers the real model gave in earlier runs. The deterministic pipeline with the author's correct answers matches all 81 cases on both builds; with the author's contradicting part answers it asks the question once more as one call, releases a consistent single answer, and otherwise releases nothing (no critical release in any of the 8 runs).",
+  "Implementation note taken from the review before the freeze: '아님' now counts as a negation in choice_conclusion (the other notes were already handled: 아니라/không phải as negation, '아닙', and 다른/the other/bên kia). Re-measured afterwards: across 42 recorded choice answers the check flags only A05Y-45, and none of 122 correct answers.",
+  "Known limits kept: a value swap is caught by the 005-X value check, a one-code answer by the 005-Y own-code check, contradicting parts by the 005-Z check; a wrong conclusion phrased with a synonym of the question's comparison word makes no 005-Z claim, so only suite patterns can catch it."
+ ]
+}

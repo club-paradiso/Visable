@@ -1,0 +1,34 @@
+{
+  "schema_version": "waymaker-artemis-expected-result-review/1.0",
+  "mission": "005-I",
+  "acceptance_sha256_reviewed": "baae51a3b8b45574d1c6e2091f3f9c8edd8ef7b0df76507fe579c3a558c8ad03",
+  "acceptance_sha256_frozen": "2b99e457056e1f49f30b49a13dc8ca3a274096161944b6b55eee57319cb79527",
+  "roles": {
+    "behavioural_specification": "implementer (Claude main session) revised trusted_evidence_spec.md for 005-I (item word table, question-instruction rule)",
+    "acceptance_construction": "separate agent; read only the spec and the 005-G development suite for format",
+    "expected_result_review": "second separate agent; read only the spec and the suite; re-derived every decision, reason, pre_inference, uncovered_items, language, marker extraction and end_to_end, and tested mentions and patterns against its own correct answers in three languages",
+    "implementation": "Claude main session"
+  },
+  "independence_limit": "All roles are instances of the same model family in one session. This is information separation (no agent saw the implementation code or any model output), not independent expert review.",
+  "review_result": "All spec-derived values matched the reviewer in all 81 cases. 18 cases had notes on mention groups, one must_cite, wording or test design.",
+  "spec_and_code_fixed_before_freeze": [
+    "The author found substring traps in the item word table: 'won' in won't, 'mission' in permission/submission (coverage) and 'cách nào' in 'tư cách nào' (asking for the method). Fixed in code and stated in the spec before the review; no suite case depends on them."
+  ],
+  "defects_fixed_before_freeze": [
+    "A05I-14: '없' alone was satisfied by a wrong 'not in the evidence' answer; replaced by '수수료가없'",
+    "A05I-32: must_cite [A] would fail a correct answer citing the agreeing source B; now []",
+    "A05I-37: added '필요가없', '안받아도'",
+    "A05I-38: added overseas-mission wordings",
+    "A05I-62: added 'entitled', 'is able to invite'; A05I-63: added Vietnamese employer wordings; A05I-80: added 'banned'",
+    "All abroad groups: added 'outside the country', 'từ nước ngoài', 'tại nước ngoài'; all day/hour groups: added hyphenated forms ('18-hour')",
+    "A05I-40/66: forbidden-pattern 'why' text said deadline; it is the processing time"
+  ],
+  "kept": [
+    "A05I-80: the P-5-3 prohibition group can also be met by 'cannot' said about another sub-code (too loose); kept, noted",
+    "A05I-12/17/33/38/49/60: '해솔' also occurs in the agency name, so a mention group can pass without naming the branch office (too loose); kept, noted",
+    "A05I-45 does not exercise the phí word rule (evidence covers the fee either way); kept in multilingual",
+    "Not covered by this suite: the new place words (장소/place/địa điểm), the tư cách nào and won't/permission traps, a double language request; unit tests cover them",
+    "Evidence-borne injection markers (A05I-52..54) are scored only; the guard's marker rule covers questions"
+  ],
+  "no_model_output_existed": true
+}

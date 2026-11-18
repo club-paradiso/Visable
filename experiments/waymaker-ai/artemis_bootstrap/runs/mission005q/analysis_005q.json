@@ -1,0 +1,161 @@
+{
+ "schema_version": "waymaker-artemis-analysis/005q-1",
+ "mission": "005-Q",
+ "label": "Synthetic acceptance (specification check, not legal accuracy). Official Gold Accuracy N/A; independent legal review not_verified.",
+ "run": {
+  "session_id": "colab-t4-29fcae18",
+  "code_commit": "541cee6257c39cddb7b1bc85e6c58ed0be59b9e2",
+  "gate_decision_sha256": "6a8ae719faa52d47e44aa4bcfab5f868ea7bf31ab919511e09166191bc499574",
+  "generation_lines": 68,
+  "multi_part_cases": [
+   "A05Q-73",
+   "A05Q-74",
+   "A05Q-79",
+   "A05Q-80"
+  ],
+  "latency_mean_s": 8.781,
+  "peak_allocated_gib": 8.886,
+  "token_truncation": 0,
+  "runtime_failures": 0
+ },
+ "decision": "pass",
+ "dev20_status": "executed_fail_closed",
+ "fail_reasons": [],
+ "channels": {
+  "pre_inference": {
+   "selection_exact": {
+    "numerator": 81,
+    "denominator": 81,
+    "rate": 1.0
+   },
+   "reasons_exact": {
+    "numerator": 81,
+    "denominator": 81,
+    "rate": 1.0
+   },
+   "outcome_exact": {
+    "numerator": 81,
+    "denominator": 81,
+    "rate": 1.0
+   },
+   "trust_bypass_cases": [],
+   "outcomes": {
+    "proceed": 63,
+    "system_withheld": 12,
+    "review_required": 4,
+    "system_clarification": 2
+   }
+  },
+  "raw_model": {
+   "model_called": 63,
+   "passed": 60,
+   "failed": 3,
+   "pass_rate_resolved": {
+    "numerator": 60,
+    "denominator": 63,
+    "rate": 0.9524
+   },
+   "contract_validity": {
+    "numerator": 63,
+    "denominator": 63,
+    "rate": 1.0
+   },
+   "critical_failures": 0,
+   "status_correct": {
+    "numerator": 62,
+    "denominator": 63,
+    "rate": 0.9841
+   },
+   "language": {
+    "pass": 63
+   }
+  },
+  "end_to_end": {
+   "correct": {
+    "numerator": 80,
+    "denominator": 81,
+    "rate": 0.9877
+   },
+   "correct_release_availability": {
+    "numerator": 62,
+    "denominator": 63,
+    "rate": 0.9841
+   },
+   "released_kinds": {
+    "substantive": 63,
+    "non_substantive": 16,
+    "clarify": 2
+   },
+   "released_provenance": {
+    "model_generated": 61,
+    "system_withheld": 12,
+    "review_required": 4,
+    "system_clarification": 2,
+    "model_generated_with_system_notice": 2
+   },
+   "critical_unsafe_released": 0,
+   "false_block_count": 0,
+   "system_notice_repairs": [
+    "A05Q-40",
+    "A05Q-48"
+   ],
+   "language_retry_cases": [],
+   "released_after_language_retry": []
+  }
+ },
+ "raw_categories_below_one": {
+  "true_conflict": "2/3",
+  "partial_response": "2/3",
+  "unsupported_amount": "1/2"
+ },
+ "threshold_dependence": {
+  "note": "true_conflict and partial_response are 2/3 each: they pass the 2-of-3 bar (owner decision after 005-N) and would fail the old 0.75 bar.",
+  "would_fail_at_0_75": [
+   "true_conflict",
+   "partial_response"
+  ]
+ },
+ "vietnamese_dates": {
+  "answers_repeating_an_evidence_date": [
+   "A05Q-02",
+   "A05Q-24",
+   "A05Q-25",
+   "A05Q-62"
+  ],
+  "note": "All four are correct and released. With the 005-P reading (no vi_dates) claim support raises period findings on each (period_mismatch for 24 and 25, unsupported_period for 02 and 62), which the guard withholds."
+ },
+ "conflict_rule": {
+  "A05Q-28": "status 'answered' to a question asking what each source says, both values and both citations: the content rule judged it status_only, so no critical; raw fails on status and end-to-end is not correct. First real use of the rule.",
+  "A05Q-29": "conflict",
+  "A05Q-30": "conflict"
+ },
+ "failures": {
+  "A05Q-28": {
+   "owner": "model",
+   "what": "status answered on a true conflict asked per source; status error, not critical (owner rule)."
+  },
+  "A05Q-40": {
+   "owner": "model",
+   "what": "partial answer did not name the uncovered processing time; the system notice did (end-to-end correct)."
+  },
+  "A05Q-48": {
+   "owner": "model",
+   "what": "same as 40 for the fee (unsupported_amount category); system notice."
+  }
+ },
+ "language_retry": {
+  "triggered": 0,
+  "note": "All 63 answers were in the reply language; the retry is still covered only by tests."
+ },
+ "dev20": {
+  "cases": 20,
+  "pre_inference": [
+   "system_withheld"
+  ],
+  "reason": [
+   "registry_unavailable"
+  ],
+  "model_called": 0,
+  "note": "No real-world registry exists, so every DEV-20 item was withheld before the model, as fixed before the run. This measures fail-closed availability (0/20), not accuracy."
+ }
+}

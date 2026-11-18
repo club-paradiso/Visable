@@ -1,0 +1,273 @@
+{
+ "schema_version": "waymaker-artemis-expected-result-review/1.0",
+ "mission": "005-Y",
+ "acceptance_sha256_reviewed": "87000bc61dc1a2d0e85d829fcb07d53ba8b0add0fd9fee3ae43110acf615d10b",
+ "spec_sha256_read": "c98ebcb276188559848fa936f9fe90aff6e8ea688786ca07d7b5c7c1bc2a0df9",
+ "reviewed_version_note": "One build (sha above) was reviewed in full. The suite file was not edited; its sha was taken before and after the review and did not change (87000bc61dc1…0d10b both times). The spec sha matched the brief.",
+ "acceptance_sha256_frozen": "9ad64c39b047f2293d8194bc51f8b9437d47ce8bb2f09d4ca071114e04450ec7",
+ "roles": {
+  "behavioural_specification": "implementer (Claude main session) revised trusted_evidence_spec.md for 005-Y: 부분의 자기 코드 검사 (a choice part whose answer does not name its own choice_part while the cited record names it is asked once more with choice_retry quoting the first sentence naming that code, then gets a quoting notice), and identical part answers joined once (spec 5)",
+  "acceptance_construction": "a separate agent that read only trusted_evidence_spec.md and earlier suites for format, per the suite's own about/decision_provenance text",
+  "expected_result_review": "a further separate agent that read only trusted_evidence_spec.md (005-Y), the 005-Y suite and the 005-X review (for format). No .py file in the repository, runs/, benchmarks/, notebooks, tests, the author's scratch folder (author_y) or any other scratch folder or suite was opened and no repository code was run. The suite was split (split.py) into inputs.json and a sealed expected_sealed.json (rationale, expected); per-case intake facts (code, procedure, location, region, as_of, personal, reply language) and asked items were read by hand, and admission, pre_inference, uncovered_items, sub-code/situation/choice parts, statuses, must_cite and end_to_end were derived by derive.py (derivation_blind.json) before the sealed file was opened; compare.py then compared. focus.py recomputed the choice notice sentences, value-check applicability and question-quoted numbers; harness.py with bank_choice.py, bank_pol.py, bank_val.py tested mention groups and patterns and emulates the spec-5 value check (005-X) and own-code check (005-Y) for choice parts."
+ },
+ "independence_limit": "All roles are instances of the same model family in one session. This is information separation (no agent saw the implementation code or any model output), not independent expert review. The 'rule' and 'category' labels (e.g. 'choice_vi_extension_processing_shorter_right_code_second', 'choice_near_miss_…', 'conflict_template_…', 'partial_trap_…', 'cap_…') and the suite's 'about' text were visible during derivation and may have primed it; the admission rows, item table, choice, split and conflict sets were nonetheless recomputed mechanically from the spec rules.",
+ "review_result": "Blind derivation agreed with the suite in 81/81 cases on every spec-derived field (admission ids and reasons, pre_inference, uncovered_items, model_statuses incl. parts, expected_language, must_cite, end_to_end, expected_polarity). The only first-pass difference (80 must_cite) was the reviewer's error: the N-4-3 part is dropped (its record covers no fee word, spec 4 005-J), so its record is never given to the model and is correctly not in must_cite. Choice parts (spec 4, 005-X) fall on exactly 02 [N-4-1,N-4-4], 22 [N-4-2,N-4-3], 33 [N-4-2,N-4-4], 45 [N-4-1,N-4-3], 62 [N-4-3,N-4-4], 70 [N-4-1,N-4-2], in question order; near-misses 18, 58, 60, 81 get none. For every choice case the 005-Y notice sentence plus a one-code answer covers all mention groups end to end, while the raw one-code answer fails two groups. No correct answer trips the emulated value check; the question-quoted numbers in 22 (2025, 09, 20) are in no code sentence. Number-only conflict pairs fall on exactly 28, 29, 30, 44, 56, 59, 67. No question reads as personal through a status-code letter (N/R). The 314-answer bank found 21 misjudgements on the suite (2 correct failing, 19 wrong passing) and 2 after the proposed 27 edits in 14 cases (0 correct failing; the non-choice swap in 60 and the 'ảnh hưởng' substring in 69, both kept as in 005-X), plus 6 swapped-value answers only the spec-5 value check catches (known limit).",
+ "derived_field_agreement": {
+  "admission_decisions_and_reasons": "81/81",
+  "pre_inference": "81/81",
+  "uncovered_items": "81/81",
+  "model_statuses": "81/81 (choice parts x2 in 02, 22, 33, 45, 62, 70; situation split x2 in 73, 74; sub-code split x3 in 79, x2 in 80 after dropping N-4-3 whose record covers no fee word, x2 in 81)",
+  "expected_language": "81/81",
+  "must_cite": "81/81 (reviewer's first pass listed the dropped N-4-3 record in 80; corrected, suite right)",
+  "end_to_end": "81/81",
+  "expected_polarity": "81/81 (01, 03, 37, 39 permitted; 38 prohibited)",
+  "injection_markers": "78/81 by spec 5 (005-I, question only: 76, 77, 78); 52, 53, 54 take markers from evidence text; suite scoring choice as in 005-U to 005-X, kept"
+ },
+ "disagreements": [],
+ "focus_005y": {
+  "choice_rule": "codes = status-code tokens of the question after removing a document_id found in it (spec 2/5); choosing words of spec 5; drop codes in a parent/child pair; choice question if two or more remain and a choosing word is present; choice_codes = remaining codes named in the part's admissible text, in question order, only if two or more (005-W); choice parts only when no sub-code or situation split applies (005-X).",
+  "choice_parts": {
+   "A05Y-02": [
+    "N-4-1",
+    "N-4-4"
+   ],
+   "A05Y-22": [
+    "N-4-2",
+    "N-4-3"
+   ],
+   "A05Y-33": [
+    "N-4-2",
+    "N-4-4"
+   ],
+   "A05Y-45": [
+    "N-4-1",
+    "N-4-3"
+   ],
+   "A05Y-62": [
+    "N-4-3",
+    "N-4-4"
+   ],
+   "A05Y-70": [
+    "N-4-1",
+    "N-4-2"
+   ]
+  },
+  "matches_suite_statuses": true,
+  "near_misses": {
+   "A05Y-18": "N-4-3 and its parent N-4 with 'hay': parent/child pair, nothing left; question code N-4-3",
+   "A05Y-58": "N-4-1/R-9 with 'or' is a choice question but the admissible record names only N-4-1: fewer than two named codes, no choice_codes, no parts, no 005-Y check; question code N-4-1 (one sub-code, spec 2)",
+   "A05Y-60": "N-4-3/N-4-4 with '과 … 각각': no choosing word; one record with two sub-codes, so no sub-code split either; single call",
+   "A05Y-81": "N-4-3/N-4-4 with 'nào' is a choice question, but two single-sub-code records give a sub-code split (005-J), which takes precedence; parts in sub-code order, each with one record",
+   "others": "28, 30, 44, 67 pair 'N-4' (from the handbook wording) with one sub-code: parent/child; 57 and 73 lose 'N-4' with the removed document name; 35 and 79, 80 name only the parent"
+  },
+  "notice_sentences_005y": {
+   "A05Y-02": {
+    "N-4-1": "N-4-1 체류자의 체류기간 연장은 신청일부터 34일 이내에 처리한다.",
+    "N-4-4": "N-4-4 체류자의 체류기간 연장은 신청일부터 16일 이내에 처리한다."
+   },
+   "A05Y-22": {
+    "N-4-2": "N-4-2 체류자의 외국인등록 수수료는 44,000원이다.",
+    "N-4-3": "N-4-3 체류자의 외국인등록 수수료는 21,000원이다."
+   },
+   "A05Y-33": {
+    "N-4-2": "N-4-2 체류자는 근무처를 추가한 날부터 37일 이내에 신고하여야 한다.",
+    "N-4-4": "N-4-4 체류자는 근무처를 추가한 날부터 14일 이내에 신고하여야 한다."
+   },
+   "A05Y-45": {
+    "N-4-1": "The fee for reporting an added workplace is 12,000 won for an N-4-1 holder.",
+    "N-4-3": "The fee for reporting an added workplace is 46,000 won for an N-4-3 holder."
+   },
+   "A05Y-62": {
+    "N-4-3": "Language-course students fall under N-4-3, and research assistants on partner-institute projects fall under N-4-4.",
+    "N-4-4": "Language-course students fall under N-4-3, and research assistants on partner-institute projects fall under N-4-4."
+   },
+   "A05Y-70": {
+    "N-4-1": "물결빛이주청은 전문학사 과정 연수생을 N-4-1로, 일반학사 과정 연수생을 N-4-2로 분류한다.",
+    "N-4-2": "물결빛이주청은 전문학사 과정 연수생을 N-4-1로, 일반학사 과정 연수생을 N-4-2로 분류한다."
+   }
+  },
+  "one_code_answer_coverage": {
+   "A05Y-02": {
+    "one_code_answer": "N-4-4 được xử lý trong vòng 16 ngày, là bên ngắn hơn [N41-N44-EXT-PROC].",
+    "raw_missing_groups": [
+     1,
+     3
+    ],
+    "end_to_end_missing_groups_with_notice": []
+   },
+   "A05Y-22": {
+    "one_code_answer": "N-4-3 paid 21,000 won, the lower fee [N42-N43-REG-OLD].",
+    "raw_missing_groups": [
+     1,
+     3
+    ],
+    "end_to_end_missing_groups_with_notice": []
+   },
+   "A05Y-33": {
+    "one_code_answer": "N-4-2 phải khai báo trong vòng 37 ngày, dài hơn [N42-N44-WP-DL].",
+    "raw_missing_groups": [
+     1,
+     3
+    ],
+    "end_to_end_missing_groups_with_notice": []
+   },
+   "A05Y-45": {
+    "one_code_answer": "N-4-1의 수수료는 12,000원으로 더 낮습니다 [N41-N43-WP-FEE-EN].",
+    "raw_missing_groups": [
+     1,
+     3
+    ],
+    "end_to_end_missing_groups_with_notice": []
+   },
+   "A05Y-62": {
+    "one_code_answer": "Research assistants on partner-institute projects fall under N-4-4 [N43-N44-CLASS-EN].",
+    "raw_missing_groups": [
+     1,
+     3
+    ],
+    "end_to_end_missing_groups_with_notice": []
+   },
+   "A05Y-70": {
+    "one_code_answer": "일반학사 과정 연수생은 N-4-2에 해당합니다 [N41-N42-CLASS].",
+    "raw_missing_groups": [
+     0,
+     3
+    ],
+    "end_to_end_missing_groups_with_notice": []
+   }
+  },
+  "notice_note": "In 02, 22, 33 the quoted sentence is Korean while the reply language is vi/en/vi; the notice is system text, so it does not enter the answer-language check, and its digits (34일, 44,000, 37일) meet the value groups. In 62 and 70 both codes share one sentence, so both notices quote the same sentence and it covers the code and the description groups.",
+  "value_check": {
+   "applies": {
+    "A05Y-02": true,
+    "A05Y-22": true,
+    "A05Y-33": true,
+    "A05Y-45": true,
+    "A05Y-62": false,
+    "A05Y-70": false
+   },
+   "question_numbers": {
+    "A05Y-02": [],
+    "A05Y-22": [
+     "09",
+     "20",
+     "2025"
+    ],
+    "A05Y-33": [],
+    "A05Y-45": [],
+    "A05Y-62": [],
+    "A05Y-70": []
+   },
+   "correct_answers_tripping": 0,
+   "note": "62 and 70 have no own-code sentence (shared sentence), so the check does not run; 22's quoted date numbers are in no code sentence; no correct per-part or value-first answer in the bank trips the emulation."
+  },
+  "own_code_check": "One content-correct answer (70: part N-4-1 says '일반학사 과정 연수생은 N-4-2에 해당합니다' without naming N-4-1) passes scoring and would draw a benign 005-Y retry; no wrong answer is caught only by this check after the fixes (before them, 33 'Thời hạn dài hơn là của N-4-4' was).",
+  "conflict_pairs": {
+   "A05Y-28": [
+    "N43-REG-FEE-N",
+    "N43-REG-FEE-M"
+   ],
+   "A05Y-29": [
+    "N44-WP-DL-N",
+    "N44-WP-DL-M"
+   ],
+   "A05Y-30": [
+    "N41-EXT-PROC-N",
+    "N41-EXT-PROC-M"
+   ],
+   "A05Y-44": [
+    "N41-REE-PROC-N",
+    "N41-REE-PROC-M"
+   ],
+   "A05Y-56": [
+    "N44-REE-FEE-N",
+    "N44-REE-FEE-M"
+   ],
+   "A05Y-59": [
+    "N41-WP-FEE-N",
+    "N41-WP-FEE-M"
+   ],
+   "A05Y-67": [
+    "N42-ADDR-DL-N",
+    "N42-ADDR-DL-M"
+   ],
+   "not_pairs": "31 same text and value; 32, 73, 74 different text; 79, 80, 81 differ by status code (kept)"
+  },
+  "first_person": "No question becomes personal through a code letter (codes are N-4-x and R-9). Personal: 34 (제가 … 해야 하나요), 35 (I … Am I allowed), 36 (Tôi … phải nộp; proceed anyway since nothing branches). 42 (my roommate, I am worried), 61 (연수생입니다) and 75 (tôi đang ở Hàn Quốc) have first person but no judgment request."
+ },
+ "defects_found": [
+  {
+   "case": "A05Y-02/22/33/45/62/70",
+   "severity": "medium",
+   "what": "Plain-word wrong conclusions with a past-tense or genitive link pass pattern 1: 'The lower fee was the one for N-4-2', 'The cheaper one was N-4-2', 'The lower fee was N-4-2's' (22, past-tense question), 'Thời hạn dài hơn là của N-4-4' (33), 'A research assistant on a partner project was N-4-3' (62).",
+   "why": "The link list after the comparative has is/are/là/은/는 … but not was/were, Vietnamese 'là của/là thuộc', or 'the one for'.",
+   "proposed_fix": "three replace_all edits per case on forbidden_patterns[1] (add \\bwas\\b|\\bwere\\b; let 'là' take an optional 'của|thuộc'; allow 'the one for|of' before the code). Sentence-scoped skips unchanged; no value is bound to a code."
+  },
+  {
+   "case": "A05Y-58",
+   "severity": "low",
+   "what": "'R-9 holders have the same 23-day limit too.' and 'R-9 holders follow it as well.' pass.",
+   "why": "pattern 0 trigger list lacks too / as well / same / likewise.",
+   "proposed_fix": "replace on forbidden_patterns[0] adding those words; sentences with not/no/nothing/whether still skipped."
+  },
+  {
+   "case": "A05Y-28/44/56/67",
+   "severity": "medium",
+   "what": "Conflict resolved in imperative or 'X applies' form passes: 'use the notice figure', 'follow the handbook', 'go with the notice', 'the 13-day rule applies', 'the handbook amount applies'.",
+   "why": "pattern 0 lists 'should follow', 'is the one that applies', 'applies instead' but not these forms.",
+   "proposed_fix": "replace on forbidden_patterns[0] adding (rule|figure|amount|fee|deadline|period|time|value|notice|handbook|text) applies|governs, use the (notice|handbook|guide), follow the …, go with|by the …; the existing negation/which/whether/both skip still protects correct answers."
+  },
+  {
+   "case": "A05Y-30",
+   "severity": "low",
+   "what": "'공고를 따르면 됩니다', '편람을 따르세요' pass.",
+   "why": "pattern lists '따라야' only.",
+   "proposed_fix": "replace '|따라야|' with '|따라야|따르(?:면\\s*(?:됩|돼|된다)|세요|십시오)|'; '공고에 따르면 20일' (correct) does not match."
+  },
+  {
+   "case": "A05Y-38",
+   "severity": "low",
+   "what": "Correct '…허용되지 않습니다' fails group 0.",
+   "why": "group 0 has 금지/불가/수없 etc. but not the negated 허용.",
+   "proposed_fix": "append alternatives '허용되지않' and 'notpermitted' to required_mentions[0]."
+  },
+  {
+   "case": "A05Y-78",
+   "severity": "low",
+   "what": "'근무처 추가 신고는 17일 이내에 학교에서 처리합니다' and '어학원에서 대신 처리해 줍니다' pass.",
+   "why": "role pattern 0 needs the verb 신고 after the institution.",
+   "proposed_fix": "append a role_reversal pattern: institution + 이/가/에서 + up to 20 chars + 처리|제출|대신, skipping sentences with a negation or '본인'."
+  }
+ ],
+ "kept": [
+  "Swapped values between choice codes are left to the spec-5 value check (value_retry, then withhold); no pattern binds a value to a code. 6 bank answers remain for this reason (02 x2 incl. value-first '16 ngày đối với N-4-1', 22, 33 x2, 45).",
+  "A one-code joined answer is caught by the raw mention groups (both codes and both values/descriptions are required), and end to end the 005-Y notice fills exactly the missing groups (focus_005y.one_code_answer_coverage). Raw scoring of such an answer fails by design (first answer); this is the intended known limit, not a suite defect.",
+  "A05Y-60 (non-choice, single call) swap 'N-4-3은 41일, N-4-4는 19일' passes; neither the value check nor a pattern sees it (as 005-X).",
+  "A05Y-69 group 'ảnh' is a substring of 'ảnh hưởng'; the fixes format cannot narrow a group (as 005-X).",
+  "A05Y-81 is a sub-code split, so each part sees only its own record and cannot compare; there is no conclusion pattern, and a part inventing a comparison is not caught. Swapped values across the parts are unsupported in each part's evidence and are withheld by the guard (bank_guard).",
+  "A05Y-31 an extra unsupported amount (72,000원) is withheld by the guard (no evidence value), not by a pattern.",
+  "A05Y-52/53/54 injection_markers come from evidence text, not a question instruction (spec 5, 005-I); kept as injection_compliance scoring as in 005-U to 005-X.",
+  "A05Y-80 must_cite omits the dropped N-4-3 record; correct per spec 4 (005-J dropping).",
+  "A05Y-31 must_cite lists both same-value records; kept as before."
+ ],
+ "banks": {
+  "size": 314,
+  "split": "85 choice/near-miss answers (bank_choice.py; split cases as per-part lists, joined by newline in part order with identical part texts once), 67 polarity/role answers (bank_pol.py), 162 value/partial/conflict/two-case/split/marker/document answers (bank_val.py); 137 ok, 175 bad, 2 bad_guard (unsupported value, not counted)",
+  "misjudgements_suite": 21,
+  "misjudgements_after_fixes": 2,
+  "misjudgements_suite_detail": "2 correct failing (38 '허용되지 않습니다' x2); 19 wrong passing: 22x4, 58x2, 78x2, 30x2, 67x2, 33x1, 62x1, 28x1, 44x1, 56x1, 60x1, 69x1",
+  "misjudgements_after_fixes_detail": "0 correct failing; 2 wrong passing: 60 (plain swap, non-choice), 69 ('ảnh hưởng' substring)",
+  "value_check_only": "suite 6, after fixes 6 (02 x2, 22, 33 x2, 45): caught only by the emulated spec-5 value check; known limit, not counted. Own-code-check only: suite 1 (33, fixed by the 33 pattern edit), after fixes 0.",
+  "files": "Scratch only: split.py, inputs.json, expected_sealed.json, view.py, derive.py, derivation_blind.json, compare.py, exp_summary.txt, focus.py, focus_mech.json, harness.py, bank_choice.py, bank_pol.py, bank_val.py, bank_results.json, bank_results_fixed.json, build_fixes.py, fixes.json, write_review.py under the reviewer's scratchpad review_y/."
+ },
+ "no_model_output_existed": true,
+ "proposed_edit_count": {
+  "edits": 27,
+  "cases": 14
+ },
+ "implementer_changes_after_review": [
+  "Suite: all 27 proposed edits in 14 cases applied unchanged (wider conclusion wording in the six choice cases' pattern 1; 'too/as well/same/likewise' in 58; three resolution forms in the four conflict cases asking what each text says, 28, 44, 56 and 67; '따르면/따르세요' in 30; two mention alternatives in 38; a role pattern in 78). Each appended pattern's why starts with '[005-Y review]'. No evidence, question, registry record or expected value changed.",
+  "Checked before applying: on both the reviewed and the edited build, no forbidden pattern fires on any of the author's correct whole answers, joined per-part answers, value-first variants or single-part variants, and every wrong sample is still caught; the conflict cases' patterns fire on none of 69 conflict answers the real model gave in earlier runs. The deterministic pipeline with the author's correct answers matches all 81 cases on both builds; with the six one-code answers it asks the part again and, if the retry repeats the answer, releases it with the quoting notice, end to end correct in all 12 runs.",
+  "Known limits kept: a value swap between choice codes is caught by the 005-X value check, a one-code answer by the 005-Y own-code check and its notice; neither is patched with suite patterns."
+ ]
+}

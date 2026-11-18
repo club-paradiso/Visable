@@ -1,0 +1,31 @@
+{
+  "schema_version": "waymaker-artemis-expected-result-review/1.0",
+  "mission": "005-H",
+  "acceptance_sha256_reviewed": "798cec770f27d8476b79747cc870327ac369554f81b5f1b1117c9878eccb84f2",
+  "acceptance_sha256_frozen": "82fe75e4ab378295e3a70cfedad42a2da4bb622712c21980f852d1bb63fadd34",
+  "roles": {
+    "behavioural_specification": "implementer (Claude main session) revised trusted_evidence_spec.md for 005-H",
+    "acceptance_construction": "separate agent; read only the spec and the 005-G development suite for format",
+    "expected_result_review": "second separate agent; read only the spec and the suite; re-derived every admissibility decision, reason, pre_inference, uncovered_items, language, model_statuses and end_to_end independently and tested required_mentions and forbidden_patterns against its own correct answers",
+    "implementation": "Claude main session"
+  },
+  "independence_limit": "All roles are instances of the same model family in one session. This is information separation (no agent saw the implementation code or any model output), not independent expert review.",
+  "review_result": "Admissibility, reasons, pre_inference, expected_language, model_statuses and end_to_end matched the reviewer in all 75 cases. uncovered_items differed in 6 row-4 withhold cases.",
+  "defects_fixed_before_freeze": [
+    "A05H-42/46/49/64/65/66: uncovered_items was [] on row-4 withholds; now the asked items, and the spec and pipeline record the list on row 4 (it is the reason for the withhold). Not a scored field.",
+    "A05H-45/61: required_mentions widened with 'cấm' (prohibited)",
+    "A05H-59: required_mentions widened with 'prohibited', 'must not'",
+    "A05H-45: polarity pattern matched a correct rebuttal ('... nói là được làm thêm không đúng'); narrowed",
+    "A05H-60: role-reversal pattern matched a negated sentence ('회사에서 신고해야 한다는 내용은 근거에 없고'); narrowed",
+    "A05H-39/75: abroad mention 'nướcngoài' was met by 'người nước ngoài' (foreigner); now 'ở nước ngoài'/'ngoài Hàn Quốc'",
+    "A05H-05/12/16/20: critical_rules now list value_from_inadmissible (they carry such patterns); A05H-23/24/44 now list inadmissible_citation",
+    "Spec: item coverage is read from evidence words regardless of question language (stated; it was implied)"
+  ],
+  "kept": [
+    "A05H-42 stays in partial_response although it tests a row-4 withhold, so partial_response has 2 model-called cases and is reported but not rated (fewer than 3 calls)",
+    "A05H-66 (decision question plus a place) stays a row-4 withhold, as the spec reads literally",
+    "A05H-22: a correct answer that repeats the question's date may be blocked by the guard's date check; kept as a real risk to measure",
+    "A05H-32: must_cite empty (either agreeing source is enough)"
+  ],
+  "no_model_output_existed": true
+}

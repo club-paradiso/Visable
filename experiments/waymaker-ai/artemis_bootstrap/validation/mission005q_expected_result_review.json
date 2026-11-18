@@ -1,0 +1,29 @@
+{
+  "schema_version": "waymaker-artemis-expected-result-review/1.0",
+  "mission": "005-Q",
+  "acceptance_sha256_reviewed": "9c4b5bfd81efb601207786ebf1681565c5e88c20e5cb3dd16b44877596e9c869",
+  "reviewed_version_note": "The first build (sha above) was reviewed in full. Fix rounds 1, 2 and 2b changed only required_mentions and forbidden_patterns. The reviewer re-ran all its banks plus 223 new answers on the round-1 build; the implementer re-ran the reviewer's comparison and every bank on the frozen build (round 2b): the 223-answer bank and the hand-written banks report no issue; the 62 items of the generated number bank are single-value probes that fail a case's other required mention by design (cases 40, 42, 48, 49), as in the reviewer's own runs.",
+  "acceptance_sha256_frozen": "2d7eb0f94b39452fc1e02fe845951ab8875cdbb5b0cdbb8e0631b521c2de7551",
+  "roles": {
+    "behavioural_specification": "implementer (Claude main session) revised trusted_evidence_spec.md for 005-Q: claim support reads Vietnamese dates as dates (section 5)",
+    "acceptance_construction": "a separate agent that read only trusted_evidence_spec.md and the 005-P acceptance suite (for format), not the code or any model output",
+    "expected_result_review": "a second separate agent that read only the spec and the suite, derived every expected value blind before comparing, and tested mention groups and patterns with its own whole correct, wrong and negated answers in three languages, incl. synonyms for every document word, Vietnamese dates and photo lists, relative and complement clauses, clefts and two-sentence answers"
+  },
+  "independence_limit": "All roles are instances of the same model family in one session. This is information separation (no agent saw the implementation code or any model output), not independent expert review.",
+  "review_result": "All spec-derived values (decisions and reasons, pre_inference, uncovered_items, statuses incl. split parts, reply language, end_to_end) matched the reviewer in all 81 cases; must_cite matched in 79 (see kept). The deterministic pipeline's selection, reasons, pre-inference outcome, uncovered items and reply language matched the suite in all 81 cases, with no evaluator data in any prompt. Sample Vietnamese answers repeating the evidence date in the five date-focus cases (02, 24, 25, 41, 62) are released by the 005-Q guard and pass gate v12.",
+  "defects_fixed_before_freeze": [
+    "Role patterns firing on correct answers: 61 'No agent or institution may apply', 'Neither … nor …', 'Nobody else may apply', 'Không ai được nộp thay'; 36 the institution as subject with a relative phrase in between ('Cơ sở chăm sóc tiếp nhận thực tập sinh sẽ nộp thay', 'Viện dưỡng lão đã nhận bạn sẽ nộp đơn thay')",
+    "Correct answers rejected: 61 plural and cleft forms ('Forest surveyors must apply', 'It is the surveyor, not the institution, who must apply', 'The surveyor alone must apply'); 38 'cho phép/phê duyệt' forms; Vietnamese photo list forms incl. newline-separated lists (18, 41, 46, 56); 62 '18.12.2026', 'tháng Mười Hai', '18th December'; 41/43/48/03 document and item synonyms",
+    "Reversals slipping past: 36 contrastive self-filing ('You, not the care institution, must apply'); 37 passive cap lifting, 'a permit is unnecessary', bans that mention the hour figure; 38 reversed and negation-first 'even with consent' forms, 'consent is not a condition', 동의가 없어도; 61 'directly or through the institution', 'need not apply in person'; Korean worded amounts with spaces, '8.5만 원', 'KRW 85K입니다'",
+    "Too loose mentions: 48 'về phí' (matched 'về phía'), 41 'quan nào' (matched 'liên quan nào')"
+  ],
+  "kept": [
+    "must_cite lists both records that give the same value in false-conflict cases 31 and 33, as in the 005-M to 005-P suites.",
+    "Amount and duration groups are substrings (a larger number containing the value passes); '5.8만 원' is rejected because the scorer turns it into 58만; the photo count forms 'ảnh1tấm'/'ảnh2tấm' also match the unrealistic 'nhập cảnh N tấm'.",
+    "Conflict wording that prefers one side passes the suite's groups; the gate's conflict rule (conflict_resolution) judges it.",
+    "Case 81 accepts only answered (uncovered_items is empty; the spec defines partial by uncovered_items).",
+    "A Vietnamese day-month without 'ngày' or a year ('18 tháng 12') is read as a period by the spec's 005-Q rule; correct samples use 'ngày D tháng M' or the full date.",
+    "Contrived wrong answers not caught: '주 13시간 허가 규정은 없습니다' (37), '… chỉ cần báo cho cơ quan đồng ý sau' (38)."
+  ],
+  "no_model_output_existed": true
+}

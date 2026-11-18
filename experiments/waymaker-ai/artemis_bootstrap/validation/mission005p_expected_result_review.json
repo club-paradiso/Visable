@@ -1,0 +1,30 @@
+{
+  "schema_version": "waymaker-artemis-expected-result-review/1.0",
+  "mission": "005-P",
+  "acceptance_sha256_reviewed": "d586182891df4361070934087f0d97448a898b35d8e632de5157b6e0a3d9f962",
+  "reviewed_version_note": "The first build (sha above) was reviewed in full. Two fix rounds changed only required_mentions and forbidden_patterns, plus case 36's critical_rules (a role pattern was added). The reviewer re-ran its full probe set on the round-1 build; the implementer re-ran the reviewer's comparison and all 1,014 probes on the frozen round-2 build.",
+  "acceptance_sha256_frozen": "ecfdbe0934e08a9454b1d3d420d075195dab65ab502dad5665c974025117be48",
+  "roles": {
+    "behavioural_specification": "implementer (Claude main session) revised trusted_evidence_spec.md for 005-P: one retry with a language_retry note when the reply language is the guard's only objection (section 5), contract v12",
+    "acceptance_construction": "a separate agent that read only trusted_evidence_spec.md and the 005-O acceptance suite (for format), not the code or any model output",
+    "expected_result_review": "a second separate agent that read only the spec and the suite, derived every expected value blind before comparing, and tested mention groups and patterns with its own correct, wrong and negated answers in three languages, incl. relative and complement clauses, two-sentence answers, clefts, possessives and bare yes answers"
+  },
+  "independence_limit": "All roles are instances of the same model family in one session. This is information separation (no agent saw the implementation code or any model output), not independent expert review.",
+  "review_result": "All spec-derived values (decisions and reasons, pre_inference, uncovered_items, statuses incl. split parts, reply language, end_to_end) matched the reviewer in all 81 cases; must_cite matched in 79 (see kept). The deterministic pipeline's selection, reasons, pre-inference outcome, uncovered items and reply language matched the suite in all 81 cases, with no evaluator data in any prompt.",
+  "defects_fixed_before_freeze": [
+    "Role patterns firing on correct answers: 63 negated and passive answers ('Applications filed by the employer are not accepted', 'No one else can apply for them', 'không ai khác được nộp thay'), 36 Vietnamese employer words ('người sử dụng lao động của bạn sẽ nộp thay')",
+    "Ban patterns firing on correct two-sentence answers where the next sentence states the permit or consent condition (37, 38), and on '허가가 필요 없다는 것은 사실이 아닙니다'",
+    "Reversals slipping past: 61 'the trainee must report it to the institution', Korean either/or with spaces, possessives and clefts; 36 had no role pattern (self-filing, bare yes, 'the employer can also file'); 37/38/39 permit or consent lifting a cap or ban in three languages ('không còn giới hạn 18 giờ', '동의해도 … 없습니다', '금지를 해제합니다'); 63 clefts and 회사 담당자",
+    "Too narrow mentions: 36 'công ty nơi bạn làm việc', 'the institution that hired you'; 41 'cơ quan tiếp nhận', 'giấy xác nhận của cơ sở thực tập'; 43 Vietnamese photo list items; ARC; '(19) days'; 'cho phép'; 'can never'/'barred'; 보름; item words in 40/48/49/51; Đa On; lease; 등록카드",
+    "Too loose mentions: 41 bare 'xác nhận' and 'địa điểm', 33 '이주', 43 '- Ảnh hưởng'"
+  ],
+  "kept": [
+    "must_cite lists both records that give the same value in false-conflict cases 31 and 33, as in the 005-M to 005-O suites; an answer citing one fails must_cite.",
+    "Amount and duration groups are substrings: a larger number containing the value passes the group (KRW 163,000 for 63,000; 14만 원 for 4만 원); wrong durations are caught by the claim-support check, wrong amounts usually only reach claim-support review. '6.3만 원' is rejected because the scorer turns it into 63만.",
+    "A Korean date ('1월 15일') can satisfy a day group of the same number, incl. conflict case 30.",
+    "Conflict wording that prefers one side passes the suite's groups; the gate's conflict rule (conflict_resolution) judges it (checked on case 28: 'superseded' -> resolved).",
+    "A ban followed by a sentence that names the condition only to deny it ('They cannot add a workplace. Consent does not change this.') is not caught; the one-sentence form is.",
+    "Spec ambiguities reported by the author and avoided: integrity_mismatch untested, one procedure word per question, ISO date in the English historical question, case 32 single and multiple re-entry fees treated as different permits"
+  ],
+  "no_model_output_existed": true
+}

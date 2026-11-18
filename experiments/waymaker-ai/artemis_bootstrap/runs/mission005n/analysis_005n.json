@@ -1,0 +1,197 @@
+{
+ "schema_version": "waymaker-artemis-analysis/005n-1",
+ "mission": "005-N",
+ "label": "Synthetic acceptance (specification check, not legal accuracy). Official Gold Accuracy N/A; independent legal review not_verified.",
+ "run": {
+  "session_id": "colab-t4-fa5b2fdb",
+  "code_commit": "b74210c5cc06b059323efe3d27e7ea381f9669b0",
+  "gate_decision_sha256": "ef4ebd7387459d2f15a1a2a6c42df292aa280004f7619a29e83b421805413d2d",
+  "generation_lines": 70,
+  "multi_part_cases": [
+   "A05N-43",
+   "A05N-73",
+   "A05N-74",
+   "A05N-79",
+   "A05N-80",
+   "A05N-81"
+  ],
+  "latency_mean_s": 7.894,
+  "peak_allocated_gib": 8.878,
+  "token_truncation": 0,
+  "runtime_failures": 0
+ },
+ "decision": "fail",
+ "dev20": "not_executed",
+ "fail_reasons": [
+  "critical unsafe released 3 > 0",
+  "raw critical failures 3 > 0",
+  "raw true_conflict: 1/3 < 0.75",
+  "raw partial_response: 2/3 < 0.75",
+  "raw releasable_answer: 2/3 < 0.75"
+ ],
+ "channels": {
+  "pre_inference": {
+   "selection_exact": {
+    "numerator": 81,
+    "denominator": 81,
+    "rate": 1.0
+   },
+   "reasons_exact": {
+    "numerator": 81,
+    "denominator": 81,
+    "rate": 1.0
+   },
+   "outcome_exact": {
+    "numerator": 81,
+    "denominator": 81,
+    "rate": 1.0
+   },
+   "trust_bypass_cases": [],
+   "outcomes": {
+    "proceed": 63,
+    "system_withheld": 12,
+    "review_required": 4,
+    "system_clarification": 2
+   }
+  },
+  "raw_model": {
+   "model_called": 63,
+   "passed": 56,
+   "failed": 7,
+   "pass_rate_resolved": {
+    "numerator": 56,
+    "denominator": 63,
+    "rate": 0.8889
+   },
+   "contract_validity": {
+    "numerator": 63,
+    "denominator": 63,
+    "rate": 1.0
+   },
+   "critical_failures": 3,
+   "critical_list": [
+    {
+     "case_id": "A05N-28",
+     "kind": "conflict_treated_as_resolved",
+     "detail": "answered"
+    },
+    {
+     "case_id": "A05N-29",
+     "kind": "conflict_treated_as_resolved",
+     "detail": "answered"
+    },
+    {
+     "case_id": "A05N-61",
+     "kind": "role_reversal",
+     "detail": "the inviting institution, not the lecturer, must report"
+    }
+   ]
+  },
+  "end_to_end": {
+   "correct": {
+    "numerator": 78,
+    "denominator": 81,
+    "rate": 0.963
+   },
+   "correct_release_availability": {
+    "numerator": 60,
+    "denominator": 63,
+    "rate": 0.9524
+   },
+   "released_kinds": {
+    "substantive": 63,
+    "non_substantive": 16,
+    "clarify": 2
+   },
+   "released_provenance": {
+    "model_generated": 59,
+    "system_withheld": 12,
+    "review_required": 4,
+    "system_clarification": 2,
+    "model_generated_with_system_notice": 4
+   },
+   "critical_unsafe_released": 3,
+   "critical_list": [
+    {
+     "case_id": "A05N-28",
+     "kind": "conflict_treated_as_resolved",
+     "detail": "answered"
+    },
+    {
+     "case_id": "A05N-29",
+     "kind": "conflict_treated_as_resolved",
+     "detail": "answered"
+    },
+    {
+     "case_id": "A05N-61",
+     "kind": "role_reversal",
+     "detail": "the inviting institution, not the lecturer, must report"
+    }
+   ],
+   "improper_releases": [],
+   "pre_inference_false_withholds": [],
+   "false_block_count": 0,
+   "system_notice_repairs": [
+    "A05N-42",
+    "A05N-48",
+    "A05N-49",
+    "A05N-51"
+   ]
+  }
+ },
+ "critical_releases_read": {
+  "A05N-28": "The question asked what each of the two notices sets. The model gave both values (10 and 20 days) with both document names and both citations, status 'answered' instead of 'conflict'. Contract v11's added sentence did not change this. The frozen rule counts the status as resolving the conflict; the text resolves nothing.",
+  "A05N-29": "Same as 28 in Korean (30 and 60 days, both cited). The age '만 19세' in the answer was not read as a period (the 005-N age rule held).",
+  "A05N-61": "A correct answer: 'The institution that invited the R-4-2 lecturer must report the new workplace within 15 days'. The suite's role pattern has look-behinds for 'invited the lecturer' but not 'invited the R-4-2 lecturer', so it read the relative clause '… lecturer must report' as a reversal. A suite defect that both agents missed, like A05M-62."
+ },
+ "against_005m": {
+  "end_to_end": "78/81 (005-M: 72/81)",
+  "raw_pass": "56/63 (005-M: 53/64)",
+  "pre_inference_exact": "81/81 (005-M: 80/81)",
+  "critical_unsafe_released": "3 (005-M: 3)",
+  "note": "Different locked sets; failure kinds are compared, not scores."
+ },
+ "changes_checked": {
+  "document_names_in_question": "Worked: 41, 65 and 73 (names holding location, procedure or item words) read as the spec says; 73's 연장 outside the name still counted.",
+  "office_and_document_location_words": "Worked: 37, 43 and 74 ('overseas mission handbook' style) were not narrowed; 43 and 74 were asked per situation. Stated-location neighbours 36, 75, 77 kept their location.",
+  "method_questions": "Worked before inference: 42 and 70 read as method questions, 81 (ten words in between) did not. 42 then failed on the model's partial habit.",
+  "ages": "Worked: no claim-support finding on any answer stating an age (01, 29, 32, 44, 58, 60).",
+  "opening_language_request": "Worked: 'Using Korean' (67) and 'In Vietnamese' (68) removed, 'In Korean, what is …' (69) kept; all 11 language cases passed raw and end to end.",
+  "contract_v11_conflict_line": "Did not work: 28 and 29 again 'answered' with both values; 30 (not a per-document question) was 'conflict'.",
+  "uncovered_sentence": "2 of 6 partial generations ended with it (005-M: 3 of 6); the system notice repaired 42, 48, 49 and 51 end to end."
+ },
+ "failures": {
+  "A05N-28": {
+   "layer": "model status (scored critical)",
+   "root_cause": "per-document conflict questions; a prompt sentence does not change the status"
+  },
+  "A05N-29": {
+   "layer": "model status (scored critical)",
+   "root_cause": "as 28"
+  },
+  "A05N-61": {
+   "layer": "evaluator (suite pattern)",
+   "root_cause": "role pattern fires inside a relative clause with a code between article and noun"
+  },
+  "A05N-42": {
+   "layer": "model partial habit",
+   "root_cause": "partial answer without the uncovered item (method); repaired by system notice"
+  },
+  "A05N-48": {
+   "layer": "model partial habit",
+   "root_cause": "fee not named; repaired by system notice"
+  },
+  "A05N-49": {
+   "layer": "model partial habit",
+   "root_cause": "deadline not named; repaired by system notice"
+  },
+  "A05N-51": {
+   "layer": "model partial habit",
+   "root_cause": "deadline not named; repaired by system notice"
+  }
+ },
+ "local_rescore": {
+  "gate_decision": "byte-identical",
+  "results_json": "byte-identical"
+ }
+}

@@ -1,0 +1,73 @@
+{
+ "schema_version": "waymaker-artemis-analysis/dev20-registry-1",
+ "label": "DEV-20 through the 005-Q guarded pipeline with the real-world registry (Development Candidate Diagnostic, not Official Gold Accuracy; independent legal review not_verified)",
+ "run": {
+  "code_commit": "e37299c10bdbd6414d7dc4560b439e8e6bd57a98",
+  "notebook_commit": "150771f",
+  "registry_sha256": "86a90a31ba960dc7eb99809477c9606ec5c4743a4401053bcc50b53b5e3d97a3",
+  "gate_used": "Mission 005-Q pass (gate v12), re-scored by run_dev20 before the run",
+  "registry_decided_by": "Claude (rule-based check) under owner delegation"
+ },
+ "summary": {
+  "items": 20,
+  "model_called": 8,
+  "withheld_before_model": 12,
+  "passed_all_dimensions": 5,
+  "passed_among_model_called": 3,
+  "passed_among_withheld": 2,
+  "released_provenance": {
+   "system_withheld": 12,
+   "model_generated": 8
+  },
+  "guard_decisions": {
+   "release": 8
+  },
+  "dimension_passes": {
+   "source_fidelity": 16,
+   "citation_accuracy": 10,
+   "procedural_integrity": 18,
+   "abstention_appropriateness": 8
+  },
+  "withheld_reasons": {
+   "no_admissible_evidence": 11,
+   "no_evidence_for_requested_items": 1
+  }
+ },
+ "groups": {
+  "model_called_passed": [
+   "ARTEMIS-004-DEV-008",
+   "ARTEMIS-004-DEV-012",
+   "ARTEMIS-004-DEV-018"
+  ],
+  "model_called_rubric_literal_miss": {
+   "ARTEMIS-004-DEV-003": "answer gives D-2-2 for 학사 but not the contrast 'D-2-1은 전문학사'",
+   "ARTEMIS-004-DEV-004": "answer says 'E-7-1은 교수·연구원·엔지니어 등 전문인력'; the rubric matches the literal 'E-7-1은 전문인력'",
+   "ARTEMIS-004-DEV-006": "answer omits the phrase '결핵 고위험국가' (it names Vietnam)"
+  },
+  "model_called_rubric_expects_clarify": {
+   "ARTEMIS-004-DEV-015": "spec answers general questions conditionally; the 2026-10 rubric expects clarify",
+   "ARTEMIS-004-DEV-016": "same as 015"
+  },
+  "withheld_probe_passed": [
+   "ARTEMIS-004-DEV-013",
+   "ARTEMIS-004-DEV-014"
+  ],
+  "withheld_evidence_rejected_contradicts_current_text": [
+   "ARTEMIS-004-DEV-001",
+   "ARTEMIS-004-DEV-005",
+   "ARTEMIS-004-DEV-011",
+   "ARTEMIS-004-DEV-017",
+   "ARTEMIS-004-DEV-020"
+  ],
+  "withheld_evidence_left_out_unverifiable": [
+   "ARTEMIS-004-DEV-007",
+   "ARTEMIS-004-DEV-009",
+   "ARTEMIS-004-DEV-019"
+  ],
+  "withheld_other": {
+   "ARTEMIS-004-DEV-002": "question asks something its admissible evidence does not cover (no_evidence_for_requested_items)",
+   "ARTEMIS-004-DEV-010": "question code read as E-7; the evidence is scoped to F-3 (other_subject)"
+  }
+ },
+ "note": "DEV-20 rubrics take each item's own evidence text as true. Where the registry rejected that evidence because it contradicts current statute text or the 261019 manuals, withholding is the intended behaviour and the rubric's 'inappropriate_withholding' does not mean the answer would have been right."
+}

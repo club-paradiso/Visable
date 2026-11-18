@@ -1,0 +1,209 @@
+{
+  "schema_version": "waymaker-artemis-expected-result-review/1.0",
+  "mission": "005-R",
+  "acceptance_sha256_reviewed": "19eee6cd2d797c8a218c9d81d2658b5cb0dde824418f2b0f95a099849608c5a7",
+  "reviewed_version_note": "One build (sha above) was reviewed in full. The suite file was not edited; the sha was taken before and after the review and did not change. Implementer fix round after the review (no evidence text, registry record or expected value changed): defect 1, the '금지 규정·조항이 없다' branch added to case 39's third pattern; defect 2, 'thẻđăngkí', 'giấyđăngkíngườinướcngoài', '등록카드' and 'registrationid' added to the registration-card group (03, 68, 74); defect 3, '고용주확인'/'고용주의확인' added to 46; defect 4, 'webportal'/'portal' added to 42; defect 5, the spelled-out day branch of all 15 day patterns now allows working/business; defects 6 and 7, the about text and 01's rationale reworded. Each reviewer example was re-run on the frozen build and is now accepted or caught as the review asked. The deterministic pipeline matches the frozen suite in all 81 cases.",
+  "acceptance_sha256_frozen": "c8189f3d71a19bab3f8b90ea1dde129dd14f84d899350507a7c920177cd6404d",
+  "roles": {
+    "behavioural_specification": "implementer (Claude main session) revised trusted_evidence_spec.md for 005-R: two-case evidence, branch_retry and the quoted branch notice (section 5), and the notice filling a missing case in end-to-end scoring (section 6)",
+    "acceptance_construction": "a separate agent that read only trusted_evidence_spec.md and the 005-Q acceptance suite (for format), not the code or any model output",
+    "expected_result_review": "a second separate agent that read only the spec, the 005-R suite and the 005-Q review (for format). It derived every case's admission decisions and reasons, pre_inference, uncovered_items, statuses incl. split parts, reply language, must_cite and end_to_end blind from case inputs before opening any expected block. It then tested mention groups and patterns with 348 hand-written whole answers in three languages (correct, wrong-value, one-case, reversed, synonyms, list layouts, Vietnamese dates), 952 generated number-format answers and 297 generated wrong-value answers. It also applied the section-5 two-case word rule to every two-case passage, with and without the bracketed source title."
+  },
+  "independence_limit": "All roles are instances of the same model family in one session. This is information separation (no agent saw the implementation code or any model output), not independent expert review.",
+  "review_result": "Spec-derived values matched the reviewer in all 81 cases for pre_inference, uncovered_items, model_statuses (incl. the location split in 73/74, the sub-code split in 79/80 and no split in 81), expected_language and end_to_end. Admission decisions, reasons and must_cite matched in 80 of 81 at the blind stage. The one difference (55) was the reviewer's own misreading, and the suite is right there: the registry record filed under Q43-ACT-FEE35-COPY carries evidence_id Q43-ACT-FEE35, so spec 1 rejects the copy as no_registry_record. After correction, 81/81 matched on every derived field. Every two-case positive (01, 02, 03, 40, 43, 61, 62, 63, 67) rejects each one-case answer tried and accepts every both-case answer tried. Every sub-code exception negative (59, 70, 71) and 44 accept a first-case-only answer. 45 does not; see kept. Number groups accepted every generated correct format, and amount and day patterns fired on every generated wrong format except spelled-out 'six business days' (08). Three defects concern mention groups or patterns, one concerns a pattern that stays silent on a natural Korean reversal (39), and two concern the suite's documentation text. No defect changes any derived expected value.",
+  "defects_found": [
+    {
+      "case": "A05R-39",
+      "what": "A natural Korean 'no ban exists' reversal is released: '금지 규정이 없으므로 시간제로 일해도 됩니다.' and '선박 수리 업체에서 시간제 취업을 금지하는 조항은 없습니다.' pass the prohibited group (via '금지') and fire no pattern.",
+      "why": "The 'not prohibited' pattern has Korean branches only for 금지되지/금지하지 않, 금지된 것은 아니, 금지 대상이 아니 and 제한 없. 금지 규정·조항이 없다 is missing, and the affirmative pattern skips any sentence containing 없 or 금지. Spec 6 counts a 허가·금지 반전 that reaches the user as critical.",
+      "suggested_fix": "Add a Korean branch to the third pattern, e.g. '금지\\s*(?:하는|한)?\\s*(?:규정|조항|규칙|법|조문)\\s*(?:이|은|도|가)?\\s*없'. Add the two sentences above as reversal probes."
+    },
+    {
+      "case": "A05R-03, A05R-68, A05R-74 (shared registration-card group)",
+      "what": "Correct answers miss the card group: Vietnamese 'thẻ đăng kí người nước ngoài' (kí spelling) in 68, and Korean '외국인 등록 카드' in 03.",
+      "why": "The group lists 'thẻđăngký' and '등록증' but not the common 'kí' variant or '등록카드'.",
+      "suggested_fix": "Add 'thẻđăngkí', 'giấyđăngkíngườinướcngoài', '등록카드' and 'registrationid' to the shared group."
+    },
+    {
+      "case": "A05R-46",
+      "what": "A correct Korean answer '여권, 고용주 확인서, 증명사진 1매' misses the employment-confirmation group.",
+      "why": "The group has '고용확인' and '염전'; '고용주 확인서' normalises to '고용주확인서', which contains neither.",
+      "suggested_fix": "Add '고용주확인' and '고용주의확인'."
+    },
+    {
+      "case": "A05R-42",
+      "what": "A correct English answer 'Apply via the web portal; 25 days.' misses the method group.",
+      "why": "The group has 'website' and 'online' but not 'portal'.",
+      "suggested_fix": "Add 'webportal' and 'portal'."
+    },
+    {
+      "case": "all day-value forbidden patterns (05, 08, 11, 14, 15, 24, 25, 26, 27, 49, 51, 53, 57, 72, 75)",
+      "what": "A spelled-out wrong value with a 'working/business' qualifier is not caught: 'six business days' (08) fires nothing, although '6 business days' does.",
+      "why": "The numeric branch allows (?:calendar|working|business)\\s+ before days. The spelled-out English branch allows only calendar\\s+.",
+      "suggested_fix": "In the spelled-out English branch, change '(?:calendar\\s+)?' to '(?:calendar\\s+|working\\s+|business\\s+)?'."
+    },
+    {
+      "case": "suite 'about', ambiguity (1)",
+      "what": "The note says spec 6 'still says a system notice can supply only missing-item mentions'.",
+      "why": "The 005-R spec 6 says the notice may fill 'missing item names, and from 005-R the missing case of two-case evidence, quoted'. The note misdescribes the spec it was built from. Expected values are unaffected: every missing-side group is met by the quoted evidence text itself (checked for 01, 02, 03, 40, 43, 61, 62, 63, 67).",
+      "suggested_fix": "Replace ambiguity (1) with: spec 6 (005-R) lets the quoted branch notice fill a missing case. The groups are also written so that a correct model answer meets them on its own."
+    },
+    {
+      "case": "suite 'about', ambiguity (2), and rationales of 01 (and by implication the other two-case positives)",
+      "what": "The rationale says 'an answer with one side gets branch_retry'. The about says the title question does not matter 'either way'. The section-5 word rule does not support either claim. With the bracketed title counted as first-case words, a near-verbatim one-case answer reaches only 46% in 61 ('염전 고용주가 대신 접수한 외국인등록은 7일 이내에 처리합니다') and exactly 50% in 02 and 67. Paraphrased one-case answers reach 9 to 47% (40, 61, 63, 01's second side) and get no retry or notice. Correct both-case paraphrases in 43 and 61 ('Thời hạn là 14 ngày. Trường hợp ở ký túc xá…', '고용주 대리 접수는 일주일 이내, 그 밖에…') are judged to miss the first case, so they would get a retry and a redundant notice.",
+      "why": "Spec 5 counts exact side-only words. The title and Korean particles move the ratio across the 50% line. The suite's end_to_end expectation (both values needed) is right either way, but the documented system behaviour is not guaranteed.",
+      "suggested_fix": "Change the rationale wording to 'an answer that repeats one side's wording gets branch_retry'. Record in the about that whether the title counts decides 02, 61 and 67 for verbatim answers, and raise the title rule with the spec owner. Expected values need no change."
+    }
+  ],
+  "kept": [
+    "A05R-45: an answer giving only the first clause (recommended holders are exempt) fails the single 32,000-won group. Kept: the question asks the fee, the suite requires the general case as its about and rationale state, and this cross-language passage gets no retry or notice. An exemption-only answer leaves the fee for everyone else unstated. Note that here the general case is the second clause, unlike 44.",
+    "A05R-44 and A05R-45 require only the general amount and do not forbid the other branch. The spec has no rule that requires it once the two-case check is skipped.",
+    "Sub-code exception negatives 59, 70, 71: the other side names only a different sub-code that is in the cited admissible text. It is neither required nor forbidden, and spec 5's code check does not trigger. A first-case-only answer passes in all three.",
+    "must_cite lists both same-value records in false-conflict cases 31 and 33, as in earlier suites. 55 lists only the record that passes the registry.",
+    "Number and day groups are substrings. Single-digit values are the most exposed: in 67, '15 days' passes the 5-day group, and in 61, '17일' passes the 7-day group. This is the scorer's design, as noted in the 005-Q review.",
+    "40's processing group contains the bare '처리'. It is loose, but the cited evidence has no processing word, so the only realistic source is the uncovered_sentence or the notice.",
+    "Two-case word-rule outcomes (retry or no retry) do not enter any expected field. end_to_end is judged on the released text plus notices, which the groups handle in both outcomes."
+  ],
+  "two_case_results": {
+    "A05R-01": {
+      "one_case_answer_fails_a_group": true,
+      "both_case_answer_passes": true,
+      "word_rule_verbatim_one_case": "retry (69% / 100% without title)",
+      "word_rule_paraphrase_one_case": "second side alone: no retry (15%/22%)"
+    },
+    "A05R-02": {
+      "one_case_answer_fails_a_group": true,
+      "both_case_answer_passes": true,
+      "word_rule_verbatim_one_case": "retry at exactly 50% with title, 100% without",
+      "word_rule_paraphrase_one_case": "no retry (0%)"
+    },
+    "A05R-03": {
+      "one_case_answer_fails_a_group": true,
+      "both_case_answer_passes": true,
+      "word_rule_verbatim_one_case": "retry (70% / 100%)",
+      "word_rule_paraphrase_one_case": "no retry (10-14%)"
+    },
+    "A05R-40": {
+      "one_case_answer_fails_a_group": true,
+      "both_case_answer_passes": true,
+      "word_rule_verbatim_one_case": "not tried verbatim; short paraphrase 9-14%: no retry",
+      "word_rule_paraphrase_one_case": "no retry"
+    },
+    "A05R-43": {
+      "one_case_answer_fails_a_group": true,
+      "both_case_answer_passes": true,
+      "word_rule_verbatim_one_case": "retry (56% / 100%)",
+      "word_rule_paraphrase_one_case": "no retry; two correct both-case paraphrases falsely judged to miss the first case"
+    },
+    "A05R-61": {
+      "one_case_answer_fails_a_group": true,
+      "both_case_answer_passes": true,
+      "word_rule_verbatim_one_case": "NO retry with title (46%), retry without (67%)",
+      "word_rule_paraphrase_one_case": "no retry; one correct both-case paraphrase falsely judged to miss the first case"
+    },
+    "A05R-62": {
+      "one_case_answer_fails_a_group": true,
+      "both_case_answer_passes": true,
+      "word_rule_verbatim_one_case": "retry either side (71%/86%)",
+      "word_rule_paraphrase_one_case": "n/a"
+    },
+    "A05R-63": {
+      "one_case_answer_fails_a_group": true,
+      "both_case_answer_passes": true,
+      "word_rule_verbatim_one_case": "retry (68% / 100%)",
+      "word_rule_paraphrase_one_case": "no retry (32% with title; 47% without)"
+    },
+    "A05R-67": {
+      "one_case_answer_fails_a_group": true,
+      "both_case_answer_passes": true,
+      "word_rule_verbatim_one_case": "retry at exactly 50% with title, 100% without",
+      "word_rule_paraphrase_one_case": "second side alone: no retry (10%/20%)"
+    },
+    "A05R-59": {
+      "first_case_only_passes": true,
+      "word_rule": "verbatim reaches 56%/83%, exclusion (other side names only Q-4-3) applies: no retry, as the suite expects"
+    },
+    "A05R-70": {
+      "first_case_only_passes": true,
+      "word_rule": "44% with title / 80% without; exclusion (only Q-4-4) applies: no retry"
+    },
+    "A05R-71": {
+      "first_case_only_passes": true,
+      "word_rule": "64%/100%; exclusion (only Q-4-3) applies: no retry"
+    },
+    "A05R-44": {
+      "first_case_only_passes": true,
+      "word_rule": "English answer vs Korean evidence: 11-20% overlap, no retry, as the suite expects"
+    },
+    "A05R-45": {
+      "first_case_only_passes": false,
+      "word_rule": "Vietnamese answer vs Korean evidence: 0% overlap, no retry. The suite requires the general 32,000-won case, which is the second clause (kept)"
+    }
+  },
+  "no_model_output_existed": true,
+  "implementer_changes_after_review": [
+    "Defect 7 also led to a spec and code change: a leading bracketed source title is left out of both sides of the section-5 word rule (spec 5, branch_coverage.split_cases). With it, an answer repeating one side verbatim reaches 100% of that side in all nine two-case positives (01, 02, 03, 40, 43, 61, 62, 63, 67) and is asked once more; both sides together are never flagged; 59, 70 and 71 stay excluded. The word rule does not enter any expected value.",
+    "The Vietnamese marker 'trừ trường hợp' is matched after a comma, as the spec lists it without punctuation (case 43 found this; the implementation first required ';' or '.').",
+    "Kept limitation, stated in spec 5: the rule is lexical, so a paraphrased one-case answer can escape it and a paraphrase of both cases can get an unneeded retry and notice.",
+    "Follow-up round: the frozen thresholds need role_reversal coverage, which the first build lacked; the suite author added role_reversal patterns to A05R-14, A05R-25 and A05R-78. The reviewer's follow-up found misfires and gaps and proposed replacement patterns; the implementer applied them unchanged. On the frozen build they give 0 mismatches on the reviewer's 67-answer role bank and on the author's own test answers. No evidence, question, registry record or other expected value changed."
+  ],
+  "follow_up_review": {
+    "suite_sha256_reviewed": "58eba0237269dee351ae00925c10ab5072cf0c4c414dde0a2d57b04d0a3b99e7",
+    "spec_sha256_read": "e1fa0d442e6f1075a3915288b720d6b0d60c85eafcc91f2f17e3c38fc9b561cb",
+    "information_rules": "Same as the first review: only trusted_evidence_spec.md and the 005-R suite were read; no code, no runs, no model output. The suite was not edited.",
+    "frozen_sha_note": "acceptance_sha256_frozen above (8ccd8a64…) is not the sha of the suite file now on disk (58eba023…), which carries the role_reversal additions. The implementer should refresh it after any fix to the new patterns.",
+    "derived_values_rechecked": "The first review's blind derivations were compared again with the revised suite. Every derived field still agrees (55 differs only by the reviewer's own recorded misread), so the changes did not move any expected value.",
+    "defects_1_to_5": {
+      "result": "all fixed",
+      "evidence": "All earlier banks re-run on the revised suite: 258 hand-written answers (the only mismatch is the kept 45 exemption-only answer), 47 + 20 polarity answers (0 mismatches), 952 generated correct number formats (only the by-design 40 item-group miss), 297 generated wrong values (all fire). Targeted probes now behave: 39 '금지 규정이 없으므로…', '…금지하는 조항은 없습니다', '금지하는 법은 없습니다' fire, while the correct '…다른 업체에 대한 금지 규정은 근거에 없습니다' does not; 68 'thẻ đăng kí', 03/74 '외국인 등록 카드', 46 '고용주 확인서', 42 'web portal' are accepted; 08 'six business days', 26 'five working days', 72 'three business days', 05 'tám ngày làm việc' fire."
+    },
+    "role_reversal_review": {
+      "bank": "67 own answers (A05R-14 en: 13 correct, 13 swapped; A05R-25 vi: 11 correct, 10 swapped; A05R-78 ko: 10 correct, 10 swapped). Correct answers include the case's own evidence wording, list layouts, the other party mentioned in negated, contrastive and explanatory ways ('not by your employer', 'không ai khai báo thay', '고용주가 아닌 본인이'), and synonyms. Plus 19 extra misfire probes, then every candidate fix re-run on all of them and on the first review's bank for the three cases.",
+      "findings": [
+        {
+          "case": "A05R-14",
+          "kind": "misfire",
+          "what": "The first role pattern fires on four correct answers: 'Your employer will need your new address, but you report it.', 'the institute should be informed too', 'even if your employer submits other paperwork', 'as stated by the institute guideline'.",
+          "why": "Any party word followed within six words by any modal or by 'submits/handles' fires, whatever the action; 'by the institute' fires in any sense, not only as the agent of reporting."
+        },
+        {
+          "case": "A05R-14",
+          "kind": "gap",
+          "what": "'Your lab files it within 25 days.' and 'There is no need for you to report; it is done for you within 25 days.' fire nothing.",
+          "why": "'lab'/'university' are not party words; the second pattern has no 'no need (for you) to report' or 'done for you' form."
+        },
+        {
+          "case": "A05R-25",
+          "kind": "gap",
+          "what": "Plain swapped subjects fire nothing: 'Chủ sử dụng lao động phải khai báo trong vòng 14 ngày.', 'Công ty mới có trách nhiệm khai báo…', 'nhà tuyển dụng sẽ nộp báo cáo cho bạn', 'Trong vòng 14 ngày, viện khai báo việc bổ sung nơi làm việc.'",
+          "why": "The party-subject branch requires 'thay/giúp/hộ' after the verb; without it only the 'do …' passive form is caught. The English case 14 catches the same plain-subject swap, so the two languages differ."
+        },
+        {
+          "case": "A05R-25",
+          "kind": "bug",
+          "what": "The second pattern never matches 'khỏi': 'Bạn khỏi cần khai báo.', 'Bạn khỏi khai báo.', 'Bạn khỏi phải khai báo…' fire nothing ('không cần' works).",
+          "why": "'khỏi\\s+(?:cần\\s+)?)\\s+' needs two whitespace runs after 'khỏi'/'khỏi cần', so a normally spaced sentence cannot match."
+        },
+        {
+          "case": "A05R-78",
+          "kind": "misfire",
+          "what": "Three correct answers fire: '고용주가 아닌 본인이 25일 이내에 신고해야 합니다.', '회사가 대신 신고해 준다는 규정은 없으므로 … 직접 신고하세요.', '대신 신고할 수 있다는 내용은 근거에 없습니다.'",
+          "why": "The tempered negation lists 아니/아닙 but not 아닌 or 말고; the 대신 branch looks for a negation only within 12 characters, and the party branch not at all after the verb, so reported speech ('…준다는 규정은 없') counts as a swap."
+        },
+        {
+          "case": "A05R-78",
+          "kind": "gap",
+          "what": "'신고는 고용주 몫이며 25일 이내에 하면 됩니다.' and '근무처를 추가하면 고용주가 25일 안에 출입국에 알립니다.' fire nothing.",
+          "why": "The verbs are only 신고·제출·접수; '알리다/통보' and the '…의 몫·책임·의무' form are missing."
+        }
+      ],
+      "suggested_fixes": {
+        "summary": "Candidate patterns are in the reviewer's scratch folder (proposed_role_patterns.json). With them all 67 bank answers, the 19 probes and the first review's bank for these cases come out right (0 misfires, 0 gaps). They are offered as a starting point, not as reviewed suite text.",
+        "A05R-14": "Require a reporting verb right after the party (0–2 words, optional modal or 'is responsible for'): report/file/submit/notify/take care of/handle; skip 'submits other paperwork / its own …' and 'the contract/documents'; replace the bare 'by the <party>' with '(reported|filed|submitted|handled|done|notified) … by the <party>'; add lab(s), laborator(y|ies), universit(y|ies) and 'nobody/no one' to the sentence negation; add 'no need (for you) to report' and 'done for you'.",
+        "A05R-25": "Add a branch '<party>(nghiên cứu|mới|của bạn)? (sẽ|phải|cần|có/chịu trách nhiệm)? (khai báo|thông báo|nộp tờ khai/báo cáo/đơn khai báo)' with the existing object-position look-behinds plus '(?<!về\\s)'; keep bare 'nộp' out of it ('công ty mới nộp hợp đồng cho bạn' is not a swap). In the second pattern replace 'khỏi\\s+(?:cần\\s+)?)\\s+' with 'khỏi(?:\\s+(?:cần|phải))?)\\s+'.",
+        "A05R-78": "Add 아닌·말고 to the tempered negation and '(?!\\s*아닌)' after the party particle; after the party-branch verb add a sentence-level negative look-ahead for '다는|라는|규정(은|이)? 없|근거에 없|내용(은|이)? 없|나와 있지 않'; let the 대신 branch's negation look-ahead run to the sentence end; add the verbs 알립·알린다·알려 줍·통보(합|한다|해) and a branch '신고(는|도)? <party> (의)? (몫|책임|의무|일)'."
+      }
+    },
+    "no_model_output_existed": true
+  }
+}

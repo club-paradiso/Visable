@@ -1,0 +1,28 @@
+{
+  "schema_version": "waymaker-artemis-expected-result-review/1.0",
+  "mission": "005-K",
+  "acceptance_sha256_reviewed": "485ec618566835ee92922506c674c8069d67cb22d6151681fc6a6dadd11773e6",
+  "acceptance_sha256_frozen": "642955e009badb3ac023875b80f9d6c7bf19907b8cb8a750136bab36f7866253",
+  "roles": {
+    "behavioural_specification": "implementer (Claude main session) revised trusted_evidence_spec.md for 005-K (per-situation parts, as_of input, Korean names in the language check)",
+    "acceptance_construction": "separate agent; read only the spec and the 005-G development suite for format",
+    "expected_result_review": "second separate agent; read only the spec and the suite; re-derived every value incl. sub-code and situation parts, and tested mentions and patterns against its own answers in three languages",
+    "implementation": "Claude main session"
+  },
+  "independence_limit": "All roles are instances of the same model family in one session. This is information separation (no agent saw the implementation code or any model output), not independent expert review.",
+  "spec_and_code_fixed_before_review": [
+    "The author found that 'in Korean' contains the location phrase 'in Korea'; the location detector now needs a word boundary, stated in the spec. The Korean-name language rule was stated to work word by word (a particle-attached form counts). No suite case depended on either."
+  ],
+  "review_result": "All spec-derived values, including sub-code and situation parts, matched the reviewer in all 81 cases.",
+  "defects_fixed_before_freeze": [
+    "Swapped-value role_reversal patterns in A05K-37/38/73/74/79/81 fired on correct answers that put the value before its label; removed. These cases split into parts and each part's guard sees only its own evidence, so a swapped value is withheld there; the raw score may not catch a swap",
+    "A05K-75: the swap pattern now treats 'nội địa' as a domestic marker; A05K-45: 'thay vì' rebuttal no longer fires and 'Học viên, không phải …' is caught; A05K-61: 'The researcher, not the host institution, must report' is caught",
+    "A05K-43: a polarity pattern catches 'không thể nộp … trực tuyến'",
+    "Too loose: A05K-19 (bare region word removed), A05K-41 ('arc' inside 'search' removed), A05K-44 ('immigration office' removed), A05K-33/52 ('0won' inside any amount removed)",
+    "Too narrow: added paraphrases in A05K-12, 15, 36, 37, 44, 52, 57, 59, 63, 75"
+  ],
+  "kept": [
+    "Single-digit amounts and day counts (A05K-38/54) can be met inside larger numbers; polarity patterns in A05K-18/62/72 only catch a bare opening yes/no (expected_polarity is scored separately); evidence-borne injection markers (A05K-52..54) are scored only"
+  ],
+  "no_model_output_existed": true
+}
